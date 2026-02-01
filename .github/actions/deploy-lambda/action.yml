@@ -1,0 +1,53 @@
+name: Deploy lambda zip to AWS
+description: Upload zip file to AWS Lambda, publish version and update alias
+
+inputs:
+  function_name:
+    required: true
+  alias_name:
+    required: false
+    default: prod
+  semantic_version:
+    required: true
+  zip_path:
+    required: false
+    default: lambda.zip
+  aws_region:
+    required: true
+  aws_role_arn:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Configure AWS credentials (OIDC)
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ inputs.aws_role_arn }}
+        aws-region: ${{ inputs.aws_region }}
+
+    - name: Update code
+      shell: bash
+      run: |
+        aws lambda update-function-code \
+          --function-name "${{ inputs.function_name }}" \
+          --zip-file "fileb://${{ inputs.zip_path }}"
+
+    - name: Wait for update
+      shell: bash
+      run: |
+        aws lambda wait function-updated \
+          --function-name "${{ inputs.function_name }}"
+
+    - name: Publish version & update alias
+      shell: bash
+      run: |
+        LAMBDA_VERSION=$(aws lambda publish-version \
+          --function-name "${{ inputs.function_name }}" \
+          --description "v${{ inputs.semantic_version }}" \
+          --query 'Version' --output text)
+
+        aws lambda update-alias \
+          --function-name "${{ inputs.function_name }}" \
+          --name "${{ inputs.alias_name }}" \
+          --function-version "$LAMBDA_VERSION"

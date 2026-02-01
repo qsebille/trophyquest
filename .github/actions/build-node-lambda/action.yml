@@ -1,0 +1,33 @@
+name: Build Node lambda package
+
+inputs:
+  zip_path:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    - name: Install deps
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+    - name: Prune dev deps
+      run: npm prune --production
+
+    - name: Prepare lambda package
+      run: |
+        rm -rf lambda ${{ inputs.zip_path }}
+        mkdir lambda
+        cp package.json lambda/
+        cp package-lock.json lambda/
+        cp -r dist lambda/
+        cp -r node_modules lambda/
+        zip -r ${{ inputs.zip_path }} lambda
