@@ -11,8 +11,13 @@ on:
 jobs:
   tag-on-merge:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lambda/python
+
     permissions:
       contents: write
+
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4

@@ -29,12 +29,12 @@ jobs:
           service_name: lambda-node
 
       - name: Build lambda package
-        uses: .github/actions/build-node-lambda
+        uses: ./.github/actions/build-node-lambda
         with:
           zip_path: lambda.zip
 
       - name: Deploy to AWS
-        uses: .github/actions/deploy-lambda
+        uses: ./.github/actions/deploy-lambda
         with:
           function_name: trophyquest-psn-fetcher
           semantic_version: ${{ steps.get-version.outputs.version }}

@@ -29,12 +29,12 @@ jobs:
           service_name: lambda-python
 
       - name: Build lambda package
-        uses: .github/actions/build-python-lambda
+        uses: ./.github/actions/build-python-lambda
         with:
           zip_path: lambda.zip
 
       - name: Deploy to AWS
-        uses: .github/actions/deploy-lambda
+        uses: ./.github/actions/deploy-lambda
         with:
           function_name: trophyquest-igdb-enricher
           semantic_version: ${{ steps.get-version.outputs.version }}
