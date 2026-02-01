@@ -1,0 +1,70 @@
+name: Deploy Backend application to AWS (EC2)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-deploy.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Prepare SSH key
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > key.pem
+          chmod 600 key.pem
+
+      - name: Test SSH connection to EC2
+        run: |
+          ssh -vv -i key.pem -o StrictHostKeyChecking=no \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} exit 0
+
+      - name: Build Spring Boot jar
+        run: |
+          chmod +x gradlew
+          ./gradlew clean bootJar
+          APP_VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
+          echo "Building TrophyQuest backend version $APP_VERSION"
+
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Copy jar to EC2
+        run: |
+          JAR_FILE=$(ls build/libs/*.jar | head -n 1)
+          echo "Deploying $JAR_FILE"
+          scp -i key.pem -o StrictHostKeyChecking=no "$JAR_FILE" \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/trophyquest-backend.jar
+
+      - name: Move jar & restart service on EC2
+        run: |
+          ssh -i key.pem -o StrictHostKeyChecking=no \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+              sudo mv /home/${USER}/trophyquest-backend.jar /opt/trophyquest/trophyquest-backend.jar
+              sudo chown trophyquest:trophyquest /opt/trophyquest/trophyquest-backend.jar
+              sudo systemctl restart trophyquest-backend
+              sudo systemctl status trophyquest-backend --no-pager -l
+          EOF

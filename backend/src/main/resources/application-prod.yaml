@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${PGHOST}:${PGPORT:5432}/${PGDATABASE}?currentSchema=app
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none

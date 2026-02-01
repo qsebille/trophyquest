@@ -1,10 +1,10 @@
 name: Read service version
-description: Read version for a service (lambda-node from package.json, lambda-python from VERSION)
+description: Read version for a service
 
 inputs:
   service_name:
     required: true
-    description: "Service name (lambda-node | lambda-python)"
+    description: "Service name (lambda-node | lambda-python | backend)"
 
 outputs:
   version:
@@ -24,22 +24,17 @@ runs:
 
         case "$SERVICE_NAME" in
           lambda-node)
-            if [ ! -f "lambda/node/package.json" ]; then
-              echo "❌ File not found: lambda/node/package.json"
-              exit 1
-            fi
             VERSION=$(node -p "require('./lambda/node/package.json').version")
             ;;
           lambda-python)
-            if [ ! -f "lambda/python/VERSION" ]; then
-              echo "❌ File not found: lambda/python/VERSION"
-              exit 1
-            fi
             VERSION=$(tr -d '\r' < "lambda/python/VERSION")
+            ;;
+          backend)
+            VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
             ;;
           *)
             echo "❌ Unknown service_name: $SERVICE_NAME"
-            echo "Expected: lambda-node | lambda-python"
+            echo "Expected: lambda-node | lambda-python | backend"
             exit 1
             ;;
         esac

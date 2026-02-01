@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-psn-tables-setup/07-create-psn-trophy-suite-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: psn_trophy_suite
+            columns:
+              - column: { name: id, type: uuid, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_psn_trophy_suite } }
+              - column: { name: name, type: text, constraints: { nullable: false } }
+              - column: { name: version, type: text }
+              - column: { name: psn_image_url, type: text }
+              - column: { name: aws_image_url, type: text }
+              - column: { name: platforms, type: "text[]" }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_psn_trophy_suite_set_updated_at
+                            BEFORE UPDATE ON app.psn_trophy_suite
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

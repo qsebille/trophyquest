@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-igdb-tables-setup/07-add-igdb-game-id-column-in-psn-game-table
+      author: Quentin Sebille
+      changes:
+        - addColumn:
+            schemaName: app
+            tableName: psn_game
+            columns:
+              - column: { name: igdb_game_id, type: bigint, constraints: { unique: true, nullable: true, foreignKeyName: fk_igdb_game, references: app.igdb_game(id) } }

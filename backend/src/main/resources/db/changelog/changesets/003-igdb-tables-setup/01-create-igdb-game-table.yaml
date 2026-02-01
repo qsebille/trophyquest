@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-igdb-tables-setup/01-create-igdb-game-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: igdb_game
+            columns:
+              - column: { name: id, type: bigint, constraints: { nullable: false, primaryKey: true } }
+              - column: { name: name, type: text, constraints: { nullable: false } }
+              - column: { name: summary, type: text }
+              - column: { name: game_type, type: text }
+              - column: { name: release_date, type: date }
+              - column: { name: genres, type: "text[]" }
+              - column: { name: themes, type: "text[]" }
+              - column: { name: screenshots, type: "text[]" }
+              - column: { name: cover, type: text }
+              - column: { name: artwork_with_logo, type: text }
+              - column: { name: artwork_without_logo, type: text }
+              - column: { name: psn_website, type: text }
+              - column: { name: official_website, type: text }
+              - column: { name: community_wiki_website, type: text }
+              - column: { name: youtube_ids, type: "text[]" }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_igdb_game_set_updated_at
+                            BEFORE UPDATE ON app.igdb_game
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

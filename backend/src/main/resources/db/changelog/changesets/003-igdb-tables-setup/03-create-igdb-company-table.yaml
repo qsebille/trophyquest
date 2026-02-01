@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-igdb-tables-setup/03-create-igdb-company-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: igdb_company
+            columns:
+              - column: { name: id, type: bigint, constraints: { nullable: false, primaryKey: true } }
+              - column: { name: name, type: text, constraints: { nullable: false } }
+              - column: { name: country_code, type: int }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_igdb_company_set_updated_at
+                            BEFORE UPDATE ON app.igdb_company
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

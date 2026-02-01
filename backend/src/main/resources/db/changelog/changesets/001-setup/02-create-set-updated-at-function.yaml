@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-setup/02-add-updated-at-columns
+      author: Quentin Sebille
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE OR REPLACE FUNCTION app.set_updated_at()
+              RETURNS trigger AS $$
+              BEGIN
+                NEW.updated_at = CURRENT_TIMESTAMP;
+                RETURN NEW;
+              END;
+              $$ LANGUAGE plpgsql;

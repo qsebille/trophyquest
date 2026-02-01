@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-setup-basic-views/01-create-player-search-item-view
+      author: Quentin Sebille
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              create or replace view app.v_player_search_item as
+              select p.id                                         as id,
+                     p.pseudo                                     as pseudo,
+                     coalesce(p.aws_avatar_url, p.psn_avatar_url) as avatar,
+                     coalesce(game_stats.total_played_games, 0)   as total_played_games,
+                     coalesce(trophy_stats.total_trophies, 0)     as total_earned_trophies,
+                     coalesce(trophy_stats.total_platinum, 0)     as total_earned_platinum,
+                     coalesce(trophy_stats.total_gold, 0)         as total_earned_gold,
+                     coalesce(trophy_stats.total_silver, 0)       as total_earned_silver,
+                     coalesce(trophy_stats.total_bronze, 0)       as total_earned_bronze
+              from app.psn_player p
+                left join (select et.player_id,
+                  count(*) as total_trophies,
+                  count(*) filter (where t.trophy_type = 'platinum') as total_platinum,
+                  count(*) filter (where t.trophy_type = 'gold')     as total_gold,
+                  count(*) filter (where t.trophy_type = 'silver')   as total_silver,
+                  count(*) filter (where t.trophy_type = 'bronze')   as total_bronze
+                  from app.psn_earned_trophy et
+                  join app.psn_trophy t on t.id = et.trophy_id
+                  group by et.player_id) trophy_stats on trophy_stats.player_id = p.id
+                left join (select pg.player_id, count(*) as total_played_games
+                  from app.psn_played_game pg
+                  group by pg.player_id) game_stats on game_stats.player_id = p.id
+              ;

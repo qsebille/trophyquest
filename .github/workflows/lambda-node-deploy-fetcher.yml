@@ -1,4 +1,4 @@
-name: Deploy psn-refresher Lambda to AWS
+name: Deploy psn-fetcher Lambda to AWS
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - "lambda/node/**"
-      - ".github/workflows/lambda-node-*.yml"
+      - ".github/workflows/lambda-node-deploy-fetcher.yml"
   workflow_dispatch:
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
       - name: Deploy to AWS
         uses: ./.github/actions/deploy-lambda
         with:
-          function_name: trophyquest-psn-refresher
+          function_name: trophyquest-psn-fetcher
           semantic_version: ${{ steps.get-version.outputs.version }}
           alias_name: prod
           zip_path: lambda.zip

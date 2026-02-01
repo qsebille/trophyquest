@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-igdb-tables-setup/06-create-igdb-game-company-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: igdb_game_company
+            columns:
+              - column: { name: game_id, type: bigint, constraints: { nullable: false, foreignKeyName: fk_game, references: app.igdb_game(id) } }
+              - column: { name: company_id, type: bigint, constraints: { nullable: false , foreignKeyName: fk_company, references: app.igdb_company(id) } }
+              - column: { name: role, type: text, constraints: { nullable: false } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: app
+            tableName: igdb_game_company
+            columnNames: game_id,company_id
+            constraintName: pk_igdb_game_company
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_igdb_game_company_set_updated_at
+                            BEFORE UPDATE ON app.igdb_game_company
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-setup-basic-views/03-create-played-trophy-suite-search-item-view
+      author: Quentin Sebille
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              create or replace view app.v_played_trophy_suite_search_item as
+              select p.id                                            as player_id,
+                     played_trophy_suite.trophy_suite_id,
+                     played_trophy_suite.trophy_suite_name,
+                     played_trophy_suite.trophy_suite_platforms,
+                     played_trophy_suite.image_url,
+                     played_trophy_suite.total_trophies,
+                     coalesce(earned_stats.total_earned_platinum, 0) as total_earned_platinum,
+                     coalesce(earned_stats.total_earned_gold, 0)     as total_earned_gold,
+                     coalesce(earned_stats.total_earned_silver, 0)   as total_earned_silver,
+                     coalesce(earned_stats.total_earned_bronze, 0)   as total_earned_bronze,
+                     pts.last_played_at                              as last_played_at
+              from app.psn_played_trophy_suite pts
+                  join app.psn_player p on p.id = pts.player_id
+                  left join lateral (select ts.id                                        as trophy_suite_id,
+                                            ts.name                                      as trophy_suite_name,
+                                            ts.platforms                                 as trophy_suite_platforms,
+                                            count(*)                                     as total_trophies,
+                                            coalesce(ts.aws_image_url, ts.psn_image_url) as image_url
+                      from app.psn_trophy_suite ts
+                          join app.psn_trophy t on t.trophy_suite_id = ts.id
+                      where ts.id = pts.trophy_suite_id
+                      group by ts.id) played_trophy_suite on true
+                  left join lateral (select ts.id,
+                                            count(*) filter (where t.trophy_type = 'platinum') as total_earned_platinum,
+                                            count(*) filter (where t.trophy_type = 'gold')     as total_earned_gold,
+                                            count(*) filter (where t.trophy_type = 'silver')   as total_earned_silver,
+                                            count(*) filter (where t.trophy_type = 'bronze')   as total_earned_bronze
+                      from app.psn_trophy_suite ts
+                          join app.psn_trophy t on t.trophy_suite_id = ts.id
+                          join app.psn_earned_trophy et on et.trophy_id = t.id and et.player_id = p.id
+                      where ts.id = pts.trophy_suite_id
+                      group by ts.id) earned_stats on true
+              ;
