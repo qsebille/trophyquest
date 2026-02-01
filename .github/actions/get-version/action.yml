@@ -30,7 +30,7 @@ runs:
             VERSION=$(tr -d '\r' < "lambda/python/VERSION")
             ;;
           backend)
-            VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
+            VERSION=$(grep '^version=' ./backend/gradle.properties | cut -d'=' -f2)
             ;;
           *)
             echo "❌ Unknown service_name: $SERVICE_NAME"
