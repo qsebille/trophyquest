@@ -4,18 +4,24 @@ description: Upload zip file to AWS Lambda, publish version and update alias
 inputs:
   function_name:
     required: true
+    description: Name of the lambda function
   alias_name:
     required: false
     default: prod
+    description: Name of the alias to update (prod)
   semantic_version:
     required: true
+    description: Semantic version of the lambda function
   zip_path:
     required: false
     default: lambda.zip
+    description: Path to the zip file to upload
   aws_region:
     required: true
+    description: AWS region to use
   aws_role_arn:
     required: true
+    description: AWS role to assume
 
 runs:
   using: "composite"

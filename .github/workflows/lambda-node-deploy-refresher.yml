@@ -12,6 +12,10 @@ on:
       - ".github/actions/deploy-lambda/action.yml"
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
