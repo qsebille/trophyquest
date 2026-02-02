@@ -1,0 +1,15 @@
+<div class="trophy-suite-summary">
+    <img alt="" class="cover" src="{{trophySuite().image}}"/>
+    <div class="summary-content">
+        <div class="title-and-platform">
+            <span class="title">{{ trophySuite().title }}</span>
+            <!-- todo : platforms -->
+        </div>
+        <div class="trophy-count-wrapper">
+            <tq-trophy-count-displayer [iconSizePx]="32"
+                                       [labelOrientation]="'vertical'"
+                                       [textSizePx]="18"
+                                       [trophyCount]="trophyCount()"/>
+        </div>
+    </div>
+</div>

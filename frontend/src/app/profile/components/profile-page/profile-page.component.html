@@ -1,0 +1,26 @@
+<div class="profile-page container container-fluid">
+    @if (hasFailedLoading()) {
+        <tq-error-message class="error-message" [hasRetryButton]="true" (retry)="loadProfileData()"
+                          [errorMessage]="'Failed to load profile information'"/>
+    } @else {
+        <tq-profile-summary class="summary"
+                            [player]="player()"
+                            [playerStats]="playerStats()"
+                            [status]="summaryStatus()"
+                            [style.animationDelay.ms]="100"
+                            animate.enter="block-enter"/>
+
+        <div class="games-trophies-wrapper" [style.animationDelay.ms]="200" animate.enter="block-enter">
+            <tq-profile-trophy-suite-list class="game-list"
+                                          [trophySuites]="trophySuites()"
+                                          [status]="trophySuiteListStatus()"
+                                          (clickOnGame)="navigateToPlayerTrophySuitePage($event)"
+                                          (loadMoreGames)="loadMoreGames()"/>
+
+            <tq-profile-trophy-list class="trophy-list"
+                                    [trophies]="trophies()"
+                                    [status]="trophiesStatus()"
+                                    (loadMoreTrophies)="loadMoreTrophies()"/>
+        </div>
+    }
+</div>

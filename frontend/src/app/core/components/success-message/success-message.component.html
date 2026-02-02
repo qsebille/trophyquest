@@ -1,0 +1,7 @@
+<div class="success-message">
+    <mat-icon class="success-icon">check</mat-icon>
+    <div class="success-text">{{ message() }}</div>
+    @if (hasButton()) {
+        <a mat-button (click)="onClick.emit()" class="validate-button">Validate</a>
+    }
+</div>

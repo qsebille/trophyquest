@@ -1,0 +1,26 @@
+<tq-block>
+    <ng-template tqBlockHeader>
+        <span class="title">Last played games</span>
+    </ng-template>
+    <ng-template tqBlockContent>
+        <div class="profile-game-list">
+            @for (trophySuite of trophySuites(); track trophySuite.id; let i = $index) {
+                @if (i !== 0) {
+                    <hr class="separator"/>
+                }
+                <tq-profile-trophy-suite-card class="game-card"
+                                              (clickOnTitle)="clickOnGame.emit(trophySuite.id)"
+                                              [trophySuite]="trophySuite"/>
+            }
+            @if (isLoading()) {
+                <tq-spinner-container/>
+            }
+            @if (hasMoreGamesToLoad()) {
+                <a (click)="loadMoreGames.emit()" class="load-more-button tq-link">Load more games...</a>
+            }
+            @if (isError()) {
+                <tq-error-message class="error-message" [errorMessage]="'Failed to load games'"/>
+            }
+        </div>
+    </ng-template>
+</tq-block>

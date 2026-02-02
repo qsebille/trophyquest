@@ -1,0 +1,32 @@
+@use 'styles/colors' as *;
+
+.success-message {
+  color: $tq-green-dark;
+  background-color: $tq-green-lighter;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+
+  .success-icon {
+    font-size: 36px;
+    width: 20%;
+    height: 100%;
+  }
+
+  .success-text {
+    font-size: 20px;
+    width: 80%;
+    text-align: center;
+  }
+
+  .validate-button {
+    color: $tq-green-darker;
+
+    &:hover {
+      background-color: $tq-green-lighter;
+    }
+  }
+}

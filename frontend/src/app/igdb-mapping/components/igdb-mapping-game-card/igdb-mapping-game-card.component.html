@@ -1,0 +1,25 @@
+<div class="igdb-mapping-game-card">
+    <div class="igdb-mapping-game-card--psn-game-block">
+        <span class="igdb-mapping-game-card--title-label">TrophyQuest game</span>
+        <img class="igdb-mapping-game-card--game-image"
+             [src]="igdbMapping().psnGameImageUrl"
+             [alt]="igdbMapping().psnGameName"/>
+        <div class="igdb-mapping-game-card--game-title">{{ igdbMapping().psnGameName }}</div>
+    </div>
+    <div class="igdb-mapping-game-card--candidate-list-block">
+        <span class="igdb-mapping-game-card--title-label">IGDB games matches</span>
+        <div class="igdb-mapping-game-card--candidate-list">
+            @for (candidate of sortedCandidates(); track candidate.id) {
+                <tq-igdb-mapping-candidate-card class="igdb-mapping-game-card--candidate-card"
+                                                [candidate]="candidate"
+                                                [validationStatus]="validationStatus()"
+                                                (candidateAccepted)="acceptCandidate($event)"/>
+            }
+        </div>
+        <button class="igdb-mapping-game-card--reject-button" matButton="filled" color="warn"
+                [disabled]="isRejectButtonDisabled()"
+                (click)="rejectMapping()">
+            Reject all
+        </button>
+    </div>
+</div>

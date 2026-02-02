@@ -1,0 +1,29 @@
+<div class="add-player-form">
+    <span class="explain-text">Enter a profile name to add to TrophyQuest</span>
+    <div class="pseudo-input">
+        <mat-form-field class="form-field">
+            <mat-label>Profile Name</mat-label>
+            <input [disabled]="isLoading()" matInput type="text" [(ngModel)]="inputValue"
+                   (keydown.enter)="validate()">
+            @if (inputValue) {
+                <button matSuffix matIconButton aria-label="Clear" (click)="inputValue=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            }
+        </mat-form-field>
+        <button mat-button [disabled]="this.isLoading() || this.inputValue === ''" (click)="validate()">
+            Add profile
+        </button>
+    </div>
+    @if (isLoading()) {
+        <mat-spinner class="loading-spinner"/>
+        <span class="loading-message">Adding user... this step may take a minute.</span>
+    } @else if (isAlreadyInDatabase()) {
+        <tq-error-message [errorMessage]="inputValue + ' is already registered in TrophyQuest'"/>
+    } @else if (hasFailedAddPlayer()) {
+        <tq-error-message [errorMessage]="'An error occurred when adding player ' + inputValue +' in Trophyquest'"/>
+    } @else if (hasSucceededAddPlayer()) {
+        <tq-success-message [message]="inputValue + ' has been added to TrophyQuest!'" [hasButton]="true"
+                            (onClick)="validateSuccess.emit()"/>
+    }
+</div>

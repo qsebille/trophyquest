@@ -1,0 +1,23 @@
+<div class="player-card">
+    <div class="player-card--summary">
+        <img [height]="60" [width]="60" alt="" class="player-card--avatar" ngSrc="{{ playerSearchItem().avatar }}"/>
+        <a (click)="clickOnPseudo.emit()" class="player-card--pseudo tq-link">{{ playerSearchItem().pseudo }}</a>
+    </div>
+    <div class="player-card--stats">
+        <div class="player-card--game-stats"
+             [matTooltip]="`Total games played: ${playerSearchItem().totalPlayedGames}`">
+            <mat-icon class="player-card--game-icon" fontIcon="sports_esports"></mat-icon>
+            <span class="player-card--total-played-games">{{ playerSearchItem().totalPlayedGames }}</span>
+        </div>
+        <div class="player-card--trophy-stats">
+            @for (trophyType of trophyTypes; track trophyType) {
+                <div class="player-card--trophy-info">
+                    @if (trophyCount()[trophyType] > 0) {
+                        <img [height]="24" [width]="24" alt="" ngSrc="/assets/icons/trophy-{{ trophyType }}.png"/>
+                        <span class="player-card--trophy-count">{{ trophyCount()[trophyType] }}</span>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

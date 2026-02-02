@@ -1,4 +1,4 @@
-name: Deploy Backend application to AWS (EC2)
+name: Deploy backend application to AWS (EC2)
 
 on:
   push:

@@ -1,0 +1,32 @@
+<div [class.completed]="isCompleted()" class="profile-game-card">
+    <div class="game-block-start">
+        <img alt="" class="game-image" src="{{trophySuite().imageUrl}}"/>
+        <div class="spinner-wrapper" [class.completed]="isCompleted()">
+            <mat-spinner class="progress-spinner" [value]="completionScore()" diameter="50" mode="determinate"/>
+            <div class="spinner-center">
+                @if (isCompleted()) {
+                    <mat-icon class="check-icon">check</mat-icon>
+                } @else {
+                    {{ completionScore() | number:'1.0-0':'en-US' }}%
+                }
+            </div>
+        </div>
+        <div class="platform-and-title">
+            <a (click)="clickOnTitle.emit()" class="profile-game-title tq-link">{{ trophySuite().name }}</a>
+            @for (platform of trophySuite().platforms; track platform) {
+                <tq-platform-label [platform]="platform" class="platform"/>
+            }
+        </div>
+    </div>
+    <div class="game-block-end">
+        @for (trophyType of ['platinum', 'gold', 'silver', 'bronze']; track trophyType) {
+            @if (getEarnedTrophyByType(trophyType) > 0) {
+                <div class="trophy-count">
+                    <img alt="" class="trophy-icon" ngSrc="assets/icons/trophy-{{trophyType}}.png" [width]="32"
+                         [height]="32"/>
+                    <span class="trophy-count-value">{{ getEarnedTrophyByType(trophyType) }}</span>
+                </div>
+            }
+        }
+    </div>
+</div>

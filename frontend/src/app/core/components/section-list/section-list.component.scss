@@ -1,0 +1,28 @@
+@use "styles/colors" as *;
+
+.section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .section-list-header {
+    width: 100%;
+  }
+
+  .section-list-content {
+    display: flex;
+    align-items: stretch;
+    gap: 5px
+  }
+
+  .delimiter-box {
+    width: 5%;
+    border-bottom: 3px solid $tq-blue-dark;
+    border-left: 3px solid $tq-blue-dark;
+    border-bottom-left-radius: 20px;
+  }
+
+  .content {
+    width: 95%;
+  }
+}

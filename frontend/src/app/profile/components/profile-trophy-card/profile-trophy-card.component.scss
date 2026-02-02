@@ -1,0 +1,58 @@
+@use "styles/colors" as *;
+
+.profile-trophy-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &--header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &--info {
+    display: flex;
+    align-items: center;
+  }
+
+  &--icon {
+    border-radius: 5px;
+  }
+
+  &--title-and-game {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &--title {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  &--game {
+    font-size: 11px;
+    color: rgb(0, 0, 0, 0.54);
+  }
+
+  &--earned-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &--earned-date {
+    font-size: 10px;
+    color: rgb(0, 0, 0, 0.54);
+  }
+
+  &--description {
+    width: 90%;
+    font-size: 12px;
+    color: $tq-blue-medium;
+  }
+}

@@ -1,0 +1,32 @@
+@use 'styles/colors' as *;
+
+.error-message {
+  color: $tq-red-dark;
+  background-color: $tq-red-lighter;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+
+  .error-icon {
+    font-size: 36px;
+    width: 20%;
+    height: 100%;
+  }
+
+  .error-text {
+    font-size: 20px;
+    width: 80%;
+    text-align: center;
+  }
+
+  .retry-button {
+    color: $tq-red-darker;
+
+    &:hover {
+      background-color: $tq-red-lighter;
+    }
+  }
+}

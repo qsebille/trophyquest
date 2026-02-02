@@ -1,0 +1,33 @@
+.trophy-count-displayer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 576px) {
+  .trophy-count-displayer {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.trophy-item {
+  display: flex;
+  align-items: center;
+}
+
+.trophy-item img {
+  display: block;
+}
+
+.trophy-count {
+  margin-top: 0.25rem;
+  font-weight: 700;
+  color: #000;
+
+  &-horizontal {
+    margin-left: 10px;
+  }
+}

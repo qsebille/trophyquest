@@ -1,0 +1,8 @@
+<div class="home-game-card">
+    <img class="home-game-card--image" [src]="game().imageUrl" [alt]="game().name"/>
+    <div class="home-game-card--name">{{ game().name }}</div>
+    <div class="home-game-card--nb-players" [matTooltip]="game().nbPlayers + ' players this week'">
+        <mat-icon class="home-game-card--nb-players--icon">groups</mat-icon>
+        <span class="home-game-card--nb-players--text">{{ game().nbPlayers }}</span>
+    </div>
+</div>

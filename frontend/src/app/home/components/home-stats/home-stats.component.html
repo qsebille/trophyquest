@@ -1,0 +1,45 @@
+<tq-block>
+    <ng-template tqBlockHeader>
+        <span class="app-title">TrophyQuest</span>
+    </ng-template>
+    <ng-template tqBlockContent>
+        @if (isLoading()) {
+            <tq-spinner-container/>
+        } @else if (hasFailed()) {
+            <tq-error-message [errorMessage]="'Failed to load TrophyQuest stats.'"/>
+        } @else {
+            <div class="stats">
+                <div class="stat-column">
+                    <div class="stat-item">
+                        <span class="stat-value">{{ stats().totalPlayers }}</span>
+                        <a class="stat-label tq-link" (click)="clickOnPlayers.emit()"> players</a>
+                    </div>
+                    <div class="stat-item recent">
+                        <span class="stat-value">{{ stats().recentPlayers }}</span>
+                        <a class="stat-label tq-link" (click)="clickOnPlayers.emit()"> recent</a>
+                    </div>
+                </div>
+                <div class="stat-column">
+                    <div class="stat-item">
+                        <span class="stat-value">{{ stats().totalGames }}</span>
+                        <span class="stat-label"> games</span>
+                    </div>
+                    <div class="stat-item recent">
+                        <span class="stat-value">{{ stats().recentGames | number }}</span>
+                        <span class="stat-label"> recent</span>
+                    </div>
+                </div>
+                <div class="stat-column">
+                    <div class="stat-item">
+                        <span class="stat-value">{{ stats().totalTrophies | number }}</span>
+                        <span class="stat-label"> trophies</span>
+                    </div>
+                    <div class="stat-item recent">
+                        <span class="stat-value">{{ stats().recentTrophies | number }}</span>
+                        <span class="stat-label"> recent</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </ng-template>
+</tq-block>

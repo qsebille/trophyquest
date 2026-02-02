@@ -1,0 +1,18 @@
+<svg
+  aria-hidden="true"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Tête -->
+  <circle
+    cx="12"
+    cy="8"
+    fill="currentColor"
+    r="4"
+  />
+  <!-- Épaules / buste -->
+  <path
+    d="M5 19c0-3.03 2.46-5.5 5.5-5.5h3c3.04 0 5.5 2.47 5.5 5.5v1H5v-1Z"
+    fill="currentColor"
+  />
+</svg>

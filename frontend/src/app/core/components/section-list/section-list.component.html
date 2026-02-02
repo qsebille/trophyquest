@@ -1,0 +1,13 @@
+@if (headerTemplate && contentTemplate) {
+    <div class="section-list">
+        <div class="section-list-header">
+            <ng-container *ngTemplateOutlet="headerTemplate.tpl"/>
+        </div>
+        <div class="section-list-content">
+            <div class="delimiter-box"></div>
+            <div class="content">
+                <ng-container *ngTemplateOutlet="contentTemplate.tpl"/>
+            </div>
+        </div>
+    </div>
+}

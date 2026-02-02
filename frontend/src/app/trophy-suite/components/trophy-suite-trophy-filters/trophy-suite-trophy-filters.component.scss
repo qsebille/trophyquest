@@ -1,0 +1,15 @@
+.trophy-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.trophy-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trophy-filter-label {
+  font-size: 0.9rem;
+}

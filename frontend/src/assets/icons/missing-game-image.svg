@@ -1,0 +1,18 @@
+<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond gris -->
+  <rect fill="#e0e0e0" height="120" rx="16" width="120" x="4" y="4"/>
+
+  <!-- Manette blanche -->
+  <!-- Corps + poignées -->
+  <rect fill="#ffffff" height="28" rx="10" width="56" x="36" y="52"/>
+  <circle cx="36" cy="70" fill="#ffffff" r="14"/>
+  <circle cx="92" cy="70" fill="#ffffff" r="14"/>
+
+  <!-- Croix directionnelle -->
+  <rect fill="#c0c0c0" height="12" width="4" x="40" y="60"/>
+  <rect fill="#c0c0c0" height="4" width="12" x="36" y="64"/>
+
+  <!-- Boutons -->
+  <circle cx="84" cy="64" fill="#c0c0c0" r="3"/>
+  <circle cx="92" cy="68" fill="#c0c0c0" r="3"/>
+</svg>

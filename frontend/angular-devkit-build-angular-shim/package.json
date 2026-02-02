@@ -1,0 +1,7 @@
+{
+  "name": "@angular-devkit/build-angular",
+  "version": "20.3.10-shim",
+  "description": "Compatibility shim for Karma plugins when using @angular/build",
+  "main": "index.js",
+  "license": "MIT"
+}

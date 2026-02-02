@@ -1,0 +1,32 @@
+<tq-block>
+    <ng-template tqBlockHeader>
+        <span class="title">Top recent players</span>
+    </ng-template>
+    <ng-template tqBlockContent>
+        @if (hasNoRecentPlayers()) {
+            <div class="no-recent-players">No recent players</div>
+        } @else if (isLoadingPlayers()) {
+            <tq-spinner-container/>
+        } @else if (hasFailedLoadingPlayers()) {
+            <tq-error-message [errorMessage]="'Failed to load players'"/>
+        } @else {
+            <div class="most-active-players">
+                @for (recentPlayer of players(); track recentPlayer.player.id) {
+                    <tq-section-list>
+                        <ng-template tqSectionListHeader>
+                            <tq-home-player-card [player]="recentPlayer.player"
+                                                 [trophyCount]="recentPlayer.recentTrophyCount"
+                                                 (clickOnPseudo)="clickOnPlayer.emit(recentPlayer.player.id)"/>
+                        </ng-template>
+                        <ng-template tqSectionListContent>
+                            @for (trophy of recentPlayer.lastTrophies; track trophy.id) {
+                                <tq-home-trophy-card [trophy]="trophy" class="home-trophy-card"
+                                                     (clickOnGameTitle)="clickOnGame.emit({trophySuiteId: trophy.trophySuiteId, playerId: recentPlayer.player.id})"/>
+                            }
+                        </ng-template>
+                    </tq-section-list>
+                }
+            </div>
+        }
+    </ng-template>
+</tq-block>

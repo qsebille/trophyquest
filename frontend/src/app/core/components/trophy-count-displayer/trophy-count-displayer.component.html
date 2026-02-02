@@ -1,0 +1,37 @@
+<div class="trophy-count-displayer">
+    @if (trophyCount().platinum > 0) {
+        <div [style.flex-direction]="flexDirection()" class="trophy-item platinum-trophy">
+            <img [height]="iconSizePx()" [width]="iconSizePx()" alt=""
+                 ngSrc="/assets/icons/trophy-platinum.png"/>
+            <span [class.trophy-count-horizontal]="isLabelHorizontal()" [style.font-size]="textSizePx() + 'px'"
+                  class="trophy-count">{{ trophyCount().platinum || '-' }}</span>
+        </div>
+    }
+
+    @if (trophyCount().gold > 0) {
+        <div [style.flex-direction]="flexDirection()" class="trophy-item gold-trophy">
+            <img [height]="iconSizePx()" [width]="iconSizePx()" alt=""
+                 ngSrc="/assets/icons/trophy-gold.png"/>
+            <span [class.trophy-count-horizontal]="isLabelHorizontal()" [style.font-size]="textSizePx() + 'px'"
+                  class="trophy-count">{{ trophyCount().gold || '-' }}</span>
+        </div>
+    }
+
+    @if (trophyCount().silver > 0) {
+        <div [style.flex-direction]="flexDirection()" class="trophy-item silver-trophy">
+            <img [height]="iconSizePx()" [width]="iconSizePx()" alt=""
+                 ngSrc="/assets/icons/trophy-silver.png"/>
+            <span [class.trophy-count-horizontal]="isLabelHorizontal()" [style.font-size]="textSizePx() + 'px'"
+                  class="trophy-count">{{ trophyCount().silver || '-' }}</span>
+        </div>
+    }
+
+    @if (trophyCount().bronze > 0) {
+        <div [style.flex-direction]="flexDirection()" class="trophy-item bronze-trophy">
+            <img [height]="iconSizePx()" [width]="iconSizePx()" alt=""
+                 ngSrc="/assets/icons/trophy-bronze.png"/>
+            <span [class.trophy-count-horizontal]="isLabelHorizontal()" [style.font-size]="textSizePx() + 'px'"
+                  class="trophy-count">{{ trophyCount().bronze || '-' }}</span>
+        </div>
+    }
+</div>

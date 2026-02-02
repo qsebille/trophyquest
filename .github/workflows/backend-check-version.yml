@@ -1,4 +1,4 @@
-name: Check version bumped for Backend
+name: Check version bumped for frontend
 on:
   pull_request:
     branches:

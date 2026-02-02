@@ -4,7 +4,7 @@ description: Read version for a service
 inputs:
   service_name:
     required: true
-    description: "Service name (lambda-node | lambda-python | backend)"
+    description: "Service name (lambda-node | lambda-python | backend | frontend)"
 
 outputs:
   version:
@@ -23,6 +23,9 @@ runs:
         VERSION=""
 
         case "$SERVICE_NAME" in
+          frontend)
+            VERSION=$(node -p "require('./frontend/package.json').version")
+            ;;
           lambda-node)
             VERSION=$(node -p "require('./lambda/node/package.json').version")
             ;;
@@ -34,7 +37,7 @@ runs:
             ;;
           *)
             echo "❌ Unknown service_name: $SERVICE_NAME"
-            echo "Expected: lambda-node | lambda-python | backend"
+            echo "Expected: lambda-node | lambda-python | backend | frontend"
             exit 1
             ;;
         esac

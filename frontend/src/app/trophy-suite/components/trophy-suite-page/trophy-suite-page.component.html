@@ -1,0 +1,26 @@
+<div class="trophy-suite-page container">
+    @if (isLoading()) {
+        <tq-spinner-container/>
+    } @else if (hasFailed()) {
+        <tq-error-message [errorMessage]="'Failed to load game details'"
+                          class="error-message"
+                          [hasRetryButton]="true"
+                          (retry)="loadData()"/>
+    } @else {
+        <tq-trophy-suite-summary [style.animationDelay.ms]="100"
+                                 animate.enter="block-enter"
+                                 [trophySuite]="trophySuite()"
+                                 [trophies]="trophies()"
+                                 class="trophy-suite-summary"/>
+        <tq-trophy-suite-trophy-filters [filters]="trophyFilters()"
+                                        [showEarnedTrophyFilter]="hasPlayerData()"
+                                        (filterChange)="toggleEarnedFilter($event)"
+                                        (showHiddenTrophyChange)="toggleShowHiddenTrophies($event)"
+                                        class="trophy-filters"/>
+        <tq-trophy-suite-trophy-list [trophies]="trophies()"
+                                     class="trophy-list"
+                                     [trophyFilters]="trophyFilters()"
+                                     [style.animationDelay.ms]="200"
+                                     animate.enter="block-enter"/>
+    }
+</div>

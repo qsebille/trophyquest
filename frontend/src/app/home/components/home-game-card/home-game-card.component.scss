@@ -1,0 +1,44 @@
+@use "styles/colors" as *;
+
+.home-game-card {
+  width: 100%;
+  height: 75px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+
+  &--image {
+    width: auto;
+    height: 100%;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+
+  &--infos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &--name {
+    color: $tq-blue-medium;
+    font-size: 18px;
+  }
+
+  &--nb-players {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &--icon {
+      color: $tq-blue-medium;
+    }
+
+    &--text {
+      font-size: 14px;
+      color: $tq-blue-medium;
+    }
+  }
+}

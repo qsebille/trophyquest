@@ -1,0 +1,18 @@
+<div (click)="toggleExpansion()" class="profile-trophy-card" role="listitem">
+    <div class="profile-trophy-card--header">
+        <div class="profile-trophy-card--info">
+            <img [height]="32" [ngSrc]="trophy().icon" [width]="32" alt="Trophy" class="profile-trophy-card--icon"/>
+            <div class="profile-trophy-card--title-and-game">
+                <div class="profile-trophy-card--title">{{ trophy().title }}</div>
+                <div class="profile-trophy-card--game">{{ trophy().trophySuiteTitle }}</div>
+            </div>
+        </div>
+        <div class="profile-trophy-card--earned-info">
+            <img [height]="28" [width]="28" alt="" ngSrc="assets/icons/trophy-{{trophy().trophyType}}.png"/>
+            <div class="profile-trophy-card--earned-date">{{ trophy().earnedAt | date: 'dd/MM/yyyy HH:mm' }}</div>
+        </div>
+    </div>
+    @if (isExpanded) {
+        <div class="profile-trophy-card--description">{{ trophy().description }}</div>
+    }
+</div>

@@ -1,0 +1,13 @@
+<div class="home-trophy-card">
+    <div class="left-block">
+        <img [height]="36" [width]="36" alt="Trophy" class="trophy-icon" ngSrc="{{trophy().icon }}"/>
+        <div class="title-game">
+            <div class="trophy-title">{{ trophy().title }}</div>
+            <a class="game-title tq-link" (click)="clickOnGameTitle.emit()">{{ trophy().trophySuiteTitle }}</a>
+        </div>
+    </div>
+    <div class="right-block">
+        <img [height]="24" [width]="24" alt="" ngSrc="assets/icons/trophy-{{trophy().trophyType}}.png"/>
+        <div class="trophy-earned-date">{{ trophy().earnedAt | date: 'dd/MM/yyyy HH:mm' }}</div>
+    </div>
+</div>

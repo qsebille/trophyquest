@@ -1,4 +1,4 @@
-name: Create Backend tag on merge
+name: Create backend tag on merge
 
 on:
   push:

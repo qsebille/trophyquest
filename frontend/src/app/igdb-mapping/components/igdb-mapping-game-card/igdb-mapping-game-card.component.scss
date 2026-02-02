@@ -1,0 +1,63 @@
+@use "styles/colors" as *;
+@use '@angular/material' as mat;
+
+.igdb-mapping-game-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+
+  &--title-label {
+    font-size: 20px;
+    color: $tq-blue-light;
+  }
+
+  &--psn-game-block {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+
+  &--game-title {
+    font-size: 20px;
+    font-weight: bold;
+
+    color: $tq-blue-medium;
+  }
+
+  &--game-image {
+    border: 2px solid $tq-blue-dark;
+    border-radius: 10px;
+    max-width: 250px;
+  }
+
+  &--candidate-list-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 65%;
+  }
+
+  &--candidate-list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  &--candidate-card {
+    max-width: calc(50% - 10px);
+    flex: 0 0 calc(50% - 10px);
+  }
+
+  &--reject-button {
+    margin-top: 20px;
+    @include mat.button-overrides((
+            filled-container-color: $tq-red-medium,
+    ));
+  }
+}
