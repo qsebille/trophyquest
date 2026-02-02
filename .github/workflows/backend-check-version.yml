@@ -30,7 +30,7 @@ jobs:
       - name: Compare versions
         run: |
           git fetch origin main
-          OLD_VERSION=$(git show origin/main:gradle.properties | grep '^version=' | cut -d'=' -f2)
+          OLD_VERSION=$(git show origin/main:backend/gradle.properties | grep '^version=' | cut -d'=' -f2)
           NEW_VERSION=${{ steps.get-version.outputs.version }}
 
           echo "OLD_VERSION=$OLD_VERSION"

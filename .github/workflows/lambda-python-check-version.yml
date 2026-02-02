@@ -32,7 +32,7 @@ jobs:
       - name: Compare versions
         run: |
           git fetch origin main
-          OLD_VERSION=$(git show origin/main:VERSION 2>/dev/null || true)
+          OLD_VERSION=$(git show origin/main:lambda/python/VERSION)
           NEW_VERSION=${{ steps.get-version.outputs.version }}
 
           echo "OLD_VERSION=$OLD_VERSION"
