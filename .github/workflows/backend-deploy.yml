@@ -70,7 +70,7 @@ jobs:
             --comment "Deploy TrophyQuest backend ${APP_VERSION} (${GITHUB_SHA})" \
             --parameters commands="[
               \"set -e\",
-              \"aws s3 cp s3://${{ secrets.ARTIFACT_S3_BUCKET }}/${S3_KEY} /tmp/trophyquest-backend.jar\",
+              \"aws s3api get-object --bucket ${{ secrets.ARTIFACT_S3_BUCKET }} --key ${S3_KEY} /tmp/trophyquest-backend.jar\",
               \"sudo mv /tmp/trophyquest-backend.jar /opt/trophyquest/trophyquest-backend.jar\",
               \"sudo chown trophyquest:trophyquest /opt/trophyquest/trophyquest-backend.jar\",
               \"sudo systemctl restart trophyquest-backend\",
