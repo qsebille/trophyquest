@@ -17,23 +17,23 @@ runs:
     - name: Build lambda zip package
       shell: bash
       run: |
-        rm -rf lambda ${{ inputs.zip_path }}
-        mkdir -p lambda
+        rm -rf packaged-lambda ${{ inputs.zip_path }}
+        mkdir -p packaged-lambda
         
         LAMBDA_TYPE=${{ inputs.lambda_type }}
         
         case $LAMBDA_TYPE in
           python)
             python -m pip install --upgrade pip
-            python -m pip install -r requirements.txt -t lambda
-            cp -r src/* lambda
-            cp lambda_function.py lambda
+            python -m pip install -r lambda/python/requirements.txt -t packaged-lambda/
+            cp -r lambda/python/src/* packaged-lambda/
+            cp lambda_function.py packaged-lambda/
             ;;
           node)
-            cp package.json lambda/
-            cp package-lock.json lambda/
-            cp -r dist lambda/
-            cp -r node_modules lambda/
+            cp lambda/node/package.json packaged-lambda/
+            cp lambda/node/package-lock.json packaged-lambda/
+            cp -r lambda/node/dist packaged-lambda/
+            cp -r lambda/node/node_modules packaged-lambda/
             ;;
           *)
             echo "❌ Unknown lambda_type: LAMBDA_TYPE"
@@ -42,4 +42,4 @@ runs:
             ;;
         esac
         
-        zip -r ${{ inputs.zip_path }} lambda
+        zip -r ${{ inputs.zip_path }} packaged-lambda
