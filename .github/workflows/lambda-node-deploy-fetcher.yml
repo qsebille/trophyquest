@@ -7,6 +7,9 @@ on:
     paths:
       - "lambda/node/**"
       - ".github/workflows/lambda-node-deploy-fetcher.yml"
+      - ".github/actions/package-lambda/**"
+      - ".github/actions/deploy-lambda/**"
+      - ".github/actions/get-version/**"
   workflow_dispatch:
 
 jobs:
@@ -22,16 +25,24 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: lambda/node/package-lock.json
+
       - name: Get version
         id: get-version
         uses: ./.github/actions/get-version
         with:
           service_name: lambda-node
 
-      - name: Build lambda package
-        uses: ./.github/actions/build-node-lambda
+      - name: Package Lambda
+        uses: ./.github/actions/package-lambda
         with:
           zip_path: lambda.zip
+          lambda_type: node
 
       - name: Deploy to AWS
         uses: ./.github/actions/deploy-lambda

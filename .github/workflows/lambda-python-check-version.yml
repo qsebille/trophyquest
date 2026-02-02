@@ -6,6 +6,7 @@ on:
     paths:
       - "lambda/python/**"
       - ".github/workflows/lambda-python-*.yml"
+      - ".github/actions/get-version/**"
 
 jobs:
   check-version-bump:

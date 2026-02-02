@@ -6,6 +6,7 @@ on:
     paths:
       - "lambda/node/**"
       - ".github/workflows/lambda-node-*.yml"
+      - ".github/actions/get-version/**"
 
 jobs:
   check-version:

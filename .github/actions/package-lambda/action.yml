@@ -1,0 +1,48 @@
+name: Package lambda
+description: Upload zip file to AWS Lambda, publish version and update alias
+
+inputs:
+  zip_path:
+    required: false
+    default: lambda.zip
+    description: "Path of the packaged zip file"
+  lambda_type:
+    required: true
+    description: "Lambda type (python | node)"
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build lambda zip package
+      shell: bash
+      run: |
+        rm -rf lambda ${{ inputs.zip_path }}
+        mkdir -p lambda
+        
+        LAMBDA_TYPE=${{ inputs.lambda_type }}
+        
+        case $LAMBDA_TYPE in
+          python)
+            python -m pip install --upgrade pip
+            python -m pip install -r requirements.txt -t lambda
+            cp -r src/* lambda
+            cp lambda_function.py lambda
+            ;;
+          node)
+            npm ci
+            npm run build
+            npm prune --production
+            cp package.json lambda/
+            cp package-lock.json lambda/
+            cp -r dist lambda/
+            cp -r node_modules lambda/
+            ;;
+          *)
+            echo "❌ Unknown lambda_type: LAMBDA_TYPE"
+            echo "Expected: python | node"
+            exit 1
+            ;;
+        esac
+        
+        zip -r ${{ inputs.zip_path }} lambda

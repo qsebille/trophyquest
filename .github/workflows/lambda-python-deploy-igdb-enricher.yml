@@ -22,16 +22,22 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
       - name: Get version
         id: get-version
         uses: ./.github/actions/get-version
         with:
           service_name: lambda-python
 
-      - name: Build lambda package
-        uses: ./.github/actions/build-python-lambda
+      - name: Package Lambda
+        uses: ./.github/actions/package-lambda
         with:
           zip_path: lambda.zip
+          lambda_type: python
 
       - name: Deploy to AWS
         uses: ./.github/actions/deploy-lambda

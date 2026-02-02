@@ -6,6 +6,7 @@ on:
     paths:
       - "backend/**"
       - ".github/workflows/backend-*.yml"
+      - ".github/actions/get-version/**"
 
 jobs:
   check-version-bump:
