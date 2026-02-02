@@ -1,4 +1,4 @@
-name: Check version bumped for frontend
+name: Check version bumped for backend
 on:
   pull_request:
     branches:
@@ -6,7 +6,7 @@ on:
     paths:
       - "backend/**"
       - ".github/workflows/backend-*.yml"
-      - ".github/actions/get-version/**"
+      - ".github/actions/get-version/action.yml"
 
 jobs:
   check-version-bump:
@@ -30,7 +30,7 @@ jobs:
       - name: Compare versions
         run: |
           git fetch origin main
-          OLD_VERSION=$(git show origin/main:gradle.properties 2>/dev/null | grep '^version=' | cut -d'=' -f2 || true)
+          OLD_VERSION=$(git show origin/main:gradle.properties | grep '^version=' | cut -d'=' -f2)
           NEW_VERSION=${{ steps.get-version.outputs.version }}
 
           echo "OLD_VERSION=$OLD_VERSION"

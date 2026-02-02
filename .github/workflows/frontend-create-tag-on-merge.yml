@@ -7,7 +7,7 @@ on:
     paths:
       - "frontend/**"
       - ".github/workflows/frontend-*.yml"
-      - ".github/actions/get-version/**"
+      - ".github/actions/get-version/action.yml"
 
 jobs:
   tag-on-merge:

@@ -7,7 +7,7 @@ on:
     paths:
       - "backend/**"
       - ".github/workflows/backend-*.yml"
-      - ".github/actions/get-version/**"
+      - ".github/actions/get-version/action.yml"
 
 jobs:
   tag-on-merge:

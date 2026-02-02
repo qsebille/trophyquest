@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "lambda/node/**"
-      - ".github/workflows/lambda-node-*.yml"
 
 jobs:
   test:
