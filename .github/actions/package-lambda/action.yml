@@ -30,9 +30,6 @@ runs:
             cp lambda_function.py lambda
             ;;
           node)
-            npm ci
-            npm run build
-            npm prune --production
             cp package.json lambda/
             cp package-lock.json lambda/
             cp -r dist lambda/

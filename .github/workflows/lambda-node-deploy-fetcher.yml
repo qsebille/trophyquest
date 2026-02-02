@@ -38,6 +38,15 @@ jobs:
         with:
           service_name: lambda-node
 
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Prune dev deps
+        run: npm prune --production
+
       - name: Package Lambda
         uses: ./.github/actions/package-lambda
         with:
