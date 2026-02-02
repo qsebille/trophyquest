@@ -11,7 +11,7 @@ on:
       - ".github/actions/deploy-lambda/action.yml"
 
 jobs:
-  check-version:
+  check-version-bumped:
     runs-on: ubuntu-latest
     defaults:
       run:
