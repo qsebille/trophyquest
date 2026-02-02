@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-setup-basic-views/02-create-recent-game-search-item-view
+      author: Quentin Sebille
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              create or replace view app.v_recent_game_search_item as
+                select g.id,
+                       g.name,
+                       game_image.url as image_url,
+                       played_game.nb_players,
+                       played_game.last_played_at
+              from app.psn_game g
+                left join lateral (select coalesce(gi.aws_url, gi.psn_url) as url
+                  from app.psn_game_image gi
+                  where gi.psn_game_id = g.id
+                    and gi.type = 'MASTER'
+                  limit 1) game_image on true
+                join lateral (select pg.game_id, max(last_played_at) as last_played_at, count(*) as nb_players
+                  from app.psn_played_game pg
+                  where pg.game_id = g.id
+                    and pg.last_played_at >= now() - interval '7 days'
+                  group by pg.game_id) played_game on true
+              ;

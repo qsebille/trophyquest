@@ -1,0 +1,24 @@
+<tq-block class="profile-trophies-list">
+    <ng-template tqBlockHeader>
+        <span class="title">Last earned trophies</span>
+    </ng-template>
+    <ng-template tqBlockContent>
+        <div class="trophy-list">
+            @for (trophy of trophies(); track trophy.id; let i = $index) {
+                @if (i !== 0) {
+                    <hr class="separator"/>
+                }
+                <tq-profile-trophy-card [trophy]="trophy" class="profile-trophy-card"/>
+            }
+            @if (isLoading()) {
+                <tq-spinner-container/>
+            }
+            @if (hasMoreTrophiesToLoad()) {
+                <a (click)="loadMoreTrophies.emit()" class="load-more-button">Load more trophies...</a>
+            }
+            @if (isError()) {
+                <tq-error-message [errorMessage]="'Failed to load trophies'"/>
+            }
+        </div>
+    </ng-template>
+</tq-block>

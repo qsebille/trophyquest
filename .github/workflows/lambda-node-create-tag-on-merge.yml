@@ -1,0 +1,44 @@
+name: Create Lambda Node tag on merge
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "lambda/node/**"
+      - ".github/workflows/lambda-node-*.yml"
+
+jobs:
+  tag-on-merge:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lambda/node
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: get-version
+        uses: ./.github/actions/get-version
+        with:
+          service_name: lambda-node
+
+      - name: Create tag
+        run: |
+          VERSION=${{ steps.get-version.outputs.version }}
+          TAG="lambda-node-v$VERSION"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi

@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-igdb-tables-setup/02-create-igdb-collection-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: igdb_collection
+            columns:
+              - column: { name: id, type: int, constraints: { nullable: false, primaryKey: true } }
+              - column: { name: name, type: text, constraints: { nullable: false } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_igdb_collection_set_updated_at
+                            BEFORE UPDATE ON app.igdb_collection
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

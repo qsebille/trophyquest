@@ -1,0 +1,20 @@
+@if (isLoading()) {
+    <tq-spinner-container/>
+} @else if (hasFailed()) {
+    <tq-error-message [errorMessage]="'Failed to load games with IGDB candidates'"/>
+} @else if (hasNoResults()) {
+    <p class="igdb-mapping-list--no-results">There is no game that need IGDB metadata validation</p>
+} @else {
+    <div class="igdb-mapping-list">
+        @for (mappingElement of mappingList(); track mappingElement.psnGameId) {
+            @if ($index !== 0) {
+                <hr class="igdb-mapping-list--separator"/>
+            }
+            <tq-igdb-mapping-game-card class="igdb-mapping-list--game-to-validate-element"
+                                       [igdbMapping]="mappingElement"
+                                       [validationStatus]="validationStatus()"
+                                       (allRejected)="rejectAllCandidates(mappingElement.psnGameId)"
+                                       (candidateAccepted)="acceptCandidate(mappingElement.psnGameId, $event)"/>
+        }
+    </div>
+}

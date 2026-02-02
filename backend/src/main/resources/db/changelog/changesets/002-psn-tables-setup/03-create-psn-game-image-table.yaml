@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-psn-tables-setup/03-create-psn-game-image-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: psn_game_image
+            columns:
+              - column: { name: id, type: uuid, defaultValueComputed: gen_random_uuid(), constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_psn_game_image } }
+              - column: { name: psn_game_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_psn_game, references: app.psn_game(id) } }
+              - column: { name: psn_url, type: text, constraints: { nullable: false } }
+              - column: { name: aws_url, type: text }
+              - column: { name: type, type: text }
+              - column: { name: format, type: text }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - addUniqueConstraint:
+            schemaName: app
+            tableName: psn_game_image
+            columnNames: psn_game_id, psn_url
+            constraintName: uq_psn_game_image_game_url
+
+        - createIndex:
+            schemaName: app
+            tableName: psn_game_image
+            indexName: idx_psn_game_image_game
+            columns:
+              - column: { name: psn_game_id }
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_psn_game_image_set_updated_at
+                            BEFORE UPDATE ON app.psn_game_image
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

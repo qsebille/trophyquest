@@ -1,0 +1,15 @@
+<div class="trophy-suite-trophy-list">
+    @for (group of groups(); track group.groupId) {
+        <div class="trophy-suite-trophy-list--group">
+            <div class="trophy-suite-trophy-list--group-title">{{ group.groupName }}</div>
+            @for (trophy of group.trophies; track trophy.id; let i = $index) {
+                @if (i !== 0) {
+                    <hr class="trophy-suite-trophy-list--trophy-separator"/>
+                }
+                <tq-trophy-suite-trophy-card [showHiddenTrophies]="trophyFilters().showHidden"
+                                             class="trophy-suite-trophy-list--trophy-card"
+                                             [trophy]="trophy"/>
+            }
+        </div>
+    }
+</div>

@@ -1,0 +1,44 @@
+name: Deploy psn-fetcher Lambda to AWS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "lambda/node/**"
+      - ".github/workflows/lambda-node-deploy-fetcher.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lambda/node
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: get-version
+        uses: ./.github/actions/get-version
+        with:
+          service_name: lambda-node
+
+      - name: Build lambda package
+        uses: ./.github/actions/build-node-lambda
+        with:
+          zip_path: lambda.zip
+
+      - name: Deploy to AWS
+        uses: ./.github/actions/deploy-lambda
+        with:
+          function_name: trophyquest-psn-fetcher
+          semantic_version: ${{ steps.get-version.outputs.version }}
+          alias_name: prod
+          zip_path: lambda.zip
+          aws_region: ${{ secrets.AWS_REGION }}
+          aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}

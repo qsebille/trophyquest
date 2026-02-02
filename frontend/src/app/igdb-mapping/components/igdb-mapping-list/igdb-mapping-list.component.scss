@@ -1,0 +1,24 @@
+@use "styles/colors" as *;
+
+
+.igdb-mapping-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &--no-results {
+    font-size: 16px;
+    font-weight: bold;
+    color: $tq-blue-light;
+  }
+
+  &--separator {
+    color: $tq-blue-medium;
+    width: 95%;
+  }
+
+  &--game-to-validate-element {
+    width: 100%;
+  }
+
+}

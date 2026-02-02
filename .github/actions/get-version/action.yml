@@ -1,0 +1,50 @@
+name: Read service version
+description: Read version for a service
+
+inputs:
+  service_name:
+    required: true
+    description: "Service name (lambda-node | lambda-python | backend | frontend)"
+
+outputs:
+  version:
+    description: "Resolved version for the service"
+    value: ${{ steps.read.outputs.version }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: read
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        SERVICE_NAME="${{ inputs.service_name }}"
+        VERSION=""
+
+        case "$SERVICE_NAME" in
+          frontend)
+            VERSION=$(node -p "require('./frontend/package.json').version")
+            ;;
+          lambda-node)
+            VERSION=$(node -p "require('./lambda/node/package.json').version")
+            ;;
+          lambda-python)
+            VERSION=$(tr -d '\r' < "lambda/python/VERSION")
+            ;;
+          backend)
+            VERSION=$(grep '^version=' ./backend/gradle.properties | cut -d'=' -f2)
+            ;;
+          *)
+            echo "❌ Unknown service_name: $SERVICE_NAME"
+            echo "Expected: lambda-node | lambda-python | backend | frontend"
+            exit 1
+            ;;
+        esac
+
+        if [ -z "$VERSION" ]; then
+          echo "❌ Version is empty for service_name=$SERVICE_NAME"
+          exit 1
+        fi
+
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"

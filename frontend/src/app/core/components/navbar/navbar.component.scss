@@ -1,0 +1,58 @@
+@use 'styles/colors' as *;
+
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: block;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1.5rem;
+  background: $tq-blue-medium;
+  color: $tq-white;
+  border-bottom: 1px solid #2a2a2a;
+
+  .navbar-logo {
+    font-size: 1.5rem;
+  }
+
+  .navbar-left {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .navbar-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+
+    & a {
+      text-decoration: none;
+      color: $tq-blue-lighter;
+      font-size: 0.95rem;
+
+      &.active, &.hover {
+        font-weight: bold;
+        color: $tq-white;
+      }
+    }
+  }
+
+}
+
+
+
+

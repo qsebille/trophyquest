@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-psn-tables-setup/02-create-psn-game-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: psn_game
+            columns:
+              - column: { name: id, type: uuid, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_psn_game } }
+              - column: { name: name, type: text, constraints: { nullable: false } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_psn_game_set_updated_at
+                            BEFORE UPDATE ON app.psn_game
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

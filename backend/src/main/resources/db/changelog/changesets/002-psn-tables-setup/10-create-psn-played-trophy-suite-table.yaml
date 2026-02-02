@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-psn-tables-setup/10-create-psn-played-trophy-suite-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: psn_played_trophy_suite
+            columns:
+              - column: { name: player_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_player, references: app.psn_player(id) } }
+              - column: { name: trophy_suite_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_trophy_suite, references: app.psn_trophy_suite(id) } }
+              - column: { name: last_played_at, type: timestamptz }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - addPrimaryKey:
+            schemaName: app
+            tableName: psn_played_trophy_suite
+            columnNames: trophy_suite_id,player_id
+            constraintName: pk_psn_played_trophy_suite
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_psn_played_trophy_suite_set_updated_at
+                            BEFORE UPDATE ON app.psn_played_trophy_suite
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

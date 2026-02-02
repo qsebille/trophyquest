@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-psn-tables-setup/05-create-psn-edition-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: psn_edition
+            columns:
+              - column: { name: id, type: uuid, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_psn_edition } }
+              - column: { name: psn_game_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_psn_game, references: app.psn_game(id) } }
+              - column: { name: name, type: text, constraints: { nullable: false } }
+              - column: { name: psn_image_url, type: text }
+              - column: { name: aws_image_url, type: text }
+              - column: { name: category, type: text }
+              - column: { name: service, type: text }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_psn_edition_set_updated_at
+                            BEFORE UPDATE ON app.psn_edition
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

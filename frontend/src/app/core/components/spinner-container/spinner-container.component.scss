@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+@use 'styles/colors' as *;
+
+
+.spinner-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+
+  mat-spinner {
+    @include mat.progress-spinner-overrides((
+            active-indicator-color: $tq-blue-medium,
+    ));
+  }
+}

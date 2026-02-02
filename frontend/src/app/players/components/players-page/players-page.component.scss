@@ -1,0 +1,19 @@
+@use 'styles/colors' as *;
+
+.players-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+tq-player-list {
+  width: 90%;
+  padding-top: 20px;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+tq-add-player-form {
+  padding-top: 20px;
+}

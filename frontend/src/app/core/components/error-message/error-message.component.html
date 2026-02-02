@@ -1,0 +1,7 @@
+<div class="error-message">
+    <mat-icon class="error-icon">error</mat-icon>
+    <div class="error-text">{{ errorMessage() }}</div>
+    @if (hasRetryButton()) {
+        <a mat-button (click)="retry.emit()" class="retry-button">Retry</a>
+    }
+</div>

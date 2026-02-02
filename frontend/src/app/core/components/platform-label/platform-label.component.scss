@@ -1,0 +1,18 @@
+@use "styles/colors" as *;
+
+.platform-label {
+  font-size: 10px;
+  border: 1px solid $tq-blue-darker;
+  border-radius: 2px;
+  padding: 1px;
+  font-family: Roboto, sans-serif;
+
+  &--PS4 {
+    background-color: $tq-blue-medium;
+    color: white;
+  }
+
+  &--PS5 {
+    background-color: white;
+  }
+}

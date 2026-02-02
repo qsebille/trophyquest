@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-psn-tables-setup/11-create-psn-trophy-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: psn_trophy
+            columns:
+              - column: { name: id, type: uuid, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_psn_trophy } }
+              - column: { name: trophy_suite_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_trophy_suite, references: app.psn_trophy_suite(id) } }
+              - column: { name: trophy_suite_group_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_trophy_suite_group, references: app.psn_trophy_suite_group(id) } }
+              - column: { name: rank, type: int, constraints: { nullable: false } }
+              - column: { name: title, type: text, constraints: { nullable: false } }
+              - column: { name: description, type: text, constraints: { nullable: false } }
+              - column: { name: trophy_type, type: text, constraints: { nullable: false } }
+              - column: { name: is_hidden, type: boolean, constraints: { nullable: false } }
+              - column: { name: psn_icon_url, type: text }
+              - column: { name: aws_icon_url, type: text }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_psn_trophy_set_updated_at
+                            BEFORE UPDATE ON app.psn_trophy
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

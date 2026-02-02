@@ -1,0 +1,49 @@
+@use 'styles/colors' as *;
+
+.home-trophy-card {
+  padding: 5px;
+  background-color: $tq-blue-lighter;
+  border-bottom: 2px solid $tq-blue-medium;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.trophy-icon {
+  border-radius: 5px;
+  border: 1px solid $tq-blue-medium;
+}
+
+.title-game {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.trophy-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.game-title {
+  font-size: 12px;
+  color: rgb(0, 0, 0, 0.54);
+}
+
+.right-block {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.trophy-earned-date {
+  font-size: 8px;
+  color: rgb(0, 0, 0, 0.54);
+}

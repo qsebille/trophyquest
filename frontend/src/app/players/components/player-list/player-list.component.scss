@@ -1,0 +1,53 @@
+@use "styles/colors" as *;
+@use '@angular/material' as mat;
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+}
+
+.progress-spinner {
+  @include mat.progress-spinner-overrides((
+          active-indicator-color: $tq-blue-medium,
+  ));
+}
+
+.player-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.total {
+  align-self: flex-start;
+  color: $tq-blue-medium;
+  font-weight: bold;
+}
+
+.player-card {
+  width: 100%;
+  margin: 5px;
+}
+
+.separator {
+  color: $tq-blue-dark;
+  width: 90%;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.load-more-button {
+  margin-top: 20px;
+  font-size: 15px;
+  color: $tq-blue-medium;
+  cursor: pointer;
+}
+
+.failed-retrieve-players-block {
+  display: flex;
+  justify-content: center;
+
+  tq-error-message {
+    width: 50%;
+  }
+}

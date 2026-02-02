@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - include: { file: changesets/001-setup/01-create-app-schema.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/001-setup/02-create-set-updated-at-function.yaml, relativeToChangelogFile: true }
+
+  - include: { file: changesets/002-psn-tables-setup/01-create-psn-player-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/02-create-psn-game-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/03-create-psn-game-image-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/04-create-psn-played-game-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/05-create-psn-edition-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/06-create-psn-played-edition-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/07-create-psn-trophy-suite-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/08-create-psn-edition-trophy-suite-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/09-create-trophy-suite-group-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/10-create-psn-played-trophy-suite-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/11-create-psn-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-psn-tables-setup/12-create-psn-earned-trophy-table.yaml, relativeToChangelogFile: true }
+
+  - include: { file: changesets/003-igdb-tables-setup/01-create-igdb-game-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-igdb-tables-setup/02-create-igdb-collection-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-igdb-tables-setup/03-create-igdb-company-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-igdb-tables-setup/04-create-igdb-candidate-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-igdb-tables-setup/05-create-igdb-game-collection-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-igdb-tables-setup/06-create-igdb-game-company-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-igdb-tables-setup/07-add-igdb-game-id-column-in-psn-game-table.yaml, relativeToChangelogFile: true }
+
+  - include: { file: changesets/004-setup-basic-views/01-create-player-search-item-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/004-setup-basic-views/02-create-recent-game-search-item-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/004-setup-basic-views/03-create-played-trophy-suite-search-item-view.yaml, relativeToChangelogFile: true }
+
+  - include: { file: changesets/005-add-indices/01-add-performance-indices.yaml, relativeToChangelogFile: true }

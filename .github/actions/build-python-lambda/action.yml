@@ -1,0 +1,23 @@
+name: Build Python lambda package
+
+inputs:
+  zip_path:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.14"
+
+    - name: Prepare lambda package
+      run: |
+        rm -rf lambda ${{ inputs.zip_path }}
+        mkdir -p lambda
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements.txt -t lambda
+        cp -r src/* lambda
+        cp lambda_function.py lambda
+        zip -r ${{ inputs.zip_path }} lambda

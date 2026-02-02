@@ -1,0 +1,52 @@
+@use "styles/colors" as *;
+
+.app-title {
+  color: $tq-blue-medium;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stat-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: $tq-blue-medium;
+  }
+
+  .stat-label {
+    font-size: 18px;
+    color: $tq-blue-medium;
+  }
+
+  &.recent {
+    .stat-value {
+      font-size: 16px;
+      font-weight: bold;
+      color: $tq-blue-light;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: $tq-blue-light;
+    }
+  }
+}
+
+

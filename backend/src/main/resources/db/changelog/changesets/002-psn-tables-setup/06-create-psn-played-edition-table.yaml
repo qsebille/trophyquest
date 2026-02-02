@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-psn-tables-setup/06-create-psn-played-edition-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: psn_played_edition
+            columns:
+              - column: { name: player_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_player, references: app.psn_player(id) } }
+              - column: { name: edition_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_edition, references: app.psn_edition(id) } }
+              - column: { name: last_played_at, type: timestamptz }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - addPrimaryKey:
+            schemaName: app
+            tableName: psn_played_edition
+            columnNames: edition_id,player_id
+            constraintName: pk_psn_played_edition
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_psn_played_edition_set_updated_at
+                            BEFORE UPDATE ON app.psn_played_edition
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

@@ -1,0 +1,18 @@
+@use "styles/colors" as *;
+
+.title {
+  color: $tq-blue-medium;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.no-recent-players {
+  color: $tq-blue-medium;
+}
+
+.most-active-players {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

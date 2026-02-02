@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-psn-tables-setup/01-create-psn-player-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: psn_player
+            columns:
+              - column: { name: id, type: uuid, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_psn_player } }
+              - column: { name: pseudo, type: text, constraints: { nullable: false } }
+              - column: { name: psn_avatar_url, type: text }
+              - column: { name: aws_avatar_url, type: text }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_psn_player_set_updated_at
+                            BEFORE UPDATE ON app.psn_player
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

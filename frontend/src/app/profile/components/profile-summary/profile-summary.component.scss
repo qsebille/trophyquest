@@ -1,0 +1,56 @@
+@use 'styles/colors' as *;
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.avatar-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: $tq-white;
+  border: 3px solid $tq-blue-dark;
+}
+
+.player-pseudo {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.summary-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.counts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.summary-count {
+  font-size: 16px;
+
+  b {
+    color: $tq-blue-light;
+  }
+}

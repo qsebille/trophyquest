@@ -1,0 +1,42 @@
+@use 'styles/colors' as *;
+
+.trophy-suite-summary {
+  display: flex;
+  background-color: $tq-blue-lighter;
+  border: 1.5px solid $tq-blue-dark;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.cover {
+  max-width: 200px;
+  justify-self: flex-start;
+  border-radius: 10px;
+  border: 2px solid $tq-blue-dark;
+}
+
+.summary-content {
+  width: -webkit-fill-available;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.title-and-platform {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+
+  .title {
+    color: $tq-blue-medium;
+    font-size: 25px;
+  }
+}
+
+.trophy-count-wrapper {
+  display: flex;
+  justify-content: center;
+}

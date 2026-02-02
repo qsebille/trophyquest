@@ -1,0 +1,28 @@
+@use "styles/colors" as *;
+
+.home-player-card {
+  border-radius: 10px;
+  border-bottom: 2px solid $tq-blue-darker;
+  padding: 5px;
+  background-color: $tq-blue-dark;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .player-avatar {
+    border-radius: 50%;
+  }
+
+  .player-pseudo {
+    color: $tq-white;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .trophy-count {
+    color: $tq-white;
+    font-size: 16px
+  }
+}

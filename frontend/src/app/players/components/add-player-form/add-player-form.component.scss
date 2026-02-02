@@ -1,0 +1,32 @@
+@use "styles/colors" as *;
+@use "@angular/material" as mat;
+
+.add-player-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.explain-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: $tq-blue-medium;
+}
+
+.pseudo-input {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.loading-spinner {
+  @include mat.progress-spinner-overrides((
+          active-indicator-color: $tq-blue-medium,
+  ));
+}
+
+.loading-message {
+  font-size: 16px;
+  color: $tq-blue-medium;
+}

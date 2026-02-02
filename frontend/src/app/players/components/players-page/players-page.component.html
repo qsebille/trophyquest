@@ -1,0 +1,13 @@
+<div class="players-page container container-fluid">
+    <tq-add-player-form [status]="addPlayerStatus()"
+                        (validateSuccess)="resetAddPlayerForm()"
+                        (addPlayer)="addPlayer($event)"/>
+
+    <tq-player-list [status]="playerListStatus()"
+                    [players]="players()"
+                    [total]="totalPlayers()"
+                    (retrievePlayers)="retrievePlayers()"
+                    (loadMorePlayers)="loadMorePlayers()"
+                    (clickOnPlayer)="navigateToProfilePage($event)"
+                    (clickOnGame)="navigateToPlayerTrophySuitePage($event.gameId, $event.playerId)"/>
+</div>

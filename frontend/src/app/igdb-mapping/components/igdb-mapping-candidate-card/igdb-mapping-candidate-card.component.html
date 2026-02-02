@@ -1,0 +1,25 @@
+<div class="igdb-mapping-candidate-card">
+    <div class="igdb-mapping-candidate-card--infos">
+        <div class="igdb-mapping-candidate-card--confidence-score" matTooltip="Confidence : {{ candidate().score }}%">
+            <mat-spinner class="igdb-mapping-candidate-card--score-spinner confidence-{{ confidence() }}"
+                         [value]="candidate().score" diameter="30" mode="determinate"/>
+            <div class="igdb-mapping-candidate-card--score confidence-{{ confidence() }}">
+                {{ candidate().score }}
+            </div>
+        </div>
+        <img class="igdb-mapping-candidate-card--cover" [src]="candidate().cover" [alt]="candidate().name"/>
+        <div class="igdb-mapping-candidate-card--description">
+            <div class="igdb-mapping-candidate-card--name" [matTooltip]="candidate().name">{{ candidate().name }}</div>
+            <div class="igdb-mapping-candidate-card--date">
+                <mat-icon class="igdb-mapping-candidate-card--date-icon">date_range</mat-icon>
+                <span class="igdb-mapping-candidate-card--date-value">{{ candidate().releaseDate | date }}</span>
+            </div>
+            <div class="igdb-mapping-candidate-card--type">{{ candidate().gameType }}</div>
+            <a class="igdb-mapping-candidate-card--website">{{ candidate().website }}</a>
+        </div>
+    </div>
+    <button class="igdb-mapping-candidate-card--accept-button" matButton="filled" [disabled]="isValidationDisabled()"
+            matTooltip="Link this game" (click)="acceptCandidate()">
+        Accept
+    </button>
+</div>

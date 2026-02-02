@@ -1,0 +1,67 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-add-indices/01-add-performance-indices
+      author: Junie
+      changes:
+        # psn_played_trophy_suite indices
+        # Optimization for searchTrophySuitesOfPlayer: find by player_id and sort by last_played_at
+        - createIndex:
+            schemaName: app
+            tableName: psn_played_trophy_suite
+            indexName: idx_psn_played_trophy_suite_player_last_played
+            columns:
+              - column: { name: player_id }
+              - column: { name: last_played_at, descending: true }
+
+        # psn_trophy indices
+        # Optimization for joins with trophy_suite_id in views
+        - createIndex:
+            schemaName: app
+            tableName: psn_trophy
+            indexName: idx_psn_trophy_trophy_suite_id
+            columns:
+              - column: { name: trophy_suite_id }
+
+        # psn_earned_trophy indices
+        # Optimization for player stats aggregation
+        - createIndex:
+            schemaName: app
+            tableName: psn_earned_trophy
+            indexName: idx_psn_earned_trophy_player_id
+            columns:
+              - column: { name: player_id }
+
+        # psn_played_game indices
+        # Optimization for v_recent_game_search_item and other player game lists
+        - createIndex:
+            schemaName: app
+            tableName: psn_played_game
+            indexName: idx_psn_played_game_game_last_played
+            columns:
+              - column: { name: game_id }
+              - column: { name: last_played_at, descending: true }
+        - createIndex:
+            schemaName: app
+            tableName: psn_played_game
+            indexName: idx_psn_played_game_player_id
+            columns:
+              - column: { name: player_id }
+
+        # psn_game_image indices
+        # Optimization for game image lookups in views
+        - createIndex:
+            schemaName: app
+            tableName: psn_game_image
+            indexName: idx_psn_game_image_game_id_type
+            columns:
+              - column: { name: psn_game_id }
+              - column: { name: type }
+
+        # psn_player indices
+        # Optimization for searches by pseudo
+        - createIndex:
+            schemaName: app
+            tableName: psn_player
+            indexName: idx_psn_player_pseudo
+            columns:
+              - column: { name: pseudo }

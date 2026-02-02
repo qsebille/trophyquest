@@ -1,0 +1,12 @@
+<div class="home-page container container-fluid">
+    <div class="home-page--stats-and-games">
+        <tq-home-stats class="home-page--stats" [status]="statsLoadingStatus()" [stats]="stats()"/>
+        <tq-home-games class="home-page--game-list" [games]="games()" [status]="gamesStatus()" [total]="gamesTotal()"/>
+    </div>
+
+    <tq-home-player-list class="home-page--player-list"
+                         [status]="playersStatus()"
+                         [players]="players()"
+                         (clickOnPlayer)="navigateToProfilePage($event)"
+                         (clickOnGame)="navigateToPlayerTrophySuitePage($event.trophySuiteId, $event.playerId)"/>
+</div>

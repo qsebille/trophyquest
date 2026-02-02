@@ -1,0 +1,25 @@
+<tq-block class="home-games">
+    <ng-template tqBlockHeader>
+        <span class="home-games--title">Most popular games this week</span>
+    </ng-template>
+    <ng-template tqBlockContent>
+        @if (isEmpty()) {
+            <div class="home-games--empty">No popular games</div>
+        } @else if (isLoading()) {
+            <tq-spinner-container/>
+        } @else if (isError()) {
+            <tq-error-message [errorMessage]="'Failed to load recent games'"/>
+        } @else {
+            <div class="home-games--list">
+                @for (game of games(); track game.id; let i = $index) {
+                    @if (i !== 0) {
+                        <hr class="home-games--list--separator"/>
+                    }
+                    <div class="home-games--list--item">
+                        <tq-home-game-card [game]="game"/>
+                    </div>
+                }
+            </div>
+        }
+    </ng-template>
+</tq-block>

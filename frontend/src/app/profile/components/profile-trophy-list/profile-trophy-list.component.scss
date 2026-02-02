@@ -1,0 +1,31 @@
+@use "styles/colors" as *;
+
+.title {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: $tq-blue-medium;
+}
+
+.separator {
+  color: $tq-blue-medium;
+  margin: 3px;
+  width: 95%;
+}
+
+.trophy-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.profile-trophy-card {
+  width: 100%;
+}
+
+.load-more-button {
+  padding: 20px;
+  cursor: pointer;
+}

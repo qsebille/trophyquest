@@ -1,0 +1,30 @@
+@use "styles/colors" as *;
+
+.home-games {
+  width: 100%;
+
+  &--title, &--empty {
+    color: $tq-blue-medium;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  &--list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    &--separator {
+      width: 100%;
+      margin: 3px;
+      color: $tq-blue-dark;
+    }
+
+    &--item {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 5px;
+    }
+  }
+}

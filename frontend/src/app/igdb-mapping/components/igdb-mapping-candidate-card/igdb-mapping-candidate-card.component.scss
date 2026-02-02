@@ -1,0 +1,134 @@
+@use "styles/colors" as *;
+@use '@angular/material' as mat;
+
+.igdb-mapping-candidate-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid $tq-blue-medium;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: $tq-white;
+
+  &--confidence-score {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+  }
+
+  &--score-spinner {
+    &.confidence-very-high {
+      @include mat.progress-spinner-overrides((
+              active-indicator-color: $tq-green-dark,
+      ));
+    }
+
+    &.confidence-high {
+      @include mat.progress-spinner-overrides((
+              active-indicator-color: #a58807,
+      ));
+    }
+
+    &.confidence-medium {
+      @include mat.progress-spinner-overrides((
+              active-indicator-color: #ac5900,
+      ));
+    }
+
+    &.confidence-low {
+      @include mat.progress-spinner-overrides((
+              active-indicator-color: $tq-red-dark,
+      ));
+    }
+  }
+
+  &--score {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+
+    font-size: 10px;
+    line-height: 1;
+
+    &.confidence-very-high {
+      color: $tq-green-dark;
+    }
+
+    &.confidence-high {
+      color: #a58807;
+    }
+
+    &.confidence-medium {
+      color: #ac5900;
+    }
+
+    &.confidence-low {
+      color: $tq-red-dark;
+    }
+  }
+
+  &--infos {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 20px;
+    min-width: 0;
+    position: relative;
+  }
+
+  &--cover {
+    border-radius: 10px;
+    max-width: 100px;
+    flex-shrink: 0;
+  }
+
+  &--description {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &--name {
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    color: $tq-blue-medium;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &--date {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    &-icon, &-value {
+      font-size: 12px;
+      color: $tq-blue-medium;
+    }
+  }
+
+  &--type {
+    font-size: 12px;
+    font-weight: bold;
+    color: $tq-blue-light;
+  }
+
+  &--accept-button {
+    @include mat.button-overrides((
+            filled-container-color: $tq-green-medium,
+    ));
+  }
+}

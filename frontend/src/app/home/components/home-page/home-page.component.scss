@@ -1,0 +1,28 @@
+@use "styles/colors" as *;
+
+.home-page {
+  padding-top: 20px;
+  padding-bottom: 50px;
+  display: flex;
+  gap: 20px;
+
+  &--stats-and-games {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  &--player-list {
+    width: 40%;
+  }
+
+  &--stats {
+    width: 80%;
+  }
+
+  &--game-list {
+    width: 100%;
+  }
+}
