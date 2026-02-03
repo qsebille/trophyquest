@@ -3,6 +3,10 @@ package fr.trophyquest.backend.domain.entity;
 import fr.trophyquest.backend.domain.entity.embedded.PlayedGameId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -16,6 +20,11 @@ public class PlayedGame {
 
     @EmbeddedId
     private PlayedGameId id;
+
+    @MapsId("playerId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "player_id", nullable = false)
+    private Player player;
 
     private Instant firstPlayedAt;
     

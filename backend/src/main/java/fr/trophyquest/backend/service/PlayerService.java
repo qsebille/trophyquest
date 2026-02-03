@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -58,6 +59,12 @@ public class PlayerService {
     public PlayerDTO fetch(UUID id) {
         Player player = this.playerRepository.findById(id).orElseThrow();
         return this.playerMapper.toDTO(player);
+    }
+
+    @Transactional
+    public void delete(UUID id) {
+        Player player = this.playerRepository.findById(id).orElseThrow();
+        this.playerRepository.delete(player);
     }
 
     public Optional<PlayerDTO> findByPseudo(String pseudo) {

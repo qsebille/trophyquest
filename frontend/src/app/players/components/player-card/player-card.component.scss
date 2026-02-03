@@ -2,10 +2,9 @@
 
 .player-card {
   padding: 5px;
-  background-color: $tq-blue-lighter;
-  border-radius: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
 
   &--summary {
@@ -28,16 +27,15 @@
   }
 
   &--stats {
-    width: 60%;
     display: flex;
     align-items: center;
+    gap: 50px;
   }
 
   &--game-stats {
-    width: 50%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
   }
 
   &--game-icon {
@@ -51,7 +49,7 @@
   }
 
   &--trophy-stats {
-    width: 50%;
+    min-width: 200px;
     display: flex;
     align-items: center;
   }
