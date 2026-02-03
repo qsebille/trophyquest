@@ -7,10 +7,14 @@ on:
     paths:
       - "lambda/node/**"
       - ".github/workflows/lambda-node-deploy-refresher.yaml"
-      - ".github/actions/package-lambda/**"
-      - ".github/actions/deploy-lambda/**"
-      - ".github/actions/get-version/**"
+      - ".github/actions/get-version/action.yml"
+      - ".github/actions/package-lambda/action.yml"
+      - ".github/actions/deploy-lambda/action.yml"
   workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
@@ -37,6 +41,15 @@ jobs:
         uses: ./.github/actions/get-version
         with:
           service_name: lambda-node
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Prune dev deps
+        run: npm prune --production
 
       - name: Package Lambda
         uses: ./.github/actions/package-lambda

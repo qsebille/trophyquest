@@ -6,10 +6,12 @@ on:
     paths:
       - "lambda/node/**"
       - ".github/workflows/lambda-node-*.yml"
-      - ".github/actions/get-version/**"
+      - ".github/actions/get-version/action.yml"
+      - ".github/actions/package-lambda/action.yml"
+      - ".github/actions/deploy-lambda/action.yml"
 
 jobs:
-  check-version:
+  check-version-bumped:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -30,7 +32,7 @@ jobs:
       - name: Compare versions
         run: |
           git fetch origin main
-          OLD_VERSION=$( (git show origin/main:package.json 2>/dev/null || true) | jq -r '.version' 2>/dev/null || true )
+          OLD_VERSION=$(git show origin/main:lambda/node/package.json | jq -r '.version')
           NEW_VERSION=${{ steps.get-version.outputs.version }}
 
           echo "OLD_VERSION=$OLD_VERSION"

@@ -7,7 +7,9 @@ on:
     paths:
       - "lambda/python/**"
       - ".github/workflows/lambda-python-*.yml"
-      - ".github/actions/get-version/**"
+      - ".github/actions/get-version/action.yml"
+      - ".github/actions/package-lambda/action.yml"
+      - ".github/actions/deploy-lambda/action.yml"
 
 jobs:
   tag-on-merge:

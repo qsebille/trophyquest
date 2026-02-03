@@ -6,7 +6,9 @@ on:
     paths:
       - "lambda/python/**"
       - ".github/workflows/lambda-python-*.yml"
-      - ".github/actions/get-version/**"
+      - ".github/actions/get-version/action.yml"
+      - ".github/actions/package-lambda/action.yml"
+      - ".github/actions/deploy-lambda/action.yml"
 
 jobs:
   check-version-bump:
@@ -30,7 +32,7 @@ jobs:
       - name: Compare versions
         run: |
           git fetch origin main
-          OLD_VERSION=$(git show origin/main:VERSION 2>/dev/null || true)
+          OLD_VERSION=$(git show origin/main:lambda/python/VERSION)
           NEW_VERSION=${{ steps.get-version.outputs.version }}
 
           echo "OLD_VERSION=$OLD_VERSION"
