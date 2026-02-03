@@ -42,4 +42,5 @@ runs:
             ;;
         esac
         
-        zip -r ${{ inputs.zip_path }} packaged-lambda
+        cd packaged-lambda
+        zip -r "../${{ inputs.zip_path }}" .
