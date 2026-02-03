@@ -10,6 +10,9 @@ import {LoadingStatus} from "../../../core/models/loading-status.enum";
 import {ProfileTrophyListComponent} from "../profile-trophy-list/profile-trophy-list.component";
 import {ProfileTrophySuiteListStoreService} from "../../stores/profile-trophy-suite-list-store.service";
 import {ProfileTrophySuiteListComponent} from "../profile-trophy-suite-list/profile-trophy-suite-list.component";
+import {PlayerApiService} from "../../../core/api/services/player-api.service";
+import {catchError, EMPTY, tap} from "rxjs";
+import {AddPlayerStatus} from "../../../core/models/add-player-status.enum";
 
 @Component({
     selector: 'tq-profile-page',
@@ -32,6 +35,7 @@ export class ProfilePageComponent implements OnInit {
         private readonly _profileSummaryStore: ProfileSummaryStore,
         private readonly _profileTrophySuiteListStore: ProfileTrophySuiteListStoreService,
         private readonly _profileTrophiesStore: ProfileTrophiesStore,
+        private readonly _playerApiService: PlayerApiService,
     ) {
     }
 
@@ -75,5 +79,19 @@ export class ProfilePageComponent implements OnInit {
 
     loadMoreTrophies(): void {
         this._profileTrophiesStore.loadMore(this.playerId);
+    }
+
+    deletePlayer(): void {
+        console.log(`Deleting player ${this.playerId}...`);
+        this._playerApiService.deletePlayer(this.playerId ?? "").pipe(
+            tap(() => {
+                console.log(`Player ${this.playerId} deleted`);
+                this._navigator.goToPlayersPage();
+            }),
+            catchError((error) => {
+                console.error(`Failed to delete player ${this.playerId}`, error);
+                return EMPTY;
+            })
+        ).subscribe();
     }
 }

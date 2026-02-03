@@ -8,6 +8,7 @@
                             [playerStats]="playerStats()"
                             [status]="summaryStatus()"
                             [style.animationDelay.ms]="100"
+                            (deletePlayer)="deletePlayer()"
                             animate.enter="block-enter"/>
 
         <div class="games-trophies-wrapper" [style.animationDelay.ms]="200" animate.enter="block-enter">

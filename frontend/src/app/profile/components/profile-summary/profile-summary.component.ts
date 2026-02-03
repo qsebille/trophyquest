@@ -1,4 +1,4 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {
     TrophyCountDisplayerComponent
 } from '../../../core/components/trophy-count-displayer/trophy-count-displayer.component';
@@ -11,6 +11,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {LoadingStatus} from "../../../core/models/loading-status.enum";
 import {PlayerStats} from "../../../core/api/dtos/player/player-stats";
 import {SpinnerContainerComponent} from "../../../core/components/spinner-container/spinner-container.component";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
 
 @Component({
     selector: 'tq-profile-summary',
@@ -23,6 +25,8 @@ import {SpinnerContainerComponent} from "../../../core/components/spinner-contai
         BlockHeaderTemplate,
         MatProgressSpinnerModule,
         SpinnerContainerComponent,
+        MatIconModule,
+        MatButtonModule,
     ],
     templateUrl: './profile-summary.component.html',
     styleUrl: './profile-summary.component.scss',
@@ -31,6 +35,7 @@ export class ProfileSummaryComponent {
     readonly player = input.required<Player>();
     readonly playerStats = input.required<PlayerStats>();
     readonly status = input<LoadingStatus>(LoadingStatus.NONE);
+    readonly deletePlayer = output();
 
     readonly isLoading = computed(() => this.status() === LoadingStatus.LOADING);
 

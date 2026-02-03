@@ -79,4 +79,8 @@ export class PlayerApiService {
     addPlayer(pseudo: string): Observable<PlayerAddResponse> {
         return this._http.post<PlayerAddResponse>(`${this.API_URL}/${pseudo}`, {});
     }
+
+    deletePlayer(playerId: string): Observable<void> {
+        return this._http.delete<void>(`${this.API_URL}/${playerId}`);
+    }
 }

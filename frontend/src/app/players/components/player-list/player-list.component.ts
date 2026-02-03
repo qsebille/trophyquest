@@ -5,6 +5,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {PlayerCardComponent} from "../player-card/player-card.component";
 import {PlayerSearchItem} from "../../../core/api/dtos/player/player-search-item";
 import {SpinnerContainerComponent} from "../../../core/components/spinner-container/spinner-container.component";
+import {BlockComponent} from "../../../core/components/trophyquest-block/block.component";
+import {BlockContentTemplate, BlockHeaderTemplate} from "../../../core/templates/block.template";
 
 @Component({
     selector: 'tq-player-list',
@@ -12,7 +14,10 @@ import {SpinnerContainerComponent} from "../../../core/components/spinner-contai
         ErrorMessageComponent,
         MatProgressSpinnerModule,
         PlayerCardComponent,
-        SpinnerContainerComponent
+        SpinnerContainerComponent,
+        BlockComponent,
+        BlockContentTemplate,
+        BlockHeaderTemplate
     ],
     templateUrl: './player-list.component.html',
     styleUrl: './player-list.component.scss',

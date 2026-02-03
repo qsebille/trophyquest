@@ -3,25 +3,35 @@
 } @else {
     <tq-block class="profile-summary">
         <ng-template tqBlockHeader>
-            <div class="summary-header">
-                <img [height]="100" [width]="100" alt="" class="avatar-image" ngSrc="{{player().avatar}}"/>
-                <div class="player-pseudo">{{ player().pseudo }}</div>
+            <div class="profile-summary--header">
+                <img [height]="100"
+                     [width]="100"
+                     [alt]="player().pseudo"
+                     class="profile-summary--avatar-image"
+                     ngSrc="{{player().avatar}}"/>
+                <div class="profile-summary--pseudo">{{ player().pseudo }}</div>
+            </div>
+            <div class="profile-summary--delete-button">
+                <a (click)="deletePlayer.emit()">Delete profile</a>
             </div>
         </ng-template>
         <ng-template tqBlockContent>
-            <div class="summary-content">
-                <div class="counts">
-                    <div class="summary-count">
-                        <b>{{ playerStats().totalTrophySuitesPlayed | number }}</b>
+            <div class="profile-summary--content">
+                <div class="profile-summary--counts">
+                    <div class="profile-summary--count">
+                        <b class="profile-summary--count--value">{{ playerStats().totalTrophySuitesPlayed | number }}</b>
                         <span> played games</span>
                     </div>
-                    <div class="summary-count">
-                        <b>{{ totalEarnedTrophies() | number }}</b>
+                    <div class="profile-summary--count">
+                        <b class="profile-summary--count--value">{{ totalEarnedTrophies() | number }}</b>
                         <span> earned trophies</span>
                     </div>
                 </div>
-                <tq-trophy-count-displayer [iconSizePx]="32" [labelOrientation]="'vertical'" [textSizePx]="14"
-                                           [trophyCount]="trophyCountPerType()" class="trophy-count"/>
+                <tq-trophy-count-displayer [iconSizePx]="32"
+                                           [labelOrientation]="'vertical'"
+                                           [textSizePx]="14"
+                                           [trophyCount]="trophyCountPerType()"
+                                           class="profile-summary--trophy-count"/>
             </div>
         </ng-template>
     </tq-block>

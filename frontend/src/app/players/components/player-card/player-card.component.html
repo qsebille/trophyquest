@@ -11,9 +11,11 @@
         </div>
         <div class="player-card--trophy-stats">
             @for (trophyType of trophyTypes; track trophyType) {
-                <div class="player-card--trophy-info">
+                <div class="player-card--trophy-info"
+                     matTooltip="Total earned {{ trophyType }} trophies: {{trophyCount()[trophyType]}}">
                     @if (trophyCount()[trophyType] > 0) {
-                        <img [height]="24" [width]="24" alt="" ngSrc="/assets/icons/trophy-{{ trophyType }}.png"/>
+                        <img [height]="24" [width]="24" [alt]="trophyType"
+                             ngSrc="/assets/icons/trophy-{{ trophyType }}.png"/>
                         <span class="player-card--trophy-count">{{ trophyCount()[trophyType] }}</span>
                     }
                 </div>

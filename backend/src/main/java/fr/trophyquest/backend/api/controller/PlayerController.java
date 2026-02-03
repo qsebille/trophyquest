@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,6 +73,11 @@ public class PlayerController {
     @GetMapping("{playerId}")
     public PlayerDTO fetch(@PathVariable UUID playerId) {
         return this.playerService.fetch(playerId);
+    }
+
+    @DeleteMapping("{playerId}")
+    public void delete(@PathVariable UUID playerId) {
+        this.playerService.delete(playerId);
     }
 
     @GetMapping("{playerId}/stats")
