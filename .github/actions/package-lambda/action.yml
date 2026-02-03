@@ -27,7 +27,7 @@ runs:
             python -m pip install --upgrade pip
             python -m pip install -r lambda/python/requirements.txt -t packaged-lambda/
             cp -r lambda/python/src/* packaged-lambda/
-            cp lambda_function.py packaged-lambda/
+            cp lambda/python/lambda_function.py packaged-lambda/
             ;;
           node)
             cp lambda/node/package.json packaged-lambda/
