@@ -54,7 +54,7 @@ jobs:
       - name: Upload jar to S3 (artifact)
         run: |
           set -e
-          S3_KEY="backend/${GITHUB_SHA}/trophyquest-backend-${APP_VERSION}.jar"
+          S3_KEY="backend/${APP_VERSION}-${GITHUB_SHA}/trophyquest-backend-${APP_VERSION}.jar"
           echo "S3_KEY=$S3_KEY" >> $GITHUB_ENV
           echo "Uploading to s3://${{ secrets.ARTIFACT_S3_BUCKET }}/${S3_KEY}"
           aws s3 cp "${JAR_FILE}" "s3://${{ secrets.ARTIFACT_S3_BUCKET }}/${S3_KEY}"
