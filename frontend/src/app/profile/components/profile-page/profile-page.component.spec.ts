@@ -10,6 +10,7 @@ import {ProfileTrophySuiteListStoreService} from "../../stores/profile-trophy-su
 import {ProfileTrophiesStore} from "../../stores/profile-trophies-store.service";
 import {Player} from "../../../core/api/dtos/player/player";
 import {PlayerStats} from "../../../core/api/dtos/player/player-stats";
+import {PlayerApiService} from "../../../core/api/services/player-api.service";
 
 describe('ProfilePageComponent', () => {
     let component: ProfilePageComponent;
@@ -17,6 +18,7 @@ describe('ProfilePageComponent', () => {
     let profileSummaryStoreSpy: jasmine.SpyObj<ProfileSummaryStore>;
     let profileTrophySuiteListStoreSpy: jasmine.SpyObj<ProfileTrophySuiteListStoreService>;
     let profileTrophiesStoreSpy: jasmine.SpyObj<ProfileTrophiesStore>;
+    let playerApiServiceSpy: jasmine.SpyObj<PlayerApiService>;
     let navigatorSpy: jasmine.SpyObj<NavigatorService>;
 
     const mockPlayer = {id: 'player-123', pseudo: 'PlayerId', avatar: 'avatar.png'} as Player;
@@ -33,6 +35,7 @@ describe('ProfilePageComponent', () => {
         profileSummaryStoreSpy = jasmine.createSpyObj('ProfileSummaryStore', ['retrieve', 'reset', 'player', 'playerStats', 'status']);
         profileTrophySuiteListStoreSpy = jasmine.createSpyObj('ProfileTrophySuiteListStoreService', ['search', 'reset', 'loadMore', 'trophySuites', 'status']);
         profileTrophiesStoreSpy = jasmine.createSpyObj('ProfileTrophiesStore', ['search', 'reset', 'loadMore', 'trophies', 'status']);
+        playerApiServiceSpy = jasmine.createSpyObj('PlayerApiService', ['deletePlayer']);
 
         profileSummaryStoreSpy.player.and.returnValue(mockPlayer);
         profileSummaryStoreSpy.playerStats.and.returnValue(mockPlayerStats);
@@ -47,6 +50,7 @@ describe('ProfilePageComponent', () => {
                 {provide: ProfileSummaryStore, useValue: profileSummaryStoreSpy},
                 {provide: ProfileTrophySuiteListStoreService, useValue: profileTrophySuiteListStoreSpy},
                 {provide: ProfileTrophiesStore, useValue: profileTrophiesStoreSpy},
+                {provide: PlayerApiService, useValue: playerApiServiceSpy},
                 {provide: ActivatedRoute, useValue: {snapshot: {paramMap: routeParamMap}}},
             ]
         }).compileComponents();
