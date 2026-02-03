@@ -52,31 +52,30 @@ jobs:
           echo "Built backend/$JAR_FILE (version $APP_VERSION)"
 
       - name: Upload jar to S3 (artifact)
-        id: upload_jar_to_s3
         run: |
           set -e
           S3_KEY="backend/${GITHUB_SHA}/trophyquest-backend-${APP_VERSION}.jar"
-          echo "s3_key=$S3_KEY" >> $GITHUB_ENV
-
+          echo "S3_KEY=$S3_KEY" >> $GITHUB_ENV
+          echo "Uploading to s3://${{ secrets.ARTIFACT_S3_BUCKET }}/${S3_KEY}"
           aws s3 cp "${JAR_FILE}" "s3://${{ secrets.ARTIFACT_S3_BUCKET }}/${S3_KEY}"
 
       - name: Deploy on EC2 via SSM
         run: |
           set -e
+          echo "Using S3_KEY=${{ env.S3_KEY }}"
 
           COMMAND_ID=$(aws ssm send-command \
             --document-name "AWS-RunShellScript" \
             --targets "Key=instanceids,Values=${{ secrets.BACKEND_EC2_INSTANCE_ID }}" \
-            --comment "Deploy TrophyQuest backend ${APP_VERSION} (${GITHUB_SHA})" \
-            --parameters 'commands=[
-              "set -e",
-              "sudo mkdir -p /opt/trophyquest",
-              "aws s3api get-object --bucket \"${{ secrets.ARTIFACT_S3_BUCKET }}\" --key \"'"$S3_KEY"'\" /tmp/trophyquest-backend.jar",
-              "sudo mv /tmp/trophyquest-backend.jar /opt/trophyquest/trophyquest-backend.jar",
-              "sudo chown trophyquest:trophyquest /opt/trophyquest/trophyquest-backend.jar",
-              "sudo systemctl restart trophyquest-backend",
-              "sudo systemctl status trophyquest-backend --no-pager -l"
-            ]' \
+            --comment "Deploy TrophyQuest backend ${{ env.APP_VERSION }} (${GITHUB_SHA})" \
+            --parameters "commands=[
+              \"set -e\",
+              \"aws s3api get-object --bucket '${{ secrets.ARTIFACT_S3_BUCKET }}' --key '${{ env.S3_KEY }}' /tmp/trophyquest-backend.jar\",
+              \"sudo mv /tmp/trophyquest-backend.jar /opt/trophyquest/trophyquest-backend.jar\",
+              \"sudo chown trophyquest:trophyquest /opt/trophyquest/trophyquest-backend.jar\",
+              \"sudo systemctl restart trophyquest-backend\",
+              \"sudo systemctl status trophyquest-backend --no-pager -l\"
+            ]" \
             --query "Command.CommandId" --output text)
 
           echo "SSM CommandId: $COMMAND_ID"
@@ -95,4 +94,5 @@ jobs:
             --output json
 
           exit $WAIT_RC
+
 
