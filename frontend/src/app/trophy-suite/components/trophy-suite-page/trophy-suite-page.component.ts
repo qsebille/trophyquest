@@ -8,6 +8,7 @@ import {TrophySuiteTrophyListComponent} from "../trophy-suite-trophy-list/trophy
 import {TrophySuiteTrophyFiltersComponent} from "../trophy-suite-trophy-filters/trophy-suite-trophy-filters.component";
 import {TrophySuiteStoreService} from "../../stores/trophy-suite-store.service";
 import {SpinnerContainerComponent} from "../../../core/components/spinner-container/spinner-container.component";
+import {TrophySuiteTimelineComponent} from "../trophy-suite-timeline/trophy-suite-timeline.component";
 
 @Component({
     imports: [
@@ -16,6 +17,7 @@ import {SpinnerContainerComponent} from "../../../core/components/spinner-contai
         TrophySuiteTrophyListComponent,
         TrophySuiteTrophyFiltersComponent,
         SpinnerContainerComponent,
+        TrophySuiteTimelineComponent,
     ],
     templateUrl: './trophy-suite-page.component.html',
     styleUrl: './trophy-suite-page.component.scss',

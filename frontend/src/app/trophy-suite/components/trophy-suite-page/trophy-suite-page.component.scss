@@ -5,23 +5,27 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
-}
 
-.error-message {
-  width: 50%;
-}
+  &--error-message {
+    width: 50%;
+  }
 
-.trophy-suite-summary {
-  width: 80%;
-}
+  &--summary {
+    width: 80%;
+  }
 
-.trophy-filters {
-  width: 80%;
-}
+  &--timeline {
+    width: 90%;
+  }
 
-.trophy-list {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  &--filters {
+    width: 80%;
+  }
+
+  &--trophy-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }

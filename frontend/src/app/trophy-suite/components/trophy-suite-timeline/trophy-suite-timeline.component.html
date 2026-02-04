@@ -1,0 +1,57 @@
+@if (timelineData(); as data) {
+    <div class="trophy-timeline">
+        @if (selectedItem(); as selected) {
+            <div class="selected-bundle-viewer">
+                <div class="bundle-header">
+                    <span class="bundle-title">
+                        {{ selected.trophies.length }}
+                        obtained {{ selected.trophies.length > 1 ? 'trophies' : 'trophy' }}
+                        on {{ selected.trophies[0].earnedAt | date:'mediumDate' }}
+                    </span>
+                    <button class="close-btn" (click)="selectedItem.set(null)">&times;</button>
+                </div>
+                <div class="bundle-list">
+                    @for (t of selected.trophies; track t.id) {
+                        <div class="bundle-item">
+                            <img [ngSrc]="t.icon" [width]="32" [height]="32" [alt]="t.title"
+                                 class="trophy-icon trophy-icon--{{ t.trophyType | lowercase }}">
+                            <div class="trophy-info">
+                                <span class="trophy-name">{{ t.title }}</span>
+                                <span class="trophy-date">{{ t.earnedAt | date:'shortTime' }}</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="timeline-track">
+            <div class="timeline-intervals">
+                @for (interval of data.intervals; track $index) {
+                    <div class="timeline-interval"
+                         [style.left.%]="interval.start"
+                         [style.width.%]="interval.width">
+                        <div class="interval-brace"></div>
+                        <span class="interval-label">{{ interval.label }}</span>
+                    </div>
+                }
+            </div>
+            @for (item of data.items; track $index) {
+                <div class="timeline-item"
+                     [style.left.%]="item.position">
+                    <div class="trophy-marker"
+                         [class]="item.trophies[0].trophyType"
+                         [class.is-bundle]="item.trophies.length > 1"
+                         [class.is-selected]="selectedItem() === item"
+                         (click)="selectItem(item)">
+                        @if (item.trophies.length === 1) {
+                            <img [src]="item.trophies[0].icon" [alt]="item.trophies[0].title">
+                        } @else {
+                            <span class="bundle-count">{{ item.trophies.length }}</span>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
