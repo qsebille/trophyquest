@@ -26,7 +26,16 @@
         }
 
         <div class="timeline-track">
-            <div class="timeline-line"></div>
+            <div class="timeline-intervals">
+                @for (interval of data.intervals; track $index) {
+                    <div class="timeline-interval"
+                         [style.left.%]="interval.start"
+                         [style.width.%]="interval.width">
+                        <div class="interval-brace"></div>
+                        <span class="interval-label">{{ interval.label }}</span>
+                    </div>
+                }
+            </div>
             @for (item of data.items; track $index) {
                 <div class="timeline-item"
                      [style.left.%]="item.position">
@@ -41,20 +50,8 @@
                             <span class="bundle-count">{{ item.trophies.length }}</span>
                         }
                     </div>
-                    @if (item.trophies.length === 1) {
-                        <div class="trophy-tooltip">
-                            <div class="tooltip-item">
-                                <span class="trophy-name">{{ item.trophies[0].title }}</span>
-                                <span class="trophy-date">{{ item.trophies[0].earnedAt | date:'short' }}</span>
-                            </div>
-                        </div>
-                    }
                 </div>
             }
-        </div>
-        <div class="timeline-labels">
-            <span class="date-label">{{ data.firstDate | date:'mediumDate' }}</span>
-            <span class="date-label">{{ data.lastDate | date:'mediumDate' }}</span>
         </div>
     </div>
 }

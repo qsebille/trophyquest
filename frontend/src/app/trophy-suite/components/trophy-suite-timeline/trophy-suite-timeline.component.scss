@@ -2,7 +2,7 @@
 
 .trophy-timeline {
   position: relative;
-  padding: 2rem 1rem;
+  padding: 2rem 0;
 }
 
 .selected-bundle-viewer {
@@ -10,7 +10,7 @@
   border: 2px solid $tq-blue-dark;
   border-radius: 8px;
   padding: 1rem;
-  margin-bottom: 1.5rem;
+  margin: 0 1rem 1.5rem;
   box-shadow: 0 5px 12px $tq-blue-medium;
   backdrop-filter: blur(5px);
 
@@ -112,29 +112,69 @@
 
 .timeline-track {
   position: relative;
-  height: 40px;
+  height: 60px;
   display: flex;
   align-items: center;
+  margin: 1rem 1rem 0;
 }
 
-.timeline-line {
+.timeline-intervals {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: $tq-blue-medium;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-  transform: translateY(-50%);
+  bottom: 0;
+  pointer-events: none;
+}
+
+.timeline-interval {
+  position: absolute;
+  top: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .interval-brace {
+    width: 100%;
+    height: 15px;
+    border: 1px solid $tq-blue-medium;
+    border-top: none;
+    background: $tq-blue-lighter;
+    border-radius: 0 0 8px 8px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 0;
+      width: 1px;
+      height: 12px;
+      background: $tq-blue-medium;
+      box-shadow: 0 0 4px $tq-blue-medium;
+    }
+  }
+
+  .interval-label {
+    margin-top: 25px;
+    font-size: 0.65rem;
+    color: $tq-blue-medium;
+    white-space: nowrap;
+    position: absolute;
+    left: 0;
+    transform: translateX(-50%) rotate(-30deg);
+  }
 }
 
 .timeline-item {
   position: absolute;
-  transform: translateX(-50%);
-  z-index: 1;
+  top: 30px;
+  transform: translate(-50%, -50%);
+  z-index: 5;
 
   &:hover {
-    z-index: 10;
+    z-index: 100;
 
     .trophy-marker {
       transform: scale(1.5);
@@ -176,7 +216,7 @@
   &.is-selected {
     transform: scale(1.3);
     box-shadow: 0 0 15px currentColor;
-    border-color: #fff;
+    border-color: $tq-white;
     z-index: 5;
   }
 
@@ -191,71 +231,4 @@
       color: $tq-blue-dark;
     }
   }
-}
-
-.trophy-tooltip {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%) translateY(-100%) translateY(0);
-  background: #1a1a1a;
-  color: white;
-  padding: 0.6rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  max-height: 200px;
-  overflow-y: auto;
-
-  .tooltip-item {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 4px;
-
-    &:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-  }
-
-  .trophy-name {
-    font-weight: bold;
-    color: #fff;
-  }
-
-  .trophy-date {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #1a1a1a;
-  }
-}
-
-.timeline-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-  font-size: 0.75rem;
-  color: $tq-blue-medium;
 }
