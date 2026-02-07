@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-improved-igdb-matching/02-add-psn-game-igdb-match-status-column
+      author: Quentin Sebille
+      changes:
+        - addColumn:
+            schemaName: app
+            tableName: psn_game
+            columns:
+              - column: { name: igdb_match_status, type: text, constraints: { nullable: true }, defaultValue: PENDING }
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              alter table app.psn_game
+              add constraint ck_psn_game_igdb_status_consistency
+              check ( 
+                (igdb_game_id is not null and igdb_match_status in ('MATCHED'))
+                or
+                (igdb_game_id IS NULL AND igdb_match_status IN ('PENDING','VALIDATION_REQUIRED','NO_FOUND_CANDIDATE','ALL_REFUSED'))
+              );
+

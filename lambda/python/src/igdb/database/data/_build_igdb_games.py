@@ -1,7 +1,7 @@
 from typing import Any
 
 
-def build_app_games(candidate_list: list[dict[str, Any]]):
+def build_igdb_games(candidate_list: list[dict[str, Any]]):
     games = []
 
     for candidate in candidate_list:

@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-improved-igdb-matching/03-drop-unique-constraints_psn_game_igdb_game_id.yaml
+      author: Quentin Sebille
+      changes:
+        - dropUniqueConstraint:
+            schemaName: app
+            tableName: psn_game
+            constraintName: psn_game_igdb_game_id_key
+

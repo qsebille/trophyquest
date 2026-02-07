@@ -1,4 +1,4 @@
-def insert_game_companies(connection, game_companies):
+def insert_game_companies(game_companies, connection):
     cursor = connection.cursor()
     query = """
             insert into app.igdb_game_company (game_id, company_id, role)

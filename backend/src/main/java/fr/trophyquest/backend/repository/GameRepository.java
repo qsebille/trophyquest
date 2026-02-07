@@ -18,14 +18,10 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
     @Query("""
                 select distinct g.id
                 from Game g
-                where exists (
-                    select 1
-                    from IgdbCandidate c
-                    where c.game = g and c.status = 'PENDING'
-                )
+                where g.igdbMatchStatus = 'VALIDATION_REQUIRED'
                 order by g.id
             """)
-    Page<UUID> findGameIdsHavingPendingCandidate(Pageable pageable);
+    Page<UUID> findGamesWithValidationRequired(Pageable pageable);
 
     @Query("""
                 select distinct g
@@ -33,7 +29,7 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                     join fetch g.igdbCandidates c
                     join fetch c.candidate ig
                     join fetch g.images i
-                where g.id in :ids and c.status = 'PENDING'
+                where g.id in :ids
                 order by g.id
             """)
     List<Game> fetchGamesWithCandidatesByIds(@Param("ids") List<UUID> ids);

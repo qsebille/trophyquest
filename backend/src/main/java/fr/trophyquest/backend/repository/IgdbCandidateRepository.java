@@ -29,5 +29,4 @@ public interface IgdbCandidateRepository extends JpaRepository<IgdbCandidate, Ig
     @Transactional
     @Query("UPDATE IgdbCandidate c SET c.status = 'REJECTED' WHERE c.id.psnGameId = :psnGameId")
     void updateStatusToRejected(UUID psnGameId);
-
 }

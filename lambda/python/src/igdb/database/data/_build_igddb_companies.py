@@ -1,8 +1,8 @@
 from typing import Any
 
 
-def build_app_companies(candidate_list: list[dict[str, Any]]):
-    app_companies = set()
+def build_igdb_companies(candidate_list: list[dict[str, Any]]):
+    companies = set()
 
     for candidate in candidate_list:
         for company in candidate.get("developers", []) + candidate.get("publishers", []):
@@ -13,6 +13,6 @@ def build_app_companies(candidate_list: list[dict[str, Any]]):
                 country_code = None
             if company_id is None or company_name is None:
                 continue
-            app_companies.add((company_id, company_name, country_code))
+            companies.add((company_id, company_name, country_code))
 
-    return list(app_companies)
+    return list(companies)

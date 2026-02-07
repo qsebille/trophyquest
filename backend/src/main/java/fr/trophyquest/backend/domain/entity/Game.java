@@ -28,6 +28,8 @@ public class Game {
 
     private String name;
 
+    private String igdbMatchStatus;
+
     @OneToMany(mappedBy = "game")
     private Set<IgdbCandidate> igdbCandidates = new HashSet<>();
 

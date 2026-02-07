@@ -4,7 +4,7 @@ import re
 import unicodedata
 
 
-def compute_score(game_name: str, candidate_name: str) -> int:
+def compute_match_score(game_name: str, candidate_name: str) -> int:
     """Computes F1‑based similarity score between game and candidate name"""
 
     def normalize(s: str) -> str:

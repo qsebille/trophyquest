@@ -30,7 +30,7 @@ public class IgdbCandidateController {
             @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
     ) {
-        return this.igdbCandidateService.searchPendingMappings(pageNumber, pageSize);
+        return this.igdbCandidateService.searchMappingToValidate(pageNumber, pageSize);
     }
 
     @PostMapping("/{gameId}/candidate/{igdbGameId}/validate")

@@ -4,6 +4,21 @@ from igdb import client
 
 
 def search_games_by_title(search_query, twitch_client_id):
+    """
+    Searches for games by title using the IGDB (Internet Game Database) API.
+
+    This function takes a search query and a Twitch client ID, sends a request to the IGDB to search
+    for games matching the query, and retrieves a list of games that match the specified criteria.
+    The query filters games by accepted platforms and game types, includes metadata such as genres,
+    themes, collections, videos, company data, and ensures the games have no parent version.
+
+    :param search_query: The title or partial title of the game to search for.
+    :type search_query: str
+    :param twitch_client_id: The Client ID associated with the Twitch API for authentication and authorization.
+    :type twitch_client_id: str
+    :return: A list of games matching the search query, including rich meta-information.
+    :rtype: list of dict
+    """
     token = client.get_igdb_token()
 
     accepted_platforms = [

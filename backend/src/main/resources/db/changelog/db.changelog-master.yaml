@@ -28,3 +28,7 @@ databaseChangeLog:
   - include: { file: changesets/004-setup-basic-views/03-create-played-trophy-suite-search-item-view.yaml, relativeToChangelogFile: true }
 
   - include: { file: changesets/005-add-indices/01-add-performance-indices.yaml, relativeToChangelogFile: true }
+
+  - include: { file: changesets/006-improved-igdb-matching/01-clean-igdb-data.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/006-improved-igdb-matching/02-add-psn-game-igdb-match-status-column.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/006-improved-igdb-matching/03-drop-unique-constraints_psn_game_igdb_game_id.yaml, relativeToChangelogFile: true }
