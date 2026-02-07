@@ -1,5 +1,6 @@
 package fr.trophyquest.backend.service;
 
+import fr.trophyquest.backend.api.dto.game.TrophySuiteGameDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
 import fr.trophyquest.backend.api.mapper.TrophySuiteMapper;
@@ -43,6 +44,10 @@ public class TrophySuiteService {
         } else {
             return this.trophyRepository.fetchPlayerTrophiesForTrophySuite(trophySuiteId, playerId.get());
         }
+    }
+
+    public TrophySuiteGameDTO fetchGameDetails(UUID trophySuiteId) {
+        return null;
     }
 
 }
