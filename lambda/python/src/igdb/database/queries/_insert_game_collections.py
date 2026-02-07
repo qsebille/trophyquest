@@ -1,4 +1,4 @@
-def insert_game_collections(connection, game_collections):
+def insert_game_collections(game_collections, connection):
     cursor = connection.cursor()
     query = """
             insert into app.igdb_game_collection (game_id, collection_id)

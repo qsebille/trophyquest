@@ -1,4 +1,4 @@
-def insert_games(connection, games):
+def insert_games(games, connection):
     cursor = connection.cursor()
     fields = [
         'summary',

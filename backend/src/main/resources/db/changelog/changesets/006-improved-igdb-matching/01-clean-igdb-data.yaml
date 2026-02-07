@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-improved-igdb-matching/01-clean-igdb-data
+      author: Quentin Sebille
+      changes:
+        - sql:
+            sql: |
+              update app.psn_game
+              set igdb_game_id = NULL
+              where igdb_game_id is not null;
+              
+              delete from app.igdb_game_collection;
+              delete from app.igdb_game_company;
+              delete from app.igdb_collection;
+              delete from app.igdb_company;
+              delete from app.igdb_candidate;
+              delete from app.igdb_game;

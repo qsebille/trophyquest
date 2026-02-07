@@ -1,7 +1,7 @@
 from typing import Any
 
 
-def build_app_collections(candidate_list: list[dict[str, Any]]):
+def build_igdb_collections(candidate_list: list[dict[str, Any]]):
     collections = set()
 
     for candidate in candidate_list:

@@ -10,6 +10,7 @@ _token_exp = 0
 
 
 def get_igdb_token():
+    """Gets cached or new IGDB access token"""
     global _token, _token_exp
     now = int(time.time())
 

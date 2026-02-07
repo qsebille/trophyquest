@@ -3,6 +3,7 @@ package fr.trophyquest.backend.service;
 import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingDTO;
 import fr.trophyquest.backend.api.mapper.IgdbCandidateMapper;
+import fr.trophyquest.backend.constants.GameMatchingStatus;
 import fr.trophyquest.backend.domain.entity.Game;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import fr.trophyquest.backend.repository.GameRepository;
@@ -37,9 +38,12 @@ public class IgdbCandidateService {
         this.candidateMapper = candidateMapper;
     }
 
-    public SearchDTO<IgdbMappingDTO> searchPendingMappings(int pageNumber, int pageSize) {
+    /**
+     * Searches and maps games requiring validation
+     */
+    public SearchDTO<IgdbMappingDTO> searchMappingToValidate(int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
-        Page<UUID> gameUuids = this.gameRepository.findGameIdsHavingPendingCandidate(pageRequest);
+        Page<UUID> gameUuids = this.gameRepository.findGamesWithValidationRequired(pageRequest);
         List<Game> games = this.gameRepository.fetchGamesWithCandidatesByIds(gameUuids.getContent());
 
         List<IgdbMappingDTO> gamesWithCandidates = games.stream()
@@ -56,6 +60,7 @@ public class IgdbCandidateService {
             Game game = this.gameRepository.getReferenceById(gameId);
             IgdbGame igdbGame = this.igdbGameRepository.getReferenceById(igdbGameId);
             game.setIgdbGame(igdbGame);
+            game.setIgdbMatchStatus(GameMatchingStatus.MATCHED.getValue());
             this.gameRepository.save(game);
             this.igdbCandidateRepository.updateStatusAfterValidation(gameId, igdbGameId);
             return true;
@@ -68,6 +73,9 @@ public class IgdbCandidateService {
     @Transactional
     public Boolean rejectAllPendingCandidates(UUID gameId) {
         try {
+            Game game = this.gameRepository.getReferenceById(gameId);
+            game.setIgdbMatchStatus(GameMatchingStatus.ALL_REFUSED.getValue());
+            this.gameRepository.save(game);
             this.igdbCandidateRepository.updateStatusToRejected(gameId);
             return true;
         } catch (Exception e) {

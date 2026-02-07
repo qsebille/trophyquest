@@ -1,4 +1,4 @@
-def insert_companies(connection, companies):
+def insert_companies(companies, connection):
     cursor = connection.cursor()
     query = """
             insert into app.igdb_company (id, name, country_code)
