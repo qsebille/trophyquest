@@ -4,17 +4,19 @@ import {EarnedTrophy} from "../../core/api/dtos/trophy/earned-trophy";
 import {LoadingStatus} from "../../core/models/loading-status.enum";
 import {TrophySuiteApiService} from "../../core/api/services/trophy-suite-api.service";
 import {forkJoin} from "rxjs";
+import {EMPTY_GAME, Game} from "../../core/api/dtos/game/game";
 
 @Injectable({
     providedIn: 'root',
 })
 export class TrophySuiteStoreService {
     private readonly _trophySuite = signal<TrophySuite>(EMPTY_TROPHY_SUITE)
-    private readonly _trophies = signal<EarnedTrophy[]>([])
-    private readonly _status = signal<LoadingStatus>(LoadingStatus.NONE)
-
     readonly trophySuite = this._trophySuite.asReadonly()
+    private readonly _trophies = signal<EarnedTrophy[]>([])
     readonly trophies = this._trophies.asReadonly()
+    private readonly _game = signal<Game>(EMPTY_GAME)
+    readonly game = this._game.asReadonly()
+    private readonly _status = signal<LoadingStatus>(LoadingStatus.NONE)
     readonly status = this._status.asReadonly()
 
     constructor(private readonly _trophySuiteApiService: TrophySuiteApiService) {
@@ -30,11 +32,13 @@ export class TrophySuiteStoreService {
         this._status.set(LoadingStatus.LOADING);
         forkJoin({
             trophySuite: this._trophySuiteApiService.fetch(trophySuiteId),
-            trophies: this._trophySuiteApiService.fetchTrophies(trophySuiteId, playerId)
+            trophies: this._trophySuiteApiService.fetchTrophies(trophySuiteId, playerId),
+            game: this._trophySuiteApiService.fetchGame(trophySuiteId),
         }).subscribe({
-            next: ({trophySuite, trophies}) => {
+            next: ({trophySuite, trophies, game}) => {
                 this._trophySuite.set(trophySuite);
                 this._trophies.set(trophies);
+                this._game.set(game);
                 this._status.set(LoadingStatus.FULLY_LOADED);
             },
             error: error => {
