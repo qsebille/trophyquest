@@ -15,13 +15,13 @@ headers = {
     "Accept": "application/json",
 }
 response = requests.post(
-    f"{client.IGDB_BASE}/game_types"
-    "fields type; sort id;",
+    url=f"{client.IGDB_BASE}/artwork_types",
+    data="fields id,name,slug; limit 500; sort id asc;",
     headers=headers,
     timeout=15
 )
 
 if not response.ok:
-    raise RuntimeError("IGDB error")
+    raise RuntimeError("IGDB error", response.status_code, response.text)
 
 print(json.dumps(response.json(), indent=2))

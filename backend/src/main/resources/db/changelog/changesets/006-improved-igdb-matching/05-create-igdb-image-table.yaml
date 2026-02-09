@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-improved-igdb-matching/05-create-igdb-image-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: igdb_image
+            columns:
+              - column: { name: igdb_game_id, type: bigint, constraints: { nullable: false, foreignKeyName: fk_igdb_game, references: app.igdb_game(id) } }
+              - column: { name: igdb_url, type: text, constraints: { nullable: false } }
+              - column: { name: aws_url, type: text }
+              - column: { name: image_type, type: text }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: app
+            tableName: igdb_image
+            columnNames: igdb_game_id,igdb_url
+            constraintName: pk_igdb_image
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_igdb_image_set_updated_at
+                            BEFORE UPDATE ON app.igdb_image
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

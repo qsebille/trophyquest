@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-improved-igdb-matching/06-drop-igdb-game-image-columns
+      author: Quentin Sebille
+      changes:
+        - dropColumn: { schemaName: app, tableName: igdb_game, columnName: cover }
+        - dropColumn: { schemaName: app, tableName: igdb_game, columnName: screenshots }
+        - dropColumn: { schemaName: app, tableName: igdb_game, columnName: artwork_with_logo }
+        - dropColumn: { schemaName: app, tableName: igdb_game, columnName: artwork_without_logo }

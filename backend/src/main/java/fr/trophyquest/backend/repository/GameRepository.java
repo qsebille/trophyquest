@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -29,6 +30,7 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                     join fetch g.igdbCandidates c
                     join fetch c.candidate ig
                     join fetch g.images i
+                    join fetch ig.images igi
                 where g.id in :ids
                 order by g.id
             """)
@@ -44,5 +46,18 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                 )
             """)
     long countRecentlyPlayed(@Param("limitDate") Instant limitDate);
+
+    @Query("""
+                select g
+                from Game g
+                    join fetch g.images i
+                where g.id = (
+                    select distinct e.gameId
+                    from EditionTrophySuite ets
+                    join Edition e on e.id = ets.id.editionId
+                    where ets.id.trophySuiteId = :trophySuiteId
+                )
+            """)
+    Optional<Game> fetchGameDetailsForTrophySuite(@Param("trophySuiteId") UUID trophySuiteId);
 
 }

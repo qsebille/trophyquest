@@ -1,9 +1,13 @@
+<img alt="Game banner" [src]="gameBannerImage()" class="banner"/>
+
 <div class="trophy-suite-summary">
-    <img alt="" class="cover" src="{{trophySuite().image}}"/>
+    <img [alt]="gameDetails().name" class="cover" [ngSrc]="masterImage()" [height]="100" [width]="100"/>
     <div class="summary-content">
         <div class="title-and-platform">
-            <span class="title">{{ trophySuite().title }}</span>
-            <!-- todo : platforms -->
+            <span class="title">{{ gameDetails().name }}</span>
+            @for (platform of trophySuite().platforms; track platform) {
+                <tq-platform-label [platform]="platform" class="platform"/>
+            }
         </div>
         <div class="trophy-count-wrapper">
             <tq-trophy-count-displayer [iconSizePx]="32"

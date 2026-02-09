@@ -39,14 +39,6 @@ public class IgdbGame {
 
     private List<String> themes;
 
-    private List<String> screenshots;
-
-    private String cover;
-
-    private String artworkWithLogo;
-
-    private String artworkWithoutLogo;
-
     private String psnWebsite;
 
     private String officialWebsite;
@@ -68,5 +60,8 @@ public class IgdbGame {
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<IgdbGameCompany> companies = new HashSet<>();
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<IgdbImage> images = new HashSet<>();
 
 }

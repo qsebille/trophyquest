@@ -17,4 +17,5 @@ Thumbs.db
 *.patch
 *.diff
 
+# Build
 out/

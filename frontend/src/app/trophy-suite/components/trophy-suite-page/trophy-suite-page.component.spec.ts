@@ -4,6 +4,7 @@ import {TrophySuitePageComponent} from './trophy-suite-page.component';
 import {ActivatedRoute} from "@angular/router";
 import {TrophySuite} from "../../../core/api/dtos/trophy-suite/trophy-suite";
 import {TrophySuiteStoreService} from "../../stores/trophy-suite-store.service";
+import {TrophySuiteGameDetails} from "../../../core/api/dtos/game/trophy-suite-game-details";
 
 describe('TrophySuitePageComponent', () => {
     let component: TrophySuitePageComponent;
@@ -16,8 +17,12 @@ describe('TrophySuitePageComponent', () => {
         title: 'Trophy Suite 123',
         platforms: ['ps5'],
         image: 'ts.png'
-    } as TrophySuite;
-    const mockPlayerId = 'player-123';
+    } as TrophySuite
+    const game = {
+        id: 'game-123',
+        name: 'Game 123',
+    } as TrophySuiteGameDetails
+    const mockPlayerId = 'player-123'
 
     beforeEach(async () => {
         trophySuiteStoreServiceSpy = jasmine.createSpyObj('TrophySuiteStoreService', [
@@ -25,6 +30,7 @@ describe('TrophySuitePageComponent', () => {
                 'retrieve',
                 'trophySuite',
                 'trophies',
+                'game',
                 'status',
             ]
         );
@@ -33,8 +39,9 @@ describe('TrophySuitePageComponent', () => {
         const routeQueryParamMap = new Map<string, string>();
         routeQueryParamMap.set('playerId', mockPlayerId);
 
-        trophySuiteStoreServiceSpy.trophySuite.and.returnValue(trophySuite);
-        trophySuiteStoreServiceSpy.trophies.and.returnValue([]);
+        trophySuiteStoreServiceSpy.trophySuite.and.returnValue(trophySuite)
+        trophySuiteStoreServiceSpy.gameDetails.and.returnValue(game)
+        trophySuiteStoreServiceSpy.trophies.and.returnValue([])
 
         await TestBed.configureTestingModule({
             imports: [TrophySuitePageComponent],
@@ -50,7 +57,8 @@ describe('TrophySuitePageComponent', () => {
         fixture = TestBed.createComponent(TrophySuitePageComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
-    });
+    })
 
-    it('should create', () => expect(component).toBeTruthy());
+    it('should create', () => expect(component).toBeTruthy())
+
 });

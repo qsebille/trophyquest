@@ -51,7 +51,10 @@ public class IgdbCandidateService {
                 .toList();
         long total = gameUuids.getTotalElements();
 
-        return SearchDTO.<IgdbMappingDTO>builder().content(gamesWithCandidates).total(total).build();
+        return SearchDTO.<IgdbMappingDTO>builder()
+                .content(gamesWithCandidates)
+                .total(total)
+                .build();
     }
 
     @Transactional
