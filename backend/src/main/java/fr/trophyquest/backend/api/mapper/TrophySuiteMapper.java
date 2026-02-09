@@ -6,6 +6,7 @@ import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
 import fr.trophyquest.backend.domain.entity.Game;
 import fr.trophyquest.backend.domain.entity.GameImage;
 import fr.trophyquest.backend.domain.entity.TrophySuite;
+import fr.trophyquest.backend.domain.entity.igdb.IgdbImage;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,6 +29,14 @@ public class TrophySuiteMapper {
                 .stream()
                 .map(this::toGameImageDTO)
                 .collect(Collectors.toList());
+
+        if (null != game.getIgdbGame()) {
+            images.addAll(game.getIgdbGame().getImages()
+                                  .stream()
+                                  .map(this::toGameImageDTO)
+                                  .toList());
+        }
+
         return TrophySuiteGameDTO.builder()
                 .id(game.getId())
                 .name(game.getName())
@@ -35,10 +44,19 @@ public class TrophySuiteMapper {
                 .build();
     }
 
+    private GameImageDTO toGameImageDTO(IgdbImage image) {
+        return GameImageDTO.builder()
+                .imageUrl(image.getImageUrl())
+                .imageType(image.getImageType())
+                .source("IGDB")
+                .build();
+    }
+
     private GameImageDTO toGameImageDTO(GameImage image) {
         return GameImageDTO.builder()
                 .imageUrl(image.getUrl())
                 .imageType(image.getType())
+                .source("PSN")
                 .build();
     }
 }

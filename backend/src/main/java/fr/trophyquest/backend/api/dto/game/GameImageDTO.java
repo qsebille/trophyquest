@@ -5,6 +5,7 @@ import lombok.Builder;
 @Builder
 public record GameImageDTO(
         String imageUrl,
-        String imageType
+        String imageType,
+        String source
 ) {
 }

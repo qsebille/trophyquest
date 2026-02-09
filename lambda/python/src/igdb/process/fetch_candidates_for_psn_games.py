@@ -1,7 +1,7 @@
 from igdb import client
-
-from ._format_igdb_game import format_igdb_game
 from ._compute_match_score import compute_match_score
+from ._format_igdb_game import format_igdb_game
+
 
 def fetch_candidates_for_psn_games(psn_games, twitch_client_id):
     """
@@ -45,6 +45,9 @@ def fetch_candidates_for_psn_games(psn_games, twitch_client_id):
             else:
                 candidates.append(
                     {'psn_id': psn_game_id, 'igdb_id': igdb_game_id, 'score': score, 'status': 'WAITING_VALIDATION'}
+                )
+                match_statuses.append(
+                    {'psn_id': psn_game_id, 'igdb_id': None, 'status': 'VALIDATION_REQUIRED'}
                 )
         elif len(psn_game_candidates) > 1:
             igdb_games.extend([igdb_game for _, igdb_game, _ in psn_game_candidates])

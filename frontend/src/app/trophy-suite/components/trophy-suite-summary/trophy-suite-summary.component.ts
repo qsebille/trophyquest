@@ -7,7 +7,7 @@ import {EarnedTrophy} from "../../../core/api/dtos/trophy/earned-trophy";
 import {TrophyCountPerType} from "../../../core/models/dto/trophy-count-per-type";
 import {TrophySuiteGameDetails} from "../../../core/api/dtos/game/trophy-suite-game-details";
 import {PlatformLabelComponent} from "../../../core/components/platform-label/platform-label.component";
-import {NgOptimizedImage} from "@angular/common";
+import {JsonPipe, NgOptimizedImage} from "@angular/common";
 
 @Component({
     selector: 'tq-trophy-suite-summary',
@@ -15,6 +15,8 @@ import {NgOptimizedImage} from "@angular/common";
         TrophyCountDisplayerComponent,
         PlatformLabelComponent,
         NgOptimizedImage,
+        JsonPipe,
+
     ],
     templateUrl: './trophy-suite-summary.component.html',
     styleUrl: './trophy-suite-summary.component.scss',
@@ -33,19 +35,16 @@ export class TrophySuiteSummaryComponent {
         } as TrophyCountPerType
     ));
 
-    private readonly _masterImage = computed(() => {
-        return this.gameDetails().images.find(i => i.imageType === 'MASTER')?.imageUrl;
-    });
+    private readonly _igdbImages = computed(() => this.gameDetails().images.filter(i => i.source === 'IGDB'));
+    private readonly _psnImages = computed(() => this.gameDetails().images.filter(i => i.source === 'PSN'));
 
-    private readonly _bannerImage = computed(() => {
-        return this.gameDetails().images.find(i => i.imageType === 'BANNER')?.imageUrl;
-    });
+    private readonly _psnMasterImage = computed(() => this._psnImages().find(i => i.imageType === 'MASTER')?.imageUrl);
+    private readonly _artworkWithLogo = computed(() => this._igdbImages().find(i => i.imageType === 'artwork:key-artwork-with-logo')?.imageUrl);
+    private readonly _artworkWithoutLogo = computed(() => this._igdbImages().find(i => i.imageType === 'artwork:key-artwork-without-logo')?.imageUrl);
+    private readonly _screenshot = computed(() => this._igdbImages().find(i => i.imageType === 'screenshot')?.imageUrl);
 
-    readonly masterImage = computed(() => {
-        return this._masterImage() ?? '';
-    });
-
+    readonly masterImage = computed(() => this._psnMasterImage() ?? '');
     readonly gameBannerImage = computed(() => {
-        return this._bannerImage() ?? this.masterImage() ?? '';
-    })
+        return this._artworkWithoutLogo() ?? this._artworkWithLogo() ?? this._screenshot() ?? this.masterImage() ?? '';
+    });
 }
