@@ -5,15 +5,16 @@ def select_psn_games_with_pending_match_status(nb_game_to_select=20):
     connection = postgres.get_connection()
     cursor = connection.cursor()
     try:
-        cursor.execute(
-            f"""
+        query = f"""
             select g.id, g.name
             from app.psn_game g
             where g.igdb_match_status = 'PENDING'
             order by g.id
             limit {nb_game_to_select};
             """
-        )
+
+        print(f"Executing query: {query}")
+        cursor.execute(query)
         return cursor.fetchall()
     finally:
         try:

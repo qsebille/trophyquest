@@ -12,5 +12,6 @@ def update_psn_games_match_data(match_statuses, connection):
             where g.id = v.id;
             """
 
+    print(f"Executing query: {query}")
     cursor.execute(query)
     return cursor.rowcount
