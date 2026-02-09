@@ -2,8 +2,9 @@ def insert_game_companies(game_companies, connection):
     cursor = connection.cursor()
     query = """
             insert into app.igdb_game_company (game_id, company_id, role)
-            values (%s, %s, %s)
-            on conflict (game_id, company_id) do nothing;
+            values (%s, %s, %s) on conflict (game_id, company_id) do nothing;
             """
+
+    print(f"Executing query: {query}")
     cursor.executemany(query, game_companies)
     return cursor.rowcount

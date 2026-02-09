@@ -4,8 +4,9 @@ def insert_candidates(candidates, connection):
     cursor = connection.cursor()
     query = """
             insert into app.igdb_candidate (psn_game_id, igdb_game_id, score, status)
-            values (%s, %s, %s, %s)
-            on conflict (psn_game_id, igdb_game_id) do nothing;
+            values (%s, %s, %s, %s) on conflict (psn_game_id, igdb_game_id) do nothing;
             """
+
+    print(f"Executing query: {query}")
     cursor.executemany(query, candidates_tuple_list)
     return cursor.rowcount

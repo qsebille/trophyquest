@@ -21,5 +21,7 @@ def insert_games(games, connection):
             values (%s, %s, {placeholders})
             on conflict (id) do nothing;
             """
+
+    print(f"Executing query: {query}")
     cursor.executemany(query, games)
     return cursor.rowcount
