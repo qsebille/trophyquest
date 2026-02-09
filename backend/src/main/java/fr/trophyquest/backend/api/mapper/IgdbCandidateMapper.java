@@ -7,6 +7,7 @@ import fr.trophyquest.backend.constants.IgdbGameImageType;
 import fr.trophyquest.backend.domain.entity.Game;
 import fr.trophyquest.backend.domain.entity.GameImage;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
+import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbImage;
 import org.springframework.stereotype.Component;
 
@@ -15,19 +16,25 @@ import java.util.List;
 
 @Component
 public class IgdbCandidateMapper {
-    private IgdbCandidateDTO toDTO(IgdbCandidate entity) {
-        String coverUrl = entity.getCandidate().getImages().stream()
-                .filter(ig -> ig.getImageType().equals(IgdbGameImageType.COVER))
+
+    private String findCoverUrl(IgdbGame game) {
+        return game.getImages().stream()
+                .filter(ig -> IgdbGameImageType.COVER.getValue().equals(ig.getImageType()))
                 .map(IgdbImage::getImageUrl)
                 .findFirst()
                 .orElse(null);
+    }
+
+    private IgdbCandidateDTO toDTO(IgdbCandidate entity) {
+        IgdbGame igdbGame = entity.getCandidate();
+        String coverUrl = findCoverUrl(igdbGame);
 
         return IgdbCandidateDTO.builder()
                 .id(entity.getId().getCandidateId())
-                .name(entity.getCandidate().getName())
-                .gameType(entity.getCandidate().getGameType())
+                .name(igdbGame.getName())
+                .gameType(igdbGame.getGameType())
                 .cover(coverUrl)
-                .releaseDate(entity.getCandidate().getReleaseDate())
+                .releaseDate(igdbGame.getReleaseDate())
                 .score(entity.getScore())
                 .build();
     }

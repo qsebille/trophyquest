@@ -19,6 +19,7 @@ import org.hibernate.annotations.Formula;
 public class IgdbImage {
 
     @EmbeddedId
+    @EqualsAndHashCode.Include
     private IgdbImageId id;
 
     @Formula("coalesce(aws_url, igdb_url)")

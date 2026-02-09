@@ -3,6 +3,7 @@ package fr.trophyquest.backend.repository;
 import fr.trophyquest.backend.domain.entity.Game;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,13 +25,10 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
             """)
     Page<UUID> findGamesWithValidationRequired(Pageable pageable);
 
+    @EntityGraph(attributePaths = {"images", "igdbCandidates.candidate.images"})
     @Query("""
                 select distinct g
                 from Game g
-                    join fetch g.igdbCandidates c
-                    join fetch c.candidate ig
-                    join fetch g.images i
-                    join fetch ig.images igi
                 where g.id in :ids
                 order by g.id
             """)
