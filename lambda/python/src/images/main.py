@@ -51,6 +51,7 @@ def run_image_uploader(nb_psn_images=2):
 
         except Exception as e:
             print(f"Error processing image {image_id}: {e}")
+            raise
 
     return results
 
