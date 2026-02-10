@@ -8,7 +8,7 @@ on:
       - "lambda/python/**"
       - ".github/workflows/lambda-python-*.yml"
       - ".github/actions/get-version/action.yml"
-      - ".github/actions/package-lambda/action.yml"
+      - "../actions/package-lambda-python/action.yml"
       - ".github/actions/deploy-lambda/action.yml"
   workflow_dispatch:
 
@@ -42,10 +42,9 @@ jobs:
           service_name: lambda-python
 
       - name: Package Lambda
-        uses: ./.github/actions/package-lambda
+        uses: ./.github/actions/package-lambda-python
         with:
           zip_path: lambda.zip
-          lambda_type: python
 
       - name: Deploy to AWS
         uses: ./.github/actions/deploy-lambda
