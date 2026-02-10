@@ -19,7 +19,7 @@ describe('NavbarComponent', () => {
             providers: [
                 provideRouter([
                     {path: 'players', component: DummyComponent},
-                    {path: 'candidate-validation', component: DummyComponent},
+                    {path: 'igdb-mapping', component: DummyComponent},
                 ]),
             ],
         })
@@ -56,6 +56,6 @@ describe('NavbarComponent', () => {
         playersLink.triggerEventHandler('click', {button: 0});
         tick();
 
-        expect(router.url).toBe('/candidate-validation');
+        expect(router.url).toBe('/igdb-mapping');
     }));
 });

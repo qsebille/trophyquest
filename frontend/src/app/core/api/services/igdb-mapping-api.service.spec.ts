@@ -1,10 +1,10 @@
 import {TestBed} from '@angular/core/testing';
 
-import {IgdbCandidateApiService} from './igdb-candidate-api.service';
+import {IgdbMappingApiService} from './igdb-mapping-api.service';
 import {HttpClient} from "@angular/common/http";
 
-describe('IgdbCandidateApiService', () => {
-    let service: IgdbCandidateApiService;
+describe('IgdbMappingApiService', () => {
+    let service: IgdbMappingApiService;
 
     const httpSpy = jasmine.createSpyObj('HttpClient', ['get']);
 
@@ -12,7 +12,7 @@ describe('IgdbCandidateApiService', () => {
         TestBed.configureTestingModule({
             providers: [{provide: HttpClient, useValue: httpSpy}]
         });
-        service = TestBed.inject(IgdbCandidateApiService);
+        service = TestBed.inject(IgdbMappingApiService);
     });
 
     it('should be created', () => {

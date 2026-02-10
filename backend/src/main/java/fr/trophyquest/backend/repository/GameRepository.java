@@ -1,5 +1,6 @@
 package fr.trophyquest.backend.repository;
 
+import fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO;
 import fr.trophyquest.backend.domain.entity.Game;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,5 +58,17 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                 )
             """)
     Optional<Game> fetchGameDetailsForTrophySuite(@Param("trophySuiteId") UUID trophySuiteId);
+
+    @Query("""
+                select new fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO(
+                    sum(case when g.igdbMatchStatus = 'PENDING' then 1 else 0 end),
+                    sum(case when g.igdbMatchStatus = 'VALIDATION_REQUIRED' then 1 else 0 end),
+                    sum(case when g.igdbMatchStatus = 'NO_FOUND_CANDIDATE' then 1 else 0 end),
+                    sum(case when g.igdbMatchStatus = 'ALL_REFUSED' then 1 else 0 end),
+                    sum(case when g.igdbMatchStatus = 'MATCHED' then 1 else 0 end)
+                )
+                from Game g
+            """)
+    IgdbMappingStatsDTO fetchIgdbMappingStats();
 
 }

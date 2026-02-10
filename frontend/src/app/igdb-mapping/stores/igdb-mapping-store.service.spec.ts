@@ -1,7 +1,7 @@
 import {TestBed} from '@angular/core/testing';
 
 import {IgdbMappingStoreService} from './igdb-mapping-store.service';
-import {IgdbCandidateApiService} from "../../core/api/services/igdb-candidate-api.service";
+import {IgdbMappingApiService} from "../../core/api/services/igdb-mapping-api.service";
 
 describe('IgdbMappingStoreService', () => {
     let store: IgdbMappingStoreService;
@@ -14,7 +14,7 @@ describe('IgdbMappingStoreService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [{provide: IgdbCandidateApiService, useValue: igdbCandidateApiServiceSpy}]
+            providers: [{provide: IgdbMappingApiService, useValue: igdbCandidateApiServiceSpy}]
         });
         store = TestBed.inject(IgdbMappingStoreService);
     });

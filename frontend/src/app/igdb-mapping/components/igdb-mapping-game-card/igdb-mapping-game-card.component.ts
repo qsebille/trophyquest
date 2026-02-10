@@ -2,7 +2,7 @@ import {Component, computed, input, output} from '@angular/core';
 import {MatButtonModule} from "@angular/material/button";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {IgdbMappingCandidateCardComponent} from "../igdb-mapping-candidate-card/igdb-mapping-candidate-card.component";
-import {IgdbMapping} from "../../../core/api/dtos/candidate/igdb-mapping";
+import {IgdbMapping} from "../../../core/api/dtos/igdb/igdb-mapping";
 import {ValidateCandidateStatus} from "../../../core/models/validate-candidate-status";
 
 @Component({
