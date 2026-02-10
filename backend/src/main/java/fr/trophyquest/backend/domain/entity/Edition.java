@@ -1,5 +1,6 @@
 package fr.trophyquest.backend.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -27,5 +28,8 @@ public class Edition {
     private String category;
 
     private String service;
+
+    @Column(name = "psn_game_id")
+    private UUID gameId;
 
 }

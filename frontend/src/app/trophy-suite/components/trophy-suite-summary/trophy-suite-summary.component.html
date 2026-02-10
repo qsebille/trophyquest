@@ -1,15 +1,50 @@
-<div class="trophy-suite-summary">
-    <img alt="" class="cover" src="{{trophySuite().image}}"/>
-    <div class="summary-content">
-        <div class="title-and-platform">
-            <span class="title">{{ trophySuite().title }}</span>
-            <!-- todo : platforms -->
-        </div>
+@if (bannerImageList().length > 0) {
+    <ngb-carousel [showNavigationIndicators]="false" class="banner-carousel">
+        @for (image of bannerImageList(); track image) {
+            <ng-template ngbSlide>
+                <div class="picsum-img-wrapper">
+                    <img [src]="image" alt="Game banner" class="banner-img"/>
+                </div>
+            </ng-template>
+        }
+    </ngb-carousel>
+} @else {
+    <div class="banner-placeholder"></div>
+}
+
+<div class="summary-block">
+    <div class="line-1">
+        <span class="game-name">{{ gameDetails().name }}</span>
+        @for (platform of trophySuite().platforms; track platform) {
+            <tq-platform-label [platform]="platform" class="platform"/>
+        }
+    </div>
+    <div class="line-2">
+        <img [alt]="gameDetails().name" class="game-image" [src]="masterImage()"/>
         <div class="trophy-count-wrapper">
-            <tq-trophy-count-displayer [iconSizePx]="32"
-                                       [labelOrientation]="'vertical'"
-                                       [textSizePx]="18"
-                                       [trophyCount]="trophyCount()"/>
+            @for (trophyType of trophyTypes; track trophyType) {
+                <div class="trophy-count">
+                    <span class="label">{{ getTrophyCount(trophyType) }}</span>
+                    <img alt="Trophy icon" class="icon" ngSrc="/assets/icons/trophy-{{trophyType}}.png" [height]="24"
+                         [width]="24"/>
+                </div>
+            }
+        </div>
+        <div class="game-info">
+            <p class="summary">{{ gameDetails().summary }}</p>
+            <div class="genres">
+                <b>Genres: </b>
+                @for (genre of gameDetails().genres; track genre; let i = $index) {
+                    <span class="genre">{{ genre }}</span>
+                    @if (i !== gameDetails().genres.length - 1) {
+                        <span>, </span>
+                    }
+                }
+            </div>
+            <div class="release-date">
+                <b>Release Date: </b>
+                {{ gameDetails().releaseDate | date:'yyyy-MM-dd' }}
+            </div>
         </div>
     </div>
 </div>

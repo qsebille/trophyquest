@@ -9,7 +9,6 @@ public record IgdbCandidateDTO(
         Long id,
         String name,
         String gameType,
-        String website,
         String cover,
         Date releaseDate,
         Long score

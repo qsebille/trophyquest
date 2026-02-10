@@ -2,32 +2,33 @@
     @if (isLoading()) {
         <tq-spinner-container/>
     } @else if (hasFailed()) {
-        <tq-error-message [errorMessage]="'Failed to load game details'"
-                          class="trophy-suite-page--error-message"
+        <tq-error-message (retry)="loadData()"
+                          [errorMessage]="'Failed to load game details'"
                           [hasRetryButton]="true"
-                          (retry)="loadData()"/>
+                          class="trophy-suite-page--error-message"/>
     } @else {
-        <tq-trophy-suite-summary [style.animationDelay.ms]="100"
-                                 animate.enter="block-enter"
-                                 [trophySuite]="trophySuite()"
+        <tq-trophy-suite-summary [gameDetails]="gameDetails()"
+                                 [style.animationDelay.ms]="100"
                                  [trophies]="trophies()"
+                                 [trophySuite]="trophySuite()"
+                                 animate.enter="block-enter"
                                  class="trophy-suite-page--summary"/>
 
         <tq-trophy-suite-timeline
-                class="trophy-suite-page--timeline"
+                [trophies]="trophies()"
                 [trophySuite]="trophySuite()"
-                [trophies]="trophies()"/>
+                class="trophy-suite-page--timeline"/>
 
-        <tq-trophy-suite-trophy-filters [filters]="trophyFilters()"
-                                        [showEarnedTrophyFilter]="hasPlayerData()"
-                                        (filterChange)="toggleEarnedFilter($event)"
+        <tq-trophy-suite-trophy-filters (filterChange)="toggleEarnedFilter($event)"
                                         (showHiddenTrophyChange)="toggleShowHiddenTrophies($event)"
+                                        [filters]="trophyFilters()"
+                                        [showEarnedTrophyFilter]="hasPlayerData()"
                                         class="trophy-suite-page--filters"/>
 
-        <tq-trophy-suite-trophy-list [trophies]="trophies()"
-                                     class="trophy-suite-page--trophy-list"
+        <tq-trophy-suite-trophy-list [style.animationDelay.ms]="200"
+                                     [trophies]="trophies()"
                                      [trophyFilters]="trophyFilters()"
-                                     [style.animationDelay.ms]="200"
-                                     animate.enter="block-enter"/>
+                                     animate.enter="block-enter"
+                                     class="trophy-suite-page--trophy-list"/>
     }
 </div>

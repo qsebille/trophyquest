@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Formula;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,6 +23,8 @@ public class TrophySuite {
     private String name;
 
     private String version;
+
+    private List<String> platforms;
 
     @Formula("coalesce(aws_image_url, psn_image_url)")
     private String image;

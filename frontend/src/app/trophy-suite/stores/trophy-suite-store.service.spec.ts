@@ -6,6 +6,7 @@ import {TrophySuite} from "../../core/api/dtos/trophy-suite/trophy-suite";
 import {of} from "rxjs";
 import {EarnedTrophy} from "../../core/api/dtos/trophy/earned-trophy";
 import {LoadingStatus} from "../../core/models/loading-status.enum";
+import {TrophySuiteGameDetails} from "../../core/api/dtos/game/trophy-suite-game-details";
 
 describe('TrophySuiteStoreService', () => {
     let service: TrophySuiteStoreService;
@@ -13,7 +14,7 @@ describe('TrophySuiteStoreService', () => {
     let trophySuiteApiServiceSpy: jasmine.SpyObj<TrophySuiteApiService>;
 
     beforeEach(() => {
-        trophySuiteApiServiceSpy = jasmine.createSpyObj('TrophySuiteApiService', ['fetch', 'fetchTrophies']);
+        trophySuiteApiServiceSpy = jasmine.createSpyObj('TrophySuiteApiService', ['fetch', 'fetchTrophies', 'fetchGame']);
         TestBed.configureTestingModule({
             providers: [{provide: TrophySuiteApiService, useValue: trophySuiteApiServiceSpy}]
         });
@@ -32,13 +33,16 @@ describe('TrophySuiteStoreService', () => {
             {id: 'trophy-1', title: 'Trophy 1'} as EarnedTrophy,
             {id: 'trophy-1', title: 'Trophy 1'} as EarnedTrophy,
         ];
+        const mockGame = {id: 'game-123', name: 'Mock Game'} as TrophySuiteGameDetails;
         trophySuiteApiServiceSpy.fetch.and.returnValue(of(mockTrophySuite));
         trophySuiteApiServiceSpy.fetchTrophies.and.returnValue(of(mockEarnedTrophies));
+        trophySuiteApiServiceSpy.fetchGame.and.returnValue(of(mockGame));
 
         service.retrieve(mockTrophySuiteId, mockPlayerId);
 
         expect(trophySuiteApiServiceSpy.fetch).toHaveBeenCalledWith(mockTrophySuiteId);
         expect(trophySuiteApiServiceSpy.fetchTrophies).toHaveBeenCalledWith(mockTrophySuiteId, mockPlayerId);
+        expect(trophySuiteApiServiceSpy.fetchGame).toHaveBeenCalledWith(mockTrophySuiteId);
         expect(service.trophySuite()).toEqual(mockTrophySuite);
         expect(service.trophies()).toEqual(mockEarnedTrophies);
         expect(service.status()).toEqual(LoadingStatus.FULLY_LOADED);

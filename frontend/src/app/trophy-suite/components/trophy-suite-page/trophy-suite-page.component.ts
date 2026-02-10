@@ -26,6 +26,12 @@ export class TrophySuitePageComponent implements OnInit {
     private readonly _trophySuiteId: string;
     private readonly _playerId: string | null;
 
+    readonly trophySuite = computed(() => this._trophySuiteStore.trophySuite());
+    readonly trophies = computed(() => this._trophySuiteStore.trophies());
+    readonly gameDetails = computed(() => this._trophySuiteStore.gameDetails());
+    readonly isLoading = computed(() => this._trophySuiteStore.status() === LoadingStatus.LOADING);
+    readonly hasFailed = computed(() => this._trophySuiteStore.status() === LoadingStatus.ERROR);
+    readonly hasPlayerData = computed(() => this._playerId !== null);
     readonly trophyFilters = signal<TrophyFilters>({
         showHidden: false,
         earned: 'all',
@@ -38,12 +44,6 @@ export class TrophySuitePageComponent implements OnInit {
         this._trophySuiteId = this._route.snapshot.paramMap.get('trophySuiteId') ?? '';
         this._playerId = this._route.snapshot.queryParamMap.get('playerId');
     }
-
-    readonly trophySuite = computed(() => this._trophySuiteStore.trophySuite());
-    readonly trophies = computed(() => this._trophySuiteStore.trophies());
-    readonly isLoading = computed(() => this._trophySuiteStore.status() === LoadingStatus.LOADING);
-    readonly hasFailed = computed(() => this._trophySuiteStore.status() === LoadingStatus.ERROR);
-    readonly hasPlayerData = computed(() => this._playerId !== null);
 
     ngOnInit(): void {
         this._trophySuiteStore.reset();

@@ -22,6 +22,10 @@ public class GameImage {
     @EqualsAndHashCode.Include
     private UUID id;
 
+    private String psnUrl;
+
+    private String awsUrl;
+
     @Formula("coalesce(aws_url, psn_url)")
     private String url;
 

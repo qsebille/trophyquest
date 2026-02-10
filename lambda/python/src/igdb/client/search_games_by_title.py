@@ -40,7 +40,7 @@ def search_games_by_title(search_query, twitch_client_id):
             videos.video_id,
             websites.url, websites.type.id,
             cover.image_id, screenshots.image_id,
-            artworks.image_id, artworks.artwork_type.id,
+            artworks.image_id, artworks.artwork_type.slug,
             involved_companies.developer, involved_companies.publisher,
             involved_companies.company.name, involved_companies.company.country,
             game_type.type,

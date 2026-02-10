@@ -1,7 +1,6 @@
 package fr.trophyquest.backend.domain.entity.igdb;
 
-import fr.trophyquest.backend.domain.entity.Game;
-import fr.trophyquest.backend.domain.entity.igdb.embedded.IgdbCandidateId;
+import fr.trophyquest.backend.domain.entity.igdb.embedded.IgdbImageId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,29 +10,26 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Formula;
 
 @Entity
-@Table(name = "igdb_candidate")
+@Table(name = "igdb_image")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class IgdbCandidate {
+public class IgdbImage {
 
     @EmbeddedId
     @EqualsAndHashCode.Include
-    private IgdbCandidateId id;
+    private IgdbImageId id;
 
-    private Long score;
+    @Formula("coalesce(aws_url, igdb_url)")
+    private String imageUrl;
 
-    private String status;
+    private String imageType;
 
-    @MapsId("psnGameId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "psn_game_id", nullable = false)
-    private Game game;
-
-    @MapsId("candidateId")
+    @MapsId("igdbGameId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "igdb_game_id", nullable = false)
-    private IgdbGame candidate;
+    private IgdbGame game;
 
 }

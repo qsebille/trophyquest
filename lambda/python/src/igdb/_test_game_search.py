@@ -5,7 +5,7 @@ import dotenv
 
 from igdb import client
 
-search_query = "Hitman"
+search_query = "life is strange true colors"
 
 dotenv.load_dotenv()
 twitch_client_id = os.environ["TWITCH_CLIENT_ID"]

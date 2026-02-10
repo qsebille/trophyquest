@@ -6,7 +6,7 @@ from igdb import client
 
 
 def format_igdb_game(raw_game: dict[str, Any]):
-    def get_image_url(image_id: str, size: str = "t_cover_big") -> str:
+    def get_image_url(image_id: str, size: str) -> str:
         return f"https://images.igdb.com/igdb/image/upload/{size}/{image_id}.jpg"
 
     # Format genres and themes
@@ -20,20 +20,25 @@ def format_igdb_game(raw_game: dict[str, Any]):
     raw_game["themes"] = themes
 
     # Format images (cover, artworks, screenshots)
-    cover_image = raw_game.get("cover", {}).get("image_id")
-    raw_game["cover"] = get_image_url(cover_image) if cover_image else None
+    images = []
+    cover_image_id = raw_game.get("cover", {}).get("image_id")
+    if cover_image_id:
+        images.append({"url": get_image_url(cover_image_id, "t_cover_big"), "type": "cover"})
 
     for artwork in raw_game.get("artworks", []):
         url = get_image_url(artwork.get("image_id"), "t_720p")
-        if artwork.get("artwork_type", {}).get("id", "") == 3: raw_game["artwork_with_logo"] = url
-        if artwork.get("artwork_type", {}).get("id", "") == 2: raw_game["artwork_without_logo"] = url
-    raw_game.pop("artworks", None)
+        artwork_type = artwork.get("artwork_type", {}).get("slug", "")
+        image_type = f"artwork:{artwork_type}"
+        images.append({"url": url, "type": image_type})
 
-    screenshots = []
     for screenshot in raw_game.get("screenshots", []):
         url = get_image_url(screenshot.get("image_id"), "t_720p")
-        screenshots.append(url)
-    raw_game["screenshots"] = screenshots
+        images.append({"url": url, "type": "screenshot"})
+
+    raw_game["images"] = images
+    raw_game.pop("cover", None)
+    raw_game.pop("artworks", None)
+    raw_game.pop("screenshots", None)
 
     # Format websites
     for website in raw_game.get("websites", []):

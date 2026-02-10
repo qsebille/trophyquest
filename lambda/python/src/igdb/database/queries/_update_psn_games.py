@@ -2,7 +2,7 @@ def update_psn_games_match_data(match_statuses, connection):
     placeholders = []
     for s in match_statuses:
         igdb_id = s.get('igdb_id') if s.get('igdb_id') is not None else 'NULL'
-        placeholders.append(f"('{s['psn_id']}'::uuid, '{s['status']}', {igdb_id})")
+        placeholders.append(f"('{s['psn_id']}'::uuid, '{s['status']}', {igdb_id}::bigint)")
 
     cursor = connection.cursor()
     query = f"""
@@ -12,6 +12,10 @@ def update_psn_games_match_data(match_statuses, connection):
             where g.id = v.id;
             """
 
-    print(f"Executing query: {query}")
-    cursor.execute(query)
-    return cursor.rowcount
+    try:
+        cursor.execute(query)
+        return cursor.rowcount
+    except Exception as e:
+        print(f"Error executing query: {query}")
+        print(f"Error details: {e}")
+        raise

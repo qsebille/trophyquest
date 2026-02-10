@@ -5,6 +5,16 @@
   padding: 2rem 0;
 }
 
+.timeline-header {
+  display: flex;
+  justify-content: center;
+
+  .timeline-title {
+    font-size: 1.5rem;
+    color: $tq-blue-medium;
+  }
+}
+
 .selected-bundle-viewer {
   background: $tq-blue-lighter;
   border: 2px solid $tq-blue-dark;

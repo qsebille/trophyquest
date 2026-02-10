@@ -12,10 +12,6 @@ def build_igdb_games(candidate_list: list[dict[str, Any]]):
         release_date = candidate.get("release_date")
         genres = candidate.get("genres", [])
         themes = candidate.get("themes", [])
-        screenshots = candidate.get("screenshots", [])
-        cover = candidate.get("cover")
-        artwork_with_logo = candidate.get("artwork_with_logo")
-        artwork_without_logo = candidate.get("artwork_without_logo")
         psn_website = candidate.get("psn_website")
         official_website = candidate.get("official_website")
         community_wiki_website = candidate.get("community_wiki_website")
@@ -30,10 +26,6 @@ def build_igdb_games(candidate_list: list[dict[str, Any]]):
                 release_date,
                 genres,
                 themes,
-                screenshots,
-                cover,
-                artwork_with_logo,
-                artwork_without_logo,
                 psn_website,
                 official_website,
                 community_wiki_website,

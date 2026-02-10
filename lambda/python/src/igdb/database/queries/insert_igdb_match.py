@@ -5,6 +5,7 @@ from ._insert_companies import insert_companies
 from ._insert_game_collections import insert_game_collections
 from ._insert_game_companies import insert_game_companies
 from ._insert_games import insert_games
+from ._insert_images import insert_images
 from ._update_psn_games import update_psn_games_match_data
 
 
@@ -34,6 +35,7 @@ def insert_igdb_match(db_data):
         nb_inserted_igdb_game_companies = insert_game_companies(db_data.get('igdb_game_companies'), connection)
         nb_inserted_igdb_game_collections = insert_game_collections(db_data.get('igdb_game_collections'), connection)
         nb_inserted_candidates = insert_candidates(db_data.get('candidates'), connection)
+        nb_inserted_images = insert_images(db_data.get('igdb_images'), connection)
         nb_updated_psn_games = update_psn_games_match_data(db_data.get('match_statuses'), connection)
 
         connection.commit()
@@ -44,6 +46,7 @@ def insert_igdb_match(db_data):
         print(f"Inserted {nb_inserted_igdb_game_companies} igdb_game_company rows into Postgres")
         print(f"Inserted {nb_inserted_igdb_game_collections} igdb_game_collection rows into Postgres")
         print(f"Inserted {nb_inserted_candidates} igdb_candidate rows into Postgres")
+        print(f"Inserted {nb_inserted_images} igdb_image rows into Postgres")
         print(f"Updated {nb_updated_psn_games} psn_game rows with match data")
     except Exception:
         connection.rollback()

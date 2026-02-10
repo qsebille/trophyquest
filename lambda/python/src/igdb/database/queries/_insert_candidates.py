@@ -7,6 +7,10 @@ def insert_candidates(candidates, connection):
             values (%s, %s, %s, %s) on conflict (psn_game_id, igdb_game_id) do nothing;
             """
 
-    print(f"Executing query: {query}")
-    cursor.executemany(query, candidates_tuple_list)
-    return cursor.rowcount
+    try:
+        cursor.executemany(query, candidates_tuple_list)
+        return cursor.rowcount
+    except Exception as e:
+        print(f"Error executing query: {query}")
+        print(f"Error details: {e}")
+        raise

@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {EarnedTrophy} from "../dtos/trophy/earned-trophy";
 import {TrophySuite} from "../dtos/trophy-suite/trophy-suite";
+import {TrophySuiteGameDetails} from "../dtos/game/trophy-suite-game-details";
 
 @Injectable({
     providedIn: 'root',
@@ -25,5 +26,9 @@ export class TrophySuiteApiService {
             const params = new HttpParams().set('playerId', playerId);
             return this._http.get<EarnedTrophy[]>(`${this.API_URL}/${trophySuiteId}/trophies`, {params});
         }
+    }
+
+    fetchGame(trophySuiteId: string): Observable<TrophySuiteGameDetails> {
+        return this._http.get<TrophySuiteGameDetails>(`${this.API_URL}/${trophySuiteId}/game`);
     }
 }

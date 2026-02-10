@@ -3,6 +3,7 @@ package fr.trophyquest.backend.repository;
 import fr.trophyquest.backend.domain.entity.Game;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -23,12 +25,10 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
             """)
     Page<UUID> findGamesWithValidationRequired(Pageable pageable);
 
+    @EntityGraph(attributePaths = {"images", "igdbCandidates.candidate.images"})
     @Query("""
                 select distinct g
                 from Game g
-                    join fetch g.igdbCandidates c
-                    join fetch c.candidate ig
-                    join fetch g.images i
                 where g.id in :ids
                 order by g.id
             """)
@@ -44,5 +44,18 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                 )
             """)
     long countRecentlyPlayed(@Param("limitDate") Instant limitDate);
+
+    @EntityGraph(attributePaths = {"images", "igdbGame.images", "igdbGame.summary", "igdbGame.genres"})
+    @Query("""
+                select g
+                from Game g
+                where g.id = (
+                    select distinct e.gameId
+                    from EditionTrophySuite ets
+                    join Edition e on e.id = ets.id.editionId
+                    where ets.id.trophySuiteId = :trophySuiteId
+                )
+            """)
+    Optional<Game> fetchGameDetailsForTrophySuite(@Param("trophySuiteId") UUID trophySuiteId);
 
 }

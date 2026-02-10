@@ -5,6 +5,10 @@ def insert_collections(collections, connection):
             values (%s, %s) on conflict (id) do nothing;
             """
 
-    print(f"Executing query: {query}")
-    cursor.executemany(query, collections)
-    return cursor.rowcount
+    try:
+        cursor.executemany(query, collections)
+        return cursor.rowcount
+    except Exception as e:
+        print(f"Error executing query: {query}")
+        print(f"Error details: {e}")
+        raise
