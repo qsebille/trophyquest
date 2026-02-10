@@ -1,53 +1,99 @@
 @use 'styles/colors' as *;
 
-.banner {
-  position: relative;
+.banner-carousel {
   width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  object-position: top;
-}
+  max-height: 500px;
+  border: 1px solid $tq-blue-dark;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: hidden;
 
-.trophy-suite-summary {
-  position: relative;
-  display: flex;
-  margin-top: -50px;
-  background-color: $tq-blue-lighter;
-  border: 1.5px solid $tq-blue-dark;
-  border-radius: 10px;
-  padding: 30px;
-  z-index: 1;
-}
-
-.cover {
-  max-width: 200px;
-  justify-self: flex-start;
-  border-radius: 10px;
-  border: 2px solid $tq-blue-dark;
-}
-
-.summary-content {
-  width: -webkit-fill-available;
-  margin-left: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.title-and-platform {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-
-  .title {
-    color: $tq-blue-medium;
-    font-size: 25px;
+  .banner-img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    object-position: top;
   }
 }
 
-.trophy-count-wrapper {
+.banner-placeholder {
+  width: 100%;
+  height: 200px;
+  background-color: $tq-blue-lighter;
+  border: 1px solid $tq-blue-dark;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.summary-block {
+  position: relative;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  margin-top: -50px;
+  background-color: $tq-blue-lighter;
+  border: 1px solid $tq-blue-dark;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 1;
+
+  .line-1 {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 15px;
+
+    .game-name {
+      font-size: 25px;
+      color: $tq-blue-medium;
+    }
+  }
+
+
+  .line-2 {
+    border-top: 1px solid $tq-blue-dark;
+    width: 100%;
+    display: flex;
+
+    .game-image {
+      width: 20%;
+      border-bottom-left-radius: 10px;
+    }
+
+    .trophy-count-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 6%;
+      border-right: 1px solid $tq-blue-dark;
+
+      .trophy-count {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+
+        .label {
+          color: $tq-blue-medium;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .game-info {
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: flex-start;
+      color: $tq-blue-medium;
+      padding: 15px;
+
+      .summary {
+        font-style: italic;
+        text-align: justify;
+      }
+    }
+  }
 }

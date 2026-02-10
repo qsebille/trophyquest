@@ -45,7 +45,7 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
             """)
     long countRecentlyPlayed(@Param("limitDate") Instant limitDate);
 
-    @EntityGraph(attributePaths = {"images", "igdbGame.images"})
+    @EntityGraph(attributePaths = {"images", "igdbGame.images", "igdbGame.summary", "igdbGame.genres"})
     @Query("""
                 select g
                 from Game g

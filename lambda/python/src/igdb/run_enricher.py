@@ -6,7 +6,7 @@ from igdb import process
 from igdb.database import queries, data as data_builder
 
 
-def run_enricher(nb_game_to_match=1):
+def run_enricher(nb_game_to_match=50):
     dotenv.load_dotenv()
     twitch_client_id = os.environ["TWITCH_CLIENT_ID"]
 

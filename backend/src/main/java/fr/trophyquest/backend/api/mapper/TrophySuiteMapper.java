@@ -6,6 +6,7 @@ import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
 import fr.trophyquest.backend.domain.entity.Game;
 import fr.trophyquest.backend.domain.entity.GameImage;
 import fr.trophyquest.backend.domain.entity.TrophySuite;
+import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbImage;
 import org.springframework.stereotype.Component;
 
@@ -24,22 +25,33 @@ public class TrophySuiteMapper {
                 .build();
     }
 
+    /**
+     * Builds game DTO with images from multiple sources
+     */
     public TrophySuiteGameDTO toGameDTO(Game game) {
         List<GameImageDTO> images = game.getImages()
                 .stream()
                 .map(this::toGameImageDTO)
                 .collect(Collectors.toList());
 
-        if (null != game.getIgdbGame()) {
-            images.addAll(game.getIgdbGame().getImages()
+        TrophySuiteGameDTO.TrophySuiteGameDTOBuilder builder = TrophySuiteGameDTO.builder()
+                .id(game.getId())
+                .name(game.getName());
+
+        IgdbGame igdbGame = game.getIgdbGame();
+        // Adds IGDB data to game DTO if present
+        if (null != igdbGame) {
+            builder.summary(igdbGame.getSummary());
+            builder.genres(igdbGame.getGenres());
+            builder.releaseDate(igdbGame.getReleaseDate());
+
+            images.addAll(igdbGame.getImages()
                                   .stream()
                                   .map(this::toGameImageDTO)
                                   .toList());
         }
 
-        return TrophySuiteGameDTO.builder()
-                .id(game.getId())
-                .name(game.getName())
+        return builder
                 .images(images)
                 .build();
     }
