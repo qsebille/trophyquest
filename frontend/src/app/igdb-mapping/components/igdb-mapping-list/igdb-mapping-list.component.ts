@@ -3,7 +3,7 @@ import {LoadingStatus} from "../../../core/models/loading-status.enum";
 import {ErrorMessageComponent} from "../../../core/components/error-message/error-message.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {IgdbMappingGameCardComponent} from "../igdb-mapping-game-card/igdb-mapping-game-card.component";
-import {IgdbMapping} from "../../../core/api/dtos/candidate/igdb-mapping";
+import {IgdbMapping} from "../../../core/api/dtos/igdb/igdb-mapping";
 import {ValidateCandidateStatus} from "../../../core/models/validate-candidate-status";
 import {SpinnerContainerComponent} from "../../../core/components/spinner-container/spinner-container.component";
 

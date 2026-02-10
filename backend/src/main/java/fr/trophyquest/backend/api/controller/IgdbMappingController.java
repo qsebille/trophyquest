@@ -2,7 +2,9 @@ package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingDTO;
+import fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO;
 import fr.trophyquest.backend.service.IgdbCandidateService;
+import fr.trophyquest.backend.service.IgdbMappingService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,14 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/igdb-candidate")
+@RequestMapping("/api/igdb-mapping")
 @CrossOrigin(origins = "*")
-public class IgdbCandidateController {
+public class IgdbMappingController {
 
     private final IgdbCandidateService igdbCandidateService;
+    private final IgdbMappingService igdbMappingService;
 
-    public IgdbCandidateController(IgdbCandidateService igdbCandidateService) {
+    public IgdbMappingController(IgdbCandidateService igdbCandidateService, IgdbMappingService igdbMappingService) {
         this.igdbCandidateService = igdbCandidateService;
+        this.igdbMappingService = igdbMappingService;
     }
 
     @GetMapping("/search")
@@ -41,6 +45,11 @@ public class IgdbCandidateController {
     @PutMapping("/{gameId}/candidate/reject-all")
     public Boolean rejectAllCandidates(@PathVariable UUID gameId) {
         return this.igdbCandidateService.rejectAllPendingCandidates(gameId);
+    }
+
+    @GetMapping("/stats")
+    public IgdbMappingStatsDTO getStats() {
+        return this.igdbMappingService.getStats();
     }
 
 }

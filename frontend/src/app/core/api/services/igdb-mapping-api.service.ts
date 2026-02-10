@@ -3,14 +3,15 @@ import {environment} from "../../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {SearchResult} from "../dtos/search-result";
-import {IgdbMapping} from "../dtos/candidate/igdb-mapping";
+import {IgdbMapping} from "../dtos/igdb/igdb-mapping";
+import {IgdbMappingStats} from "../dtos/igdb/igdb-mapping-stats";
 
 @Injectable({
     providedIn: 'root',
 })
-export class IgdbCandidateApiService {
+export class IgdbMappingApiService {
 
-    private readonly API_URL = `${environment.apiUrl}/api/igdb-candidate`;
+    private readonly API_URL = `${environment.apiUrl}/api/igdb-mapping`;
 
     constructor(private readonly _http: HttpClient) {
     }
@@ -28,5 +29,9 @@ export class IgdbCandidateApiService {
 
     rejectCandidates(gameId: string): Observable<boolean> {
         return this._http.put<boolean>(`${this.API_URL}/${gameId}/candidate/reject-all`, null);
+    }
+
+    fetchStats(): Observable<IgdbMappingStats> {
+        return this._http.get<IgdbMappingStats>(`${this.API_URL}/stats`);
     }
 }

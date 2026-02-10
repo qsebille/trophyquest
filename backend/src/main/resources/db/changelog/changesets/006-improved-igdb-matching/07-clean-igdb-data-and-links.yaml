@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 006-improved-igdb-matching/04-clean-igdb-data
+      id: 006-improved-igdb-matching/07-clean-igdb-data-and-links
       author: Quentin Sebille
       changes:
         - sql:

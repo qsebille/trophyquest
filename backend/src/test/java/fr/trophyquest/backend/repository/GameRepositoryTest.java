@@ -1,6 +1,7 @@
 package fr.trophyquest.backend.repository;
 
 import fr.trophyquest.backend.IntegrationTestBase;
+import fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO;
 import fr.trophyquest.backend.domain.entity.Game;
 import fr.trophyquest.backend.domain.entity.GameImage;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
@@ -120,5 +121,68 @@ public class GameRepositoryTest extends IntegrationTestBase {
         boolean hasCover = resultCandidate.getCandidate().getImages().stream()
                 .anyMatch(img -> "cover".equals(img.getImageType()));
         assertTrue(hasCover, "Should have a cover image");
+    }
+
+    @Test
+    void testFetchIgdbMappingStats() {
+        // Given
+        Long igdbGameId = 123L;
+        IgdbGame igdbGame = new IgdbGame();
+        igdbGame.setId(igdbGameId);
+        igdbGame.setName("IGDB Game");
+
+        Game game1 = new Game();
+        game1.setId(UUID.randomUUID());
+        game1.setName("Game 1");
+        game1.setIgdbMatchStatus("PENDING");
+        Game game2 = new Game();
+        game2.setId(UUID.randomUUID());
+        game2.setName("Game 2");
+        game2.setIgdbMatchStatus("VALIDATION_REQUIRED");
+        Game game3 = new Game();
+        game3.setId(UUID.randomUUID());
+        game3.setName("Game 3");
+        game3.setIgdbMatchStatus("VALIDATION_REQUIRED");
+        Game game4 = new Game();
+        game4.setId(UUID.randomUUID());
+        game4.setName("Game 3");
+        game4.setIgdbMatchStatus("NO_FOUND_CANDIDATE");
+        Game game5 = new Game();
+        game5.setId(UUID.randomUUID());
+        game5.setName("Game 3");
+        game5.setIgdbMatchStatus("ALL_REFUSED");
+        Game game6 = new Game();
+        game6.setId(UUID.randomUUID());
+        game6.setName("Game 3");
+        game6.setIgdbMatchStatus("ALL_REFUSED");
+        Game game7 = new Game();
+        game7.setId(UUID.randomUUID());
+        game7.setName("Game 3");
+        game7.setIgdbGame(igdbGame);
+        game7.setIgdbMatchStatus("MATCHED");
+        Game game8 = new Game();
+        game8.setId(UUID.randomUUID());
+        game8.setName("Game 3");
+        game8.setIgdbGame(igdbGame);
+        game8.setIgdbMatchStatus("MATCHED");
+        Game game9 = new Game();
+        game9.setId(UUID.randomUUID());
+        game9.setName("Game 3");
+        game9.setIgdbGame(igdbGame);
+        game9.setIgdbMatchStatus("MATCHED");
+
+        igdbGameRepository.save(igdbGame);
+        gameRepository.saveAll(List.of(game1, game2, game3, game4, game5, game6, game7, game8, game9));
+
+        igdbGameRepository.flush();
+        gameRepository.flush();
+
+        IgdbMappingStatsDTO stats = this.gameRepository.fetchIgdbMappingStats();
+
+        assertEquals(1, stats.pending(), "Stats should display 1 pending games");
+        assertEquals(2, stats.validationRequired(), "Stats should display 2 validation required games");
+        assertEquals(1, stats.noFoundCandidate(), "Stats should display 1 no found candidate games");
+        assertEquals(2, stats.allRefused(), "Stats should display 2 all refused games");
+        assertEquals(3, stats.matched(), "Stats should display 3 matched games");
     }
 }

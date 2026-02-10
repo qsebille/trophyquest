@@ -4,7 +4,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {ValidateCandidateStatus} from "../../../core/models/validate-candidate-status";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {IgdbCandidate} from "../../../core/api/dtos/candidate/igdb-candidate";
+import {IgdbCandidate} from "../../../core/api/dtos/igdb/igdb-candidate";
 import {MatIconModule} from "@angular/material/icon";
 
 @Component({

@@ -1,0 +1,9 @@
+<div class="dashboard-page container">
+    @if (this.isLoading()) {
+        <tq-spinner-container/>
+    } @else if (this.hasFailedLoading()) {
+        <tq-error-message [errorMessage]="'Failed to load dashboard'"/>
+    } @else {
+        <tq-dashboard-igdb-mapping [stats]="igdbMappingStats()"/>
+    }
+</div>

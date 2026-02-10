@@ -1,9 +1,9 @@
 import {Injectable, signal} from '@angular/core';
 import {LoadingStatus} from "../../core/models/loading-status.enum";
-import {IgdbMapping} from "../../core/api/dtos/candidate/igdb-mapping";
+import {IgdbMapping} from "../../core/api/dtos/igdb/igdb-mapping";
 import {ValidateCandidateStatus} from "../../core/models/validate-candidate-status";
 import {catchError, EMPTY, tap} from "rxjs";
-import {IgdbCandidateApiService} from "../../core/api/services/igdb-candidate-api.service";
+import {IgdbMappingApiService} from "../../core/api/services/igdb-mapping-api.service";
 
 @Injectable({
     providedIn: 'root',
@@ -22,7 +22,7 @@ export class IgdbMappingStoreService {
     readonly validationStatus = this._validationStatus.asReadonly();
 
 
-    constructor(private readonly _igdbCandidateApiService: IgdbCandidateApiService) {
+    constructor(private readonly _igdbCandidateApiService: IgdbMappingApiService) {
     }
 
     reset(): void {

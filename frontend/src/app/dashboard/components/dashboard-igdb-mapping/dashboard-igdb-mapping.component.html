@@ -1,0 +1,13 @@
+<div class="card h-100">
+    <div class="card-header">
+        <h5 class="mb-0">IGDB Mapping Stats</h5>
+    </div>
+    <div class="card-body d-flex justify-content-center align-items-center">
+        <apx-chart
+                [series]="chartOptions().series"
+                [chart]="chartOptions().chart"
+                [labels]="chartOptions().labels"
+                [responsive]="chartOptions().responsive"
+                [dataLabels]="chartOptions().dataLabels"/>
+    </div>
+</div>

@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {IgdbMappingCandidateCardComponent} from './igdb-mapping-candidate-card.component';
 import {signal} from "@angular/core";
-import {IgdbCandidate} from "../../../core/api/dtos/candidate/igdb-candidate";
+import {IgdbCandidate} from "../../../core/api/dtos/igdb/igdb-candidate";
 
 describe('IgdbMappingCandidateCardComponent', () => {
     let component: IgdbMappingCandidateCardComponent;

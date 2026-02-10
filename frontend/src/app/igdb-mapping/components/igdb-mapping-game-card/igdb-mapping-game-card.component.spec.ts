@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {IgdbMappingGameCardComponent} from './igdb-mapping-game-card.component';
-import {IgdbMapping} from "../../../core/api/dtos/candidate/igdb-mapping";
+import {IgdbMapping} from "../../../core/api/dtos/igdb/igdb-mapping";
 
 describe('ValidationElementComponent', () => {
     let component: IgdbMappingGameCardComponent;
