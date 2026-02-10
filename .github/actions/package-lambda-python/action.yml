@@ -1,0 +1,24 @@
+name: Package lambda
+description: Upload zip file to AWS Lambda, publish version and update alias
+
+inputs:
+  zip_path:
+    required: false
+    default: lambda.zip
+    description: "Path of the packaged zip file"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build lambda zip package
+      shell: bash
+      run: |
+        rm -rf packaged-lambda ${{ inputs.zip_path }}
+        mkdir -p packaged-lambda
+        
+        python -m pip install --upgrade pip
+        python -m pip install -r lambda/python/requirements.txt -t packaged-lambda/
+        cp -r lambda/python/src/* packaged-lambda/
+        
+        cd packaged-lambda
+        zip -r "../${{ inputs.zip_path }}" .

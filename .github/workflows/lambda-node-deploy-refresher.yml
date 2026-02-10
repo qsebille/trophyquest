@@ -8,7 +8,7 @@ on:
       - "lambda/node/**"
       - ".github/workflows/lambda-node-deploy-refresher.yaml"
       - ".github/actions/get-version/action.yml"
-      - ".github/actions/package-lambda/action.yml"
+      - "../actions/package-lambda-node/action.yml"
       - ".github/actions/deploy-lambda/action.yml"
   workflow_dispatch:
 
@@ -52,10 +52,9 @@ jobs:
         run: npm prune --production
 
       - name: Package Lambda
-        uses: ./.github/actions/package-lambda
+        uses: ./.github/actions/package-lambda-node
         with:
           zip_path: lambda.zip
-          lambda_type: node
 
       - name: Deploy to AWS
         uses: ./.github/actions/deploy-lambda
