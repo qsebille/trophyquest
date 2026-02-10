@@ -1,13 +1,22 @@
 import {Component, computed, input} from '@angular/core';
 import {IgdbMappingStats} from "../../../core/api/dtos/igdb/igdb-mapping-stats";
-import {ApexChart, ApexDataLabels, ApexNonAxisChartSeries, ApexResponsive, NgApexchartsModule} from "ng-apexcharts";
+import {
+    ApexAxisChartSeries,
+    ApexChart,
+    ApexDataLabels,
+    ApexPlotOptions,
+    ApexResponsive,
+    ApexXAxis,
+    NgApexchartsModule
+} from "ng-apexcharts";
 
 export type ChartOptions = {
-    series: ApexNonAxisChartSeries;
+    series: ApexAxisChartSeries;
     chart: ApexChart;
     responsive: ApexResponsive[];
-    labels: string[];
+    xaxis: ApexXAxis;
     dataLabels: ApexDataLabels;
+    plotOptions: ApexPlotOptions;
 };
 
 @Component({
@@ -25,34 +34,37 @@ export class DashboardIgdbMappingComponent {
         const stats = this.stats();
         return {
             series: [
-                stats.matched,
-                stats.validationRequired,
-                stats.pending,
-                stats.noFoundCandidate,
-                stats.allRefused
+                {
+                    name: "Count",
+                    data: [
+                        stats.pending,
+                        stats.matched,
+                        stats.validationRequired,
+                        stats.noFoundCandidate,
+                        stats.allRefused
+                    ]
+                }
             ],
             chart: {
-                width: 380,
-                type: "pie"
+                height: 350,
+                type: "bar"
             },
-            labels: ["Matched", "Validation Required", "Pending", "No Candidate Found", "All Refused"],
+            plotOptions: {
+                bar: {
+                    distributed: true,
+                    horizontal: false
+                }
+            },
+            xaxis: {
+                categories: ["Pending", "Matched", "Validation Required", "No Candidate Found", "All Refused"]
+            },
             dataLabels: {
                 enabled: true,
-                colors: [
-                    '#00E396',
-                    '#ffea00',
-                    '#FEB019',
-                    '#FF4560',
-                    '#ff0044',
-                ]
             },
             responsive: [
                 {
                     breakpoint: 480,
                     options: {
-                        chart: {
-                            width: 200
-                        },
                         legend: {
                             position: "bottom"
                         }
