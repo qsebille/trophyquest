@@ -57,7 +57,3 @@ def run_image_uploader(nb_psn_images=2):
 
 if __name__ == "__main__":
     run_image_uploader()
-
-
-def lambda_handler(event, context):
-    return run_image_uploader()

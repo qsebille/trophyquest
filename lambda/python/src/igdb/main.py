@@ -24,9 +24,3 @@ def run_enricher(nb_game_to_match=50):
 
 if __name__ == "__main__":
     run_enricher()
-
-
-def lambda_handler(event, context):
-    nb_game_to_match = int(event.get("limit", 20))
-
-    return run_enricher(nb_game_to_match)

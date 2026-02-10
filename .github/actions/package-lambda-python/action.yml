@@ -19,6 +19,7 @@ runs:
         python -m pip install --upgrade pip
         python -m pip install -r lambda/python/requirements.txt -t packaged-lambda/
         cp -r lambda/python/src/* packaged-lambda/
+        cp -r lambda/python/lambda_function.py packaged-lambda/
         
         cd packaged-lambda
         zip -r "../${{ inputs.zip_path }}" .
