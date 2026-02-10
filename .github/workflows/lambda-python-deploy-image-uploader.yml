@@ -1,0 +1,57 @@
+name: Deploy image-uploader Lambda to AWS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "lambda/python/**"
+      - ".github/workflows/lambda-python-*.yml"
+      - ".github/actions/get-version/action.yml"
+      - ".github/actions/package-lambda/action.yml"
+      - ".github/actions/deploy-lambda/action.yml"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lambda/python
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Get version
+        id: get-version
+        uses: ./.github/actions/get-version
+        with:
+          service_name: lambda-python
+
+      - name: Package Lambda
+        uses: ./.github/actions/package-lambda
+        with:
+          zip_path: lambda.zip
+          lambda_type: python
+
+      - name: Deploy to AWS
+        uses: ./.github/actions/deploy-lambda
+        with:
+          function_name: trophyquest-image-uploader
+          semantic_version: ${{ steps.get-version.outputs.version }}
+          zip_path: lambda.zip
+          aws_region: ${{ secrets.AWS_REGION }}
+          aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
