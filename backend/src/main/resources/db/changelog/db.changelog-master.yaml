@@ -35,3 +35,4 @@ databaseChangeLog:
   - include: { file: changesets/006-improved-igdb-matching/04-clean-igdb-data.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/006-improved-igdb-matching/05-create-igdb-image-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/006-improved-igdb-matching/06-drop-igdb-game-image-columns.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/006-improved-igdb-matching/07-clean-igdb-data-and-links.yaml, relativeToChangelogFile: true }
