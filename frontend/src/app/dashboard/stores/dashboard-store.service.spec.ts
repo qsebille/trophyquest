@@ -1,16 +1,22 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { DashboardStoreService } from './dashboard-store.service';
+import {DashboardStoreService} from './dashboard-store.service';
+import {IgdbMappingApiService} from "../../core/api/services/igdb-mapping-api.service";
 
 describe('DashboardStoreService', () => {
-  let service: DashboardStoreService;
+    let service: DashboardStoreService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(DashboardStoreService);
-  });
+    let igdbMappingApiServiceSpy: jasmine.SpyObj<IgdbMappingApiService>;
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    beforeEach(() => {
+        igdbMappingApiServiceSpy = jasmine.createSpyObj('IgdbMappingApiService', ['fetchStats']);
+        TestBed.configureTestingModule({
+            providers: [{provide: IgdbMappingApiService, useValue: igdbMappingApiServiceSpy}]
+        });
+        service = TestBed.inject(DashboardStoreService);
+    });
+
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 });
