@@ -11,6 +11,7 @@ import {ProfileTrophiesStore} from "../../stores/profile-trophies-store.service"
 import {Player} from "../../../core/api/dtos/player/player";
 import {PlayerStats} from "../../../core/api/dtos/player/player-stats";
 import {PlayerApiService} from "../../../core/api/services/player-api.service";
+import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
 
 describe('ProfilePageComponent', () => {
     let component: ProfilePageComponent;
@@ -20,6 +21,7 @@ describe('ProfilePageComponent', () => {
     let profileTrophiesStoreSpy: jasmine.SpyObj<ProfileTrophiesStore>;
     let playerApiServiceSpy: jasmine.SpyObj<PlayerApiService>;
     let navigatorSpy: jasmine.SpyObj<NavigatorService>;
+    let gameCoverStoreSpy: jasmine.SpyObj<GameCoverStoreService>;
 
     const mockPlayer = {id: 'player-123', pseudo: 'PlayerId', avatar: 'avatar.png'} as Player;
     const mockPlayerStats = {
@@ -36,6 +38,7 @@ describe('ProfilePageComponent', () => {
         profileTrophySuiteListStoreSpy = jasmine.createSpyObj('ProfileTrophySuiteListStoreService', ['search', 'reset', 'loadMore', 'trophySuites', 'status']);
         profileTrophiesStoreSpy = jasmine.createSpyObj('ProfileTrophiesStore', ['search', 'reset', 'loadMore', 'trophies', 'status']);
         playerApiServiceSpy = jasmine.createSpyObj('PlayerApiService', ['deletePlayer']);
+        gameCoverStoreSpy = jasmine.createSpyObj('GameCoverStoreService', ['refreshLastPlayedTrophySuiteForPlayer']);
 
         profileSummaryStoreSpy.player.and.returnValue(mockPlayer);
         profileSummaryStoreSpy.playerStats.and.returnValue(mockPlayerStats);
@@ -51,6 +54,7 @@ describe('ProfilePageComponent', () => {
                 {provide: ProfileTrophySuiteListStoreService, useValue: profileTrophySuiteListStoreSpy},
                 {provide: ProfileTrophiesStore, useValue: profileTrophiesStoreSpy},
                 {provide: PlayerApiService, useValue: playerApiServiceSpy},
+                {provide: GameCoverStoreService, useValue: gameCoverStoreSpy},
                 {provide: ActivatedRoute, useValue: {snapshot: {paramMap: routeParamMap}}},
             ]
         }).compileComponents();
@@ -71,11 +75,16 @@ describe('ProfilePageComponent', () => {
         expect(profileTrophiesStoreSpy.search).toHaveBeenCalledWith(mockPlayer.id);
     });
 
+    it('should refresh game cover when player changes', () => {
+        gameCoverStoreSpy.refreshLastPlayedTrophySuiteForPlayer.and.callThrough();
+        component.ngOnInit();
+        expect(gameCoverStoreSpy.refreshLastPlayedTrophySuiteForPlayer).toHaveBeenCalledWith(mockPlayer.id);
+    });
+
     it('should navigate to game page when clicking on game card', () => {
         const trophySuiteId: string = 'suite-123';
         component.navigateToPlayerTrophySuitePage(trophySuiteId);
 
         expect(navigatorSpy.goToPlayerTrophySuitePage).toHaveBeenCalledOnceWith(trophySuiteId, mockPlayer.id);
     });
-
 });

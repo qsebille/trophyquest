@@ -4,6 +4,7 @@ import fr.trophyquest.backend.api.dto.game.GameCoverImageDTO;
 import fr.trophyquest.backend.domain.entity.GameImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
@@ -18,5 +19,13 @@ public interface GameImageRepository extends JpaRepository<GameImage, UUID> {
             order by random()
             limit 1""")
     GameCoverImageDTO fetchRandomCoverImage();
+
+    @Query(value = """
+            select new fr.trophyquest.backend.api.dto.game.GameCoverImageDTO(i.id, i.url)
+            from GameImage i
+            where i.type = 'GAMEHUB_COVER_ART' and i.game.id = :gameId
+            order by random()
+            limit 1""")
+    GameCoverImageDTO fetchGameCoverImage(@Param("gameId") UUID gameId);
 
 }

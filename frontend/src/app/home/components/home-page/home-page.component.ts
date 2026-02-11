@@ -8,6 +8,7 @@ import {HomeStatsComponent} from "../home-stats/home-stats.component";
 import {HomeRecentPlayersStore} from "../../stores/home-recent-players-store.service";
 import {HomeRecentGamesStore} from "../../stores/home-recent-games-store.service";
 import {HomeGamesComponent} from "../home-games/home-games.component";
+import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
 
 
 @Component({
@@ -28,6 +29,7 @@ export class HomePageComponent implements OnInit {
         private readonly _recentPlayersStore: HomeRecentPlayersStore,
         private readonly _recentGamesStore: HomeRecentGamesStore,
         private readonly _navigator: NavigatorService,
+        private readonly _gameCoverStore: GameCoverStoreService,
     ) {
     }
 
@@ -55,6 +57,7 @@ export class HomePageComponent implements OnInit {
         this._recentPlayersStore.fetch();
         this._recentGamesStore.reset();
         this._recentGamesStore.fetch();
+        this._gameCoverStore.refreshTopPlayedGame();
     }
 
     navigateToPlayersPage(): void {
