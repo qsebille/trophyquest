@@ -1,17 +1,20 @@
 import {TestBed} from '@angular/core/testing';
 
 import {GameCoverStoreService} from './game-cover-store.service';
-import {GameApiService} from "../api/services/game-api.service";
+import {CoverApiService} from "../api/services/cover-api.service";
 
 describe('GameCoverStoreService', () => {
     let service: GameCoverStoreService;
 
-    let gameApiServiceSpy: jasmine.SpyObj<GameApiService>;
+    let coverApiServiceSpy: jasmine.SpyObj<CoverApiService>;
 
     beforeEach(() => {
-        gameApiServiceSpy = jasmine.createSpyObj('GameApiService', ['fetchRandomCoverImage']);
+        coverApiServiceSpy = jasmine.createSpyObj('CoverApiService', [
+            'fetchRandom',
+            'fetchTopPlayedGame'
+        ]);
         TestBed.configureTestingModule({
-            providers: [{provide: GameApiService, useValue: gameApiServiceSpy}]
+            providers: [{provide: CoverApiService, useValue: coverApiServiceSpy}]
         });
         service = TestBed.inject(GameCoverStoreService);
     });

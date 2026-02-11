@@ -5,6 +5,7 @@ import {NavigatorService} from "../../../core/services/navigator.service";
 import {HomeStatsStore} from "../../stores/home-stats-store.service";
 import {HomeRecentPlayersStore} from "../../stores/home-recent-players-store.service";
 import {HomeRecentGamesStore} from "../../stores/home-recent-games-store.service";
+import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
 
 describe('HomePageComponent', () => {
     let component: HomePageComponent;
@@ -14,11 +15,13 @@ describe('HomePageComponent', () => {
     let recentPlayersStoreSpy: jasmine.SpyObj<HomeRecentPlayersStore>;
     let recentGameStoreSpy: jasmine.SpyObj<HomeRecentGamesStore>;
     let navigatorSpy: jasmine.SpyObj<NavigatorService>;
+    let gameCoverStoreSpy: jasmine.SpyObj<GameCoverStoreService>;
 
     const gameId: string = 'game-123';
     const playerId: string = 'player-123';
 
     beforeEach(async () => {
+        gameCoverStoreSpy = jasmine.createSpyObj('GameCoverStoreService', ['refreshTopPlayedGame']);
         statsStoreSpy = jasmine.createSpyObj('HomeStatsStore', [
             'fetch',
             'playerCount',
@@ -60,6 +63,7 @@ describe('HomePageComponent', () => {
                     {provide: HomeRecentPlayersStore, useValue: recentPlayersStoreSpy},
                     {provide: HomeRecentGamesStore, useValue: recentGameStoreSpy},
                     {provide: NavigatorService, useValue: navigatorSpy},
+                    {provide: GameCoverStoreService, useValue: gameCoverStoreSpy},
                 ],
             }
         });
@@ -70,6 +74,12 @@ describe('HomePageComponent', () => {
     });
 
     it('should create', () => expect(component).toBeTruthy());
+
+    it('should refresh game cover when home page loads', () => {
+        gameCoverStoreSpy.refreshTopPlayedGame.and.callThrough();
+        component.ngOnInit();
+        expect(gameCoverStoreSpy.refreshTopPlayedGame).toHaveBeenCalled();
+    });
 
     it('should fetch store data on init', () => {
         expect(statsStoreSpy.fetch).toHaveBeenCalled();

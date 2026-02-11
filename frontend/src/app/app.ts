@@ -24,8 +24,4 @@ export class App {
         this._idleReloadService.start();
     }
 
-    ngOnInit(): void {
-        this._gameCoverStoreService.refreshRandom();
-    }
-
 }

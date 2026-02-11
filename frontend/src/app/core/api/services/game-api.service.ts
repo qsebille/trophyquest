@@ -4,7 +4,6 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {SearchResult} from "../dtos/search-result";
 import {RecentGame} from "../dtos/game/recent-game";
-import {GameCoverImage} from "../dtos/game/game-cover-image";
 
 @Injectable({
     providedIn: 'root',
@@ -28,9 +27,5 @@ export class GameApiService {
             .set('pageNumber', pageNumber)
             .set('pageSize', pageSize);
         return this._http.get<SearchResult<RecentGame>>(`${this.API_URL}/recent/search`, {params});
-    }
-
-    fetchRandomCoverImage(): Observable<GameCoverImage> {
-        return this._http.get<GameCoverImage>(`${this.API_URL}/cover/random`);
     }
 }

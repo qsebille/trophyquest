@@ -9,6 +9,7 @@ import {TrophySuiteTrophyFiltersComponent} from "../trophy-suite-trophy-filters/
 import {TrophySuiteStoreService} from "../../stores/trophy-suite-store.service";
 import {SpinnerContainerComponent} from "../../../core/components/spinner-container/spinner-container.component";
 import {TrophySuiteTimelineComponent} from "../trophy-suite-timeline/trophy-suite-timeline.component";
+import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
 
 @Component({
     imports: [
@@ -40,6 +41,7 @@ export class TrophySuitePageComponent implements OnInit {
     constructor(
         private readonly _route: ActivatedRoute,
         private readonly _trophySuiteStore: TrophySuiteStoreService,
+        private readonly _gameCoverStoreService: GameCoverStoreService,
     ) {
         this._trophySuiteId = this._route.snapshot.paramMap.get('trophySuiteId') ?? '';
         this._playerId = this._route.snapshot.queryParamMap.get('playerId');
@@ -47,6 +49,7 @@ export class TrophySuitePageComponent implements OnInit {
 
     ngOnInit(): void {
         this._trophySuiteStore.reset();
+        this._gameCoverStoreService.refreshForTrophySuite(this._trophySuiteId);
         this.loadData();
     }
 

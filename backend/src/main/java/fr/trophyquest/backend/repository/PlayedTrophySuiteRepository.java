@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Repository
 public interface PlayedTrophySuiteRepository extends JpaRepository<PlayedTrophySuite, PlayedTrophySuiteId> {
@@ -19,4 +20,14 @@ public interface PlayedTrophySuiteRepository extends JpaRepository<PlayedTrophyS
             """)
     long countRecentPlayers(@Param("limitDate") Instant limitDate);
 
+    @Query("""
+            SELECT e.gameId
+            FROM PlayedTrophySuite pts
+            JOIN EditionTrophySuite ets ON pts.id.trophySuiteId = ets.id.trophySuiteId
+            JOIN Edition e ON ets.id.editionId = e.id
+            WHERE pts.player.id = :playerId
+            ORDER BY pts.lastPlayedAt DESC
+            LIMIT 1
+            """)
+    UUID findLastPlayedGameIdByPlayer(UUID playerId);
 }

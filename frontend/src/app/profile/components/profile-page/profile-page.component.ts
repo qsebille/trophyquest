@@ -12,7 +12,7 @@ import {ProfileTrophySuiteListStoreService} from "../../stores/profile-trophy-su
 import {ProfileTrophySuiteListComponent} from "../profile-trophy-suite-list/profile-trophy-suite-list.component";
 import {PlayerApiService} from "../../../core/api/services/player-api.service";
 import {catchError, EMPTY, tap} from "rxjs";
-import {AddPlayerStatus} from "../../../core/models/add-player-status.enum";
+import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
 
 @Component({
     selector: 'tq-profile-page',
@@ -36,6 +36,7 @@ export class ProfilePageComponent implements OnInit {
         private readonly _profileTrophySuiteListStore: ProfileTrophySuiteListStoreService,
         private readonly _profileTrophiesStore: ProfileTrophiesStore,
         private readonly _playerApiService: PlayerApiService,
+        private readonly _gameCoverStoreService: GameCoverStoreService,
     ) {
     }
 
@@ -53,6 +54,7 @@ export class ProfilePageComponent implements OnInit {
 
     ngOnInit(): void {
         this.playerId = this._route.snapshot.paramMap.get('playerId');
+        this._gameCoverStoreService.refreshLastPlayedTrophySuiteForPlayer(this.playerId)
         this.loadProfileData();
     }
 

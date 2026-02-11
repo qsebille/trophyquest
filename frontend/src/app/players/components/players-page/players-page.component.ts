@@ -4,6 +4,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {NavigatorService} from "../../../core/services/navigator.service";
 import {AddPlayerFormComponent} from "../add-player-form/add-player-form.component";
 import {PlayerListComponent} from "../player-list/player-list.component";
+import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
 
 @Component({
     imports: [
@@ -19,6 +20,7 @@ export class PlayersPageComponent implements OnInit {
     constructor(
         private readonly _navigator: NavigatorService,
         private readonly _playerListStore: PlayerListStore,
+        private readonly _gameCoverStoreService: GameCoverStoreService,
     ) {
     }
 
@@ -29,6 +31,7 @@ export class PlayersPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.retrievePlayers();
+        this._gameCoverStoreService.refreshTopPlayedGame();
     }
 
     retrievePlayers(): void {
