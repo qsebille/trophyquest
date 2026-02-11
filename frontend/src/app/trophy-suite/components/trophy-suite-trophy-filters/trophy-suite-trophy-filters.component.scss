@@ -1,7 +1,8 @@
-.trophy-filters {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+@use 'styles/colors' as *;
+
+.title {
+  font-size: 1.5rem;
+  color: $tq-blue-medium;
 }
 
 .trophy-filter {

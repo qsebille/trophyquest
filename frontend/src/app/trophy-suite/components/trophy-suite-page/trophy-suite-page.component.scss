@@ -5,27 +5,4 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
-
-  &--error-message {
-    width: 50%;
-  }
-
-  &--summary {
-    width: 80%;
-  }
-
-  &--timeline {
-    width: 90%;
-  }
-
-  &--filters {
-    width: 80%;
-  }
-
-  &--trophy-list {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 }

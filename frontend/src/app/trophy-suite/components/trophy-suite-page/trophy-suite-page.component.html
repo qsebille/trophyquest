@@ -5,30 +5,30 @@
         <tq-error-message (retry)="loadData()"
                           [errorMessage]="'Failed to load game details'"
                           [hasRetryButton]="true"
-                          class="trophy-suite-page--error-message"/>
+                          class="w-50"/>
     } @else {
         <tq-trophy-suite-summary [gameDetails]="gameDetails()"
                                  [style.animationDelay.ms]="100"
                                  [trophies]="trophies()"
                                  [trophySuite]="trophySuite()"
                                  animate.enter="block-enter"
-                                 class="trophy-suite-page--summary"/>
+                                 class="w-75"/>
 
         <tq-trophy-suite-timeline
                 [trophies]="trophies()"
                 [trophySuite]="trophySuite()"
-                class="trophy-suite-page--timeline"/>
+                class="w-75"/>
 
         <tq-trophy-suite-trophy-filters (filterChange)="toggleEarnedFilter($event)"
                                         (showHiddenTrophyChange)="toggleShowHiddenTrophies($event)"
                                         [filters]="trophyFilters()"
                                         [showEarnedTrophyFilter]="hasPlayerData()"
-                                        class="trophy-suite-page--filters"/>
+                                        class="w-75"/>
 
         <tq-trophy-suite-trophy-list [style.animationDelay.ms]="200"
                                      [trophies]="trophies()"
                                      [trophyFilters]="trophyFilters()"
                                      animate.enter="block-enter"
-                                     class="trophy-suite-page--trophy-list"/>
+                                     class="w-100"/>
     }
 </div>
