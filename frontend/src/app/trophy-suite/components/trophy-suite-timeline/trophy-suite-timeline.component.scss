@@ -2,17 +2,11 @@
 
 .trophy-timeline {
   position: relative;
-  padding: 2rem 0;
 }
 
-.timeline-header {
-  display: flex;
-  justify-content: center;
-
-  .timeline-title {
-    font-size: 1.5rem;
-    color: $tq-blue-medium;
-  }
+.timeline-title {
+  font-size: 1.5rem;
+  color: $tq-blue-medium;
 }
 
 .selected-bundle-viewer {
@@ -64,9 +58,11 @@
     &::-webkit-scrollbar {
       width: 4px;
     }
+
     &::-webkit-scrollbar-track {
       background: rgba(255, 255, 255, 0.05);
     }
+
     &::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.2);
       border-radius: 2px;
@@ -96,10 +92,21 @@
       border-radius: 5px;
       border: 2px solid;
 
-      &--bronze { border-color: $tq-trophy-bronze; }
-      &--silver { border-color: $tq-trophy-silver; }
-      &--gold { border-color: $tq-trophy-gold; }
-      &--platinum { border-color: $tq-trophy-platinum; }
+      &--bronze {
+        border-color: $tq-trophy-bronze;
+      }
+
+      &--silver {
+        border-color: $tq-trophy-silver;
+      }
+
+      &--gold {
+        border-color: $tq-trophy-gold;
+      }
+
+      &--platinum {
+        border-color: $tq-trophy-platinum;
+      }
     }
 
     .trophy-info {
@@ -218,10 +225,25 @@
     object-fit: contain;
   }
 
-  &.bronze { color: $tq-trophy-bronze; border-color: $tq-trophy-bronze; }
-  &.silver { color: $tq-trophy-silver; border-color: $tq-trophy-silver; }
-  &.gold { color: $tq-trophy-gold; border-color: $tq-trophy-gold; }
-  &.platinum { color: $tq-trophy-platinum; border-color: $tq-trophy-platinum; }
+  &.bronze {
+    color: $tq-trophy-bronze;
+    border-color: $tq-trophy-bronze;
+  }
+
+  &.silver {
+    color: $tq-trophy-silver;
+    border-color: $tq-trophy-silver;
+  }
+
+  &.gold {
+    color: $tq-trophy-gold;
+    border-color: $tq-trophy-gold;
+  }
+
+  &.platinum {
+    color: $tq-trophy-platinum;
+    border-color: $tq-trophy-platinum;
+  }
 
   &.is-selected {
     transform: scale(1.3);

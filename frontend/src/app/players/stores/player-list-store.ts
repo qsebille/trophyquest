@@ -44,7 +44,6 @@ export class PlayerListStore {
         console.debug('Searching players...');
         this._playerService.search(this._pageNumber(), this._pageSize).subscribe({
             next: searchResult => {
-                console.log(searchResult);
                 const players = [...this.results(), ...searchResult.content];
                 const loadingStatus: LoadingStatus = players.length < searchResult.total ? LoadingStatus.PARTIALLY_LOADED : LoadingStatus.FULLY_LOADED;
                 this._results.update(() => players);

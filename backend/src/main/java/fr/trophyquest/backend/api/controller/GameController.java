@@ -1,6 +1,7 @@
 package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.SearchDTO;
+import fr.trophyquest.backend.api.dto.game.GameCoverImageDTO;
 import fr.trophyquest.backend.api.dto.game.RecentGameDTO;
 import fr.trophyquest.backend.service.GameService;
 import fr.trophyquest.backend.service.RecentGameService;
@@ -39,6 +40,11 @@ public class GameController {
             @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
     ) {
         return this.recentGameService.search(pageNumber, pageSize);
+    }
+
+    @GetMapping("/cover/random")
+    public GameCoverImageDTO fetchRandomCover() {
+        return this.gameService.fetchRandomCoverImageUrl();
     }
 
 }

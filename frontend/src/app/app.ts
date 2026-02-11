@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, computed} from '@angular/core';
 import {NavbarComponent} from './core/components/navbar/navbar.component';
 import {RouterOutlet} from '@angular/router';
 import {IdleReloadService} from "./core/services/idle-reload.service";
+import {GameCoverStoreService} from "./core/stores/game-cover-store.service";
 
 @Component({
     selector: 'tq-root',
@@ -14,8 +15,17 @@ import {IdleReloadService} from "./core/services/idle-reload.service";
 })
 export class App {
 
-    constructor(private _idleReloadService: IdleReloadService) {
+    readonly backgroundUrl = computed(() => this._gameCoverStoreService.gameCover().url);
+
+    constructor(
+        private _idleReloadService: IdleReloadService,
+        private _gameCoverStoreService: GameCoverStoreService,
+    ) {
         this._idleReloadService.start();
+    }
+
+    ngOnInit(): void {
+        this._gameCoverStoreService.refreshRandom();
     }
 
 }
