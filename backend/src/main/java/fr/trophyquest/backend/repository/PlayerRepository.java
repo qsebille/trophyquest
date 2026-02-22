@@ -35,6 +35,7 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                    t.title                                      as trophy_title,
                    t.trophy_type                                as trophy_type,
                    coalesce(t.aws_icon_url, t.psn_icon_url)     as trophy_icon,
+                   t.description                                as trophy_description,
                    ts.id                                        as trophy_suite_id,
                    ts.name                                      as trophy_suite_title,
                    r.earned_at                                  as earned_at

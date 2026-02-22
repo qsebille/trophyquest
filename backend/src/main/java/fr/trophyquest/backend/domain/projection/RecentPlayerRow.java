@@ -20,6 +20,8 @@ public interface RecentPlayerRow {
 
     String getTrophyIcon();
 
+    String getTrophyDescription();
+
     UUID getTrophySuiteId();
 
     String getTrophySuiteTitle();

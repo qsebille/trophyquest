@@ -1,8 +1,57 @@
 @use 'styles/colors' as *;
 @use '@angular/material' as mat;
 
+
+.game-image {
+  max-width: 60px;
+  max-height: 60px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+.trophy-card {
+  border-radius: 10px;
+
+  &.completed {
+    background-color: $tq-green-lighter;
+  }
+}
+
+.completion-spinner-wrapper {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+
+  &.completed .spinner-center {
+    font-weight: 600;
+  }
+
+  &.completed .progress-spinner {
+    @include mat.progress-spinner-overrides((
+            active-indicator-color: $tq-green-dark,
+    ));
+  }
+
+  .spinner-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+
+    font-size: 12px;
+    line-height: 1;
+    color: $tq-blue-light;
+  }
+
+  .check-icon {
+    color: $tq-green-dark;
+  }
+}
+
 .profile-game-card {
-  border: 1px solid transparent;
   border-radius: 10px;
   background-color: $tq-blue-lighter;
   display: flex;

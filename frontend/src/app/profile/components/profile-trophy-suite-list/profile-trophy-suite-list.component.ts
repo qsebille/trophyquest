@@ -1,7 +1,5 @@
 import {Component, computed, input, output} from '@angular/core';
 import {LoadingStatus} from "../../../core/models/loading-status.enum";
-import {BlockComponent} from "../../../core/components/trophyquest-block/block.component";
-import {BlockContentTemplate, BlockHeaderTemplate} from "../../../core/templates/block.template";
 import {ProfileTrophySuiteCardComponent} from "../profile-trophy-suite-card/profile-trophy-suite-card.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {ErrorMessageComponent} from "../../../core/components/error-message/error-message.component";
@@ -11,9 +9,6 @@ import {SpinnerContainerComponent} from "../../../core/components/spinner-contai
 @Component({
     selector: 'tq-profile-trophy-suite-list',
     imports: [
-        BlockComponent,
-        BlockContentTemplate,
-        BlockHeaderTemplate,
         MatProgressSpinnerModule,
         ProfileTrophySuiteCardComponent,
         ErrorMessageComponent,
