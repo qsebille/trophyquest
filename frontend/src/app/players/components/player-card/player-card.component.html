@@ -1,22 +1,24 @@
-<div class="player-card">
-    <div class="player-card--summary">
-        <img [height]="60" [width]="60" alt="" class="player-card--avatar" ngSrc="{{ playerSearchItem().avatar }}"/>
-        <a (click)="clickOnPseudo.emit()" class="player-card--pseudo tq-link">{{ playerSearchItem().pseudo }}</a>
-    </div>
-    <div class="player-card--stats">
-        <div class="player-card--game-stats"
-             [matTooltip]="`Total games played: ${playerSearchItem().totalPlayedGames}`">
-            <mat-icon class="player-card--game-icon" fontIcon="sports_esports"></mat-icon>
-            <span class="player-card--total-played-games">{{ playerSearchItem().totalPlayedGames }}</span>
+<div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3 w-25">
+        <img [height]="60" [width]="60" alt="" class="avatar" ngSrc="{{ playerSearchItem().avatar }}"/>
+        <div (click)="clickOnPseudo.emit()" class="text-primary fw-bold">
+            <a class="tq-link fs-6">{{ playerSearchItem().pseudo }}</a>
         </div>
-        <div class="player-card--trophy-stats">
+    </div>
+    <div class="d-flex gap-3 align-items-center w-75 justify-content-end">
+        <div class="d-flex flex-column align-items-center"
+             ngbTooltip="Total games played: {{playerSearchItem().totalPlayedGames}}">
+            <mat-icon fontIcon="sports_esports"></mat-icon>
+            <span class="fw-bold">{{ playerSearchItem().totalPlayedGames }}</span>
+        </div>
+        <div class="w-25 d-flex align-items-center">
             @for (trophyType of trophyTypes; track trophyType) {
-                <div class="player-card--trophy-info"
-                     matTooltip="Total earned {{ trophyType }} trophies: {{trophyCount()[trophyType]}}">
+                <div class="d-flex flex-column align-items-center w-25"
+                     ngbTooltip="Total earned {{ trophyType }} trophies: {{trophyCount()[trophyType]}}">
                     @if (trophyCount()[trophyType] > 0) {
                         <img [height]="24" [width]="24" [alt]="trophyType"
                              ngSrc="/assets/icons/trophy-{{ trophyType }}.png"/>
-                        <span class="player-card--trophy-count">{{ trophyCount()[trophyType] }}</span>
+                        <span class="fw-bold">{{ trophyCount()[trophyType] }}</span>
                     }
                 </div>
             }

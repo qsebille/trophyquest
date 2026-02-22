@@ -1,9 +1,9 @@
-<div class="profile-page container container-fluid">
+<div class="p-2 d-flex flex-column align-items-center container gap-2">
     @if (hasFailedLoading()) {
-        <tq-error-message class="error-message" [hasRetryButton]="true" (retry)="loadProfileData()"
+        <tq-error-message class="w-40" [hasRetryButton]="true" (retry)="loadProfileData()"
                           [errorMessage]="'Failed to load profile information'"/>
     } @else {
-        <tq-profile-summary class="summary"
+        <tq-profile-summary class="w-50"
                             [player]="player()"
                             [playerStats]="playerStats()"
                             [status]="summaryStatus()"
@@ -11,14 +11,14 @@
                             (deletePlayer)="deletePlayer()"
                             animate.enter="block-enter"/>
 
-        <div class="games-trophies-wrapper" [style.animationDelay.ms]="200" animate.enter="block-enter">
-            <tq-profile-trophy-suite-list class="game-list"
+        <div class="d-flex w-100 gap-3" [style.animationDelay.ms]="200" animate.enter="block-enter">
+            <tq-profile-trophy-suite-list class="w-60"
                                           [trophySuites]="trophySuites()"
                                           [status]="trophySuiteListStatus()"
                                           (clickOnGame)="navigateToPlayerTrophySuitePage($event)"
                                           (loadMoreGames)="loadMoreGames()"/>
 
-            <tq-profile-trophy-list class="trophy-list"
+            <tq-profile-trophy-list class="w-40"
                                     [trophies]="trophies()"
                                     [status]="trophiesStatus()"
                                     (loadMoreTrophies)="loadMoreTrophies()"/>

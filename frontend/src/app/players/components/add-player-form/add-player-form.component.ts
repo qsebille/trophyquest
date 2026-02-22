@@ -8,6 +8,7 @@ import {AddPlayerStatus} from "../../../core/models/add-player-status.enum";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {ErrorMessageComponent} from "../../../core/components/error-message/error-message.component";
 import {SuccessMessageComponent} from "../../../core/components/success-message/success-message.component";
+import {SpinnerContainerComponent} from "../../../core/components/spinner-container/spinner-container.component";
 
 @Component({
     selector: 'tq-add-player-form',
@@ -19,7 +20,8 @@ import {SuccessMessageComponent} from "../../../core/components/success-message/
         MatIconModule,
         MatProgressSpinnerModule,
         ErrorMessageComponent,
-        SuccessMessageComponent
+        SuccessMessageComponent,
+        SpinnerContainerComponent
     ],
     templateUrl: './add-player-form.component.html',
     styleUrl: './add-player-form.component.scss',
@@ -30,6 +32,7 @@ export class AddPlayerFormComponent {
     readonly validateSuccess = output<void>();
 
     inputValue = '';
+    sentUsername = '';
 
     readonly isLoading = computed(() => this.status() === AddPlayerStatus.LOADING);
     readonly isAlreadyInDatabase = computed(() => this.status() === AddPlayerStatus.ALREADY_IN_DATABASE);
@@ -37,6 +40,7 @@ export class AddPlayerFormComponent {
     readonly hasFailedAddPlayer = computed(() => this.status() === AddPlayerStatus.ERROR_WHEN_ADDING);
 
     validate(): void {
+        this.sentUsername = this.inputValue;
         if (!this.isLoading() && this.inputValue !== '') {
             this.addPlayer.emit(this.inputValue);
         }

@@ -1,45 +1,27 @@
-<tq-block>
-    <ng-template tqBlockHeader>
-        <span class="app-title">TrophyQuest</span>
-    </ng-template>
-    <ng-template tqBlockContent>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">TrophyQuest</h5>
+    </div>
+    <div class="card-body">
         @if (isLoading()) {
             <tq-spinner-container/>
         } @else if (hasFailed()) {
             <tq-error-message [errorMessage]="'Failed to load TrophyQuest stats.'"/>
         } @else {
-            <div class="stats">
-                <div class="stat-column">
-                    <div class="stat-item">
-                        <span class="stat-value">{{ stats().totalPlayers }}</span>
-                        <a class="stat-label tq-link" (click)="clickOnPlayers.emit()"> players</a>
+            <div class="d-flex justify-content-around align-items-center">
+                @for (element of statsAsList(); track element.label) {
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="fs-4 fw-bold">{{ element.total }}</span>
+                            <span class="fs-5">{{ element.label }}</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 recent">
+                            <span class="fs-6 fw-bold">{{ element.recentCount }}</span>
+                            <span>recent</span>
+                        </div>
                     </div>
-                    <div class="stat-item recent">
-                        <span class="stat-value">{{ stats().recentPlayers }}</span>
-                        <a class="stat-label tq-link" (click)="clickOnPlayers.emit()"> recent</a>
-                    </div>
-                </div>
-                <div class="stat-column">
-                    <div class="stat-item">
-                        <span class="stat-value">{{ stats().totalGames }}</span>
-                        <span class="stat-label"> games</span>
-                    </div>
-                    <div class="stat-item recent">
-                        <span class="stat-value">{{ stats().recentGames | number }}</span>
-                        <span class="stat-label"> recent</span>
-                    </div>
-                </div>
-                <div class="stat-column">
-                    <div class="stat-item">
-                        <span class="stat-value">{{ stats().totalTrophies | number }}</span>
-                        <span class="stat-label"> trophies</span>
-                    </div>
-                    <div class="stat-item recent">
-                        <span class="stat-value">{{ stats().recentTrophies | number }}</span>
-                        <span class="stat-label"> recent</span>
-                    </div>
-                </div>
+                }
             </div>
         }
-    </ng-template>
-</tq-block>
+    </div>
+</div>

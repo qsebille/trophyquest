@@ -6,17 +6,6 @@
 @use '@angular/material' as mat;
 @use 'styles/colors' as *;
 
-html {
-  @include mat.theme((
-          color: (
-                  primary: mat.$azure-palette,
-                  tertiary: mat.$blue-palette,
-          ),
-          typography: Helvetica,
-          density: 0,
-  ));
-}
-
 body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
@@ -42,18 +31,30 @@ html, body {
 
 body {
   margin: 0;
-  font-family: Helvetica, sans-serif;
-  color: $tq-blue-darker;
 }
 
 .tq-link {
   text-decoration: none;
   cursor: pointer;
+  color: $tq-blue-medium;
 
   &:focus,
   &:hover {
-    text-decoration: underline;
+    color: $tq-blue-light;
   }
+}
+
+.tq-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: $tq-blue-medium;
+}
+
+.tq-horiz-separator {
+  color: $tq-blue-dark;
+  width: 90%;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 /**
@@ -74,5 +75,69 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.w-60 {
+  width: 60%;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-90 {
+  width: 90%;
+}
+
+.w-95 {
+  width: 95%;
+}
+
+.fs-8px {
+  font-size: 8px;
+}
+
+.fs-10px {
+  font-size: 10px;
+}
+
+
+// Bootstrap Theme
+$primary: $tq-blue-medium;
+$success: $tq-green-medium;
+$danger: $tq-red-medium;
+$warning: $tq-yellow-medium;
+$info: $tq-blue-medium;
+$theme-colors: (
+        "primary": $primary,
+        "success": $success,
+        "danger": $danger,
+        "warning": $warning,
+        "info": $info,
+);
+@import "bootstrap/scss/bootstrap";
+
+:root {
+  --bs-body-font-family: Roboto, sans-serif;
+  --bs-card-border-radius: 0.75rem;
+  --bs-card-bg: #e4eff7;
+  --bs-card-color: $tq-blue-medium;
+  --bs-card-border-color: $tq-blue-dark;
+  --bs-card-border-width: 2px;
+  --bs-body-font-size: 14px;
+}
+
+.card {
+  .card-header {
+    background-color: $tq-blue-lighter;
+  }
+
+  .card-title {
+    color: $tq-blue-medium;
+  }
+
+  .card-body {
+    color: $tq-blue-medium;
   }
 }

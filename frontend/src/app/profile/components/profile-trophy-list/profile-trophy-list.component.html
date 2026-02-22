@@ -1,24 +1,24 @@
-<tq-block class="profile-trophies-list">
-    <ng-template tqBlockHeader>
-        <span class="title">Last earned trophies</span>
-    </ng-template>
-    <ng-template tqBlockContent>
-        <div class="trophy-list">
-            @for (trophy of trophies(); track trophy.id; let i = $index) {
-                @if (i !== 0) {
-                    <hr class="separator"/>
-                }
-                <tq-profile-trophy-card [trophy]="trophy" class="profile-trophy-card"/>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Last earned trophies</h5>
+    </div>
+    <div class="card-body w-100 d-flex flex-column">
+        @for (trophy of trophies(); track trophy.id; let i = $index) {
+            @if (i !== 0) {
+                <hr class="separator"/>
             }
-            @if (isLoading()) {
-                <tq-spinner-container/>
-            }
-            @if (hasMoreTrophiesToLoad()) {
-                <a (click)="loadMoreTrophies.emit()" class="load-more-button">Load more trophies...</a>
-            }
-            @if (isError()) {
-                <tq-error-message [errorMessage]="'Failed to load trophies'"/>
-            }
-        </div>
-    </ng-template>
-</tq-block>
+            <tq-profile-trophy-card [trophy]="trophy" class="w-100"/>
+        }
+        @if (isLoading()) {
+            <tq-spinner-container/>
+        }
+        @if (hasMoreTrophiesToLoad()) {
+            <div class="w-100 d-flex justify-content-center mt-4">
+                <a (click)="loadMoreTrophies.emit()" class="p-2 btn btn-primary">Load more trophies...</a>
+            </div>
+        }
+        @if (isError()) {
+            <tq-error-message [errorMessage]="'Failed to load trophies'"/>
+        }
+    </div>
+</div>
