@@ -1,7 +1,4 @@
 import {Component, computed, input, output} from '@angular/core';
-import {BlockComponent} from "../../../core/components/trophyquest-block/block.component";
-import {BlockContentTemplate, BlockHeaderTemplate} from "../../../core/templates/block.template";
-import {DecimalPipe} from "@angular/common";
 import {ErrorMessageComponent} from "../../../core/components/error-message/error-message.component";
 import {HomeStats} from "../../../core/models/dto/home-stats";
 import {LoadingStatus} from "../../../core/models/loading-status.enum";
@@ -12,13 +9,9 @@ import {SpinnerContainerComponent} from "../../../core/components/spinner-contai
 @Component({
     selector: 'tq-home-stats',
     imports: [
-        DecimalPipe,
         MatIconModule,
         ErrorMessageComponent,
         MatProgressSpinnerModule,
-        BlockComponent,
-        BlockHeaderTemplate,
-        BlockContentTemplate,
         SpinnerContainerComponent,
     ],
     templateUrl: './home-stats.component.html',
@@ -32,4 +25,12 @@ export class HomeStatsComponent {
 
     readonly isLoading = computed(() => this.status() === LoadingStatus.LOADING);
     readonly hasFailed = computed(() => this.status() === LoadingStatus.ERROR);
+
+    readonly statsAsList = computed(() => {
+        return [
+            {total: this.stats().totalPlayers, recentCount: this.stats().recentPlayers, label: 'players'},
+            {total: this.stats().totalGames, recentCount: this.stats().recentGames, label: 'games'},
+            {total: this.stats().totalTrophies, recentCount: this.stats().recentTrophies, label: 'trophies'},
+        ]
+    });
 }

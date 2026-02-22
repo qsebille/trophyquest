@@ -1,32 +1,34 @@
-<div class="add-player-form card">
+<div class="card">
     <div class="card-header">
-        <span class="explain-text">Enter a profile name to add to TrophyQuest</span>
+        <h5 class="card-title">Add a player</h5>
     </div>
     <div class="card-body">
-        <div class="pseudo-input">
-            <mat-form-field class="form-field">
-                <mat-label>Profile Name</mat-label>
+        <span class="card-subtitle mb-2 text-muted">Add a player to TrophyQuest</span>
+        <div class="d-flex align-items-center">
+            <mat-form-field class="w-50">
+                <mat-label>Profile name</mat-label>
                 <input [disabled]="isLoading()" matInput type="text" [(ngModel)]="inputValue"
                        (keydown.enter)="validate()">
                 @if (inputValue) {
-                    <button matSuffix matIconButton aria-label="Clear" (click)="inputValue=''">
+                    <button matSuffix matIconButton aria-label="clear" (click)="inputValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
                 }
             </mat-form-field>
-            <button mat-button [disabled]="this.isLoading() || this.inputValue === ''" (click)="validate()">
-                Add profile
-            </button>
+            <div class="w-50 d-flex justify-content-end">
+                <div class="btn btn-primary w-50" (click)="validate()">Add</div>
+            </div>
         </div>
         @if (isLoading()) {
-            <mat-spinner class="loading-spinner"/>
-            <span class="loading-message">Adding user... this step may take a minute.</span>
+            <tq-spinner-container class="mb-1"/>
+            <span>Adding user... this step may take a minute.</span>
         } @else if (isAlreadyInDatabase()) {
-            <tq-error-message [errorMessage]="inputValue + ' is already registered in TrophyQuest'"/>
+            <tq-error-message [errorMessage]="sentUsername + ' is already registered in TrophyQuest'"/>
         } @else if (hasFailedAddPlayer()) {
-            <tq-error-message [errorMessage]="'An error occurred when adding player ' + inputValue +' in Trophyquest'"/>
+            <tq-error-message
+                    [errorMessage]="'An error occurred when adding player ' + sentUsername +' in Trophyquest'"/>
         } @else if (hasSucceededAddPlayer()) {
-            <tq-success-message [message]="inputValue + ' has been added to TrophyQuest!'" [hasButton]="true"
+            <tq-success-message [message]="sentUsername + ' has been added to TrophyQuest!'" [hasButton]="true"
                                 (onClick)="validateSuccess.emit()"/>
         }
     </div>

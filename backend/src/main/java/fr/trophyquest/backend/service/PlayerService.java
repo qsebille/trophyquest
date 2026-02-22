@@ -100,7 +100,6 @@ public class PlayerService {
                     .title(row.getTrophyTitle())
                     .trophyType(row.getTrophyType())
                     .icon(row.getTrophyIcon())
-                    .description(row.getTrophyDescription())
                     .trophySuiteId(row.getTrophySuiteId())
                     .trophySuiteTitle(row.getTrophySuiteTitle())
                     .earnedAt(row.getEarnedAt())

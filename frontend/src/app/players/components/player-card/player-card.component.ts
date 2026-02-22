@@ -4,6 +4,7 @@ import {PlayerSearchItem} from "../../../core/api/dtos/player/player-search-item
 import {TrophyCountPerType} from "../../../core/models/dto/trophy-count-per-type";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {NgbTooltip} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: 'tq-player-card',
@@ -11,6 +12,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
         NgOptimizedImage,
         MatIconModule,
         MatTooltipModule,
+        NgbTooltip,
     ],
     templateUrl: './player-card.component.html',
     styleUrl: './player-card.component.scss',

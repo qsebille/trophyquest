@@ -1,5 +1,10 @@
-<div class="home-player-card">
-    <img [height]="50" [width]="50" alt="" ngSrc="{{player().avatar}}" class="player-avatar"/>
-    <a class="player-pseudo tq-link" (click)="clickOnPseudo.emit()">{{ player().pseudo }}</a>
-    <span class="trophy-count">{{ trophyCount() | number }} trophies last week</span>
+<div class="p-2 d-flex align-items-center justify-content-between home-player-card">
+    <div class="d-flex align-items-center gap-3">
+        <img [height]="50" [width]="50" alt="" [ngSrc]="player().avatar" class="avatar"/>
+        <a class="fs-5 fw-bold tq-link" (click)="clickOnPseudo.emit()">{{ player().pseudo }}</a>
+    </div>
+    <div class="fs-6">
+        <b>{{ trophyCount() | number }}</b>
+        <span> trophies last week</span>
+    </div>
 </div>

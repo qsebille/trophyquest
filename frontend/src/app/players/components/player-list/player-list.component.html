@@ -1,37 +1,35 @@
-<tq-block class="player-list">
-    <ng-template tqBlockHeader>
-        <div class="player-list--header">
-            <div class="player-list--total">
-                Total: {{ total() }} players
-            </div>
-        </div>
-    </ng-template>
-    <ng-template tqBlockContent>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">List of players</h5>
+    </div>
+    <div class="card-body">
         @if (isLoading()) {
             <tq-spinner-container/>
         } @else if (isError()) {
-            <tq-error-message (retry)="retrievePlayers.emit()"
-                              class="player-list--error-message"
-                              [hasRetryButton]="true"
-                              [errorMessage]="'Failed to load players'"/>
+            <div class="d-flex justify-content-center">
+                <tq-error-message (retry)="retrievePlayers.emit()"
+                                  class="w-75"
+                                  [hasRetryButton]="true"
+                                  [errorMessage]="'Failed to load players'"/>
+            </div>
         } @else {
-            <div class="player-list--players">
+            <div class="d-flex flex-column align-items-center">
                 @for (playerSearchItem of players(); track playerSearchItem.id; let i = $index) {
                     @if (i !== 0) {
-                        <hr class="player-list--separator"/>
+                        <hr class="tq-horiz-separator"/>
                     }
                     <tq-player-card
                             (clickOnPseudo)="clickOnPlayer.emit(playerSearchItem.id)"
                             [playerSearchItem]="playerSearchItem"
-                            class="player-list--card"/>
+                            class="w-100"/>
                 }
 
                 @if (hasMorePlayersToLoad()) {
-                    <div (click)="loadMorePlayers.emit()" class="player-list--load-more-button">
+                    <div (click)="loadMorePlayers.emit()" class="btn btn-link text-decoration-none">
                         Load more players...
                     </div>
                 }
             </div>
         }
-    </ng-template>
-</tq-block>
+    </div>
+</div>

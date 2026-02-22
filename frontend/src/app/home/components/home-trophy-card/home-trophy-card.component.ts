@@ -6,7 +6,7 @@ import {EarnedTrophy} from "../../../core/api/dtos/trophy/earned-trophy";
     selector: 'tq-home-trophy-card',
     imports: [
         NgOptimizedImage,
-        DatePipe
+        DatePipe,
     ],
     templateUrl: './home-trophy-card.component.html',
     styleUrl: './home-trophy-card.component.scss',

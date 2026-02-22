@@ -1,13 +1,15 @@
 import {Component, input} from '@angular/core';
 import {RecentGame} from "../../../core/api/dtos/game/recent-game";
 import {MatIconModule} from "@angular/material/icon";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import {NgOptimizedImage} from "@angular/common";
+import {NgbTooltip} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: 'tq-home-game-card',
     imports: [
         MatIconModule,
-        MatTooltipModule
+        NgOptimizedImage,
+        NgbTooltip
     ],
     templateUrl: './home-game-card.component.html',
     styleUrl: './home-game-card.component.scss',

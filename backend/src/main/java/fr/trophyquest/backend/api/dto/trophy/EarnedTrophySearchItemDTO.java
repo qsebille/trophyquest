@@ -11,7 +11,6 @@ public record EarnedTrophySearchItemDTO(
         String title,
         String trophyType,
         String icon,
-        String description,
         UUID trophySuiteId,
         String trophySuiteTitle,
         Instant earnedAt

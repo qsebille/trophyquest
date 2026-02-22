@@ -38,7 +38,6 @@ public interface EarnedTrophyRepository extends JpaRepository<EarnedTrophy, Earn
                 t.title,
                 t.trophyType,
                 t.icon,
-                t.description,
                 ts.id,
                 ts.name,
                 et.earnedAt
