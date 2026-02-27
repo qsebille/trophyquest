@@ -5,6 +5,7 @@ import {DashboardIgdbStatsStoreService} from "../../stores/dashboard-igdb-stats-
 import {LoadingStatus} from "../../../core/models/loading-status.enum";
 import {EMPTY_IGDB_MAPPING_STATS} from "../../../core/api/dtos/igdb/igdb-mapping-stats";
 import {DashboardImageStatsStoreService} from "../../stores/dashboard-image-stats-store.service";
+import {signal} from "@angular/core";
 
 describe('DashboardPageComponent', () => {
     let component: DashboardPageComponent;
@@ -22,8 +23,7 @@ describe('DashboardPageComponent', () => {
         dashboardImageStoreSpy = jasmine.createSpyObj('DashboardImageStatsStoreService', [
             'loadStats',
             'loadingStatus',
-            'psnUploads',
-            'igdbUploads',
+            'uploads',
         ]);
         await TestBed.configureTestingModule({
             imports: [DashboardPageComponent],
@@ -36,8 +36,13 @@ describe('DashboardPageComponent', () => {
 
         dashboardIgdbStoreSpy.loadingStatus.and.returnValue(LoadingStatus.FULLY_LOADED);
         dashboardIgdbStoreSpy.igdbMappingStats.and.returnValue(EMPTY_IGDB_MAPPING_STATS);
-        dashboardImageStoreSpy.psnUploads.and.returnValue({pending: 0, uploaded: 0});
-        dashboardImageStoreSpy.igdbUploads.and.returnValue({pending: 0, uploaded: 0});
+        dashboardImageStoreSpy.uploads.and.returnValue({
+            game: signal({pending: 0, uploaded: 0}),
+            igdb: signal({pending: 0, uploaded: 0}),
+            player: signal({pending: 0, uploaded: 0}),
+            trophy: signal({pending: 0, uploaded: 0}),
+            trophySuite: signal({pending: 0, uploaded: 0}),
+        });
 
         fixture = TestBed.createComponent(DashboardPageComponent);
         component = fixture.componentInstance;

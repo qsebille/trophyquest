@@ -53,4 +53,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
             """)
     List<EarnedTrophyDTO> fetchPlayerTrophiesForTrophySuite(UUID trophySuiteId, UUID playerId);
 
+    long countTrophyByAwsIconUrlIsNotNull();
+
+    long countTrophyByAwsIconUrlIsNull();
 }

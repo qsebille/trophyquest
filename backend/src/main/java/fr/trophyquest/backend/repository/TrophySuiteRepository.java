@@ -8,4 +8,7 @@ import java.util.UUID;
 
 @Repository
 public interface TrophySuiteRepository extends JpaRepository<TrophySuite, UUID> {
+    long countTrophySuiteByAwsImageUrlIsNotNull();
+
+    long countTrophySuiteByAwsImageUrlIsNull();
 }

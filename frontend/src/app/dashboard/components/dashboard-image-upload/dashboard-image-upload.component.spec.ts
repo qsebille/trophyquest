@@ -14,8 +14,11 @@ describe('DashboardImageUploadComponent', () => {
             .compileComponents();
 
         fixture = TestBed.createComponent(DashboardImageUploadComponent);
-        fixture.componentRef.setInput('psnUploads', {pending: 0, uploaded: 0} as ImageUploadStats);
-        fixture.componentRef.setInput('igdbUploads', {pending: 0, uploaded: 0} as ImageUploadStats);
+        fixture.componentRef.setInput('gameImageUploads', {pending: 0, uploaded: 0} as ImageUploadStats);
+        fixture.componentRef.setInput('igdbImageUploads', {pending: 0, uploaded: 0} as ImageUploadStats);
+        fixture.componentRef.setInput('playerAvatarUploads', {pending: 0, uploaded: 0} as ImageUploadStats);
+        fixture.componentRef.setInput('trophyIconUploads', {pending: 0, uploaded: 0} as ImageUploadStats);
+        fixture.componentRef.setInput('trophySuiteImageUploads', {pending: 0, uploaded: 0} as ImageUploadStats);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

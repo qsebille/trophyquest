@@ -4,6 +4,7 @@ import fr.trophyquest.backend.api.dto.stats.ImageUploadStats;
 import fr.trophyquest.backend.service.ImageService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,13 +19,8 @@ public class StatsController {
         this.imageService = imageService;
     }
 
-    @GetMapping("/image-upload/psn")
-    public ImageUploadStats getPsnImageUploadStats() {
-        return this.imageService.getPsnImageUploadStats();
-    }
-
-    @GetMapping("/image-upload/igdb")
-    public ImageUploadStats getIgdbImageUploadStats() {
-        return this.imageService.getIgdbImageUploadStats();
+    @GetMapping("/image-upload/{imageCategory}")
+    public ImageUploadStats getPsnImageUploadStats(@PathVariable String imageCategory) {
+        return this.imageService.getUploadStats(imageCategory);
     }
 }

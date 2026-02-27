@@ -29,4 +29,6 @@ public class TrophySuite {
     @Formula("coalesce(aws_image_url, psn_image_url)")
     private String image;
 
+    private String awsImageUrl;
+
 }
