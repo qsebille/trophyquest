@@ -28,4 +28,7 @@ public interface GameImageRepository extends JpaRepository<GameImage, UUID> {
             limit 1""")
     GameCoverImageDTO fetchGameCoverImage(@Param("gameId") UUID gameId);
 
+    long countGameImageByAwsUrlIsNull();
+
+    long countGameImageByAwsUrlIsNotNull();
 }

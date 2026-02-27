@@ -1,23 +1,8 @@
 import {Component, computed, input} from '@angular/core';
 import {IgdbMappingStats} from "../../../core/api/dtos/igdb/igdb-mapping-stats";
-import {
-    ApexAxisChartSeries,
-    ApexChart,
-    ApexDataLabels,
-    ApexPlotOptions,
-    ApexResponsive,
-    ApexXAxis,
-    NgApexchartsModule
-} from "ng-apexcharts";
+import {NgApexchartsModule} from "ng-apexcharts";
+import {ChartOptions} from "../../models/chart-options";
 
-export type ChartOptions = {
-    series: ApexAxisChartSeries;
-    chart: ApexChart;
-    responsive: ApexResponsive[];
-    xaxis: ApexXAxis;
-    dataLabels: ApexDataLabels;
-    plotOptions: ApexPlotOptions;
-};
 
 @Component({
     selector: 'tq-dashboard-igdb-mapping',

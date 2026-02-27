@@ -1,10 +1,10 @@
 import {TestBed} from '@angular/core/testing';
 
-import {DashboardStoreService} from './dashboard-store.service';
+import {DashboardIgdbStatsStoreService} from './dashboard-igdb-stats-store.service';
 import {IgdbMappingApiService} from "../../core/api/services/igdb-mapping-api.service";
 
-describe('DashboardStoreService', () => {
-    let service: DashboardStoreService;
+describe('DashboardIgdbStatsStoreService', () => {
+    let service: DashboardIgdbStatsStoreService;
 
     let igdbMappingApiServiceSpy: jasmine.SpyObj<IgdbMappingApiService>;
 
@@ -13,7 +13,7 @@ describe('DashboardStoreService', () => {
         TestBed.configureTestingModule({
             providers: [{provide: IgdbMappingApiService, useValue: igdbMappingApiServiceSpy}]
         });
-        service = TestBed.inject(DashboardStoreService);
+        service = TestBed.inject(DashboardIgdbStatsStoreService);
     });
 
     it('should be created', () => {

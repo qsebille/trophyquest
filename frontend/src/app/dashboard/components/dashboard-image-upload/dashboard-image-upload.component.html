@@ -1,0 +1,25 @@
+<div class="card h-100">
+    <div class="card-header">
+        <h5 class="mb-0">Images uploaded</h5>
+    </div>
+    <div class="card-body d-flex justify-content-center align-items-center gap-2">
+        <apx-chart class="w-50"
+                   [series]="psnSeries()"
+                   [chart]="chart"
+                   [xaxis]="xaxis"
+                   [colors]="colors"
+                   [plotOptions]="plotOptions"
+                   [responsive]="responsive"
+                   [dataLabels]="dataLabels"
+                   [title]="psnTitle"/>
+        <apx-chart class="w-50"
+                   [series]="igdbSeries()"
+                   [chart]="chart"
+                   [xaxis]="xaxis"
+                   [colors]="colors"
+                   [plotOptions]="plotOptions"
+                   [responsive]="responsive"
+                   [dataLabels]="dataLabels"
+                   [title]="igdbTitle"/>
+    </div>
+</div>

@@ -25,6 +25,8 @@ public class IgdbImage {
     @Formula("coalesce(aws_url, igdb_url)")
     private String imageUrl;
 
+    private String awsUrl;
+
     private String imageType;
 
     @MapsId("igdbGameId")
