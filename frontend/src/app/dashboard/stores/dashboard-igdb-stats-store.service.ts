@@ -6,16 +6,14 @@ import {LoadingStatus} from "../../core/models/loading-status.enum";
 @Injectable({
     providedIn: 'root',
 })
-export class DashboardStoreService {
+export class DashboardIgdbStatsStoreService {
     private _loadingStatus = signal<LoadingStatus>(LoadingStatus.NONE);
     private _igdbMappingStats = signal<IgdbMappingStats>(EMPTY_IGDB_MAPPING_STATS);
 
     readonly loadingStatus = this._loadingStatus.asReadonly();
     readonly igdbMappingStats = this._igdbMappingStats.asReadonly();
 
-    constructor(
-        private readonly _igdbMappingApiService: IgdbMappingApiService
-    ) {
+    constructor(private readonly _igdbMappingApiService: IgdbMappingApiService) {
     }
 
     fetchStats(): void {

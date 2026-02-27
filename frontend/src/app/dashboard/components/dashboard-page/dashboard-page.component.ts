@@ -1,5 +1,5 @@
 import {Component, computed} from '@angular/core';
-import {DashboardStoreService} from "../../stores/dashboard-store.service";
+import {DashboardIgdbStatsStoreService} from "../../stores/dashboard-igdb-stats-store.service";
 import {LoadingStatus} from "../../../core/models/loading-status.enum";
 import {SpinnerContainerComponent} from "../../../core/components/spinner-container/spinner-container.component";
 import {ErrorMessageComponent} from "../../../core/components/error-message/error-message.component";
@@ -22,31 +22,31 @@ import {DashboardImageStatsStoreService} from "../../stores/dashboard-image-stat
 export class DashboardPageComponent {
     readonly isLoading = computed(() => {
         return [
-            this._dashboardStoreService.loadingStatus(),
-            this._dashboardImageUploadService.loadingStatus(),
+            this._dashboardIgdbStore.loadingStatus(),
+            this._dashboardImageUploadStore.loadingStatus(),
         ].some(status => status === LoadingStatus.LOADING)
     });
     readonly hasFailedLoading = computed(() => {
         return [
-            this._dashboardStoreService.loadingStatus(),
-            this._dashboardImageUploadService.loadingStatus(),
+            this._dashboardIgdbStore.loadingStatus(),
+            this._dashboardImageUploadStore.loadingStatus(),
         ].some(status => status === LoadingStatus.ERROR)
     });
-    readonly igdbMappingStats = computed(() => this._dashboardStoreService.igdbMappingStats());
+    readonly igdbMappingStats = computed(() => this._dashboardIgdbStore.igdbMappingStats());
     readonly imageUploadStats = {
-        psn: computed(() => this._dashboardImageUploadService.psnUploads()),
-        igdb: computed(() => this._dashboardImageUploadService.igdbUploads()),
+        psn: computed(() => this._dashboardImageUploadStore.psnUploads()),
+        igdb: computed(() => this._dashboardImageUploadStore.igdbUploads()),
     }
 
 
     constructor(
-        private readonly _dashboardStoreService: DashboardStoreService,
-        private readonly _dashboardImageUploadService: DashboardImageStatsStoreService,
+        private readonly _dashboardIgdbStore: DashboardIgdbStatsStoreService,
+        private readonly _dashboardImageUploadStore: DashboardImageStatsStoreService,
     ) {
     }
 
     ngOnInit() {
-        this._dashboardStoreService.fetchStats();
-        this._dashboardImageUploadService.loadStats();
+        this._dashboardIgdbStore.fetchStats();
+        this._dashboardImageUploadStore.loadStats();
     }
 }
