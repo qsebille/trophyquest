@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IgdbImageRepository extends JpaRepository<IgdbImage, IgdbImageId> {
+    long countIgdbImageByAwsUrlIsNotNull();
+
+    long countIgdbImageByAwsUrlIsNull();
 }
