@@ -39,6 +39,8 @@ public class Trophy {
     @Formula("coalesce(aws_icon_url, psn_icon_url)")
     private String icon;
 
+    private String awsIconUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trophy_suite_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

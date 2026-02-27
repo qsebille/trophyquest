@@ -33,10 +33,7 @@ export class DashboardPageComponent {
         ].some(status => status === LoadingStatus.ERROR)
     });
     readonly igdbMappingStats = computed(() => this._dashboardIgdbStore.igdbMappingStats());
-    readonly imageUploadStats = {
-        psn: computed(() => this._dashboardImageUploadStore.psnUploads()),
-        igdb: computed(() => this._dashboardImageUploadStore.igdbUploads()),
-    }
+    readonly imageUploadStats = computed(() => this._dashboardImageUploadStore.uploads());
 
 
     constructor(

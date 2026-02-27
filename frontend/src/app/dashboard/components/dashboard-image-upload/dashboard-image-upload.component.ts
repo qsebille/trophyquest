@@ -11,21 +11,40 @@ import {ImageUploadStats} from "../../../core/api/dtos/images/image-upload-stats
     styleUrl: './dashboard-image-upload.component.scss',
 })
 export class DashboardImageUploadComponent {
-    readonly psnUploads = input.required<ImageUploadStats>();
-    readonly igdbUploads = input.required<ImageUploadStats>();
-
-    readonly psnSeries = computed<ApexAxisChartSeries>(() => [{
-        name: 'Count',
-        data: [this.psnUploads().uploaded, this.psnUploads().pending]
-    }]);
-    readonly igdbSeries = computed<ApexAxisChartSeries>(() => [{
-        name: 'Count',
-        data: [this.igdbUploads().uploaded, this.igdbUploads().pending]
-    }]);
+    readonly gameImageUploads = input.required<ImageUploadStats>();
+    readonly igdbImageUploads = input.required<ImageUploadStats>();
+    readonly playerAvatarUploads = input.required<ImageUploadStats>();
+    readonly trophyIconUploads = input.required<ImageUploadStats>();
+    readonly trophySuiteImageUploads = input.required<ImageUploadStats>();
 
 
-    readonly psnTitle: ApexTitleSubtitle = {text: 'PSN Images', align: 'left'};
-    readonly igdbTitle: ApexTitleSubtitle = {text: 'IGDB Images', align: 'left'};
+    private _getSeries(uploads: ImageUploadStats): ApexAxisChartSeries {
+        return [{name: 'Count', data: [uploads.uploaded, uploads.pending]}];
+    }
+
+    readonly gameImageSeries = computed<ApexAxisChartSeries>(() => this._getSeries(this.gameImageUploads()));
+    readonly igdbImageSeries = computed<ApexAxisChartSeries>(() => this._getSeries(this.igdbImageUploads()));
+    readonly playerAvatarSeries = computed<ApexAxisChartSeries>(() => this._getSeries(this.playerAvatarUploads()));
+    readonly trophyIconSeries = computed<ApexAxisChartSeries>(() => this._getSeries(this.trophyIconUploads()));
+    readonly trophySuiteImageSeries = computed<ApexAxisChartSeries>(() => this._getSeries(this.trophySuiteImageUploads()));
+
+    readonly gameImageTitle: ApexTitleSubtitle = {text: 'Game Images', align: 'left'};
+    readonly igdbImageTitle: ApexTitleSubtitle = {text: 'IGDB Images', align: 'left'};
+    readonly playerAvatarTitle: ApexTitleSubtitle = {text: 'Player Avatars', align: 'left'};
+    readonly trophyIconTitle: ApexTitleSubtitle = {text: 'Trophy Icons', align: 'left'};
+    readonly trophySuiteImageTitle: ApexTitleSubtitle = {text: 'Trophy Suite Images', align: 'left'};
+
+    get graphs() {
+        return [
+            {id: 1, series: this.gameImageSeries(), title: this.gameImageTitle},
+            {id: 2, series: this.igdbImageSeries(), title: this.igdbImageTitle},
+            {id: 3, series: this.playerAvatarSeries(), title: this.playerAvatarTitle},
+            {id: 4, series: this.trophyIconSeries(), title: this.trophyIconTitle},
+            {id: 5, series: this.trophySuiteImageSeries(), title: this.trophySuiteImageTitle},
+        ]
+    }
+
+
     readonly chart: ApexChart = {
         height: 350,
         type: "bar"

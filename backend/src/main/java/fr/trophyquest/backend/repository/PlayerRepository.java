@@ -54,4 +54,8 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
     );
 
     Optional<Player> findByPseudo(String pseudo);
+
+    long countPlayerByAwsAvatarUrlIsNotNull();
+
+    long countPlayerByAwsAvatarUrlIsNull();
 }

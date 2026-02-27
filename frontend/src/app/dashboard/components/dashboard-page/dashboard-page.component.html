@@ -1,12 +1,17 @@
-<div class="container p-2 d-flex justify-content-center gap-3">
+<div class="container p-2">
     @if (this.isLoading()) {
         <tq-spinner-container/>
     } @else if (this.hasFailedLoading()) {
         <tq-error-message [errorMessage]="'Failed to load dashboard'"/>
     } @else {
-        <tq-dashboard-igdb-mapping class="w-50" [stats]="this.igdbMappingStats()"/>
-        <tq-dashboard-image-upload class="w-50"
-                                   [psnUploads]="imageUploadStats.psn()"
-                                   [igdbUploads]="imageUploadStats.igdb()"/>
+        <div class="d-flex flex-column align-items-center gap-2">
+            <tq-dashboard-igdb-mapping class="w-75" [stats]="this.igdbMappingStats()"/>
+            <tq-dashboard-image-upload class="w-100"
+                                       [gameImageUploads]="imageUploadStats().game()"
+                                       [igdbImageUploads]="imageUploadStats().igdb()"
+                                       [playerAvatarUploads]="imageUploadStats().player()"
+                                       [trophyIconUploads]="imageUploadStats().trophy()"
+                                       [trophySuiteImageUploads]="imageUploadStats().trophySuite()"/>
+        </div>
     }
 </div>

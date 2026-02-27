@@ -28,6 +28,8 @@ public class Player {
     @Formula("coalesce(aws_avatar_url, psn_avatar_url)")
     private String avatar;
 
+    private String awsAvatarUrl;
+
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlayedGame> playedGames = new ArrayList<>();
 
