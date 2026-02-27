@@ -10,14 +10,14 @@ from images.psn_game import process_game_image, select_game_image
 from images.psn_player import select_player_image, process_player_avatar
 
 
-def run_image_uploader(nb_psn_images=10, nb_psn_player=10, max_workers=None):
+def run_image_uploader(game_image_limit=10, player_limit=10, max_workers=None):
     logger = logging.getLogger(__name__)
     dotenv.load_dotenv()
 
     # Fetch the list of images to process using a single connection, then close it
     pg_conn = postgres.get_connection()
-    game_images = select_game_image(nb_psn_images, pg_conn)
-    player_avatars = select_player_image(nb_psn_player, pg_conn)
+    game_images = select_game_image(game_image_limit, pg_conn)
+    player_avatars = select_player_image(player_limit, pg_conn)
 
     logger.info(f"Found {len(game_images)} game images to process.")
     logger.info(f"Found {len(player_avatars)} player avatars to process.")
