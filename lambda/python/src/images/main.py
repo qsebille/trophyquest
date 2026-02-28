@@ -11,6 +11,7 @@ from images.psn_player import select_player_image, process_player_avatar
 
 
 def run_image_uploader(game_image_limit=10, player_limit=10, max_workers=None):
+    logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
     dotenv.load_dotenv()
 

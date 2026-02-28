@@ -11,7 +11,7 @@ def select_player_image(limit: int, connection):
     query = f"""
             SELECT p.id, p.psn_avatar_url, p.pseudo 
                 FROM app.psn_player p
-                WHERE p.psn_avatar_url IS NULL
+                WHERE p.aws_avatar_url IS NULL
             LIMIT {limit};
             """
 
@@ -44,6 +44,7 @@ def process_player_avatar(record, bucket_name, s3_client):
             """
     try:
         cursor.execute(query, (aws_url, player_id))
+        pg_conn_thread.commit()
     except Exception as e:
         logger.error(f"Error executing query: {query}: {e}")
         pg_conn_thread.rollback()

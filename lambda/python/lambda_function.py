@@ -4,7 +4,7 @@ from images.main import run_image_uploader
 
 def image_uploader_handler(event, context):
     nb_psn_images = int(event.get("nb_psn_images", 100))
-    return run_image_uploader(nb_psn_images)
+    return run_image_uploader(game_image_limit=nb_psn_images, player_limit=nb_psn_images)
 
 
 def igdb_handler(event, context):

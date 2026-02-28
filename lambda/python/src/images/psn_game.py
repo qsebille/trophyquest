@@ -41,10 +41,11 @@ def process_game_image(record, bucket_name, s3_client):
     query = """
             UPDATE app.psn_game_image
             SET aws_url = %s
-            WHERE id = %s; \
+            WHERE id = %s;
             """
     try:
         cursor.execute(query, (aws_url, image_id))
+        pg_conn_thread.commit()
     except Exception as e:
         logger.error(f"Error executing query: {query}: {e}")
         pg_conn_thread.rollback()
