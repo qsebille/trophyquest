@@ -19,7 +19,7 @@ def get_unuploaded_igdb_images(limit: int, connection):
     logger = logging.getLogger(__name__)
     cursor = connection.cursor()
     query = f"""
-            SELECT ig.id, ig.name, ig.type, i.igdb_url
+            SELECT ig.id, ig.name, i.image_type, i.igdb_url
             FROM app.igdb_image i
                 JOIN app.igdb_game ig on i.igdb_game_id = ig.id
             WHERE i.aws_url IS NULL
