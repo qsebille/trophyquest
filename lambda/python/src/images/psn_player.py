@@ -2,10 +2,19 @@ import logging
 import re
 
 import postgres
-from images.upload import upload_image_to_aws
+from images.s3_upload import upload_image_to_aws
 
 
-def select_player_image(limit: int, connection):
+def get_unuploaded_player_avatars(limit: int, connection):
+    """Get player avatars that have not been uploaded to AWS S3.
+
+    Args:
+        limit (int): Maximum number of records to fetch.
+        connection: Database connection object.
+
+    Returns:
+        List of tuples containing player avatar details.
+    """
     logger = logging.getLogger(__name__)
     cursor = connection.cursor()
     query = f"""
@@ -25,7 +34,14 @@ def select_player_image(limit: int, connection):
         cursor.close()
 
 
-def process_player_avatar(record, bucket_name, s3_client):
+def upload_player_avatar_to_s3(record, bucket_name, s3_client):
+    """
+    Upload player avatar to AWS S3 and update database with the URL.
+
+    :param record: Player avatar details.
+    :param bucket_name: Name of the S3 bucket.
+    :param s3_client: S3 client object.
+    """
     logger = logging.getLogger(__name__)
     player_id, psn_url, pseudo = record
     logger.info(f"Processing image {player_id}: {psn_url} (pseudo: {pseudo})")
@@ -50,7 +66,6 @@ def process_player_avatar(record, bucket_name, s3_client):
         logger.info(f"Updating database for player {player_id} with url {aws_url}")
         cursor.execute(query, (aws_url, player_id))
         pg_conn_thread.commit()
-        logger.info(f"Database updated and committed for player {player_id}")
     except Exception as e:
         logger.error(f"Error executing query: {query}: {e}")
         pg_conn_thread.rollback()
