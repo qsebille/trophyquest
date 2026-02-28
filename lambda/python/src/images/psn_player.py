@@ -11,7 +11,7 @@ def select_player_image(limit: int, connection):
     query = f"""
             SELECT p.id, p.psn_avatar_url, p.pseudo 
                 FROM app.psn_player p
-                WHERE p.aws_url IS NULL
+                WHERE p.psn_avatar_url IS NULL
             LIMIT {limit};
             """
 
