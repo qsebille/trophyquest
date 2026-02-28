@@ -29,7 +29,11 @@ def select_game_image(limit: int, connection):
 def process_game_image(record, bucket_name, s3_client):
     logger = logging.getLogger(__name__)
     image_id, psn_url, image_type, game_name, game_id = record
-    logger.info(f"Processing image {image_id}: {psn_url}")
+    logger.info(f"Processing image {image_id}: {psn_url} (game: {game_name})")
+
+    if not game_name:
+        logger.warning(f"Game name is null for image {image_id}, using default name")
+        game_name = f"game-{game_id}"
 
     game_name_slug = re.sub(r'[^a-z0-9]+', '-', game_name.lower()).strip('-')
     s3_path = f"psn-game-image/{game_name_slug}_{game_id}/{image_type}/{image_id}"
@@ -44,8 +48,10 @@ def process_game_image(record, bucket_name, s3_client):
             WHERE id = %s;
             """
     try:
+        logger.info(f"Updating database for image {image_id} with url {aws_url}")
         cursor.execute(query, (aws_url, image_id))
         pg_conn_thread.commit()
+        logger.info(f"Database updated and committed for image {image_id}")
     except Exception as e:
         logger.error(f"Error executing query: {query}: {e}")
         pg_conn_thread.rollback()

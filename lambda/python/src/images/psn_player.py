@@ -28,7 +28,11 @@ def select_player_image(limit: int, connection):
 def process_player_avatar(record, bucket_name, s3_client):
     logger = logging.getLogger(__name__)
     player_id, psn_url, pseudo = record
-    logger.info(f"Processing image {player_id}: {psn_url}")
+    logger.info(f"Processing image {player_id}: {psn_url} (pseudo: {pseudo})")
+
+    if not pseudo:
+        logger.warning(f"Pseudo is null for player {player_id}, using default name")
+        pseudo = f"player-{player_id}"
 
     player_slug = re.sub(r'[^a-z0-9]+', '-', pseudo.lower()).strip('-')
     s3_path = f"psn-player/{player_slug}_{player_id}"
@@ -43,8 +47,10 @@ def process_player_avatar(record, bucket_name, s3_client):
             WHERE id = %s;
             """
     try:
+        logger.info(f"Updating database for player {player_id} with url {aws_url}")
         cursor.execute(query, (aws_url, player_id))
         pg_conn_thread.commit()
+        logger.info(f"Database updated and committed for player {player_id}")
     except Exception as e:
         logger.error(f"Error executing query: {query}: {e}")
         pg_conn_thread.rollback()
