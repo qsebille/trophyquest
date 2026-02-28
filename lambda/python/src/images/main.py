@@ -45,6 +45,7 @@ def run_image_uploader(
     bucket_name = os.environ["IMAGES_BUCKET_NAME"]
     s3_client = boto3.client("s3")
 
+    results = []
     errors = []
 
     max_workers = int(os.environ.get("IMAGES_MAX_WORKERS", "16"))
@@ -65,7 +66,8 @@ def run_image_uploader(
             rec = future_to_rec[future]
             image_id = rec[0]
             try:
-                future.result()
+                aws_url = future.result()
+                results.append((image_id, aws_url))
             except Exception as e:
                 logger.error(f"Error processing image {image_id}: {e}")
                 errors.append(image_id)
@@ -74,3 +76,5 @@ def run_image_uploader(
         logger.error(f"Errors processing {len(errors)} images:")
         for image_id in errors:
             logger.error(f"  {image_id}")
+
+    return results
