@@ -1,3 +1,4 @@
+import io
 import logging
 
 import requests
@@ -18,7 +19,7 @@ def upload_image_to_aws(image_url: str, s3_path: str, s3_client, bucket_name: st
     # Upload image to s3
     file_extension = image_url.split('.')[-1].split('?')[0]
     s3_key = f"{s3_path}.{file_extension}"
-    s3_client.upload_fileobj(response.content, bucket_name, s3_key)
+    s3_client.upload_fileobj(io.BytesIO(response.content), bucket_name, s3_key)
     aws_url = f"https://{bucket_name}.s3.amazonaws.com/{s3_key}"
 
     return aws_url
