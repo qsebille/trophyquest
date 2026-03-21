@@ -1,19 +1,19 @@
-name: PSN Fetcher - Check version bumped
+name: PSN Fetcher - CI
 on:
   pull_request:
     branches:
       - main
     paths:
       - "psn_fetcher/**"
-      - ".github/workflows/psn-fetcher-*.yml"
+      - ".github/workflows/psn-fetcher-ci.yml"
+      - ".github/actions/get-version/**"
 
 jobs:
-  check:
+  check-version:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: psn_fetcher
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -39,5 +39,32 @@ jobs:
             echo "❌ You must bump version in package.json for this PR"
             exit 1
           fi
-          
+
           echo "✅ Version bumped."
+
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: psn_fetcher
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: psn_fetcher/package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm test

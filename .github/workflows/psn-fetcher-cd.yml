@@ -1,0 +1,104 @@
+name: PSN Fetcher - CD
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "psn_fetcher/**"
+      - ".github/workflows/psn-fetcher-cd.yml"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: psn_fetcher
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: psn_fetcher/package-lock.json
+
+      - name: Get version
+        id: get-version
+        uses: ./.github/actions/get-version
+        with:
+          service_name: psn-fetcher
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Prune dev deps
+        run: npm prune --production
+
+      - name: Package Fetcher Lambda
+        shell: bash
+        run: |
+          rm -rf packaged-lambda-fetcher psn-fetcher.zip
+          mkdir -p packaged-lambda-fetcher
+          cp package.json packaged-lambda-fetcher/
+          cp package-lock.json packaged-lambda-fetcher/
+          cp -r dist packaged-lambda-fetcher/
+          cp -r node_modules packaged-lambda-fetcher/
+          cd packaged-lambda-fetcher
+          zip -r "../psn-fetcher.zip" .
+
+      - name: Package Refresher Lambda
+        shell: bash
+        run: |
+          rm -rf packaged-lambda-refresher psn-refresher.zip
+          mkdir -p packaged-lambda-refresher
+          cp package.json packaged-lambda-refresher/
+          cp package-lock.json packaged-lambda-refresher/
+          cp -r dist packaged-lambda-refresher/
+          cp -r node_modules packaged-lambda-refresher/
+          cd packaged-lambda-refresher
+          zip -r "../psn-refresher.zip" .
+
+      - name: Deploy Fetcher to AWS
+        uses: ./.github/actions/deploy-lambda
+        with:
+          function_name: trophyquest-psn-fetcher
+          semantic_version: ${{ steps.get-version.outputs.version }}
+          alias_name: prod
+          zip_path: psn_fetcher/psn-fetcher.zip
+          aws_region: ${{ secrets.AWS_REGION }}
+          aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
+
+      - name: Deploy Refresher to AWS
+        uses: ./.github/actions/deploy-lambda
+        with:
+          function_name: trophyquest-psn-refresher
+          semantic_version: ${{ steps.get-version.outputs.version }}
+          alias_name: prod
+          zip_path: psn_fetcher/psn-refresher.zip
+          aws_region: ${{ secrets.AWS_REGION }}
+          aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
+
+      - name: Create and push tag
+        run: |
+          VERSION=${{ steps.get-version.outputs.version }}
+          TAG="psn-fetcher-v$VERSION"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi

@@ -1,19 +1,19 @@
-name: Backend - Check version bumped
+name: Backend - CI
 on:
   pull_request:
     branches:
       - main
     paths:
       - "backend/**"
-      - ".github/workflows/backend-*.yml"
+      - ".github/workflows/backend-ci.yml"
+      - ".github/actions/get-version/**"
 
 jobs:
-  check:
+  check-version:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: backend
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -41,3 +41,26 @@ jobs:
           fi
 
           echo "✅ Version bumped."
+
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: Build and test
+        run: |
+          chmod +x gradlew
+          ./gradlew clean test
