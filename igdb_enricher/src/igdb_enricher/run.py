@@ -3,9 +3,9 @@ import os
 
 import dotenv
 
-from igdb_enricher.src.candidate.process import process_candidates_for_game
-from igdb_enricher.src.postgres.fetch import get_psn_games_with_pending_match_status
-from igdb_enricher.src.postgres.insert import insert_into_postgres
+from igdb_enricher.candidate.process import process_candidates_for_game
+from igdb_enricher.postgres.fetch import get_psn_games_with_pending_match_status
+from igdb_enricher.postgres.insert import insert_into_postgres
 
 
 def run_enricher(nb_game_to_match=50):

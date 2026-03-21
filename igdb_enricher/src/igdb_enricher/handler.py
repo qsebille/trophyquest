@@ -1,6 +1,6 @@
 import logging
 
-from igdb_enricher.src.run import run_enricher
+from igdb_enricher.run import run_enricher
 
 
 def setup_logging_lambda():

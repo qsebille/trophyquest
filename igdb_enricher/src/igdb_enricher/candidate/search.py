@@ -1,7 +1,7 @@
 from requests import post
 
-from igdb_enricher.src.igdb.constants import PlatformCodes, GameTypeCodes, IGDB_BASE_URL
-from igdb_enricher.src.igdb.token import get_igdb_token
+from igdb_enricher.igdb.constants import PlatformCodes, GameTypeCodes, IGDB_BASE_URL
+from igdb_enricher.igdb.token import get_igdb_token
 
 
 def search_candidates_for_title(search_query, twitch_client_id):

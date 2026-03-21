@@ -1,6 +1,6 @@
 import logging
 
-from igdb_enricher.src.candidate.result import CandidateResultingProcess
+from igdb_enricher.candidate.result import CandidateResultingProcess
 
 
 def prepare_companies(processed_candidates: list[CandidateResultingProcess]):

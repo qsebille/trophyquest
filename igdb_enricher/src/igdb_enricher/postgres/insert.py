@@ -1,13 +1,13 @@
 import logging
 
-from igdb_enricher.src.candidate.result import CandidateResultingProcess
-from igdb_enricher.src.postgres.connection import get_postgres_connection
-from igdb_enricher.src.postgres.insert_queries import get_insert_query, InsertQueryTypes
-from igdb_enricher.src.postgres.prepare.candidates import prepare_candidates
-from igdb_enricher.src.postgres.prepare.collections import prepare_collections
-from igdb_enricher.src.postgres.prepare.companies import prepare_companies
-from igdb_enricher.src.postgres.prepare.games import prepare_games
-from igdb_enricher.src.postgres.prepare.images import prepare_images
+from igdb_enricher.candidate.result import CandidateResultingProcess
+from igdb_enricher.postgres.connection import get_postgres_connection
+from igdb_enricher.postgres.insert_queries import get_insert_query, InsertQueryTypes
+from igdb_enricher.postgres.prepare.candidates import prepare_candidates
+from igdb_enricher.postgres.prepare.collections import prepare_collections
+from igdb_enricher.postgres.prepare.companies import prepare_companies
+from igdb_enricher.postgres.prepare.games import prepare_games
+from igdb_enricher.postgres.prepare.images import prepare_images
 
 
 def insert_into_postgres(processed_candidates: list[CandidateResultingProcess]):

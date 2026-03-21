@@ -1,9 +1,9 @@
 import logging
 
-from igdb_enricher.src.candidate.format import format_igdb_game
-from igdb_enricher.src.candidate.result import CandidateResultingProcess
-from igdb_enricher.src.candidate.score import compute_match_score
-from igdb_enricher.src.candidate.search import search_candidates_for_title
+from igdb_enricher.candidate.format import format_igdb_game
+from igdb_enricher.candidate.result import CandidateResultingProcess
+from igdb_enricher.candidate.score import compute_match_score
+from igdb_enricher.candidate.search import search_candidates_for_title
 
 
 def process_candidates_for_game(psn_game: tuple, twitch_client_id: str) -> CandidateResultingProcess:

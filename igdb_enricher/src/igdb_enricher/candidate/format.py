@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from igdb_enricher.src.igdb.constants import WebsiteCategoryCodes
+from igdb_enricher.igdb.constants import WebsiteCategoryCodes
 
 
 def format_igdb_game(raw_candidate: dict[str, Any]):

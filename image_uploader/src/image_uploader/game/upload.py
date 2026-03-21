@@ -3,8 +3,8 @@ import re
 
 from botocore.client import BaseClient
 
-from image_uploader.src.postgres.connection import get_postgres_connection
-from image_uploader.src.utils.aws import upload_image_to_aws
+from image_uploader.postgres.connection import get_postgres_connection
+from image_uploader.utils.aws import upload_image_to_aws
 
 
 def upload_game_image_to_s3(

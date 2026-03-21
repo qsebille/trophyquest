@@ -1,6 +1,6 @@
 import logging
 
-from igdb_enricher.src.candidate.result import CandidateResultingProcess
+from igdb_enricher.candidate.result import CandidateResultingProcess
 
 
 def prepare_candidates(processed_candidates: list[CandidateResultingProcess]):
@@ -11,5 +11,5 @@ def prepare_candidates(processed_candidates: list[CandidateResultingProcess]):
         candidates.add((candidate["psn_id"], candidate["igdb_id"], candidate["score"], candidate["status"]))
 
     logger.info(f"Prepared {len(candidates)} match status elements")
-    
+
     return candidates

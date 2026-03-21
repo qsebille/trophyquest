@@ -1,6 +1,6 @@
 import logging
 
-from image_uploader.src.run import run_image_uploader
+from image_uploader.run import run_image_uploader
 
 
 def setup_logging_lambda():
@@ -18,6 +18,7 @@ def image_uploader_handler(event, context):
     logger = logging.getLogger(__name__)
     logger.info("Image Uploader: START")
     logger.info(f"Received event for image uploader: {event}")
+    logger.info(f"Received context for image uploader: {context}")
 
     game_image_limit = event.get("game_image_limit", 20)
     player_avatar_limit = event.get("player_avatar_limit", 20)
