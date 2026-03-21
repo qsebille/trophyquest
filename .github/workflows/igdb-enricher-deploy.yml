@@ -40,12 +40,13 @@ jobs:
         run: |
           cd igdb_enricher
           rm -rf packaged-lambda lambda.zip
-          mkdir -p packaged-lambda
+          mkdir -p packaged-lambda/igdb_enricher
           
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt -t packaged-lambda/
-          cp -r src/* packaged-lambda/
-          cp -r handler.py packaged-lambda/
+          cp -r src/* packaged-lambda/igdb_enricher/
+          cp -r handler.py packaged-lambda/igdb_enricher/
+          touch packaged-lambda/igdb_enricher/__init__.py
           
           cd packaged-lambda
           zip -r "../lambda.zip" .
