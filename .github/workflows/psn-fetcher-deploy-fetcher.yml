@@ -68,6 +68,6 @@ jobs:
           function_name: trophyquest-psn-fetcher
           semantic_version: ${{ steps.get-version.outputs.version }}
           alias_name: prod
-          zip_path: psn-fetcher.zip
+          zip_path: psn_fetcher/psn-fetcher.zip
           aws_region: ${{ secrets.AWS_REGION }}
           aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
