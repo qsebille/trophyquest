@@ -1,6 +1,6 @@
 {
-  "name": "trophyquest-nodejs-lambdas",
-  "version": "1.0.5",
+  "name": "trophyquest-psn-fetcher",
+  "version": "1.0.6",
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
