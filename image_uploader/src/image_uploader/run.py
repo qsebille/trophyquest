@@ -11,11 +11,11 @@ from image_uploader.igdb.fetch import fetch_unuploaded_igdb_images
 from image_uploader.igdb.upload import upload_igdb_image_to_s3
 from image_uploader.player.fetch import fetch_unuploaded_player_avatars
 from image_uploader.player.upload import upload_player_avatar_to_s3
+from image_uploader.postgres.connection import get_postgres_connection
 from image_uploader.trophy.fetch import fetch_unuploaded_trophy_icons
 from image_uploader.trophy.upload import upload_trophy_icon_to_s3
 from image_uploader.trophy_suite.fetch import fetch_unuploaded_trophy_suite_images
 from image_uploader.trophy_suite.upload import upload_trophy_suite_image_to_s3
-from postgres.connection import get_postgres_connection
 
 
 def run_image_uploader(
