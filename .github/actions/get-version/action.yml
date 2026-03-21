@@ -4,7 +4,7 @@ description: Read version for a service
 inputs:
   service_name:
     required: true
-    description: "Service name (lambda-node | lambda-python | backend | frontend)"
+    description: "Service name (psn-fetcher | image-uploader | igdb-enricher | backend | frontend)"
 
 outputs:
   version:
@@ -40,7 +40,7 @@ runs:
             ;;
           *)
             echo "❌ Unknown service_name: $SERVICE_NAME"
-            echo "Expected: lambda-node | image-uploader | igdb-enricher | backend | frontend"
+            echo "Expected: psn-fetcher | image-uploader | igdb-enricher | backend | frontend"
             exit 1
             ;;
         esac

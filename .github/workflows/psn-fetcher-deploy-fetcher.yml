@@ -54,10 +54,10 @@ jobs:
           rm -rf packaged-lambda psn-fetcher.zip
           mkdir -p packaged-lambda
           
-          cp psn_fetcher/package.json packaged-lambda/
-          cp psn_fetcher/package-lock.json packaged-lambda/
-          cp -r psn_fetcher/dist packaged-lambda/
-          cp -r psn_fetcher/node_modules packaged-lambda/
+          cp package.json packaged-lambda/
+          cp package-lock.json packaged-lambda/
+          cp -r dist packaged-lambda/
+          cp -r node_modules packaged-lambda/
           
           cd packaged-lambda
           zip -r "../psn-fetcher.zip" .
