@@ -1,4 +1,4 @@
-name: Create backend tag on merge
+name: Backend - Tag on merge
 
 on:
   push:
@@ -6,8 +6,6 @@ on:
       - main
     paths:
       - "backend/**"
-      - ".github/workflows/backend-*.yml"
-      - ".github/actions/get-version/action.yml"
 
 jobs:
   tag-on-merge:

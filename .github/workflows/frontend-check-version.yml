@@ -1,4 +1,4 @@
-name: Check version bumped for frontend
+name: Frontend - Check version bumped
 on:
   pull_request:
     branches:
@@ -6,10 +6,9 @@ on:
     paths:
       - "frontend/**"
       - ".github/workflows/frontend-*.yml"
-      - ".github/actions/get-version/action.yml"
 
 jobs:
-  check-version-bump:
+  check:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -30,7 +29,7 @@ jobs:
       - name: Compare versions
         run: |
           git fetch origin main
-          OLD_VERSION=$(git show origin/main:frontend/package.json | jq -r '.version')
+          OLD_VERSION=$(git show origin/main:frontend/package.json 2>/dev/null | jq -r '.version' || echo "0.0.0")
           NEW_VERSION=${{ steps.get-version.outputs.version }}
 
           echo "OLD_VERSION=$OLD_VERSION"

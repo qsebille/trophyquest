@@ -1,18 +1,18 @@
-name: Frontend - Tag on merge
+name: Image Uploader - Tag on merge
 
 on:
   push:
     branches:
       - main
     paths:
-      - "frontend/**"
+      - "image_uploader/**"
 
 jobs:
   tag-on-merge:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: frontend
+        working-directory: image_uploader
 
     permissions:
       contents: write
@@ -27,12 +27,12 @@ jobs:
         id: get-version
         uses: ./.github/actions/get-version
         with:
-          service_name: frontend
+          service_name: image-uploader
 
       - name: Create tag
         run: |
           VERSION=${{ steps.get-version.outputs.version }}
-          TAG="frontend-v$VERSION"
+          TAG="image-uploader-v$VERSION"
           if git rev-parse "$TAG" >/dev/null 2>&1; then
             echo "Tag $TAG already exists"
           else

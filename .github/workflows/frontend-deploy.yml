@@ -1,4 +1,4 @@
-name: Deploy frontend application to AWS (static S3 bucket)
+name: Frontend - Deploy
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "frontend/**"
-      - ".github/workflows/frontend-deploy.yml"
   workflow_dispatch:
 
 permissions:

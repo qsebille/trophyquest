@@ -1,4 +1,4 @@
-name: Deploy backend application to AWS (EC2)
+name: Backend - Deploy
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "backend/**"
-      - ".github/workflows/backend-deploy.yml"
   workflow_dispatch:
 
 permissions:

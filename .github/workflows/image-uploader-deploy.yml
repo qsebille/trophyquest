@@ -1,0 +1,61 @@
+name: Image Uploader - Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "image_uploader/**"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Get version
+        id: get-version
+        uses: ./.github/actions/get-version
+        with:
+          service_name: image-uploader
+
+      - name: Package Lambda
+        id: package
+        shell: bash
+        run: |
+          cd image_uploader
+          rm -rf packaged-lambda lambda.zip
+          mkdir -p packaged-lambda
+          
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -t packaged-lambda/
+          cp -r src/* packaged-lambda/
+          cp -r handler.py packaged-lambda/
+          
+          cd packaged-lambda
+          zip -r "../lambda.zip" .
+          echo "zip_path=image_uploader/lambda.zip" >> $GITHUB_OUTPUT
+
+      - name: Deploy to AWS
+        uses: ./.github/actions/deploy-lambda
+        with:
+          function_name: trophyquest-image-uploader
+          semantic_version: ${{ steps.get-version.outputs.version }}
+          zip_path: ${{ steps.package.outputs.zip_path }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}

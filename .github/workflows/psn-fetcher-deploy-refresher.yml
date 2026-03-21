@@ -1,0 +1,72 @@
+name: PSN Fetcher - Deploy Refresher
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "psn_fetcher/**"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: psn_fetcher
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: psn_fetcher/package-lock.json
+
+      - name: Get version
+        id: get-version
+        uses: ./.github/actions/get-version
+        with:
+          service_name: psn-fetcher
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Prune dev deps
+        run: npm prune --production
+
+      - name: Package Lambda
+        shell: bash
+        run: |
+          rm -rf packaged-lambda psn-refresher.zip
+          mkdir -p packaged-lambda
+          
+          cp package.json packaged-lambda/
+          cp package-lock.json packaged-lambda/
+          cp -r dist packaged-lambda/
+          cp -r node_modules packaged-lambda/
+          
+          cd packaged-lambda
+          zip -r "../psn-refresher.zip" .
+
+      - name: Deploy to AWS
+        uses: ./.github/actions/deploy-lambda
+        with:
+          function_name: trophyquest-psn-refresher
+          semantic_version: ${{ steps.get-version.outputs.version }}
+          alias_name: prod
+          zip_path: psn-refresher.zip
+          aws_region: ${{ secrets.AWS_REGION }}
+          aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}

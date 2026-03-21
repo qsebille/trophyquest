@@ -1,18 +1,18 @@
-name: Frontend - Tag on merge
+name: PSN Fetcher - Tag on merge
 
 on:
   push:
     branches:
       - main
     paths:
-      - "frontend/**"
+      - "psn_fetcher/**"
 
 jobs:
   tag-on-merge:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: frontend
+        working-directory: psn_fetcher
 
     permissions:
       contents: write
@@ -27,12 +27,12 @@ jobs:
         id: get-version
         uses: ./.github/actions/get-version
         with:
-          service_name: frontend
+          service_name: psn-fetcher
 
       - name: Create tag
         run: |
           VERSION=${{ steps.get-version.outputs.version }}
-          TAG="frontend-v$VERSION"
+          TAG="psn-fetcher-v$VERSION"
           if git rev-parse "$TAG" >/dev/null 2>&1; then
             echo "Tag $TAG already exists"
           else
