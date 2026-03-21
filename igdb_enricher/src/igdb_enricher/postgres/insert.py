@@ -33,19 +33,18 @@ def insert_into_postgres(processed_candidates: list[CandidateResultingProcess]):
         cursor.executemany(get_insert_query(InsertQueryTypes.INSERT_CANDIDATES), candidates)
 
         # Update PSN game
-        match_status_placeholders = []
         for e in processed_candidates:
-            igdb_id = e.match_status["igdb_id"] if e.match_status["igdb_id"] is not None else "NULL"
+            igdb_id = e.match_status["igdb_id"]
             psn_id = e.match_status["psn_id"]
             status = e.match_status["status"]
-            match_status_placeholders.append(f"('{psn_id}'::uuid, {igdb_id}::bigint, '{status}')")
-        update_query = f"""
-            UPDATE app.psn_game g
-            SET igdb_match_status = v.status, igdb_game_id = v.igdb_id
-            FROM (values {', '.join(match_status_placeholders)}) as v(id, igdb_id, status)
-            WHERE g.id = v.id;
-        """
-        cursor.execute(update_query)
+
+            update_query = """
+                           UPDATE app.psn_game
+                           SET igdb_match_status = %s,
+                               igdb_game_id      = %s
+                           WHERE id = %s; \
+                           """
+            cursor.execute(update_query, (status, igdb_id, psn_id))
 
         connection.commit()
     except Exception as e:
