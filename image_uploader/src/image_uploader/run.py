@@ -1,6 +1,6 @@
 import logging
 import os
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 
 import boto3
 import dotenv
@@ -16,43 +16,7 @@ from image_uploader.trophy.fetch import fetch_unuploaded_trophy_icons
 from image_uploader.trophy.upload import upload_trophy_icon_to_s3
 from image_uploader.trophy_suite.fetch import fetch_unuploaded_trophy_suite_images
 from image_uploader.trophy_suite.upload import upload_trophy_suite_image_to_s3
-
-
-def process_image_batch(
-        logger: logging.Logger,
-        executor: ThreadPoolExecutor,
-        images: list,
-        upload_func,
-        bucket_name: str,
-        s3_client,
-        label: str,
-):
-    """Processes a batch of images using the provided upload function."""
-    if not images:
-        return [], []
-
-    results = []
-    errors = []
-    future_to_rec = {
-        executor.submit(upload_func, rec, bucket_name, s3_client): rec for rec in images
-    }
-
-    for future in as_completed(future_to_rec):
-        rec = future_to_rec[future]
-        image_id = rec[0]
-        try:
-            aws_url = future.result()
-            results.append((image_id, aws_url))
-        except Exception as e:
-            logger.error(f"Error processing {label} image {image_id}: {e}")
-            errors.append(image_id)
-
-    if errors:
-        logger.error(f"Errors processing {len(errors)} {label} images")
-        for image_id in errors:
-            logger.error(f"Error processing {label} image: {image_id}")
-
-    return results, errors
+from image_uploader.utils.process_image_batch import process_image_batch
 
 
 def run_image_uploader(
@@ -93,32 +57,62 @@ def run_image_uploader(
     max_workers = int(os.environ.get("IMAGES_MAX_WORKERS", "16"))
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         # 1. Game Images
-        res, err = process_image_batch(logger, executor, game_images, upload_game_image_to_s3, bucket_name, s3_client,
-                                       "game")
+        res, err = process_image_batch(
+            executor=executor,
+            images=game_images,
+            upload_func=upload_game_image_to_s3,
+            bucket_name=bucket_name,
+            s3_client=s3_client,
+            label="game"
+        )
         total_results.extend(res)
         total_errors.extend(err)
 
         # 2. Player Avatars
-        res, err = process_image_batch(logger, executor, player_avatars, upload_player_avatar_to_s3, bucket_name,
-                                       s3_client, "player_avatar")
+        res, err = process_image_batch(
+            executor=executor,
+            images=player_avatars,
+            upload_func=upload_player_avatar_to_s3,
+            bucket_name=bucket_name,
+            s3_client=s3_client,
+            label="player_avatar"
+        )
         total_results.extend(res)
         total_errors.extend(err)
 
         # 3. Trophy Icons
-        res, err = process_image_batch(logger, executor, trophy_icons, upload_trophy_icon_to_s3, bucket_name, s3_client,
-                                       "trophy_icon")
+        res, err = process_image_batch(
+            executor=executor,
+            images=trophy_icons,
+            upload_func=upload_trophy_icon_to_s3,
+            bucket_name=bucket_name,
+            s3_client=s3_client,
+            label="trophy_icon"
+        )
         total_results.extend(res)
         total_errors.extend(err)
 
         # 4. Trophy Suite Images
-        res, err = process_image_batch(logger, executor, trophy_suite_images, upload_trophy_suite_image_to_s3,
-                                       bucket_name, s3_client, "trophy_suite")
+        res, err = process_image_batch(
+            executor=executor,
+            images=trophy_suite_images,
+            upload_func=upload_trophy_suite_image_to_s3,
+            bucket_name=bucket_name,
+            s3_client=s3_client,
+            label="trophy_suite"
+        )
         total_results.extend(res)
         total_errors.extend(err)
 
         # 5. IGDB Images
-        res, err = process_image_batch(logger, executor, igdb_images, upload_igdb_image_to_s3, bucket_name, s3_client,
-                                       "igdb")
+        res, err = process_image_batch(
+            executor=executor,
+            images=igdb_images,
+            upload_func=upload_igdb_image_to_s3,
+            bucket_name=bucket_name,
+            s3_client=s3_client,
+            label="igdb"
+        )
         total_results.extend(res)
         total_errors.extend(err)
 

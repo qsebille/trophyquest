@@ -21,7 +21,7 @@ def upload_trophy_suite_image_to_s3(
     :return: AWS URL of the uploaded image.
     """
     logger = logging.getLogger(__name__)
-    ts_id, ts_name, ts_url = record
+    ts_id, ts_url, ts_name = record
     logger.info(f"Processing trophy suite image. TS_ID: {ts_id}, TS_NAME: {ts_name}, TS_URL: {ts_url}")
 
     name_slug = re.sub(r'[^a-z0-9]+', '-', ts_name.lower()).strip('-')
