@@ -1,6 +1,6 @@
 import logging
 
-from image_uploader.src.postgres.connection import get_postgres_connection
+from igdb_enricher.postgres.connection import get_postgres_connection
 
 
 def get_psn_games_with_pending_match_status(nb_game_to_select=20) -> list:
