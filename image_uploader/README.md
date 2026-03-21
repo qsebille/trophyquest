@@ -69,9 +69,9 @@ Vous pouvez appeler `run_image_uploader` directement depuis `src/run.py` en four
 
 ## Structure du projet
 
-- `handler.py` : Point d'entrée pour AWS Lambda.
-- `src/run.py` : Logique principale de coordination des fetchers et des uploaders.
-- `src/game/`, `src/player/`, etc. : Modules spécifiques à chaque type d'entité pour la récupération des données et l'
-  upload.
-- `src/postgres/` : Gestion de la connexion à la base de données.
-- `src/utils/` : Utilitaires (notamment pour S3).
+- `src/image_uploader/handler.py` : Point d'entrée pour AWS Lambda.
+- `src/image_uploader/run.py` : Logique principale de coordination des fetchers et des uploaders.
+- `src/image_uploader/game/`, `src/image_uploader/player/`, etc. : Modules spécifiques à chaque type d'entité pour la
+  récupération des données et l'upload.
+- `src/image_uploader/postgres/` : Gestion de la connexion à la base de données.
+- `src/image_uploader/utils/` : Utilitaires (notamment pour S3).

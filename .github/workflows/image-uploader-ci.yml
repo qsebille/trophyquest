@@ -1,19 +1,19 @@
-name: Image Uploader - Check version bumped
+name: Image Uploader - CI
 on:
   pull_request:
     branches:
       - main
     paths:
       - "image_uploader/**"
-      - ".github/workflows/image-uploader-*.yml"
+      - ".github/workflows/image-uploader-ci.yml"
+      - ".github/actions/get-version/**"
 
 jobs:
-  check:
+  check-version:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: image_uploader
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -41,3 +41,29 @@ jobs:
           fi
 
           echo "✅ Version bumped."
+
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: image_uploader
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-mock
+
+      - name: Run tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:src
+          pytest tests
