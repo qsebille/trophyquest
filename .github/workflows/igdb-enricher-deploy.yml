@@ -45,7 +45,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt -t packaged-lambda/
           cp -r src/* packaged-lambda/igdb_enricher/
-          cp -r handler.py packaged-lambda/igdb_enricher/
+          cp -r handler.py packaged-lambda/
           touch packaged-lambda/igdb_enricher/__init__.py
           
           cd packaged-lambda

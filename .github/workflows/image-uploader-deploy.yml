@@ -45,7 +45,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt -t packaged-lambda/
           cp -r src/* packaged-lambda/image_uploader/
-          cp -r handler.py packaged-lambda/image_uploader/
+          cp -r handler.py packaged-lambda/
           touch packaged-lambda/image_uploader/__init__.py
           
           cd packaged-lambda
