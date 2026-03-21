@@ -44,6 +44,8 @@ runs:
             exit 1
             ;;
         esac
+        
+        echo "Resolved version for service_name=$SERVICE_NAME: $VERSION"
 
         if [ -z "$VERSION" ]; then
           echo "❌ Version is empty for service_name=$SERVICE_NAME"
