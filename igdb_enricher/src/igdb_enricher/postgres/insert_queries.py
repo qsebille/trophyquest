@@ -64,7 +64,7 @@ def get_insert_query(query_type: InsertQueryType) -> str:
         case InsertQueryTypes.INSERT_GAME_COMPANIES:
             return f"""
                       INSERT INTO app.igdb_game_company (game_id, company_id, role)
-                      VALUES (%s, %s, %s) ON CONFLICT (game_id, company_id, role) DO NOTHING;
+                      VALUES (%s, %s, %s) ON CONFLICT (game_id, company_id) DO NOTHING;
                 """
 
         case InsertQueryTypes.INSERT_IMAGES:
