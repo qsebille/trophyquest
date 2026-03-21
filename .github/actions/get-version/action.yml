@@ -26,18 +26,21 @@ runs:
           frontend)
             VERSION=$(node -p "require('./frontend/package.json').version")
             ;;
-          lambda-node)
-            VERSION=$(node -p "require('./lambda/node/package.json').version")
+          psn-fetcher)
+            VERSION=$(node -p "require('./psn_fetcher/package.json').version")
             ;;
-          lambda-python)
-            VERSION=$(tr -d '\r' < "lambda/python/VERSION")
+          igdb-enricher)
+            VERSION=$(tr -d '\r' < "igdb_enricher/VERSION")
+            ;;
+          image-uploader)
+            VERSION=$(tr -d '\r' < "image_uploader/VERSION")
             ;;
           backend)
             VERSION=$(grep '^version=' ./backend/gradle.properties | cut -d'=' -f2)
             ;;
           *)
             echo "❌ Unknown service_name: $SERVICE_NAME"
-            echo "Expected: lambda-node | lambda-python | backend | frontend"
+            echo "Expected: lambda-node | image-uploader | igdb-enricher | backend | frontend"
             exit 1
             ;;
         esac

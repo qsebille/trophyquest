@@ -1,18 +1,18 @@
-name: Check version bumped for backend
+name: Check version bumped for Python Lambdas
 on:
   pull_request:
     branches:
       - main
     paths:
-      - "backend/**"
-      - ".github/workflows/backend-*.yml"
+      - "igdb_enricher/**"
+      - ".github/workflows/igdb-enricher-*.yml"
 
 jobs:
   check-version-bump:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: backend
+        working-directory: igdb_enricher
 
     steps:
       - name: Checkout sources
@@ -24,19 +24,19 @@ jobs:
         id: get-version
         uses: ./.github/actions/get-version
         with:
-          service_name: backend
+          service_name: igdb-enricher
 
       - name: Compare versions
         run: |
           git fetch origin main
-          OLD_VERSION=$(git show origin/main:backend/gradle.properties | grep '^version=' | cut -d'=' -f2)
+          OLD_VERSION=$(git show origin/main:igdb_enricher/VERSION)
           NEW_VERSION=${{ steps.get-version.outputs.version }}
 
           echo "OLD_VERSION=$OLD_VERSION"
           echo "NEW_VERSION=$NEW_VERSION"
 
           if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
-            echo "❌ You must bump version in gradle.properties file for this PR"
+            echo "❌ You must bump version in VERSION file for this PR"
             exit 1
           fi
 
