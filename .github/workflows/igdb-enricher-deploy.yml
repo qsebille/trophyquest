@@ -1,4 +1,4 @@
-name: Deploy igdb-enricher Lambda to AWS
+name: IGDB Enricher - Deploy
 
 on:
   push:

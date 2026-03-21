@@ -1,4 +1,4 @@
-name: Deploy psn-refresher Lambda to AWS
+name: PSN Fetcher - Deploy Refresher
 
 on:
   push:

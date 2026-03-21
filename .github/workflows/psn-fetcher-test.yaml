@@ -1,4 +1,4 @@
-name: Run Tests for Node Lambdas
+name: PSN Fetcher - Tests
 
 on:
   pull_request:

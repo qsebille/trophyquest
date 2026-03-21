@@ -1,4 +1,4 @@
-name: Deploy frontend application to AWS (static S3 bucket)
+name: Frontend - Deploy
 
 on:
   push:

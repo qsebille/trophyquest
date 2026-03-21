@@ -1,4 +1,4 @@
-name: Create Lambda Node tag on merge
+name: PSN Fetcher - Tag on merge
 
 on:
   push:

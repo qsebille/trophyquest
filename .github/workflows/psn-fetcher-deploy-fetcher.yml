@@ -1,4 +1,4 @@
-name: Deploy psn-fetcher Lambda to AWS
+name: PSN Fetcher - Deploy Fetcher
 
 on:
   push:

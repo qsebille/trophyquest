@@ -1,4 +1,4 @@
-name: Deploy image-uploader Lambda to AWS
+name: Image Uploader - Deploy
 
 on:
   push:

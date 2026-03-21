@@ -1,4 +1,4 @@
-name: Run Tests for backend
+name: Backend - Tests
 
 on:
   pull_request:

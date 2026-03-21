@@ -1,4 +1,4 @@
-name: Check version bumped for Python Lambdas
+name: Image Uploader - Check version bumped
 on:
   pull_request:
     branches:
@@ -8,7 +8,7 @@ on:
       - ".github/workflows/image-uploader-*.yml"
 
 jobs:
-  check-version-bump:
+  check:
     runs-on: ubuntu-latest
     defaults:
       run:

@@ -1,4 +1,4 @@
-name: Create Lambda Python tag on merge
+name: Image Uploader - Tag on merge
 
 on:
   push:

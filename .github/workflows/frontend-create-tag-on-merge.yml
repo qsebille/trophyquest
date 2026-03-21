@@ -1,4 +1,4 @@
-name: Create frontend tag on merge
+name: Frontend - Tag on merge
 
 on:
   push:
