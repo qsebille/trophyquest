@@ -5,8 +5,7 @@ on:
       - main
     paths:
       - "backend/**"
-      - ".github/workflows/backend-ci.yml"
-      - ".github/actions/get-version/**"
+      - ".github/workflows/backend-*.yml"
 
 jobs:
   check-version:
@@ -44,6 +43,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    needs: check-version
     defaults:
       run:
         working-directory: backend
