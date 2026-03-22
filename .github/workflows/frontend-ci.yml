@@ -5,8 +5,7 @@ on:
       - main
     paths:
       - "frontend/**"
-      - ".github/workflows/frontend-ci.yml"
-      - ".github/actions/get-version/**"
+      - ".github/workflows/frontend-*.yml"
 
 jobs:
   check-version:

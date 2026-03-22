@@ -5,8 +5,7 @@ on:
       - main
     paths:
       - "igdb_enricher/**"
-      - ".github/workflows/igdb-enricher-ci.yml"
-      - ".github/actions/get-version/**"
+      - ".github/workflows/igdb-enricher-*.yml"
 
 jobs:
   check-version:
