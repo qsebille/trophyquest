@@ -24,14 +24,11 @@ export class TrophySuiteTrophyFiltersComponent {
     readonly filterChange = output<'all' | 'earned' | 'notEarned'>();
     readonly showHiddenTrophyChange = output<boolean>();
 
-    private _showHiddenTrophies = false;
-
     changeFilter(newFilter: 'all' | 'earned' | 'notEarned') {
         this.filterChange.emit(newFilter);
     }
 
     hiddenFilterChanges() {
-        this._showHiddenTrophies = !this._showHiddenTrophies;
-        this.showHiddenTrophyChange.emit(this._showHiddenTrophies);
+        this.showHiddenTrophyChange.emit(!this.filters().showHidden);
     }
 }
