@@ -5,8 +5,7 @@ on:
       - main
     paths:
       - "image_uploader/**"
-      - ".github/workflows/image-uploader-ci.yml"
-      - ".github/actions/get-version/**"
+      - ".github/workflows/image-uploader-*.yml"
 
 jobs:
   check-version:

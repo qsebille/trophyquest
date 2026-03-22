@@ -5,8 +5,7 @@ on:
       - main
     paths:
       - "psn_fetcher/**"
-      - ".github/workflows/psn-fetcher-ci.yml"
-      - ".github/actions/get-version/**"
+      - ".github/workflows/psn-fetcher-*.yml"
 
 jobs:
   check-version:
