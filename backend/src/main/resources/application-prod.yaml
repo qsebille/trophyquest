@@ -9,7 +9,7 @@ spring:
 
 logging:
   file:
-    name: /home/ec2-user/trophyquest/logs/backend.log
+    name: /opt/trophyquest/logs/backend.log
   level:
     root: INFO
     org.springframework: INFO
