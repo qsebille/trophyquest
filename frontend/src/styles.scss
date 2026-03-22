@@ -27,6 +27,11 @@ body {
 
 html, body {
   height: 100%;
+  @include mat.theme((
+          color: mat.$azure-palette,
+          typography: Roboto,
+          density: 0
+  ));
 }
 
 body {

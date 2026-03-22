@@ -1,5 +1,7 @@
 <tq-navbar/>
 
-<div class="trophy-quest-app" [style.background-image]="'url(' + backgroundUrl() + ')'">
-    <router-outlet></router-outlet>
+<div class="trophy-quest-app" [style.--background-url]="backgroundUrl() ? 'url(' + backgroundUrl() + ')' : 'none'">
+    <div class="app-content-wrapper">
+        <router-outlet></router-outlet>
+    </div>
 </div>
