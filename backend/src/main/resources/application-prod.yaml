@@ -6,3 +6,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+logging:
+  file:
+    name: /home/ec2-user/trophyquest/logs/backend.log
+  level:
+    root: INFO
+    org.springframework: INFO
