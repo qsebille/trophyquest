@@ -1,7 +1,7 @@
-# TrophyQuest Node.js Lambdas
+# TrophyQuest PSN Fetcher
 
-Minimal micro-service to **fetch PSN games & trophies** using [`psn-api`](https://www.npmjs.com/package/psn-api), and *
-*store them in PostgreSQL**.
+Minimal micro-service to **fetch PSN games & trophies** using [`psn-api`](https://www.npmjs.com/package/psn-api), and store them in **PostgreSQL**.
+
 This project is designed to be run locally or deployed as AWS Lambda functions.
 
 ## 🚀 Features
@@ -15,8 +15,7 @@ This project is designed to be run locally or deployed as AWS Lambda functions.
 
 - **Node.js** (v20+ recommended)
 - **PostgreSQL** (accessible locally or remotely)
-- **NPSSO Code**: Required for PSN authentication. You can obtain it by logging
-  into [ca.account.sony.com](https://ca.account.sony.com/api/v1/ssocookie) and retrieving the `npsso` cookie value.
+- **NPSSO Code**: Required for PSN authentication. You can obtain it by logging into [ca.account.sony.com](https://ca.account.sony.com/api/v1/ssocookie) and retrieving the `npsso` cookie value.
 
 ## ⚙️ Configuration
 
@@ -80,17 +79,20 @@ npm install
 
 ## ☁️ Deployment
 
-The project includes GitHub Actions workflows to:
-
-1. Automatically deploy the Fetcher to AWS Lambda.
-2. Manage versioning via tags during merges.
-
-AWS Lambda handlers are exported in `src/fetcher.ts` and `src/refresher.ts`.
+The project includes handlers for AWS Lambda:
+- **Fetcher**: `src/fetcher.ts` (handler: `handler`)
+- **Refresher**: `src/refresher.ts` (handler: `handler`)
 
 ## 🏗 Project Structure
 
-- `src/fetcher.ts`: Main script for initial data fetching.
-- `src/refresher.ts`: Main script for incremental updates.
+- `src/fetcher.ts`: Entry point for initial data fetching.
+- `src/refresher.ts`: Entry point for incremental updates for all profiles in the database.
 - `src/psn/`: Helpers for interacting with the PSN API.
 - `src/postgres/`: Database insertion and selection logic.
-- `src/models/`: Data interface definitions.
+- `src/models/`: TypeScript interfaces/models.
+- `src/auth/`: PSN authentication logic.
+- `src/config/`: Configuration and environment variable utilities.
+
+## 📄 License
+
+This project is licensed under the **ISC License**.
