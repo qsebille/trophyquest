@@ -9,7 +9,7 @@ description = 'Backend web service for TrophyQuest'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 

@@ -7,6 +7,10 @@ from igdb_enricher.candidate.process import process_candidates_for_game
 from igdb_enricher.postgres.fetch import get_psn_games_with_pending_match_status
 from igdb_enricher.postgres.insert import insert_into_postgres
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s - %(message)s"
+)
 
 def run_enricher(nb_game_to_match=50):
     """Enriches pending PSN games with IGDB matches using Twitch API"""

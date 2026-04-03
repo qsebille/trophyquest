@@ -13,7 +13,11 @@ def prepare_companies(processed_candidates: list[CandidateResultingProcess]):
         publishers = game.get("publishers", [])
 
         companies.update(
-            (company.get("id"), company.get("name"), company.get("country"))
+            (
+                company.get("id"),
+                company.get("name"),
+                int(company.get("country")) if company.get("country") not in (None, "") else None
+            )
             for company in developers + publishers
             if company.get("id") is not None and company.get("name") is not None
         )

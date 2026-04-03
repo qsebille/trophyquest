@@ -44,7 +44,7 @@ def process_candidates_for_game(psn_game: tuple, twitch_client_id: str) -> Candi
             }],
             match_status={
                 'psn_id': psn_game_id,
-                'igdb_id': igdb_game_id,
+                'igdb_id': igdb_game_id if score == 100 else None,
                 'status': 'MATCHED' if score == 100 else 'VALIDATION_REQUIRED'
             }
         )
