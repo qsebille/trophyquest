@@ -6,6 +6,29 @@
 @use '@angular/material' as mat;
 @use 'styles/colors' as *;
 
+// Bootstrap Theme
+$primary: $tq-blue-medium;
+$success: $tq-green-medium;
+$danger: $tq-red-medium;
+$warning: $tq-yellow-medium;
+$info: $tq-blue-medium;
+$theme-colors: (
+        "primary": $primary,
+        "success": $success,
+        "danger": $danger,
+        "warning": $warning,
+        "info": $info,
+);
+
+@use "bootstrap/scss/bootstrap" with (
+        $primary: $primary,
+        $success: $success,
+        $danger: $danger,
+        $warning: $warning,
+        $info: $info,
+        $theme-colors: $theme-colors
+);
+
 body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
@@ -112,21 +135,6 @@ body {
   font-size: 10px;
 }
 
-
-// Bootstrap Theme
-$primary: $tq-blue-medium;
-$success: $tq-green-medium;
-$danger: $tq-red-medium;
-$warning: $tq-yellow-medium;
-$info: $tq-blue-medium;
-$theme-colors: (
-        "primary": $primary,
-        "success": $success,
-        "danger": $danger,
-        "warning": $warning,
-        "info": $info,
-);
-@import "bootstrap/scss/bootstrap";
 
 :root {
   --bs-body-font-family: Roboto, sans-serif;
