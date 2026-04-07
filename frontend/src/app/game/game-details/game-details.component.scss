@@ -1,0 +1,53 @@
+@use 'styles/colors' as *;
+
+.banner-carousel {
+  width: 100%;
+  max-height: 700px;
+  border: 1px solid $tq-blue-dark;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .banner-img {
+    width: 100%;
+    max-height: 700px;
+    object-fit: cover;
+    object-position: top;
+  }
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: $tq-blue-medium;
+}
+
+.section-title-separator {
+  color: $tq-blue-medium;
+  width: 90%;
+  margin-top: 2px;
+  margin-bottom: 5px;
+}
+
+.tag {
+  background-color: $tq-blue-medium;
+  color: $tq-white;
+  padding: 5px 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+
+  &--genre {
+    background-color: $tq-green-medium;
+  }
+
+  &--theme {
+    background-color: $tq-blue-light;
+  }
+}
+
+
+.img-test {
+  img {
+    max-height: 80px;
+  }
+}

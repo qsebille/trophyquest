@@ -1,3 +1,4 @@
+import type {MockedObject} from "vitest";
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HomePageComponent} from './home-page.component';
@@ -8,101 +9,106 @@ import {HomeRecentGamesStore} from "../../stores/home-recent-games-store.service
 import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
 
 describe('HomePageComponent', () => {
-    let component: HomePageComponent;
-    let fixture: ComponentFixture<HomePageComponent>;
+  let component: HomePageComponent;
+  let fixture: ComponentFixture<HomePageComponent>;
 
-    let statsStoreSpy: jasmine.SpyObj<HomeStatsStore>;
-    let recentPlayersStoreSpy: jasmine.SpyObj<HomeRecentPlayersStore>;
-    let recentGameStoreSpy: jasmine.SpyObj<HomeRecentGamesStore>;
-    let navigatorSpy: jasmine.SpyObj<NavigatorService>;
-    let gameCoverStoreSpy: jasmine.SpyObj<GameCoverStoreService>;
+  let mockStatsStore: MockedObject<HomeStatsStore>;
+  let mockRecentPlayersStore: MockedObject<HomeRecentPlayersStore>;
+  let mockRecentGameStore: MockedObject<HomeRecentGamesStore>;
+  let mockNavigator: MockedObject<NavigatorService>;
+  let mockGameCoverStore: MockedObject<GameCoverStoreService>;
 
-    const gameId: string = 'game-123';
-    const playerId: string = 'player-123';
+  const gameId: string = 'game-123';
+  const playerId: string = 'player-123';
 
-    beforeEach(async () => {
-        gameCoverStoreSpy = jasmine.createSpyObj('GameCoverStoreService', ['refreshTopPlayedGame']);
-        statsStoreSpy = jasmine.createSpyObj('HomeStatsStore', [
-            'fetch',
-            'playerCount',
-            'gameCount',
-            'trophyCount',
-            'recentPlayerCount',
-            'recentGameCount',
-            'recentTrophyCount',
-            'status',
-        ]);
-        recentPlayersStoreSpy = jasmine.createSpyObj('HomeRecentPlayersStore', [
-            'reset',
-            'fetch',
-            'players',
-            'status',
-        ]);
-        recentGameStoreSpy = jasmine.createSpyObj('HomeRecentGamesStore', [
-            'reset',
-            'fetch',
-            'recentGames',
-            'total',
-            'status',
-        ]);
-        navigatorSpy = jasmine.createSpyObj('NavigatorService', [
-            'goToPlayersPage',
-            'goToProfilePage',
-            'goToTrophySuitePage',
-            'goToPlayerTrophySuitePage',
-        ]);
+  beforeEach(async () => {
+    mockGameCoverStore = {
+      refreshTopPlayedGame: vi.fn()
+    } as MockedObject<GameCoverStoreService>;
+    mockStatsStore = {
+      fetch: vi.fn(),
+      playerCount: vi.fn(),
+      gameCount: vi.fn(),
+      trophyCount: vi.fn(),
+      recentPlayerCount: vi.fn(),
+      recentGameCount: vi.fn(),
+      recentTrophyCount: vi.fn(),
+      status: vi.fn(),
+    } as MockedObject<HomeStatsStore>;
+    mockRecentPlayersStore = {
+      reset: vi.fn(),
+      fetch: vi.fn(),
+      players: vi.fn(),
+      status: vi.fn(),
+    } as MockedObject<HomeRecentPlayersStore>;
+    mockRecentGameStore = {
+      reset: vi.fn(),
+      fetch: vi.fn(),
+      recentGames: vi.fn(),
+      total: vi.fn(),
+      status: vi.fn(),
+    } as MockedObject<HomeRecentGamesStore>;
+    mockNavigator = {
+      goToPlayersPage: vi.fn(),
+      goToProfilePage: vi.fn(),
+      goToTrophySuitePage: vi.fn(),
+      goToPlayerTrophySuitePage: vi.fn(),
+    } as MockedObject<NavigatorService>;
 
-        recentPlayersStoreSpy.players.and.returnValue([]);
+    mockRecentPlayersStore.players.mockReturnValue([]);
 
-        await TestBed.configureTestingModule({}).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
 
-        TestBed.overrideComponent(HomePageComponent, {
-            set: {
-                providers: [
-                    {provide: HomeStatsStore, useValue: statsStoreSpy},
-                    {provide: HomeRecentPlayersStore, useValue: recentPlayersStoreSpy},
-                    {provide: HomeRecentGamesStore, useValue: recentGameStoreSpy},
-                    {provide: NavigatorService, useValue: navigatorSpy},
-                    {provide: GameCoverStoreService, useValue: gameCoverStoreSpy},
-                ],
-            }
-        });
-
-        fixture = TestBed.createComponent(HomePageComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+    TestBed.overrideComponent(HomePageComponent, {
+      set: {
+        providers: [
+          {provide: HomeStatsStore, useValue: mockStatsStore},
+          {provide: HomeRecentPlayersStore, useValue: mockRecentPlayersStore},
+          {provide: HomeRecentGamesStore, useValue: mockRecentGameStore},
+          {provide: NavigatorService, useValue: mockNavigator},
+          {provide: GameCoverStoreService, useValue: mockGameCoverStore},
+        ],
+      }
     });
 
-    it('should create', () => expect(component).toBeTruthy());
+    fixture = TestBed.createComponent(HomePageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should refresh game cover when home page loads', () => {
-        gameCoverStoreSpy.refreshTopPlayedGame.and.callThrough();
-        component.ngOnInit();
-        expect(gameCoverStoreSpy.refreshTopPlayedGame).toHaveBeenCalled();
-    });
+  it('should create', () => expect(component).toBeTruthy());
 
-    it('should fetch store data on init', () => {
-        expect(statsStoreSpy.fetch).toHaveBeenCalled();
-        expect(recentPlayersStoreSpy.fetch).toHaveBeenCalled();
-    });
+  it('should refresh game cover on init', () => {
+    expect(mockGameCoverStore.refreshTopPlayedGame).toHaveBeenCalledTimes(1);
+    component.ngOnInit();
+    expect(mockGameCoverStore.refreshTopPlayedGame).toHaveBeenCalledTimes(2);
+  });
 
-    it('should navigate to players page', () => {
-        component.navigateToPlayersPage();
-        expect(navigatorSpy.goToPlayersPage).toHaveBeenCalled();
-    });
+  it('should fetch store data on init', () => {
+    expect(mockStatsStore.fetch).toHaveBeenCalledTimes(1);
+    expect(mockRecentPlayersStore.fetch).toHaveBeenCalledTimes(1);
+    component.ngOnInit();
+    expect(mockStatsStore.fetch).toHaveBeenCalledTimes(2);
+    expect(mockRecentPlayersStore.fetch).toHaveBeenCalledTimes(2);
+  });
 
-    it('should navigate to profile page', () => {
-        component.navigateToProfilePage(playerId);
-        expect(navigatorSpy.goToProfilePage).toHaveBeenCalledOnceWith(playerId);
-    });
+  it('should navigate to players page', () => {
+    component.navigateToPlayersPage();
+    expect(mockNavigator.goToPlayersPage).toHaveBeenCalled();
+  });
 
-    it('should navigate to game page', () => {
-        component.navigateToTrophySuitePage(gameId);
-        expect(navigatorSpy.goToTrophySuitePage).toHaveBeenCalledWith(gameId);
-    });
+  it('should navigate to profile page', () => {
+    component.navigateToProfilePage(playerId);
+    expect(mockNavigator.goToProfilePage).toHaveBeenCalledWith(playerId);
+  });
 
-    it('should navigate to player game page', () => {
-        component.navigateToPlayerTrophySuitePage(gameId, playerId);
-        expect(navigatorSpy.goToPlayerTrophySuitePage).toHaveBeenCalledWith(gameId, playerId)
-    });
+  it('should navigate to game page', () => {
+    component.navigateToTrophySuitePage(gameId);
+    expect(mockNavigator.goToTrophySuitePage).toHaveBeenCalledWith(gameId);
+  });
+
+  it('should navigate to player game page', () => {
+    component.navigateToPlayerTrophySuitePage(gameId, playerId);
+    expect(mockNavigator.goToPlayerTrophySuitePage).toHaveBeenCalledWith(gameId, playerId);
+  });
 });

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SpinnerContainerComponent } from './spinner-container.component';
+import {SpinnerContainerComponent} from './spinner-container.component';
 
 describe('SpinnerContainerComponent', () => {
   let component: SpinnerContainerComponent;
@@ -9,8 +9,7 @@ describe('SpinnerContainerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SpinnerContainerComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SpinnerContainerComponent);
     component = fixture.componentInstance;

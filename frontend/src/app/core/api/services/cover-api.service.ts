@@ -5,27 +5,31 @@ import {Observable} from "rxjs";
 import {GameCoverImage} from "../dtos/game/game-cover-image";
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class CoverApiService {
-    private readonly API_URL = `${environment.apiUrl}/api/cover`;
+  private readonly API_URL = `${environment.apiUrl}/api/cover`;
 
-    constructor(private readonly _http: HttpClient) {
-    }
+  constructor(private readonly _http: HttpClient) {
+  }
 
-    fetchRandom(): Observable<GameCoverImage> {
-        return this._http.get<GameCoverImage>(`${this.API_URL}/random`);
-    }
+  fetchRandom(): Observable<GameCoverImage> {
+    return this._http.get<GameCoverImage>(`${this.API_URL}/random`);
+  }
 
-    fetchTopPlayedGame(): Observable<GameCoverImage> {
-        return this._http.get<GameCoverImage>(`${this.API_URL}/top-played-game`);
-    }
+  fetchTopPlayedGame(): Observable<GameCoverImage> {
+    return this._http.get<GameCoverImage>(`${this.API_URL}/top-played-game`);
+  }
 
-    fetchLastPlayedTrophySuiteForPlayer(playerId: string): Observable<GameCoverImage> {
-        return this._http.get<GameCoverImage>(`${this.API_URL}/player/${playerId}/last-played-trophy-suite`);
-    }
+  fetchLastPlayedTrophySuiteForPlayer(playerId: string): Observable<GameCoverImage> {
+    return this._http.get<GameCoverImage>(`${this.API_URL}/player/${playerId}/last-played-trophy-suite`);
+  }
 
-    fetchForTrophySuite(trophySuiteId: string): Observable<GameCoverImage> {
-        return this._http.get<GameCoverImage>(`${this.API_URL}/trophy-suite/${trophySuiteId}`);
-    }
+  fetchForTrophySuite(trophySuiteId: string): Observable<GameCoverImage> {
+    return this._http.get<GameCoverImage>(`${this.API_URL}/trophy-suite/${trophySuiteId}`);
+  }
+
+  fetchForGame(gameId: string): Observable<GameCoverImage> {
+    return this._http.get<GameCoverImage>(`${this.API_URL}/game/${gameId}`);
+  }
 }

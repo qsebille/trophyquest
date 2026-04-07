@@ -34,7 +34,7 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
             """)
     List<Game> fetchGamesWithCandidatesByIds(@Param("ids") List<UUID> ids);
 
-    @EntityGraph(attributePaths = {"images", "igdbGame.images", "igdbGame.summary", "igdbGame.genres"})
+    @EntityGraph(attributePaths = {"images", "igdbGame.images", "igdbGame.description", "igdbGame.genres"})
     @Query("""
                 select g
                 from Game g
@@ -46,6 +46,14 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                 )
             """)
     Optional<Game> fetchGameDetailsForTrophySuite(@Param("trophySuiteId") UUID trophySuiteId);
+
+    @EntityGraph(attributePaths = {"images", "igdbGame.images", "igdbGame.summary", "igdbGame.genres", "igdbGame.themes"})
+    @Query("""
+                SELECT g
+                FROM Game g
+                WHERE g.id = :gameId
+            """)
+    Optional<Game> fetchGameWithIgdbDetailsById(@Param("gameId") UUID gameId);
 
     @Query("""
                 select new fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO(

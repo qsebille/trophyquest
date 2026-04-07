@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {beforeEach, describe, expect, it} from 'vitest';
 
-import { TrophySuiteTimelineComponent } from './trophy-suite-timeline.component';
+import {TrophySuiteTimelineComponent} from './trophy-suite-timeline.component';
 
 describe('TrophySuiteTimelineComponent', () => {
   let component: TrophySuiteTimelineComponent;
@@ -8,13 +9,17 @@ describe('TrophySuiteTimelineComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TrophySuiteTimelineComponent]
-    })
-    .compileComponents();
+      imports: [TrophySuiteTimelineComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TrophySuiteTimelineComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('trophySuite', { id: '1', title: 'Test Game' });
+
+    fixture.componentRef.setInput('trophySuite', {
+      id: '1',
+      title: 'Test Game',
+    });
+
     fixture.detectChanges();
   });
 

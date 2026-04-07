@@ -12,67 +12,69 @@ import {GameCoverStoreService} from "../../../core/stores/game-cover-store.servi
 
 
 @Component({
-    selector: 'tq-home-page',
-    imports: [
-        MatProgressSpinnerModule,
-        HomePlayerListComponent,
-        HomeStatsComponent,
-        HomeStatsComponent,
-        HomeGamesComponent,
-    ],
-    templateUrl: './home-page.component.html',
-    styleUrl: './home-page.component.scss',
+  selector: 'tq-home-page',
+  imports: [
+    MatProgressSpinnerModule,
+    HomePlayerListComponent,
+    HomeStatsComponent,
+    HomeStatsComponent,
+    HomeGamesComponent,
+  ],
+  templateUrl: './home-page.component.html',
+  styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent implements OnInit {
-    constructor(
-        private readonly _statsStore: HomeStatsStore,
-        private readonly _recentPlayersStore: HomeRecentPlayersStore,
-        private readonly _recentGamesStore: HomeRecentGamesStore,
-        private readonly _navigator: NavigatorService,
-        private readonly _gameCoverStore: GameCoverStoreService,
-    ) {
-    }
+  constructor(
+    private readonly _statsStore: HomeStatsStore,
+    private readonly _recentPlayersStore: HomeRecentPlayersStore,
+    private readonly _recentGamesStore: HomeRecentGamesStore,
+    private readonly _navigator: NavigatorService,
+    private readonly _gameCoverStore: GameCoverStoreService,
+  ) {
+  }
 
-    readonly stats = computed(() =>
-        ({
-            totalPlayers: this._statsStore.playerCount(),
-            totalGames: this._statsStore.gameCount(),
-            totalTrophies: this._statsStore.trophyCount(),
-            recentPlayers: this._statsStore.recentPlayerCount(),
-            recentGames: this._statsStore.recentGameCount(),
-            recentTrophies: this._statsStore.recentTrophyCount(),
-        } as HomeStats));
-    readonly statsLoadingStatus = computed(() => this._statsStore.status());
+  readonly stats = computed(() =>
+    ({
+      totalPlayers: this._statsStore.playerCount(),
+      totalGames: this._statsStore.gameCount(),
+      totalTrophies: this._statsStore.trophyCount(),
+      recentPlayers: this._statsStore.recentPlayerCount(),
+      recentGames: this._statsStore.recentGameCount(),
+      recentTrophies: this._statsStore.recentTrophyCount(),
+    } as HomeStats));
+  readonly statsLoadingStatus = computed(() => this._statsStore.status());
 
-    readonly games = computed(() => this._recentGamesStore.recentGames());
-    readonly gamesStatus = computed(() => this._recentGamesStore.status());
-    readonly gamesTotal = computed(() => this._recentGamesStore.total());
+  readonly games = computed(() => this._recentGamesStore.recentGames());
+  readonly gamesStatus = computed(() => this._recentGamesStore.status());
+  readonly gamesTotal = computed(() => this._recentGamesStore.total());
 
-    readonly players = computed(() => this._recentPlayersStore.players());
-    readonly playersStatus = computed(() => this._recentPlayersStore.status());
+  readonly players = computed(() => this._recentPlayersStore.players());
+  readonly playersStatus = computed(() => this._recentPlayersStore.status());
 
-    ngOnInit(): void {
-        this._statsStore.fetch();
-        this._recentPlayersStore.reset();
-        this._recentPlayersStore.fetch();
-        this._recentGamesStore.reset();
-        this._recentGamesStore.fetch();
-        this._gameCoverStore.refreshTopPlayedGame();
-    }
+  ngOnInit(): void {
+    this._statsStore.fetch();
+    this._recentPlayersStore.fetch();
+    this._recentGamesStore.fetch();
+    this._gameCoverStore.refreshTopPlayedGame();
+  }
 
-    navigateToPlayersPage(): void {
-        this._navigator.goToPlayersPage();
-    }
+  navigateToPlayersPage(): void {
+    this._navigator.goToPlayersPage();
+  }
 
-    navigateToProfilePage(playerId: string): void {
-        this._navigator.goToProfilePage(playerId);
-    }
+  navigateToProfilePage(playerId: string): void {
+    this._navigator.goToProfilePage(playerId);
+  }
 
-    navigateToTrophySuitePage(trophySuiteId: string): void {
-        this._navigator.goToTrophySuitePage(trophySuiteId);
-    }
+  navigateToTrophySuitePage(trophySuiteId: string): void {
+    this._navigator.goToTrophySuitePage(trophySuiteId);
+  }
 
-    navigateToPlayerTrophySuitePage(trophySuiteId: string, playerId: string): void {
-        this._navigator.goToPlayerTrophySuitePage(trophySuiteId, playerId);
-    }
+  navigateToPlayerTrophySuitePage(trophySuiteId: string, playerId: string): void {
+    this._navigator.goToPlayerTrophySuitePage(trophySuiteId, playerId);
+  }
+
+  onGameClick(gameId: string): void {
+    this._navigator.goToGamePage(gameId);
+  }
 }
