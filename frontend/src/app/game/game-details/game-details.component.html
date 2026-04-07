@@ -1,0 +1,52 @@
+<div class="d-flex flex-column">
+  <h1>{{ gameDetails().name }}</h1>
+
+  <!--  <pre>{{ gameDetails() | json }}</pre>-->
+
+  <!--IGDB Infos-->
+  @if (hasIgdbInfo()) {
+    <div class="d-flex flex-column">
+      @if (gameDetails().releaseDate) {
+        <div class="align-self-end mb-2">
+          <b>Release on</b>: {{ gameDetails().releaseDate | date }}
+        </div>
+      }
+      <div class="d-flex">
+        <div class="fs-6 w-60 align-self-center">
+          {{ gameDetails().description }}
+        </div>
+        <div class="w-20 d-flex flex-column align-items-center justify-content-start">
+          <div class="section-title">Genres</div>
+          <hr class="w-80 section-title-separator"/>
+          @for (genre of gameDetails().genres; track genre) {
+            <div class="tag tag--genre">{{ genre }}</div>
+          }
+        </div>
+        <div class="w-20 d-flex flex-column align-items-center">
+          <div class="section-title align-self-center">Themes</div>
+          <hr class="w-80 section-title-separator"/>
+          @for (theme of gameDetails().themes; track theme) {
+            <div class="tag tag--theme">{{ theme }}</div>
+          }
+        </div>
+      </div>
+      <span class="align-self-end mt-2 fs-8px">Powered by IGDB</span>
+    </div>
+  }
+
+  <!-- Banner -->
+  @if (images().length > 0) {
+    <h3>ScreenShots</h3>
+    <ngb-carousel [showNavigationIndicators]="false" class="banner-carousel">
+      @for (image of images(); track image) {
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img [src]="image" alt="Game image" class="banner-img"/>
+          </div>
+        </ng-template>
+      }
+    </ngb-carousel>
+  } @else {
+    <div class="banner-placeholder"></div>
+  }
+</div>

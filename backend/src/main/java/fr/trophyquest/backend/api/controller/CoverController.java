@@ -2,11 +2,7 @@ package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.game.GameCoverImageDTO;
 import fr.trophyquest.backend.service.CoverService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -39,6 +35,11 @@ public class CoverController {
     @GetMapping("/trophy-suite/{trophySuiteId}")
     public GameCoverImageDTO fetchForTrophySuite(@PathVariable UUID trophySuiteId) {
         return this.coverService.fetchForTrophySuite(trophySuiteId);
+    }
+
+    @GetMapping("/game/{gameId}")
+    public GameCoverImageDTO fetchForGame(@PathVariable UUID gameId) {
+        return this.coverService.fetchForGame(gameId);
     }
 
 }

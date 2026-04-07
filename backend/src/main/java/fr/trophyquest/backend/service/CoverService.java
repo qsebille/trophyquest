@@ -49,4 +49,8 @@ public class CoverService {
         return this.gameImageRepository.fetchGameCoverImage(gameId);
     }
 
+    public GameCoverImageDTO fetchForGame(UUID gameId) {
+        return this.gameImageRepository.fetchGameCoverImage(gameId);
+    }
+
 }

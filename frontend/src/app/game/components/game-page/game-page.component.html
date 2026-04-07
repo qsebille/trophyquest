@@ -1,0 +1,19 @@
+<div class="container m-5">
+  <ul ngbNav [(activeId)]="activeTab" #nav="ngbNav" class="nav-tabs">
+    <li [ngbNavItem]="'presentation'">
+      <button ngbNavLink (click)="updateActiveTab('presentation')">Presentation</button>
+      <ng-template ngbNavContent>
+        <tq-game-details [gameDetails]="data().details"/>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'trophies'">
+      <button ngbNavLink (click)="updateActiveTab('trophies')">Trophies</button>
+      <ng-template ngbNavContent>TO BE IMPLEMENTED</ng-template>
+    </li>
+    <li [ngbNavItem]="'players'">
+      <button ngbNavLink (click)="updateActiveTab('players')">Players</button>
+      <ng-template ngbNavContent>TO BE IMPLEMENTED</ng-template>
+    </li>
+  </ul>
+  <div class="game-page-content" [ngbNavOutlet]="nav"></div>
+</div>

@@ -1,12 +1,13 @@
 <div class="container pt-3 pb-5 d-flex gap-2">
-    <div class="d-flex flex-column gap-3 w-60 align-items-center">
-        <tq-home-stats class="w-90" [status]="statsLoadingStatus()" [stats]="stats()"/>
-        <tq-home-games class="w-100" [games]="games()" [status]="gamesStatus()" [total]="gamesTotal()"/>
-    </div>
+  <div class="d-flex flex-column gap-3 w-60 align-items-center">
+    <tq-home-stats class="w-90" [status]="statsLoadingStatus()" [stats]="stats()"/>
+    <tq-home-games class="w-100" [games]="games()" [status]="gamesStatus()" [total]="gamesTotal()"
+                   (onGameClick)="onGameClick($event)"/>
+  </div>
 
-    <tq-home-player-list class="w-40"
-                         [status]="playersStatus()"
-                         [players]="players()"
-                         (clickOnPlayer)="navigateToProfilePage($event)"
-                         (clickOnGame)="navigateToPlayerTrophySuitePage($event.trophySuiteId, $event.playerId)"/>
+  <tq-home-player-list class="w-40"
+                       [status]="playersStatus()"
+                       [players]="players()"
+                       (clickOnPlayer)="navigateToProfilePage($event)"
+                       (clickOnGame)="navigateToPlayerTrophySuitePage($event.trophySuiteId, $event.playerId)"/>
 </div>
