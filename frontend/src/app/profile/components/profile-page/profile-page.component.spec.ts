@@ -1,3 +1,5 @@
+import type {MockedObject} from "vitest";
+import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ProfilePageComponent} from './profile-page.component';
@@ -14,77 +16,104 @@ import {PlayerApiService} from "../../../core/api/services/player-api.service";
 import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
 
 describe('ProfilePageComponent', () => {
-    let component: ProfilePageComponent;
-    let fixture: ComponentFixture<ProfilePageComponent>;
-    let profileSummaryStoreSpy: jasmine.SpyObj<ProfileSummaryStore>;
-    let profileTrophySuiteListStoreSpy: jasmine.SpyObj<ProfileTrophySuiteListStoreService>;
-    let profileTrophiesStoreSpy: jasmine.SpyObj<ProfileTrophiesStore>;
-    let playerApiServiceSpy: jasmine.SpyObj<PlayerApiService>;
-    let navigatorSpy: jasmine.SpyObj<NavigatorService>;
-    let gameCoverStoreSpy: jasmine.SpyObj<GameCoverStoreService>;
+  let component: ProfilePageComponent;
+  let fixture: ComponentFixture<ProfilePageComponent>;
 
-    const mockPlayer = {id: 'player-123', pseudo: 'PlayerId', avatar: 'avatar.png'} as Player;
-    const mockPlayerStats = {
-        totalTrophySuitesPlayed: 100,
-        totalPlatinumTrophies: 1,
-        totalGoldTrophies: 2,
-        totalSilverTrophies: 3,
-        totalBronzeTrophies: 4,
-    } as PlayerStats;
+  let mockedProfileSummaryStore: MockedObject<ProfileSummaryStore>;
+  let mockedProfileTrophySuiteListStore: MockedObject<ProfileTrophySuiteListStoreService>;
+  let mockedProfileTrophiesStore: MockedObject<ProfileTrophiesStore>;
+  let mockedPlayerApiService: MockedObject<PlayerApiService>;
+  let mockedNavigator: MockedObject<NavigatorService>;
+  let mockedGameCoverStore: MockedObject<GameCoverStoreService>;
 
-    beforeEach(async () => {
-        navigatorSpy = jasmine.createSpyObj('NavigatorService', ['goToPlayerTrophySuitePage']);
-        profileSummaryStoreSpy = jasmine.createSpyObj('ProfileSummaryStore', ['retrieve', 'reset', 'player', 'playerStats', 'status']);
-        profileTrophySuiteListStoreSpy = jasmine.createSpyObj('ProfileTrophySuiteListStoreService', ['search', 'reset', 'loadMore', 'trophySuites', 'status']);
-        profileTrophiesStoreSpy = jasmine.createSpyObj('ProfileTrophiesStore', ['search', 'reset', 'loadMore', 'trophies', 'status']);
-        playerApiServiceSpy = jasmine.createSpyObj('PlayerApiService', ['deletePlayer']);
-        gameCoverStoreSpy = jasmine.createSpyObj('GameCoverStoreService', ['refreshLastPlayedTrophySuiteForPlayer']);
+  const mockPlayer = {id: 'player-123', pseudo: 'PlayerId', avatar: 'avatar.png'} as Player;
+  const mockPlayerStats = {
+    totalTrophySuitesPlayed: 100,
+    totalPlatinumTrophies: 1,
+    totalGoldTrophies: 2,
+    totalSilverTrophies: 3,
+    totalBronzeTrophies: 4,
+  } as PlayerStats;
 
-        profileSummaryStoreSpy.player.and.returnValue(mockPlayer);
-        profileSummaryStoreSpy.playerStats.and.returnValue(mockPlayerStats);
+  beforeEach(async () => {
+    mockedNavigator = {
+      goToPlayerTrophySuitePage: vi.fn()
+    } as MockedObject<NavigatorService>;
+    mockedProfileSummaryStore = {
+      retrieve: vi.fn(),
+      reset: vi.fn(),
+      player: vi.fn(),
+      playerStats: vi.fn(),
+      status: vi.fn()
+    } as MockedObject<ProfileSummaryStore>;
+    mockedProfileTrophySuiteListStore = {
+      search: vi.fn(),
+      reset: vi.fn(),
+      loadMore: vi.fn(),
+      trophySuites: vi.fn(),
+      status: vi.fn()
+    } as MockedObject<ProfileTrophySuiteListStoreService>;
+    mockedProfileTrophiesStore = {
+      search: vi.fn(),
+      reset: vi.fn(),
+      loadMore: vi.fn(),
+      trophies: vi.fn(),
+      status: vi.fn()
+    } as MockedObject<ProfileTrophiesStore>;
+    mockedPlayerApiService = {
+      deletePlayer: vi.fn()
+    } as MockedObject<PlayerApiService>;
+    mockedGameCoverStore = {
+      refreshLastPlayedTrophySuiteForPlayer: vi.fn()
+    } as MockedObject<GameCoverStoreService>;
 
-        const routeParamMap = new Map<string, string>();
-        routeParamMap.set('playerId', mockPlayer.id);
+    mockedProfileSummaryStore.player.mockReturnValue(mockPlayer);
+    mockedProfileSummaryStore.playerStats.mockReturnValue(mockPlayerStats);
 
-        await TestBed.configureTestingModule({
-            imports: [ProfilePageComponent, ProfileSummaryComponent, ProfileTrophyCardComponent],
-            providers: [
-                {provide: NavigatorService, useValue: navigatorSpy},
-                {provide: ProfileSummaryStore, useValue: profileSummaryStoreSpy},
-                {provide: ProfileTrophySuiteListStoreService, useValue: profileTrophySuiteListStoreSpy},
-                {provide: ProfileTrophiesStore, useValue: profileTrophiesStoreSpy},
-                {provide: PlayerApiService, useValue: playerApiServiceSpy},
-                {provide: GameCoverStoreService, useValue: gameCoverStoreSpy},
-                {provide: ActivatedRoute, useValue: {snapshot: {paramMap: routeParamMap}}},
-            ]
-        }).compileComponents();
+    const routeParamMap = new Map<string, string>();
+    routeParamMap.set('playerId', mockPlayer.id);
 
-        fixture = TestBed.createComponent(ProfilePageComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+    await TestBed.configureTestingModule({
+      imports: [ProfilePageComponent, ProfileSummaryComponent, ProfileTrophyCardComponent],
+      providers: [
+        {provide: NavigatorService, useValue: mockedNavigator},
+        {provide: ProfileSummaryStore, useValue: mockedProfileSummaryStore},
+        {provide: ProfileTrophySuiteListStoreService, useValue: mockedProfileTrophySuiteListStore},
+        {provide: ProfileTrophiesStore, useValue: mockedProfileTrophiesStore},
+        {provide: PlayerApiService, useValue: mockedPlayerApiService},
+        {provide: GameCoverStoreService, useValue: mockedGameCoverStore},
+        {provide: ActivatedRoute, useValue: {snapshot: {paramMap: routeParamMap}}},
+      ]
+    }).compileComponents();
 
-    it('should create', () => expect(component).toBeTruthy());
+    fixture = TestBed.createComponent(ProfilePageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should fetch profile infos on init', () => {
-        expect(profileSummaryStoreSpy.reset).toHaveBeenCalled();
-        expect(profileSummaryStoreSpy.retrieve).toHaveBeenCalledWith(mockPlayer.id);
-        expect(profileTrophySuiteListStoreSpy.reset).toHaveBeenCalled();
-        expect(profileTrophySuiteListStoreSpy.search).toHaveBeenCalledWith(mockPlayer.id);
-        expect(profileTrophiesStoreSpy.reset).toHaveBeenCalled();
-        expect(profileTrophiesStoreSpy.search).toHaveBeenCalledWith(mockPlayer.id);
-    });
+  it('should create', () => expect(component).toBeTruthy());
 
-    it('should refresh game cover when player changes', () => {
-        gameCoverStoreSpy.refreshLastPlayedTrophySuiteForPlayer.and.callThrough();
-        component.ngOnInit();
-        expect(gameCoverStoreSpy.refreshLastPlayedTrophySuiteForPlayer).toHaveBeenCalledWith(mockPlayer.id);
-    });
+  it('should fetch profile infos on init', () => {
+    expect(mockedProfileSummaryStore.reset).toHaveBeenCalled();
+    expect(mockedProfileSummaryStore.retrieve).toHaveBeenCalledWith(mockPlayer.id);
+    expect(mockedProfileTrophySuiteListStore.reset).toHaveBeenCalled();
+    expect(mockedProfileTrophySuiteListStore.search).toHaveBeenCalledWith(mockPlayer.id);
+    expect(mockedProfileTrophiesStore.reset).toHaveBeenCalled();
+    expect(mockedProfileTrophiesStore.search).toHaveBeenCalledWith(mockPlayer.id);
+  });
 
-    it('should navigate to game page when clicking on game card', () => {
-        const trophySuiteId: string = 'suite-123';
-        component.navigateToPlayerTrophySuitePage(trophySuiteId);
+  it('should refresh game cover when player changes', () => {
+    mockedGameCoverStore.refreshLastPlayedTrophySuiteForPlayer;
+    component.ngOnInit();
+    expect(mockedGameCoverStore.refreshLastPlayedTrophySuiteForPlayer).toHaveBeenCalledWith(mockPlayer.id);
+  });
 
-        expect(navigatorSpy.goToPlayerTrophySuitePage).toHaveBeenCalledOnceWith(trophySuiteId, mockPlayer.id);
-    });
+  it('should navigate to game page when clicking on game card', () => {
+    const trophySuiteId: string = 'suite-123';
+    component.navigateToPlayerTrophySuitePage(trophySuiteId);
+
+    expect(mockedNavigator.goToPlayerTrophySuitePage).toHaveBeenCalledTimes(1);
+
+    expect(mockedNavigator.goToPlayerTrophySuitePage).toHaveBeenCalledWith(trophySuiteId, mockPlayer.id);
+  });
 });

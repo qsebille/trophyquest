@@ -1,60 +1,75 @@
-import {fakeAsync, flushMicrotasks, TestBed} from '@angular/core/testing';
+import type {MockedObject} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
+import {TestBed} from '@angular/core/testing';
+import {of} from 'rxjs';
 
 import {HomeStatsStore} from './home-stats-store.service';
-import {PlayerApiService} from "../../core/api/services/player-api.service";
-import {TrophyApiService} from "../../core/api/services/trophy-api.service";
-import {of} from "rxjs";
-import {LoadingStatus} from "../../core/models/loading-status.enum";
-import {GameApiService} from "../../core/api/services/game-api.service";
+import {PlayerApiService} from '../../core/api/services/player-api.service';
+import {TrophyApiService} from '../../core/api/services/trophy-api.service';
+import {GameApiService} from '../../core/api/services/game-api.service';
+import {LoadingStatus} from '../../core/models/loading-status.enum';
 
 describe('HomeStatsStore', () => {
-    let store: HomeStatsStore;
+  let store: HomeStatsStore;
 
-    let playerApiServiceSpy: jasmine.SpyObj<PlayerApiService>;
-    let gameApiServiceSpy: jasmine.SpyObj<GameApiService>;
-    let trophyApiServiceSpy: jasmine.SpyObj<TrophyApiService>;
+  let mockPlayerApiService: MockedObject<PlayerApiService>;
+  let mockGameApiService: MockedObject<GameApiService>;
+  let mockTrophyApiService: MockedObject<TrophyApiService>;
 
-    beforeEach(() => {
-        playerApiServiceSpy = jasmine.createSpyObj('PlayerApiService', ['count', 'countRecent']);
-        gameApiServiceSpy = jasmine.createSpyObj('GameApiService', ['count', 'countRecent']);
-        trophyApiServiceSpy = jasmine.createSpyObj('TrophyApiService', ['count', 'countRecentlyEarned']);
+  beforeEach(() => {
+    mockPlayerApiService = {
+      count: vi.fn(),
+      countRecent: vi.fn(),
+    } as MockedObject<PlayerApiService>;
 
-        TestBed.configureTestingModule({
-            providers: [
-                {provide: PlayerApiService, useValue: playerApiServiceSpy},
-                {provide: GameApiService, useValue: gameApiServiceSpy},
-                {provide: TrophyApiService, useValue: trophyApiServiceSpy},
-            ]
-        });
-        store = TestBed.inject(HomeStatsStore);
+    mockGameApiService = {
+      count: vi.fn(),
+      countRecent: vi.fn(),
+    } as MockedObject<GameApiService>;
+
+    mockTrophyApiService = {
+      count: vi.fn(),
+      countRecentlyEarned: vi.fn(),
+    } as MockedObject<TrophyApiService>;
+
+    TestBed.configureTestingModule({
+      providers: [
+        {provide: PlayerApiService, useValue: mockPlayerApiService},
+        {provide: GameApiService, useValue: mockGameApiService},
+        {provide: TrophyApiService, useValue: mockTrophyApiService},
+      ],
     });
 
-    it('should be created', () => expect(store).toBeTruthy());
+    store = TestBed.inject(HomeStatsStore);
+  });
 
-    it('should update stats when fetched from backend', fakeAsync(() => {
-        playerApiServiceSpy.count.and.returnValue(of(10));
-        playerApiServiceSpy.countRecent.and.returnValue(of(5));
-        gameApiServiceSpy.count.and.returnValue(of(100));
-        gameApiServiceSpy.countRecent.and.returnValue(of(50));
-        trophyApiServiceSpy.count.and.returnValue(of(1000));
-        trophyApiServiceSpy.countRecentlyEarned.and.returnValue(of(500));
+  it('should be created', () => {
+    expect(store).toBeTruthy();
+  });
 
-        store.fetch();
-        flushMicrotasks();
+  it('should update stats when fetched from backend', () => {
+    mockPlayerApiService.count.mockReturnValue(of(10));
+    mockPlayerApiService.countRecent.mockReturnValue(of(5));
+    mockGameApiService.count.mockReturnValue(of(100));
+    mockGameApiService.countRecent.mockReturnValue(of(50));
+    mockTrophyApiService.count.mockReturnValue(of(1000));
+    mockTrophyApiService.countRecentlyEarned.mockReturnValue(of(500));
 
-        expect(playerApiServiceSpy.countRecent).toHaveBeenCalled();
-        expect(playerApiServiceSpy.count).toHaveBeenCalled();
-        expect(gameApiServiceSpy.count).toHaveBeenCalled();
-        expect(gameApiServiceSpy.countRecent).toHaveBeenCalled();
-        expect(trophyApiServiceSpy.count).toHaveBeenCalled();
-        expect(trophyApiServiceSpy.countRecentlyEarned).toHaveBeenCalled();
+    store.fetch();
 
-        expect(store.status()).toEqual(LoadingStatus.FULLY_LOADED);
-        expect(store.playerCount()).toEqual(10);
-        expect(store.recentPlayerCount()).toEqual(5);
-        expect(store.gameCount()).toEqual(100);
-        expect(store.recentGameCount()).toEqual(50);
-        expect(store.trophyCount()).toEqual(1000);
-        expect(store.recentTrophyCount()).toEqual(500);
-    }));
+    expect(mockPlayerApiService.countRecent).toHaveBeenCalled();
+    expect(mockPlayerApiService.count).toHaveBeenCalled();
+    expect(mockGameApiService.count).toHaveBeenCalled();
+    expect(mockGameApiService.countRecent).toHaveBeenCalled();
+    expect(mockTrophyApiService.count).toHaveBeenCalled();
+    expect(mockTrophyApiService.countRecentlyEarned).toHaveBeenCalled();
+
+    expect(store.status()).toBe(LoadingStatus.FULLY_LOADED);
+    expect(store.playerCount()).toBe(10);
+    expect(store.recentPlayerCount()).toBe(5);
+    expect(store.gameCount()).toBe(100);
+    expect(store.recentGameCount()).toBe(50);
+    expect(store.trophyCount()).toBe(1000);
+    expect(store.recentTrophyCount()).toBe(500);
+  });
 });

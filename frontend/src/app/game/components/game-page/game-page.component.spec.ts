@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GamePageComponent } from './game-page.component';
+import {GamePageComponent} from './game-page.component';
+import {ActivatedRoute, convertToParamMap} from '@angular/router';
 
 describe('GamePageComponent', () => {
   let component: GamePageComponent;
@@ -8,9 +9,18 @@ describe('GamePageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GamePageComponent]
-    })
-    .compileComponents();
+      imports: [GamePageComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: convertToParamMap({gameId: 'game-123'}),
+            }
+          }
+        }
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GamePageComponent);
     component = fixture.componentInstance;

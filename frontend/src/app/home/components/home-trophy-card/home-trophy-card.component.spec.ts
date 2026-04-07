@@ -4,23 +4,22 @@ import {HomeTrophyCardComponent} from './home-trophy-card.component';
 import {EarnedTrophy} from "../../../core/api/dtos/trophy/earned-trophy";
 
 describe('HomeTrophyCardComponent', () => {
-    let component: HomeTrophyCardComponent;
-    let fixture: ComponentFixture<HomeTrophyCardComponent>;
+  let component: HomeTrophyCardComponent;
+  let fixture: ComponentFixture<HomeTrophyCardComponent>;
 
-    const mockEarnedTrophy = {id: '001', rank: 0, title: 'Trophy 1', icon: 'trophy.png'} as EarnedTrophy;
+  const mockEarnedTrophy = {id: '001', rank: 0, title: 'Trophy 1', icon: 'trophy.png'} as EarnedTrophy;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [HomeTrophyCardComponent]
-        })
-            .compileComponents();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HomeTrophyCardComponent]
+    }).compileComponents();
 
-        fixture = TestBed.createComponent(HomeTrophyCardComponent);
-        component = fixture.componentInstance;
+    fixture = TestBed.createComponent(HomeTrophyCardComponent);
+    component = fixture.componentInstance;
 
-        fixture.componentRef.setInput('trophy', mockEarnedTrophy);
-        fixture.detectChanges();
-    });
+    fixture.componentRef.setInput('trophy', mockEarnedTrophy);
+    fixture.detectChanges();
+  });
 
-    it('should create', () => expect(component).toBeTruthy());
+  it('should create', () => expect(component).toBeTruthy());
 });

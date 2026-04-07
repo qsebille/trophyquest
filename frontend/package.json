@@ -1,6 +1,6 @@
 {
   "name": "trophyquest-frontend",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "scripts": {
     "ng": "ng",
     "build": "ng build",
@@ -9,7 +9,7 @@
     "start:prod": "ng serve --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test:ci": "ng test --watch=false --browsers=ChromeHeadless"
+    "test:ci": "ng test --no-watch --no-progress"
   },
   "prettier": {
     "printWidth": 100,
@@ -48,14 +48,9 @@
     "@angular/cli": "^21.2.6",
     "@angular/compiler-cli": "^21.2.7",
     "@angular/localize": "^21.2.7",
-    "@types/jasmine": "~5.1.0",
     "baseline-browser-mapping": "^2.9.17",
-    "jasmine-core": "~5.9.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.9.2"
+    "jsdom": "^29.0.2",
+    "typescript": "~5.9.2",
+    "vitest": "^4.1.3"
   }
 }

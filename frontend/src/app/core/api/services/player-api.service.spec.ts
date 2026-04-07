@@ -1,22 +1,13 @@
 import {TestBed} from '@angular/core/testing';
 
 import {PlayerApiService} from './player-api.service';
-import {HttpClient} from '@angular/common/http';
 
 describe('PlayerApiService', () => {
-    let service: PlayerApiService;
-    let httpSpy: jasmine.SpyObj<HttpClient>;
+  let service: PlayerApiService;
 
-    beforeEach(() => {
-        httpSpy = jasmine.createSpyObj('HttpClient', ['get']);
+  beforeEach(() => {
+    service = TestBed.inject(PlayerApiService);
+  });
 
-        TestBed.configureTestingModule({
-            providers: [
-                {provide: HttpClient, useValue: httpSpy},
-            ]
-        });
-        service = TestBed.inject(PlayerApiService);
-    });
-
-    it('should be created', () => expect(service).toBeTruthy());
+  it('should be created', () => expect(service).toBeTruthy());
 });

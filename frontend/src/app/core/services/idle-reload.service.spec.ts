@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { IdleReloadService } from './idle-reload.service';
+import {IdleReloadService} from './idle-reload.service';
 
 describe('IdleReloadService', () => {
   let service: IdleReloadService;

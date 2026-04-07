@@ -1,55 +1,22 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DashboardPageComponent} from './dashboard-page.component';
-import {DashboardIgdbStatsStoreService} from "../../stores/dashboard-igdb-stats-store.service";
-import {LoadingStatus} from "../../../core/models/loading-status.enum";
-import {EMPTY_IGDB_MAPPING_STATS} from "../../../core/api/dtos/igdb/igdb-mapping-stats";
-import {DashboardImageStatsStoreService} from "../../stores/dashboard-image-stats-store.service";
-import {signal} from "@angular/core";
 
 describe('DashboardPageComponent', () => {
-    let component: DashboardPageComponent;
-    let fixture: ComponentFixture<DashboardPageComponent>;
+  let component: DashboardPageComponent;
+  let fixture: ComponentFixture<DashboardPageComponent>;
 
-    let dashboardIgdbStoreSpy: jasmine.SpyObj<DashboardIgdbStatsStoreService>;
-    let dashboardImageStoreSpy: jasmine.SpyObj<DashboardImageStatsStoreService>;
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [DashboardPageComponent],
+    }).compileComponents();
 
-    beforeEach(async () => {
-        dashboardIgdbStoreSpy = jasmine.createSpyObj('DashboardIgdbStatsStoreService', [
-            'fetchStats',
-            'loadingStatus',
-            'igdbMappingStats'
-        ]);
-        dashboardImageStoreSpy = jasmine.createSpyObj('DashboardImageStatsStoreService', [
-            'loadStats',
-            'loadingStatus',
-            'uploads',
-        ]);
-        await TestBed.configureTestingModule({
-            imports: [DashboardPageComponent],
-            providers: [
-                {provide: DashboardIgdbStatsStoreService, useValue: dashboardIgdbStoreSpy},
-                {provide: DashboardImageStatsStoreService, useValue: dashboardImageStoreSpy},
-            ]
-        })
-            .compileComponents();
+    fixture = TestBed.createComponent(DashboardPageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-        dashboardIgdbStoreSpy.loadingStatus.and.returnValue(LoadingStatus.FULLY_LOADED);
-        dashboardIgdbStoreSpy.igdbMappingStats.and.returnValue(EMPTY_IGDB_MAPPING_STATS);
-        dashboardImageStoreSpy.uploads.and.returnValue({
-            game: signal({pending: 0, uploaded: 0}),
-            igdb: signal({pending: 0, uploaded: 0}),
-            player: signal({pending: 0, uploaded: 0}),
-            trophy: signal({pending: 0, uploaded: 0}),
-            trophySuite: signal({pending: 0, uploaded: 0}),
-        });
-
-        fixture = TestBed.createComponent(DashboardPageComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
-
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

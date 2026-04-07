@@ -1,21 +1,21 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-
+import {beforeEach, describe, expect, it} from 'vitest';
 import {ProfileTrophySuiteListComponent} from './profile-trophy-suite-list.component';
 
 describe('ProfileTrophySuiteListComponent', () => {
-    let component: ProfileTrophySuiteListComponent;
-    let fixture: ComponentFixture<ProfileTrophySuiteListComponent>;
+  let component: ProfileTrophySuiteListComponent;
+  let fixture: ComponentFixture<ProfileTrophySuiteListComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [ProfileTrophySuiteListComponent]
-        })
-            .compileComponents();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ProfileTrophySuiteListComponent]
+    })
+      .compileComponents();
 
-        fixture = TestBed.createComponent(ProfileTrophySuiteListComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+    fixture = TestBed.createComponent(ProfileTrophySuiteListComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should create', () => expect(component).toBeTruthy());
+  it('should create', () => expect(component).toBeTruthy());
 });
