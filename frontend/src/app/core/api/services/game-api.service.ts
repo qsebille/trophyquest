@@ -5,6 +5,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {SearchResult} from "../dtos/search-result";
 import {RecentGame} from "../dtos/game/recent-game";
 import {GameDetails} from '../dtos/game/game-details';
+import {TrophySuiteWithCounts} from '../dtos/trophy-suite/trophy-suite-with-counts';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,10 @@ export class GameApiService {
 
   fetchDetails(gameId: string): Observable<GameDetails> {
     return this._http.get<GameDetails>(`${this.API_URL}/${gameId}/details`);
+  }
+
+  fetchTrophySuites(gameId: string): Observable<TrophySuiteWithCounts[]> {
+    return this._http.get<TrophySuiteWithCounts[]>(`${this.API_URL}/${gameId}/trophy-suites`);
   }
 
 }

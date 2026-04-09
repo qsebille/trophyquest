@@ -1,5 +1,5 @@
 import {Component, computed, input, InputSignal, Signal} from '@angular/core';
-import {GameDetails} from '../../core/api/dtos/game/game-details';
+import {GameDetails} from '../../../core/api/dtos/game/game-details';
 import {NgbCarousel, NgbSlide} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from '@angular/common';
 

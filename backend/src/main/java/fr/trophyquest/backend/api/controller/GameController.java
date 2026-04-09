@@ -3,10 +3,12 @@ package fr.trophyquest.backend.api.controller;
 import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
 import fr.trophyquest.backend.api.dto.game.RecentGameDTO;
+import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteWithCountsDTO;
 import fr.trophyquest.backend.service.GameService;
 import fr.trophyquest.backend.service.RecentGameService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -43,6 +45,11 @@ public class GameController {
     @GetMapping("{gameId}/details")
     public GameDetailsDTO getGameDetails(@PathVariable UUID gameId) {
         return this.gameService.fetchDetails(gameId);
+    }
+
+    @GetMapping("/{gameId}/trophy-suites")
+    public List<TrophySuiteWithCountsDTO> searchTrophySuites(@PathVariable UUID gameId) {
+        return this.gameService.fetchTrophySuites(gameId);
     }
 
 }

@@ -34,7 +34,7 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
             """)
     List<Game> fetchGamesWithCandidatesByIds(@Param("ids") List<UUID> ids);
 
-    @EntityGraph(attributePaths = {"images", "igdbGame.images", "igdbGame.description", "igdbGame.genres"})
+    @EntityGraph(attributePaths = {"images", "igdbGame.images", "igdbGame.summary", "igdbGame.genres"})
     @Query("""
                 select g
                 from Game g

@@ -2,12 +2,15 @@ package fr.trophyquest.backend.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Formula;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -30,5 +33,11 @@ public class TrophySuite {
     private String image;
 
     private String awsImageUrl;
+
+    @OneToMany(mappedBy = "trophySuite")
+    private Set<EditionTrophySuite> editions = new HashSet<>();
+
+    @OneToMany(mappedBy = "trophySuite")
+    private Set<Trophy> trophies = new HashSet<>();
 
 }

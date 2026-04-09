@@ -1,0 +1,41 @@
+@if (displayMode() == 'no-ts') {
+  <tq-error-message [errorMessage]="'No trophy suite available for this game'"/>
+} @else {
+  @if (displayReturnToSuiteListButton()) {
+    <button class="btn btn-link fs-10px" (click)="onSelectTrophySuite(null)">
+      Select another trophy suite for this game
+    </button>
+  }
+  <div class="d-flex flex-column gap-2 align-items-center">
+    @for (trophySuite of displayedTrophySuites(); track trophySuite.id) {
+      <div class="trophy-suite d-flex w-75">
+        <div class="image-wrapper d-flex align-items-center w-15 align-items-center">
+          <img src="{{ trophySuite.image }}" alt="{{ trophySuite.title }}" class="trophy-suite-image">
+        </div>
+        <div class="d-flex gap-2 w-50 align-items-center">
+          <span class="fs-5">{{ trophySuite.title }}</span>
+          @for (platform of trophySuite.platforms; track platform) {
+            <tq-platform-label [platform]="platform"/>
+          }
+        </div>
+        <div class="d-flex gap-2 w-25 align-items-center justify-content-center">
+          @for (trophyType of ['platinum', 'gold', 'silver', 'bronze']; track trophyType) {
+            <div class="d-flex flex-column align-items-center">
+              <img ngSrc="assets/icons/trophy-{{ trophyType }}.png"
+                   alt="{{ trophyType }} trophy count"
+                   height="32"
+                   width="32">
+              <b>{{ countTrophyByColor(trophySuite, trophyType) }}</b>
+            </div>
+          }
+        </div>
+        @if (displayMode() == 'multi-ts') {
+          <div class="d-flex gap-3 w-10 flex-column align-items-end justify-content-center">
+            <button class="btn btn-primary" (click)="onSelectTrophySuite(trophySuite.id)">Select</button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+  <span>TO BE IMPLEMENTED : List of trophies and filters</span>
+}
