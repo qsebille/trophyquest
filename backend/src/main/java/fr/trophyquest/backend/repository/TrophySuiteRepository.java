@@ -21,10 +21,10 @@ public interface TrophySuiteRepository extends JpaRepository<TrophySuite, UUID> 
                 ts.name,
                 ts.platforms,
                 ts.image,
-                SUM(CASE WHEN t.trophyType = 'bronze' THEN 1 ELSE 0 END),
-                SUM(CASE WHEN t.trophyType = 'silver' THEN 1 ELSE 0 END),
+                SUM(CASE WHEN t.trophyType = 'platinum' THEN 1 ELSE 0 END),
                 SUM(CASE WHEN t.trophyType = 'gold' THEN 1 ELSE 0 END),
-                SUM(CASE WHEN t.trophyType = 'platinum' THEN 1 ELSE 0 END)
+                SUM(CASE WHEN t.trophyType = 'silver' THEN 1 ELSE 0 END),
+                SUM(CASE WHEN t.trophyType = 'bronze' THEN 1 ELSE 0 END)
             )
             FROM TrophySuite ts
             LEFT JOIN ts.trophies t

@@ -1,8 +1,9 @@
-import {Component, computed, input, output, signal} from '@angular/core';
+import {Component, computed, effect, input, output, untracked} from '@angular/core';
 import {ErrorMessageComponent} from '../../../core/components/error-message/error-message.component';
 import {PlatformLabelComponent} from '../../../core/components/platform-label/platform-label.component';
 import {TrophySuiteWithCounts} from '../../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
 import {NgOptimizedImage} from '@angular/common';
+import {TrophyType} from '../../../core/models/enums/trophy-type.enum';
 
 @Component({
   selector: 'tq-game-trophy-suites',
@@ -19,8 +20,16 @@ export class GameTrophySuitesComponent {
   trophySuiteId = input<string | null>(null);
   trophySuiteChange = output<string | null>();
 
-  selectedTrophySuiteId = signal<string | null>(null);
-  displayedTrophySuiteId = computed(() => this.selectedTrophySuiteId() ?? this.trophySuiteId());
+  constructor() {
+    effect(() => {
+      const trophySuites = this.trophySuites();
+      const trophySuiteId = this.trophySuiteId();
+
+      if (trophySuites.length === 1 && trophySuiteId !== trophySuites[0].id) {
+        untracked(() => this.trophySuiteChange.emit(trophySuites[0].id));
+      }
+    });
+  }
 
   displayMode = computed(() => {
     if (this.trophySuites().length === 0) {
@@ -30,37 +39,34 @@ export class GameTrophySuitesComponent {
       return 'single-ts';
     }
 
-    return this.displayedTrophySuiteId() == null ? 'multi-ts' : 'single-ts';
+    return this.trophySuiteId() == null ? 'multi-ts' : 'single-ts';
   });
 
   displayedTrophySuites = computed(() => {
-    if (this.displayedTrophySuiteId() == null) {
+    if (this.trophySuiteId() == null) {
       return this.trophySuites();
     } else {
-      return this.trophySuites().filter(ts => ts.id === this.displayedTrophySuiteId());
+      return this.trophySuites().filter(ts => ts.id === this.trophySuiteId());
     }
   });
 
   displayReturnToSuiteListButton = computed(() => this.displayMode() === 'single-ts' && this.trophySuites().length > 1);
 
-  ngOnInit(): void {
-    this.selectedTrophySuiteId.set(this.trophySuiteId());
-  }
+  trophyTypes = [TrophyType.PLATINUM, TrophyType.GOLD, TrophyType.SILVER, TrophyType.BRONZE];
 
   onSelectTrophySuite(id: string | null): void {
     this.trophySuiteChange.emit(id);
-    this.selectedTrophySuiteId.set(id);
   }
 
-  countTrophyByColor(trophySuite: TrophySuiteWithCounts, trophyType: string): number {
+  countTrophyByColor(trophySuite: TrophySuiteWithCounts, trophyType: TrophyType): number {
     switch (trophyType) {
-      case 'platinum':
+      case TrophyType.PLATINUM:
         return trophySuite.totalPlatinumTrophies;
-      case 'gold':
+      case TrophyType.GOLD:
         return trophySuite.totalGoldTrophies;
-      case 'silver':
+      case TrophyType.SILVER:
         return trophySuite.totalSilverTrophies;
-      case 'bronze':
+      case TrophyType.BRONZE:
         return trophySuite.totalBronzeTrophies;
       default:
         return 0;
