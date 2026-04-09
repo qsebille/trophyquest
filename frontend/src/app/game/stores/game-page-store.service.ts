@@ -2,6 +2,7 @@ import {Injectable, Signal, signal, WritableSignal} from '@angular/core';
 import {LoadingStatus} from '../../core/models/loading-status.enum';
 import {emptyGamePageData, GamePageData} from '../models/game-page-data';
 import {GameApiService} from '../../core/api/services/game-api.service';
+import {forkJoin} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -23,10 +24,15 @@ export class GamePageStoreService {
 
   fetch(gameId: string): void {
     this._status.set(LoadingStatus.LOADING);
-    this._gameApiService.fetchDetails(gameId).subscribe({
-      next: (details) => {
+
+    forkJoin({
+        details: this._gameApiService.fetchDetails(gameId),
+        trophySuites: this._gameApiService.fetchTrophySuites(gameId)
+      }
+    ).subscribe({
+      next: ({details, trophySuites}) => {
         this._status.set(LoadingStatus.FULLY_LOADED);
-        this._data.set({...this._data(), details: details});
+        this._data.set({...this._data(), details, trophySuites});
       },
       error: (err) => {
         this._status.set(LoadingStatus.ERROR);

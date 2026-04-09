@@ -46,9 +46,9 @@ public class TrophySuiteMapper {
             builder.releaseDate(igdbGame.getReleaseDate());
 
             images.addAll(igdbGame.getImages()
-                                  .stream()
-                                  .map(this::toGameImageDTO)
-                                  .toList());
+                    .stream()
+                    .map(this::toGameImageDTO)
+                    .toList());
         }
 
         return builder

@@ -1,17 +1,24 @@
 <div class="container m-5">
-  <ul ngbNav [(activeId)]="activeTab" #nav="ngbNav" class="nav-tabs">
-    <li [ngbNavItem]="'presentation'">
-      <button ngbNavLink (click)="updateActiveTab('presentation')">Presentation</button>
+  <ul ngbNav
+      [(activeId)]="selectedTab"
+      (activeIdChange)="onTabChange($event)"
+      #nav="ngbNav" class="nav-tabs">
+    <li [ngbNavItem]="'overview'">
+      <button ngbNavLink>Presentation</button>
       <ng-template ngbNavContent>
         <tq-game-details [gameDetails]="data().details"/>
       </ng-template>
     </li>
     <li [ngbNavItem]="'trophies'">
-      <button ngbNavLink (click)="updateActiveTab('trophies')">Trophies</button>
-      <ng-template ngbNavContent>TO BE IMPLEMENTED</ng-template>
+      <button ngbNavLink>Trophies</button>
+      <ng-template ngbNavContent>
+        <tq-game-trophy-suites [trophySuites]="data().trophySuites"
+                               [trophySuiteId]="selectedTrophySuiteId"
+                               (trophySuiteChange)="onTrophySuiteSelectedChange($event)"/>
+      </ng-template>
     </li>
     <li [ngbNavItem]="'players'">
-      <button ngbNavLink (click)="updateActiveTab('players')">Players</button>
+      <button ngbNavLink>Players</button>
       <ng-template ngbNavContent>TO BE IMPLEMENTED</ng-template>
     </li>
   </ul>

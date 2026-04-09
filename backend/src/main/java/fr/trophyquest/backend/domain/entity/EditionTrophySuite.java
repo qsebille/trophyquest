@@ -1,9 +1,7 @@
 package fr.trophyquest.backend.domain.entity;
 
 import fr.trophyquest.backend.domain.entity.embedded.EditionTrophySuiteId;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Objects;
@@ -27,4 +25,14 @@ public class EditionTrophySuite {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @MapsId("editionId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "edition_id", nullable = false)
+    private Edition edition;
+
+    @MapsId("trophySuiteId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "trophy_suite_id", nullable = false)
+    private TrophySuite trophySuite;
 }

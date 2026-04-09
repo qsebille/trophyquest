@@ -53,7 +53,9 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this._statsStore.fetch();
+    this._recentPlayersStore.reset();
     this._recentPlayersStore.fetch();
+    this._recentGamesStore.reset();
     this._recentGamesStore.fetch();
     this._gameCoverStore.refreshTopPlayedGame();
   }
