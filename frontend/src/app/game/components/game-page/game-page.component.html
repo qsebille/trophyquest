@@ -6,13 +6,14 @@
     <li [ngbNavItem]="'overview'">
       <button ngbNavLink>Presentation</button>
       <ng-template ngbNavContent>
-        <tq-game-details [gameDetails]="data().details"/>
+        <tq-game-details [gameDetails]="gameDetails()"/>
       </ng-template>
     </li>
     <li [ngbNavItem]="'trophies'">
       <button ngbNavLink>Trophies</button>
       <ng-template ngbNavContent>
-        <tq-game-trophy-suites [trophySuites]="data().trophySuites"
+        <tq-game-trophy-suites [trophySuites]="trophySuites()"
+                               [trophies]="trophies()"
                                [trophySuiteId]="selectedTrophySuiteId"
                                (trophySuiteChange)="onTrophySuiteSelectedChange($event)"/>
       </ng-template>

@@ -1,0 +1,31 @@
+<div class="d-flex flex-column gap-1">
+  @for (trophy of trophies(); track trophy) {
+    <div [class.completed]="isTrophyEarned(trophy)"
+         [class.hidden]="isTrophyHidden(trophy)"
+         class="d-flex align-items-center gap-1 justify-content-between trophy-card">
+      <div class="d-flex align-items-center gap-2">
+        <img class="trophy-icon" [ngSrc]="trophy.icon" [alt]="trophy.title" height="50" width="50"/>
+        <div class="d-flex flex-column gap-1">
+          <span class="fw-bold">{{ isTrophyHidden(trophy) ? 'Hidden trophy' : trophy.title }}</span>
+          <span class="fst-italic">{{ isTrophyHidden(trophy) ? 'This trophy is hidden' : trophy.description }}</span>
+        </div>
+      </div>
+      <div class="d-flex flex-column align-items-end gap-1">
+        <div class="position-relative d-inline-block">
+          @if (isTrophyHidden(trophy)) {
+            <img [height]="28" [width]="28" alt="Hidden Trophy" ngSrc="assets/icons/trophy-hidden.png"/>
+          } @else {
+            <img [height]="28" [width]="28" alt="Trophy" ngSrc="assets/icons/trophy-{{trophy.trophyType}}.png"/>
+            @if (isTrophyEarned(trophy)) {
+              <mat-icon class="trophy-check-icon">check</mat-icon>
+            }
+          }
+        </div>
+        @if (isTrophyEarned(trophy)) {
+          <div class="fs-8px text-muted">{{ trophy.earnedAt | date: 'dd/MM/yyyy HH:mm' }}</div>
+        }
+      </div>
+    </div>
+    <pre>{{ trophy | json }}</pre>
+  }
+</div>

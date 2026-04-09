@@ -1,44 +1,58 @@
-import {Injectable, Signal, signal, WritableSignal} from '@angular/core';
-import {LoadingStatus} from '../../core/models/loading-status.enum';
-import {emptyGamePageData, GamePageData} from '../models/game-page-data';
+import {Injectable, Signal, signal} from '@angular/core';
 import {GameApiService} from '../../core/api/services/game-api.service';
 import {forkJoin} from 'rxjs';
+import {emptyGameDetails, GameDetails} from '../../core/api/dtos/game/game-details';
+import {TrophySuiteApiService} from '../../core/api/services/trophy-suite-api.service';
+import {EarnedTrophy} from '../../core/api/dtos/trophy/earned-trophy';
+import {TrophySuiteWithCounts} from '../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GamePageStoreService {
-  private readonly _status: WritableSignal<LoadingStatus> = signal<LoadingStatus>(LoadingStatus.NONE);
-  private readonly _data: WritableSignal<GamePageData> = signal<GamePageData>(emptyGamePageData);
+  private readonly _gameDetails = signal<GameDetails>(emptyGameDetails);
+  private readonly _trophySuites = signal<TrophySuiteWithCounts[]>([]);
+  private readonly _trophies = signal<EarnedTrophy[]>([]);
 
-  readonly status: Signal<LoadingStatus> = this._status.asReadonly();
-  readonly data: Signal<GamePageData> = this._data.asReadonly();
+  readonly gameDetails: Signal<GameDetails> = this._gameDetails.asReadonly();
+  readonly trophySuites: Signal<TrophySuiteWithCounts[]> = this._trophySuites.asReadonly();
+  readonly trophies: Signal<EarnedTrophy[]> = this._trophies.asReadonly();
 
-  constructor(private _gameApiService: GameApiService) {
+  constructor(private _gameApiService: GameApiService,
+              private _trophySuiteApiService: TrophySuiteApiService,) {
   }
 
   reset(): void {
-    this._status.set(LoadingStatus.NONE);
-    this._data.set(emptyGamePageData);
+    this._gameDetails.set(emptyGameDetails);
+    this._trophySuites.set([]);
+    this._trophies.set([]);
   }
 
   fetch(gameId: string): void {
-    this._status.set(LoadingStatus.LOADING);
-
     forkJoin({
         details: this._gameApiService.fetchDetails(gameId),
         trophySuites: this._gameApiService.fetchTrophySuites(gameId)
       }
     ).subscribe({
       next: ({details, trophySuites}) => {
-        this._status.set(LoadingStatus.FULLY_LOADED);
-        this._data.set({...this._data(), details, trophySuites});
+        this._gameDetails.set(details);
+        this._trophySuites.set(trophySuites);
       },
       error: (err) => {
-        this._status.set(LoadingStatus.ERROR);
         console.error('Failed to fetch game details', err);
       }
     });
   }
 
+  fetchTrophies(trophySuiteId: string | null): void {
+    if (trophySuiteId == null) {
+      this._trophies.set([]);
+      return;
+    }
+    this._trophySuiteApiService.fetchTrophies(trophySuiteId, null).subscribe({
+      next: trophies => {
+        this._trophies.set(trophies);
+      }
+    })
+  }
 }

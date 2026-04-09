@@ -1,0 +1,35 @@
+@use 'styles/colors' as *;
+
+.trophy-card {
+  background-color: $tq-blue-lighter;
+  padding: 5px;
+  border-radius: 5px;
+
+  &.completed {
+    background-color: $tq-green-lighter;
+  }
+
+  &.hidden {
+    opacity: 0.5;
+  }
+}
+
+.trophy-icon {
+  border-radius: 5px;
+  border: 1.5px solid $tq-blue-medium;
+}
+
+.trophy-check-icon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  font-size: 25px;
+  font-weight: 600;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: $tq-green-medium;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
