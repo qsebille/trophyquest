@@ -1,6 +1,6 @@
 import {Injectable, Signal, signal} from '@angular/core';
 import {GameApiService} from '../../core/api/services/game-api.service';
-import {forkJoin} from 'rxjs';
+import {forkJoin, Subject, switchMap} from 'rxjs';
 import {emptyGameDetails, GameDetails} from '../../core/api/dtos/game/game-details';
 import {TrophySuiteApiService} from '../../core/api/services/trophy-suite-api.service';
 import {EarnedTrophy} from '../../core/api/dtos/trophy/earned-trophy';
@@ -13,6 +13,7 @@ export class GamePageStoreService {
   private readonly _gameDetails = signal<GameDetails>(emptyGameDetails);
   private readonly _trophySuites = signal<TrophySuiteWithCounts[]>([]);
   private readonly _trophies = signal<EarnedTrophy[]>([]);
+  private readonly _trophySuiteIdSubject = new Subject<string | null>();
 
   readonly gameDetails: Signal<GameDetails> = this._gameDetails.asReadonly();
   readonly trophySuites: Signal<TrophySuiteWithCounts[]> = this._trophySuites.asReadonly();
@@ -20,6 +21,22 @@ export class GamePageStoreService {
 
   constructor(private _gameApiService: GameApiService,
               private _trophySuiteApiService: TrophySuiteApiService,) {
+    this._trophySuiteIdSubject.pipe(
+      switchMap(trophySuiteId => {
+        if (trophySuiteId == null) {
+          this._trophies.set([]);
+          return [];
+        }
+        return this._trophySuiteApiService.fetchTrophies(trophySuiteId, null);
+      })
+    ).subscribe({
+      next: trophies => {
+        this._trophies.set(trophies);
+      },
+      error: (err) => {
+        console.error('Failed to fetch trophies', err);
+      }
+    });
   }
 
   reset(): void {
@@ -45,14 +62,6 @@ export class GamePageStoreService {
   }
 
   fetchTrophies(trophySuiteId: string | null): void {
-    if (trophySuiteId == null) {
-      this._trophies.set([]);
-      return;
-    }
-    this._trophySuiteApiService.fetchTrophies(trophySuiteId, null).subscribe({
-      next: trophies => {
-        this._trophies.set(trophies);
-      }
-    })
+    this._trophySuiteIdSubject.next(trophySuiteId);
   }
 }
