@@ -4,19 +4,23 @@ import {PlatformLabelComponent} from '../../../core/components/platform-label/pl
 import {TrophySuiteWithCounts} from '../../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
 import {NgOptimizedImage} from '@angular/common';
 import {TrophyType} from '../../../core/models/enums/trophy-type.enum';
+import {GameTrophiesComponent} from '../game-trophies/game-trophies.component';
+import {EarnedTrophy} from '../../../core/api/dtos/trophy/earned-trophy';
 
 @Component({
   selector: 'tq-game-trophy-suites',
   imports: [
     ErrorMessageComponent,
     PlatformLabelComponent,
-    NgOptimizedImage
+    NgOptimizedImage,
+    GameTrophiesComponent
   ],
   templateUrl: './game-trophy-suites.component.html',
   styleUrl: './game-trophy-suites.component.scss',
 })
 export class GameTrophySuitesComponent {
   trophySuites = input.required<TrophySuiteWithCounts[]>();
+  trophies = input.required<EarnedTrophy[]>();
   trophySuiteId = input<string | null>(null);
   trophySuiteChange = output<string | null>();
 

@@ -37,5 +37,7 @@
       </div>
     }
   </div>
-  <span>TO BE IMPLEMENTED : List of trophies and filters</span>
+  @if (!!trophySuiteId()) {
+    <tq-game-trophies [trophies]="trophies()"/>
+  }
 }

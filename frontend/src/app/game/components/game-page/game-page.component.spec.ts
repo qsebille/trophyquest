@@ -16,6 +16,7 @@ describe('GamePageComponent', () => {
           useValue: {
             snapshot: {
               paramMap: convertToParamMap({gameId: 'game-123'}),
+              queryParamMap: convertToParamMap({}),
             }
           }
         }

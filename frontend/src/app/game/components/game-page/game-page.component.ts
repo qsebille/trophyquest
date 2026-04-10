@@ -1,9 +1,8 @@
-import {Component, computed, Signal} from '@angular/core';
+import {Component, computed} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {GameCoverStoreService} from '../../../core/stores/game-cover-store.service';
 import {NgbNav, NgbNavContent, NgbNavItem, NgbNavLinkButton, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
 import {GamePageStoreService} from '../../stores/game-page-store.service';
-import {GamePageData} from '../../models/game-page-data';
 import {GameDetailsComponent} from '../game-details/game-details.component';
 import {GameTrophySuitesComponent} from '../game-trophy-suites/game-trophy-suites.component';
 import {Location} from '@angular/common';
@@ -28,7 +27,9 @@ export class GamePageComponent {
   selectedTab = 'overview';
   selectedTrophySuiteId: string | null = null;
 
-  readonly data: Signal<GamePageData> = computed(() => this._store.data());
+  readonly gameDetails = computed(() => this._store.gameDetails());
+  readonly trophySuites = computed(() => this._store.trophySuites());
+  readonly trophies = computed(() => this._store.trophies());
 
   constructor(
     private readonly _route: ActivatedRoute,
@@ -44,9 +45,12 @@ export class GamePageComponent {
     this._gameCoverStoreService.useGameCover(this._gameId);
     this._store.fetch(this._gameId);
 
-    const queryParams = this._route.snapshot.paramMap;
+    const queryParams = this._route.snapshot.queryParamMap;
     this.selectedTab = queryParams.get('tab') ?? 'overview';
     this.selectedTrophySuiteId = queryParams.get('tsId');
+    if (!!this.selectedTrophySuiteId) {
+      this._store.fetchTrophies(this.selectedTrophySuiteId);
+    }
   }
 
   ngOnDestroy() {
@@ -61,6 +65,7 @@ export class GamePageComponent {
   onTrophySuiteSelectedChange(tsId: string | null) {
     this.selectedTrophySuiteId = tsId;
     this._updateUrl();
+    this._store.fetchTrophies(tsId);
   }
 
   private _updateUrl(): void {
