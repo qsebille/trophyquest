@@ -45,9 +45,12 @@ export class GamePageComponent {
     this._gameCoverStoreService.useGameCover(this._gameId);
     this._store.fetch(this._gameId);
 
-    const queryParams = this._route.snapshot.paramMap;
+    const queryParams = this._route.snapshot.queryParamMap;
     this.selectedTab = queryParams.get('tab') ?? 'overview';
     this.selectedTrophySuiteId = queryParams.get('tsId');
+    if (!!this.selectedTrophySuiteId) {
+      this._store.fetchTrophies(this.selectedTrophySuiteId);
+    }
   }
 
   ngOnDestroy() {
