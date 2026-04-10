@@ -1,6 +1,6 @@
 import {Injectable, Signal, signal} from '@angular/core';
 import {GameApiService} from '../../core/api/services/game-api.service';
-import {forkJoin, Subject, switchMap} from 'rxjs';
+import {catchError, forkJoin, of, Subject, switchMap} from 'rxjs';
 import {emptyGameDetails, GameDetails} from '../../core/api/dtos/game/game-details';
 import {TrophySuiteApiService} from '../../core/api/services/trophy-suite-api.service';
 import {EarnedTrophy} from '../../core/api/dtos/trophy/earned-trophy';
@@ -27,14 +27,16 @@ export class GamePageStoreService {
           this._trophies.set([]);
           return [];
         }
-        return this._trophySuiteApiService.fetchTrophies(trophySuiteId, null);
+        return this._trophySuiteApiService.fetchTrophies(trophySuiteId, null).pipe(
+          catchError(err => {
+            console.error('Failed to fetch trophies', err);
+            return of([]);
+          })
+        );
       })
     ).subscribe({
       next: trophies => {
         this._trophies.set(trophies);
-      },
-      error: (err) => {
-        console.error('Failed to fetch trophies', err);
       }
     });
   }
