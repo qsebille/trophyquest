@@ -1,4 +1,4 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, input, signal} from '@angular/core';
 import {EarnedTrophy} from '../../../core/api/dtos/trophy/earned-trophy';
 import {DatePipe, NgOptimizedImage} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
@@ -10,6 +10,7 @@ import {
   NgbAccordionHeader,
   NgbAccordionItem
 } from '@ng-bootstrap/ng-bootstrap';
+import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'tq-game-trophies',
@@ -22,13 +23,16 @@ import {
     NgbAccordionHeader,
     NgbAccordionButton,
     NgbAccordionCollapse,
-    NgbAccordionBody
+    NgbAccordionBody,
+    MatSlideToggle
   ],
   templateUrl: './game-trophies.component.html',
   styleUrl: './game-trophies.component.scss',
 })
 export class GameTrophiesComponent {
   trophies = input.required<EarnedTrophy[]>();
+
+  showHiddenTrophies = signal(false);
 
   trophyGroups = computed(() => {
     const groupIds: string[] = []
@@ -46,12 +50,14 @@ export class GameTrophiesComponent {
   });
 
   isTrophyHidden(trophy: EarnedTrophy): boolean {
-    // TODO: use selector to show or hide hidden trophies
-    return trophy.isHidden ?? false;
+    return trophy.isHidden && !this.showHiddenTrophies();
   }
 
   isTrophyEarned(trophy: EarnedTrophy): boolean {
-    // TODO: detect if trophy is earned by player. Need the info about the player first.
-    return false;
+    return !!trophy.earnedAt;
+  }
+
+  onHiddenFilterChanges(event: MatSlideToggleChange): void {
+    this.showHiddenTrophies.set(event.checked);
   }
 }

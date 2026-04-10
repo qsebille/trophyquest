@@ -1,3 +1,10 @@
+<div class="d-flex justify-content-around align-items-center mb-1">
+  <div class="d-flex flex-column gap-0 align-items-center">
+    <mat-slide-toggle (change)="onHiddenFilterChanges($event)"/>
+    <span class="fs-10px">Show hidden trophies</span>
+  </div>
+</div>
+
 <div ngbAccordion>
   @for (group of trophyGroups(); track group.trophyGroupId) {
     <div ngbAccordionItem [collapsed]="false">
