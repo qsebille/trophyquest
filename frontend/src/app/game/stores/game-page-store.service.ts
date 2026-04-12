@@ -15,7 +15,7 @@ export class GamePageStoreService {
   private readonly _gameDetails = signal<GameDetails>(emptyGameDetails);
   private readonly _trophySuites = signal<TrophySuiteWithCounts[]>([]);
   private readonly _trophies = signal<EarnedTrophy[]>([]);
-  private readonly _playersPagination = signal<Pagination<GamePlayer>>(initPagination(1));
+  private readonly _playersPagination = signal<Pagination<GamePlayer>>(initPagination(20));
   private readonly _trophySuiteIdSubject = new Subject<{ trophySuiteId: string | null, playerId: string | null }>();
 
   readonly gameDetails: Signal<GameDetails> = this._gameDetails.asReadonly();
