@@ -38,6 +38,7 @@ describe('GamePageStoreService', () => {
   it('should continue to fetch trophies after a failed request', () => {
     const trophySuiteId1 = 'suite-1';
     const trophySuiteId2 = 'suite-2';
+    const playerId = 'player-1';
     const trophies: EarnedTrophy[] = [{id: 't1', name: 'Trophy 1'} as unknown as EarnedTrophy];
 
     // First call fails
@@ -45,12 +46,12 @@ describe('GamePageStoreService', () => {
     // Second call succeeds
     trophySuiteApiServiceMock.fetchTrophies.mockReturnValueOnce(of(trophies));
 
-    service.fetchTrophies(trophySuiteId1);
-    expect(trophySuiteApiServiceMock.fetchTrophies).toHaveBeenCalledWith(trophySuiteId1, null);
+    service.fetchTrophies(trophySuiteId1, playerId);
+    expect(trophySuiteApiServiceMock.fetchTrophies).toHaveBeenCalledWith(trophySuiteId1, playerId);
     expect(service.trophies()).toEqual([]);
 
-    service.fetchTrophies(trophySuiteId2);
-    expect(trophySuiteApiServiceMock.fetchTrophies).toHaveBeenCalledWith(trophySuiteId2, null);
+    service.fetchTrophies(trophySuiteId2, playerId);
+    expect(trophySuiteApiServiceMock.fetchTrophies).toHaveBeenCalledWith(trophySuiteId2, playerId);
     expect(service.trophies()).toEqual(trophies);
   });
 });

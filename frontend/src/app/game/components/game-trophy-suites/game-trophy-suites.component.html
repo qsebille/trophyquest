@@ -38,6 +38,6 @@
     }
   </div>
   @if (!!trophySuiteId()) {
-    <tq-game-trophies [trophies]="trophies()"/>
+    <tq-game-trophies [trophies]="trophies()" [selectedPlayerId]="selectedPlayerId()"/>
   }
 }

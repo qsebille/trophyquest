@@ -15,12 +15,18 @@
         <tq-game-trophy-suites [trophySuites]="trophySuites()"
                                [trophies]="trophies()"
                                [trophySuiteId]="selectedTrophySuiteId"
+                               [selectedPlayerId]="selectedPlayerId"
                                (trophySuiteChange)="onTrophySuiteSelectedChange($event)"/>
       </ng-template>
     </li>
     <li [ngbNavItem]="'players'">
       <button ngbNavLink>Players</button>
-      <ng-template ngbNavContent>TO BE IMPLEMENTED</ng-template>
+      <ng-template ngbNavContent>
+        <tq-game-players [playersPagination]="playersPagination()"
+                         (selectPlayer)="onPlayerSelected($event)"
+                         (pseudoClicked)="onPlayerPseudoClicked($event)"
+                         (pageChange)="onPlayerPageChange($event)"/>
+      </ng-template>
     </li>
   </ul>
   <div class="game-page-content" [ngbNavOutlet]="nav"></div>

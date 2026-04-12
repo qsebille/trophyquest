@@ -1,0 +1,10 @@
+@use 'styles/colors' as *;
+
+.player-block {
+  background-color: $tq-blue-lighter;
+  border-radius: 10px;
+}
+
+.avatar {
+  border-radius: 10px;
+}

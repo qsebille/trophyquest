@@ -5,6 +5,8 @@ import {emptyGameDetails, GameDetails} from '../../core/api/dtos/game/game-detai
 import {TrophySuiteApiService} from '../../core/api/services/trophy-suite-api.service';
 import {EarnedTrophy} from '../../core/api/dtos/trophy/earned-trophy';
 import {TrophySuiteWithCounts} from '../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
+import {GamePlayer} from '../../core/api/dtos/player/game-player';
+import {initPagination, Pagination} from '../../core/api/dtos/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -13,21 +15,25 @@ export class GamePageStoreService {
   private readonly _gameDetails = signal<GameDetails>(emptyGameDetails);
   private readonly _trophySuites = signal<TrophySuiteWithCounts[]>([]);
   private readonly _trophies = signal<EarnedTrophy[]>([]);
-  private readonly _trophySuiteIdSubject = new Subject<string | null>();
+  private readonly _playersPagination = signal<Pagination<GamePlayer>>(initPagination(1));
+  private readonly _trophySuiteIdSubject = new Subject<{ trophySuiteId: string | null, playerId: string | null }>();
 
   readonly gameDetails: Signal<GameDetails> = this._gameDetails.asReadonly();
   readonly trophySuites: Signal<TrophySuiteWithCounts[]> = this._trophySuites.asReadonly();
   readonly trophies: Signal<EarnedTrophy[]> = this._trophies.asReadonly();
+  readonly playersPagination: Signal<Pagination<GamePlayer>> = this._playersPagination.asReadonly();
 
-  constructor(private _gameApiService: GameApiService,
-              private _trophySuiteApiService: TrophySuiteApiService,) {
+  constructor(
+    private _gameApiService: GameApiService,
+    private _trophySuiteApiService: TrophySuiteApiService,
+  ) {
     this._trophySuiteIdSubject.pipe(
-      switchMap(trophySuiteId => {
-        if (trophySuiteId == null) {
+      switchMap(data => {
+        if (data.trophySuiteId == null) {
           this._trophies.set([]);
           return [];
         }
-        return this._trophySuiteApiService.fetchTrophies(trophySuiteId, null).pipe(
+        return this._trophySuiteApiService.fetchTrophies(data.trophySuiteId, data.playerId).pipe(
           catchError(err => {
             console.error('Failed to fetch trophies', err);
             return of([]);
@@ -45,12 +51,13 @@ export class GamePageStoreService {
     this._gameDetails.set(emptyGameDetails);
     this._trophySuites.set([]);
     this._trophies.set([]);
+    this._playersPagination.set(initPagination(20));
   }
 
-  fetch(gameId: string): void {
+  fetchDetails(gameId: string): void {
     forkJoin({
         details: this._gameApiService.fetchDetails(gameId),
-        trophySuites: this._gameApiService.fetchTrophySuites(gameId)
+        trophySuites: this._gameApiService.fetchTrophySuites(gameId),
       }
     ).subscribe({
       next: ({details, trophySuites}) => {
@@ -58,12 +65,30 @@ export class GamePageStoreService {
         this._trophySuites.set(trophySuites);
       },
       error: (err) => {
-        console.error('Failed to fetch game details', err);
+        console.error('Failed to fetch game details and trophy suites', err);
       }
     });
   }
 
-  fetchTrophies(trophySuiteId: string | null): void {
-    this._trophySuiteIdSubject.next(trophySuiteId);
+  fetchPlayers(gameId: string, page: number): void {
+    console.log('Fetching players for game', gameId, 'page', page);
+    this._gameApiService.fetchPlayers(gameId, page, this.playersPagination().pageSize).subscribe({
+      next: players => {
+        this._playersPagination.update(pagination => ({
+          ...pagination,
+          currentPage: page,
+          total: players.total,
+          content: players.content,
+        }));
+      },
+      error: (err) => {
+        console.error('Failed to fetch players', err);
+      }
+    })
+  }
+
+  fetchTrophies(trophySuiteId: string | null, playerId: string | null): void {
+    const subjectData = {trophySuiteId, playerId};
+    this._trophySuiteIdSubject.next(subjectData);
   }
 }

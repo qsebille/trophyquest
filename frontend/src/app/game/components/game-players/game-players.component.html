@@ -1,0 +1,31 @@
+<h2>Last players</h2>
+
+<div class="d-flex flex-column gap-3 align-items-center">
+
+  <div class="d-flex gap-2 flex-column w-75">
+    @for (player of playersPagination().content; track player) {
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <div class="d-flex player-block p-2 align-items-center justify-content-between w-75">
+          <div class="d-flex gap-3 align-items-center">
+            <img [ngSrc]="player.avatar" alt="Player avatar" width="50" height="50" class="avatar"/>
+            <span class="fs-6 tq-link" (click)="onClickPseudo(player)">{{ player.pseudo }}</span>
+          </div>
+          <div class="d-flex flex-column gap-0 align-items-center">
+            <span class="text-primary-emphasis">{{ player.lastPlayedAt | date }}</span>
+            <span class="text-primary-emphasis fs-10px">{{ player.lastPlayedAt | date: 'shortTime' }}</span>
+          </div>
+        </div>
+        <div class="d-flex w-20">
+          <button class="btn btn-primary" (click)="onSelectPlayer(player)">Select Profile</button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <ngb-pagination [collectionSize]="collectionSize()"
+                  [pageSize]="pageSize()"
+                  [page]="page()"
+                  (pageChange)="onPlayerPageChange($event)"
+                  [directionLinks]="false"/>
+
+</div>
