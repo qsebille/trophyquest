@@ -4,10 +4,10 @@ import {GameCoverStoreService} from '../../../core/stores/game-cover-store.servi
 import {NgbNav, NgbNavContent, NgbNavItem, NgbNavLinkButton, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
 import {GamePageStoreService} from '../../stores/game-page-store.service';
 import {GameDetailsComponent} from '../game-details/game-details.component';
-import {GameTrophySuitesComponent} from '../game-trophy-suites/game-trophy-suites.component';
 import {Location} from '@angular/common';
 import {GamePlayersComponent} from '../game-players/game-players.component';
 import {NavigatorService} from '../../../core/services/navigator.service';
+import {GameTrophySuiteListComponent} from '../game-trophy-suite-list/game-trophy-suite-list.component';
 
 @Component({
   selector: 'tq-game-page',
@@ -18,8 +18,8 @@ import {NavigatorService} from '../../../core/services/navigator.service';
     NgbNavContent,
     NgbNavOutlet,
     GameDetailsComponent,
-    GameTrophySuitesComponent,
-    GamePlayersComponent
+    GamePlayersComponent,
+    GameTrophySuiteListComponent
   ],
   templateUrl: './game-page.component.html',
   styleUrl: './game-page.component.scss',

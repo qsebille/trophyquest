@@ -1,0 +1,28 @@
+<div class="trophy-suite d-flex w-75">
+  <div class="image-wrapper d-flex align-items-center w-15 align-items-center">
+    <img [src]="trophySuite().image" [alt]="trophySuite().title">
+  </div>
+
+  <div class="d-flex gap-2 w-50 align-items-center">
+    <span class="fs-5">{{ trophySuite().title }}</span>
+    @for (platform of trophySuite().platforms; track platform) {
+      <tq-platform-label [platform]="platform"/>
+    }
+  </div>
+  <div class="d-flex gap-2 w-25 align-items-center justify-content-center">
+    @for (trophyType of trophyTypes; track trophyType) {
+      <div class="d-flex flex-column align-items-center">
+        <img ngSrc="assets/icons/trophy-{{ trophyType }}.png"
+             alt="{{ trophyType }} trophy count"
+             height="32"
+             width="32">
+        <b>{{ countTrophyByColor(trophyType) }}</b>
+      </div>
+    }
+  </div>
+  @if (displayMode() == displayModes.MULTIPLE) {
+    <div class="d-flex gap-3 w-10 flex-column align-items-end justify-content-center">
+      <button class="btn btn-primary" (click)="selectTrophySuite.emit()">Select</button>
+    </div>
+  }
+</div>

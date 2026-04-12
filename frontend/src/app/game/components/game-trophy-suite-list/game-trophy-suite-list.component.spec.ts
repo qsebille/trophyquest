@@ -1,20 +1,19 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {GameTrophySuitesComponent} from './game-trophy-suites.component';
+import {GameTrophySuiteListComponent} from './game-trophy-suite-list.component';
 
-describe('GameTrophySuitesComponent', () => {
-  let component: GameTrophySuitesComponent;
-  let fixture: ComponentFixture<GameTrophySuitesComponent>;
+describe('GameTrophySuiteListComponent', () => {
+  let component: GameTrophySuiteListComponent;
+  let fixture: ComponentFixture<GameTrophySuiteListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GameTrophySuitesComponent]
+      imports: [GameTrophySuiteListComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(GameTrophySuitesComponent);
+    fixture = TestBed.createComponent(GameTrophySuiteListComponent);
     component = fixture.componentInstance;
-
     fixture.componentRef.setInput('trophySuites', []);
     fixture.detectChanges();
   });

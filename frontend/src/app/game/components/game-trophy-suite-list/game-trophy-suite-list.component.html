@@ -1,0 +1,20 @@
+@if (noTrophySuite()) {
+  <tq-error-message errorMessage="No trophy suite available for this game"/>
+} @else {
+  @if (displayReturnToSuiteListButton()) {
+    <button class="btn btn-link fs-10px" (click)="this.trophySuiteChange.emit(null)">
+      Select another trophy suite for this game
+    </button>
+  }
+  <div class="row gap-2">
+    @for (trophySuite of displayedTrophySuites(); track trophySuite.id) {
+      <tq-game-trophy-suite-card class="row w-100 justify-content-center"
+                                 [trophySuite]="trophySuite"
+                                 [displayMode]="displayMode()"
+                                 (selectTrophySuite)="this.trophySuiteChange.emit(trophySuite.id)"/>
+    }
+  </div>
+  @if (!!trophySuiteId()) {
+    <tq-game-trophies [trophies]="trophies()" [selectedPlayerId]="selectedPlayerId()"/>
+  }
+}
