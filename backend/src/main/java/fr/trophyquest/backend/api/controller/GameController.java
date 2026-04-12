@@ -3,6 +3,7 @@ package fr.trophyquest.backend.api.controller;
 import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
 import fr.trophyquest.backend.api.dto.game.RecentGameDTO;
+import fr.trophyquest.backend.api.dto.player.GamePlayerDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteWithCountsDTO;
 import fr.trophyquest.backend.service.GameService;
 import fr.trophyquest.backend.service.RecentGameService;
@@ -52,4 +53,12 @@ public class GameController {
         return this.gameService.fetchTrophySuites(gameId);
     }
 
+    @GetMapping("/{gameId}/players")
+    public SearchDTO<GamePlayerDTO> searchRecentPlayers(
+            @PathVariable UUID gameId,
+            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
+    ) {
+        return this.gameService.searchRecentPlayers(gameId, pageNumber, pageSize);
+    }
 }

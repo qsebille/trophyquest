@@ -6,6 +6,7 @@ import {SearchResult} from "../dtos/search-result";
 import {RecentGame} from "../dtos/game/recent-game";
 import {GameDetails} from '../dtos/game/game-details';
 import {TrophySuiteWithCounts} from '../dtos/trophy-suite/trophy-suite-with-counts';
+import {GamePlayer} from '../dtos/player/game-player';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,13 @@ export class GameApiService {
 
   fetchTrophySuites(gameId: string): Observable<TrophySuiteWithCounts[]> {
     return this._http.get<TrophySuiteWithCounts[]>(`${this.API_URL}/${gameId}/trophy-suites`);
+  }
+
+  fetchPlayers(gameId: string, pageNumber: number, pageSize: number): Observable<SearchResult<GamePlayer>> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this._http.get<SearchResult<GamePlayer>>(`${this.API_URL}/${gameId}/players`, {params});
   }
 
 }

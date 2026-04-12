@@ -22,6 +22,7 @@ export class GameTrophySuitesComponent {
   trophySuites = input.required<TrophySuiteWithCounts[]>();
   trophies = input.required<EarnedTrophy[]>();
   trophySuiteId = input<string | null>(null);
+  selectedPlayerId = input<string | null>(null);
   trophySuiteChange = output<string | null>();
 
   constructor() {

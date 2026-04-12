@@ -8,7 +8,11 @@ import {
   NgbAccordionCollapse,
   NgbAccordionDirective,
   NgbAccordionHeader,
-  NgbAccordionItem
+  NgbAccordionItem,
+  NgbDropdown,
+  NgbDropdownItem,
+  NgbDropdownMenu,
+  NgbDropdownToggle
 } from '@ng-bootstrap/ng-bootstrap';
 import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-toggle';
 
@@ -24,20 +28,45 @@ import {MatSlideToggle, MatSlideToggleChange} from '@angular/material/slide-togg
     NgbAccordionButton,
     NgbAccordionCollapse,
     NgbAccordionBody,
-    MatSlideToggle
+    MatSlideToggle,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownItem
   ],
   templateUrl: './game-trophies.component.html',
   styleUrl: './game-trophies.component.scss',
 })
 export class GameTrophiesComponent {
   trophies = input.required<EarnedTrophy[]>();
+  selectedPlayerId = input<string | null>(null);
 
   showHiddenTrophies = signal(false);
+  earnedFilter = signal<'all' | 'earned' | 'unearned'>('all');
+
+  earnedFilterLabel = computed(() => {
+    switch (this.earnedFilter()) {
+      case 'all':
+        return 'All trophies';
+      case 'earned':
+        return 'Earned only';
+      case 'unearned':
+        return 'Unearned only';
+    }
+  });
+
+  filteredTrophies = computed(() => {
+    if (this.earnedFilter() === 'all') {
+      return this.trophies();
+    } else {
+      return this.trophies().filter(t => this.earnedFilter() === 'earned' ? !!t.earnedAt : !t.earnedAt);
+    }
+  });
 
   trophyGroups = computed(() => {
     const groupIds: string[] = []
     const groups: { trophyGroupId: string, trophyGroupName: string, trophies: EarnedTrophy[] }[] = []
-    for (const trophy of this.trophies()) {
+    for (const trophy of this.filteredTrophies()) {
       if (!groupIds.includes(trophy.trophyGroupId)) {
         groupIds.push(trophy.trophyGroupId);
         groups.push({trophyGroupId: trophy.trophyGroupId, trophyGroupName: trophy.trophyGroupName, trophies: [trophy]});
