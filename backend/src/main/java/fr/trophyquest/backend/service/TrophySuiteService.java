@@ -1,12 +1,10 @@
 package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.game.GameIdDTO;
-import fr.trophyquest.backend.api.dto.game.TrophySuiteGameDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
 import fr.trophyquest.backend.api.mapper.TrophySuiteMapper;
 import fr.trophyquest.backend.domain.entity.TrophySuite;
-import fr.trophyquest.backend.exceptions.GameNotFoundException;
 import fr.trophyquest.backend.exceptions.TrophySuiteNotFoundException;
 import fr.trophyquest.backend.repository.GameRepository;
 import fr.trophyquest.backend.repository.TrophyRepository;
@@ -52,14 +50,8 @@ public class TrophySuiteService {
         }
     }
 
-    public TrophySuiteGameDTO fetchGameDetails(UUID trophySuiteId) {
-        return this.gameRepository.fetchGameDetailsForTrophySuite(trophySuiteId)
-                .map(this.trophySuiteMapper::toGameDTO)
-                .orElse(null);
-    }
-
     public GameIdDTO fetchGameId(UUID trophySuiteId) {
-        UUID id = this.gameRepository.fetchGameIdByTrophySuiteId(trophySuiteId).orElseThrow(GameNotFoundException::new);
+        UUID id = this.gameRepository.fetchGameIdByTrophySuiteId(trophySuiteId).orElseThrow();
         return GameIdDTO.builder().id(id).build();
     }
 }
