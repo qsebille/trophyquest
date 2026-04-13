@@ -50,7 +50,7 @@ export class GamePageComponent {
   ngOnInit(): void {
     const queryParams = this._route.snapshot.queryParamMap;
     this.selectedTab = queryParams.get('tab') ?? 'overview';
-    this.selectedTrophySuiteId = queryParams.get('tsId');
+    this.selectedTrophySuiteId = queryParams.get('trophySuiteId');
     this.selectedPlayerId = queryParams.get('playerId');
 
     this._gameCoverStoreService.useGameCover(this._gameId);
@@ -81,7 +81,7 @@ export class GamePageComponent {
       relativeTo: this._route,
       queryParams: {
         tab: this.selectedTab,
-        tsId: this.selectedTrophySuiteId ?? null,
+        trophySuiteId: this.selectedTrophySuiteId ?? null,
         playerId: this.selectedPlayerId ?? null,
       },
       queryParamsHandling: 'merge',
