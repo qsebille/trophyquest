@@ -1,17 +1,17 @@
 import {Component, computed, effect, input, output, untracked} from '@angular/core';
-import {TrophySuiteWithCounts} from '../../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
-import {EarnedTrophy} from '../../../core/api/dtos/trophy/earned-trophy';
-import {ErrorMessageComponent} from '../../../core/components/error-message/error-message.component';
-import {GameTrophiesComponent} from '../game-trophies/game-trophies.component';
+import {TrophySuiteWithCounts} from '../../../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
+import {EarnedTrophy} from '../../../../core/api/dtos/trophy/earned-trophy';
+import {ErrorMessageComponent} from '../../../../core/components/error-message/error-message.component';
 import {GameTrophySuiteCardComponent} from '../game-trophy-suite-card/game-trophy-suite-card.component';
-import {GameTrophySuiteDisplayMode} from '../../models/game-trophy-suite-display-mode';
+import {GameTrophySuiteDisplayMode} from '../../../models/game-trophy-suite-display-mode.enum';
+import {GameTrophyListComponent} from '../../trophy/game-trophy-list/game-trophy-list.component';
 
 @Component({
   selector: 'tq-game-trophy-suite-list',
   imports: [
     ErrorMessageComponent,
-    GameTrophiesComponent,
-    GameTrophySuiteCardComponent
+    GameTrophySuiteCardComponent,
+    GameTrophyListComponent
   ],
   templateUrl: './game-trophy-suite-list.component.html',
   styleUrl: './game-trophy-suite-list.component.scss',

@@ -1,0 +1,25 @@
+<tq-game-trophy-filters [selectedPlayerId]="selectedPlayerId()"
+                        (hiddenFilterChange)="showHiddenTrophies.set($event)"
+                        (earnedFilterChange)="earnedFilterState.set($event)"/>
+
+<div ngbAccordion>
+  @for (group of trophyGroups(); track group.trophyGroupId) {
+    <div ngbAccordionItem [collapsed]="false">
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>{{ group.trophyGroupName }}</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <div class="d-flex flex-column gap-1">
+              @for (trophy of group.trophies; track trophy.id) {
+                <tq-game-trophy-card [trophy]="trophy"
+                                     [showHiddenTrophies]="showHiddenTrophies()"/>
+              }
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  }
+</div>

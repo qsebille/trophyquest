@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {GameTrophySuiteCardComponent} from './game-trophy-suite-card.component';
-import {GameTrophySuiteDisplayMode} from '../../models/game-trophy-suite-display-mode';
+import {GameTrophySuiteDisplayMode} from '../../../models/game-trophy-suite-display-mode.enum';
 
 describe('GameTrophySuiteCardComponent', () => {
   let component: GameTrophySuiteCardComponent;

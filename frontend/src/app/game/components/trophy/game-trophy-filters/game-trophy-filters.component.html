@@ -1,0 +1,24 @@
+<div class="row mb-2">
+  @if (!!this.selectedPlayerId()) {
+    <div class="col">
+      <div ngbDropdown class="d-flex justify-content-around">
+        <button type="button" class="btn btn-outline-primary" id="earnedFilterDropdown" ngbDropdownToggle>
+          {{ this.earnedFilterLabel() }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby="earnedFilterDropdown">
+          <button ngbDropdownItem (click)="onEarnedFilterChange('all')">All trophies</button>
+          <button ngbDropdownItem (click)="onEarnedFilterChange('earned')">Earned only</button>
+          <button ngbDropdownItem (click)="onEarnedFilterChange('unearned')">Unearned only</button>
+        </div>
+      </div>
+    </div>
+  }
+  <div class="col">
+    <div class="d-flex justify-content-around align-items-center mb-1">
+      <div class="d-flex flex-column gap-0 align-items-center">
+        <mat-slide-toggle (change)="hiddenFilterChange.emit($event.checked)"/>
+        <span class="fs-10px">Show hidden trophies</span>
+      </div>
+    </div>
+  </div>
+</div>

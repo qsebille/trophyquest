@@ -7,7 +7,7 @@ import {GameDetailsComponent} from '../game-details/game-details.component';
 import {Location} from '@angular/common';
 import {GamePlayersComponent} from '../game-players/game-players.component';
 import {NavigatorService} from '../../../core/services/navigator.service';
-import {GameTrophySuiteListComponent} from '../game-trophy-suite-list/game-trophy-suite-list.component';
+import {GameTrophySuiteListComponent} from '../trophy-suite/game-trophy-suite-list/game-trophy-suite-list.component';
 
 @Component({
   selector: 'tq-game-page',
