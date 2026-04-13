@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GameTrophyListComponent } from './game-trophy-list.component';
+import {GameTrophyListComponent} from './game-trophy-list.component';
 
 describe('GameTrophyListComponent', () => {
   let component: GameTrophyListComponent;
@@ -10,10 +10,11 @@ describe('GameTrophyListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [GameTrophyListComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(GameTrophyListComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('trophies', []);
     fixture.detectChanges();
   });
 

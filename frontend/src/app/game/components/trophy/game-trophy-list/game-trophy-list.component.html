@@ -13,8 +13,7 @@
           <ng-template>
             <div class="d-flex flex-column gap-1">
               @for (trophy of group.trophies; track trophy.id) {
-                <tq-game-trophy-card [trophy]="trophy"
-                                     [showHiddenTrophies]="showHiddenTrophies()"/>
+                <tq-game-trophy-card [trophy]="trophy" [showHiddenTrophies]="showHiddenTrophies()"/>
               }
             </div>
           </ng-template>

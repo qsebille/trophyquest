@@ -52,7 +52,6 @@ describe('HomePageComponent', () => {
       goToPlayersPage: vi.fn(),
       goToProfilePage: vi.fn(),
       goToTrophySuitePage: vi.fn(),
-      goToPlayerTrophySuitePage: vi.fn(),
     } as MockedObject<NavigatorService>;
 
     mockRecentPlayersStore.players.mockReturnValue([]);
@@ -102,13 +101,8 @@ describe('HomePageComponent', () => {
     expect(mockNavigator.goToProfilePage).toHaveBeenCalledWith(playerId);
   });
 
-  it('should navigate to game page', () => {
-    component.navigateToTrophySuitePage(gameId);
-    expect(mockNavigator.goToTrophySuitePage).toHaveBeenCalledWith(gameId);
-  });
-
   it('should navigate to player game page', () => {
-    component.navigateToPlayerTrophySuitePage(gameId, playerId);
-    expect(mockNavigator.goToPlayerTrophySuitePage).toHaveBeenCalledWith(gameId, playerId);
+    component.navigateToTrophySuitePage(gameId, playerId);
+    expect(mockNavigator.goToTrophySuitePage).toHaveBeenCalledWith(gameId, playerId);
   });
 });

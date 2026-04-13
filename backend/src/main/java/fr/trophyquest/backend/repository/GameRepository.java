@@ -47,6 +47,16 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
             """)
     Optional<Game> fetchGameDetailsForTrophySuite(@Param("trophySuiteId") UUID trophySuiteId);
 
+    @Query("""
+                SELECT g.id FROM Game g WHERE g.id = (
+                    SELECT DISTINCT e.gameId
+                    FROM EditionTrophySuite ets
+                    JOIN Edition e ON e.id = ets.id.editionId
+                    WHERE ets.id.trophySuiteId = :trophySuiteId
+                )
+            """)
+    Optional<UUID> fetchGameIdByTrophySuiteId(@Param("trophySuiteId") UUID trophySuiteId);
+
     @EntityGraph(attributePaths = {"images", "igdbGame.images", "igdbGame.summary", "igdbGame.genres", "igdbGame.themes"})
     @Query("""
                 SELECT g

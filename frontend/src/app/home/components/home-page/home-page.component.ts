@@ -68,12 +68,8 @@ export class HomePageComponent implements OnInit {
     this._navigator.goToProfilePage(playerId);
   }
 
-  navigateToTrophySuitePage(trophySuiteId: string): void {
-    this._navigator.goToTrophySuitePage(trophySuiteId);
-  }
-
-  navigateToPlayerTrophySuitePage(trophySuiteId: string, playerId: string): void {
-    this._navigator.goToPlayerTrophySuitePage(trophySuiteId, playerId);
+  navigateToTrophySuitePage(trophySuiteId: string, playerId: string): void {
+    this._navigator.goToTrophySuitePage(trophySuiteId, playerId);
   }
 
   onGameClick(gameId: string): void {
