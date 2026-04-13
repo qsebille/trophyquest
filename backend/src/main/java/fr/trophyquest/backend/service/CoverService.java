@@ -45,7 +45,7 @@ public class CoverService {
     }
 
     public GameCoverImageDTO fetchForTrophySuite(UUID trophySuiteId) {
-        UUID gameId = this.gameRepository.fetchGameDetailsForTrophySuite(trophySuiteId).orElseThrow().getId();
+        UUID gameId = this.gameRepository.fetchGameIdByTrophySuiteId(trophySuiteId).orElseThrow();
         return this.gameImageRepository.fetchGameCoverImage(gameId);
     }
 

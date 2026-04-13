@@ -15,13 +15,11 @@ describe('PlayersPageComponent', () => {
   let mockPlayerListStore: MockedObject<PlayerListStore>;
   let mockGameCoverStore: MockedObject<GameCoverStoreService>;
 
-  const gameId: string = 'game-123';
   const playerId: string = 'player-123';
 
   beforeEach(async () => {
     mockNavigator = {
       goToProfilePage: vi.fn(),
-      goToPlayerTrophySuitePage: vi.fn(),
     } as MockedObject<NavigatorService>;
     mockPlayerListStore = {
       resetSearch: vi.fn(),
@@ -70,10 +68,4 @@ describe('PlayersPageComponent', () => {
     component.navigateToProfilePage(playerId);
     expect(mockNavigator.goToProfilePage).toHaveBeenCalledWith(playerId);
   });
-
-  it('should navigate to player last game page', () => {
-    component.navigateToPlayerTrophySuitePage(gameId, playerId);
-    expect(mockNavigator.goToPlayerTrophySuitePage).toHaveBeenCalledWith(gameId, playerId);
-  });
-
 });

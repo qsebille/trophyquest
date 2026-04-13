@@ -37,7 +37,7 @@ describe('ProfilePageComponent', () => {
 
   beforeEach(async () => {
     mockedNavigator = {
-      goToPlayerTrophySuitePage: vi.fn()
+      goToTrophySuitePage: vi.fn()
     } as MockedObject<NavigatorService>;
     mockedProfileSummaryStore = {
       retrieve: vi.fn(),
@@ -112,8 +112,7 @@ describe('ProfilePageComponent', () => {
     const trophySuiteId: string = 'suite-123';
     component.navigateToPlayerTrophySuitePage(trophySuiteId);
 
-    expect(mockedNavigator.goToPlayerTrophySuitePage).toHaveBeenCalledTimes(1);
-
-    expect(mockedNavigator.goToPlayerTrophySuitePage).toHaveBeenCalledWith(trophySuiteId, mockPlayer.id);
+    expect(mockedNavigator.goToTrophySuitePage).toHaveBeenCalledTimes(1);
+    expect(mockedNavigator.goToTrophySuitePage).toHaveBeenCalledWith(trophySuiteId, mockPlayer.id);
   });
 });

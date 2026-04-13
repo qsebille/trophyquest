@@ -1,0 +1,31 @@
+<div [class.completed]="isTrophyEarned()"
+     [class.hidden]="isTrophyHidden()"
+     class="d-flex align-items-center gap-1 justify-content-between trophy-card">
+  <div class="d-flex align-items-center gap-2">
+    <img class="trophy-icon" [ngSrc]="trophy().icon" [alt]="trophy().title" height="50" width="50"/>
+    <div class="d-flex flex-column gap-1">
+      <span class="fw-bold">{{ isTrophyHidden() ? 'Hidden trophy' : trophy().title }}</span>
+      <span
+        class="fst-italic">{{ isTrophyHidden() ? 'This trophy is hidden' : trophy().description }}</span>
+    </div>
+  </div>
+  <div class="d-flex flex-column align-items-end gap-1">
+    <div class="position-relative d-inline-block">
+      @if (isTrophyHidden()) {
+        <img [height]="28" [width]="28" alt="Hidden Trophy" ngSrc="assets/icons/trophy-hidden.png"/>
+      } @else {
+        <img [height]="28" [width]="28" alt="Trophy"
+             ngSrc="assets/icons/trophy-{{trophy().trophyType}}.png"/>
+        @if (isTrophyEarned()) {
+          <mat-icon class="trophy-check-icon">check</mat-icon>
+        }
+      }
+    </div>
+    @if (isTrophyEarned()) {
+      <div class="d-flex gap-1">
+        <span class="fs-8px text-muted">{{ trophy().earnedAt | date }}</span>
+        <span class="fs-8px text-muted">{{ trophy().earnedAt | date: 'shortTime' }}</span>
+      </div>
+    }
+  </div>
+</div>

@@ -1,6 +1,6 @@
 package fr.trophyquest.backend.api.controller;
 
-import fr.trophyquest.backend.api.dto.game.TrophySuiteGameDTO;
+import fr.trophyquest.backend.api.dto.game.GameIdDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
 import fr.trophyquest.backend.service.TrophySuiteService;
@@ -34,9 +34,8 @@ public class TrophySuiteController {
         return this.trophySuiteService.fetchEarnedTrophies(trophySuiteId, playerId);
     }
 
-    @GetMapping("/{trophySuiteId}/game")
-    public TrophySuiteGameDTO getGame(@PathVariable UUID trophySuiteId) {
-        return this.trophySuiteService.fetchGameDetails(trophySuiteId);
+    @GetMapping("/{trophySuiteId}/game/id")
+    public GameIdDTO getGameId(@PathVariable UUID trophySuiteId) {
+        return this.trophySuiteService.fetchGameId(trophySuiteId);
     }
-
 }

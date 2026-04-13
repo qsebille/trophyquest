@@ -12,11 +12,11 @@
     <li [ngbNavItem]="'trophies'">
       <button ngbNavLink>Trophies</button>
       <ng-template ngbNavContent>
-        <tq-game-trophy-suites [trophySuites]="trophySuites()"
-                               [trophies]="trophies()"
-                               [trophySuiteId]="selectedTrophySuiteId"
-                               [selectedPlayerId]="selectedPlayerId"
-                               (trophySuiteChange)="onTrophySuiteSelectedChange($event)"/>
+        <tq-game-trophy-suite-list [trophySuites]="trophySuites()"
+                                   [trophies]="trophies()"
+                                   [trophySuiteId]="selectedTrophySuiteId"
+                                   [selectedPlayerId]="selectedPlayerId"
+                                   (trophySuiteChange)="onTrophySuiteSelectedChange($event)"/>
       </ng-template>
     </li>
     <li [ngbNavItem]="'players'">

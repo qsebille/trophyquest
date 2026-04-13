@@ -25,7 +25,6 @@ export class PlayerListComponent {
   readonly retrievePlayers = output<void>();
   readonly loadMorePlayers = output<void>();
   readonly clickOnPlayer = output<string>();
-  readonly clickOnGame = output<{ gameId: string, playerId: string }>();
 
   readonly isLoading = computed(() => this.status() === LoadingStatus.LOADING);
   readonly isError = computed(() => this.status() === LoadingStatus.ERROR);

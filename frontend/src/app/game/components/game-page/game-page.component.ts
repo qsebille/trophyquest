@@ -4,10 +4,10 @@ import {GameCoverStoreService} from '../../../core/stores/game-cover-store.servi
 import {NgbNav, NgbNavContent, NgbNavItem, NgbNavLinkButton, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
 import {GamePageStoreService} from '../../stores/game-page-store.service';
 import {GameDetailsComponent} from '../game-details/game-details.component';
-import {GameTrophySuitesComponent} from '../game-trophy-suites/game-trophy-suites.component';
 import {Location} from '@angular/common';
 import {GamePlayersComponent} from '../game-players/game-players.component';
 import {NavigatorService} from '../../../core/services/navigator.service';
+import {GameTrophySuiteListComponent} from '../trophy-suite/game-trophy-suite-list/game-trophy-suite-list.component';
 
 @Component({
   selector: 'tq-game-page',
@@ -18,8 +18,8 @@ import {NavigatorService} from '../../../core/services/navigator.service';
     NgbNavContent,
     NgbNavOutlet,
     GameDetailsComponent,
-    GameTrophySuitesComponent,
-    GamePlayersComponent
+    GamePlayersComponent,
+    GameTrophySuiteListComponent
   ],
   templateUrl: './game-page.component.html',
   styleUrl: './game-page.component.scss',
@@ -50,7 +50,7 @@ export class GamePageComponent {
   ngOnInit(): void {
     const queryParams = this._route.snapshot.queryParamMap;
     this.selectedTab = queryParams.get('tab') ?? 'overview';
-    this.selectedTrophySuiteId = queryParams.get('tsId');
+    this.selectedTrophySuiteId = queryParams.get('trophySuiteId');
     this.selectedPlayerId = queryParams.get('playerId');
 
     this._gameCoverStoreService.useGameCover(this._gameId);
@@ -81,7 +81,7 @@ export class GamePageComponent {
       relativeTo: this._route,
       queryParams: {
         tab: this.selectedTab,
-        tsId: this.selectedTrophySuiteId ?? null,
+        trophySuiteId: this.selectedTrophySuiteId ?? null,
         playerId: this.selectedPlayerId ?? null,
       },
       queryParamsHandling: 'merge',
