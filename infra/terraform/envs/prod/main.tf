@@ -35,6 +35,23 @@ module "cognito" {
   environment   = var.environment
   aws_region    = var.aws_region
   domain_prefix = var.domain_prefix
-  callback_urls = var.callback_urls
-  logout_urls   = var.logout_urls
+
+  callback_urls = [
+    "http://localhost:4200/auth/callback",
+    "https://${module.frontend_cdn.domain_name}/auth/callback"
+  ]
+
+  logout_urls = [
+    "http://localhost:4200",
+    "https://${module.frontend_cdn.domain_name}"
+  ]
+}
+
+module "frontend_cdn" {
+  source = "../../modules/cloudfront_static_site"
+
+  project_name                = var.project_name
+  bucket_name                 = module.static_frontend_s3.bucket_name
+  bucket_arn                  = module.static_frontend_s3.bucket_arn
+  bucket_regional_domain_name = module.static_frontend_s3.bucket_regional_domain_name
 }
