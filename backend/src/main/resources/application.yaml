@@ -9,6 +9,11 @@ management:
 
 spring:
   application.name: trophyquest-backend
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.eu-west-3.amazonaws.com/eu-west-3_F3LbsHccs
   datasource:
     url:
     username:

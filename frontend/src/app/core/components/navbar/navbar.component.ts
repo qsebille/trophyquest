@@ -1,16 +1,24 @@
 import {Component} from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {NgOptimizedImage} from '@angular/common';
+import {AuthService} from '../../services/auth.service';
+import {NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'tq-navbar',
-    imports: [
-        RouterLinkActive,
-        RouterLink,
-        NgOptimizedImage,
-    ],
-    templateUrl: './navbar.component.html',
-    styleUrl: './navbar.component.scss',
+  selector: 'tq-navbar',
+  imports: [
+    RouterLinkActive,
+    RouterLink,
+    NgOptimizedImage,
+    NgbDropdown,
+    NgbDropdownMenu,
+    NgbDropdownItem,
+    NgbDropdownToggle,
+  ],
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
+  constructor(readonly authService: AuthService,) {
+  }
 }

@@ -22,8 +22,19 @@ provider "aws" {
 }
 
 module "static_frontend_s3" {
-  source = "../modules/static_frontend_s3"
+  source = "../../modules/static_frontend_s3"
 
   bucket_name  = var.frontend_bucket_name
   project_name = var.project_name
+}
+
+module "cognito" {
+  source = "../../modules/cognito"
+
+  project_name  = var.project_name
+  environment   = var.environment
+  aws_region    = var.aws_region
+  domain_prefix = var.domain_prefix
+  callback_urls = var.callback_urls
+  logout_urls   = var.logout_urls
 }
