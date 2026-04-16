@@ -3,22 +3,22 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {AuthState} from '../models/auth/auth-state';
-import {AuthUser} from '../models/auth/auth-user';
 import {TokenResponse} from '../models/auth/token-response';
+import {AuthUser} from '../api/dtos/auth/auth-user';
 
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-  private readonly http = inject(HttpClient);
+  private readonly _http = inject(HttpClient);
 
-  private readonly domain = environment.cognito.domain;
-  private readonly clientId = environment.cognito.clientId;
-  private readonly redirectUri = environment.cognito.redirectUri;
-  private readonly scope = environment.cognito.scope;
+  private readonly _domain = environment.cognito.domain;
+  private readonly _clientId = environment.cognito.clientId;
+  private readonly _redirectUri = environment.cognito.redirectUri;
+  private readonly _scope = environment.cognito.scope;
 
   readonly authState = signal<AuthState | null>(this.restoreAuthState());
 
-  readonly currentUser = computed(() => this.authState()?.user ?? null);
+  readonly currentUser = signal<AuthUser | null>(null);
   readonly isAuthenticated = computed(() => {
     const state = this.authState();
     return !!state && state.expiresAt > Date.now();
@@ -49,15 +49,15 @@ export class AuthService {
 
     const body = new URLSearchParams({
       grant_type: 'authorization_code',
-      client_id: this.clientId,
+      client_id: this._clientId,
       code,
-      redirect_uri: this.redirectUri,
+      redirect_uri: this._redirectUri,
       code_verifier: codeVerifier,
     });
 
     const tokens = await firstValueFrom(
-      this.http.post<TokenResponse>(
-        `${this.domain}/oauth2/token`,
+      this._http.post<TokenResponse>(
+        `${this._domain}/oauth2/token`,
         body.toString(),
         {
           headers: new HttpHeaders({
@@ -67,14 +67,11 @@ export class AuthService {
       )
     );
 
-    const user = this.extractUserFromIdToken(tokens.id_token);
-
     const authState: AuthState = {
       accessToken: tokens.access_token,
       idToken: tokens.id_token,
       refreshToken: tokens.refresh_token,
       expiresAt: Date.now() + tokens.expires_in * 1000,
-      user,
     };
 
     this.authState.set(authState);
@@ -90,8 +87,8 @@ export class AuthService {
     sessionStorage.removeItem('oauth_state');
     sessionStorage.removeItem('pkce_code_verifier');
 
-    const logoutUrl = new URL(`${this.domain}/logout`);
-    logoutUrl.searchParams.set('client_id', this.clientId);
+    const logoutUrl = new URL(`${this._domain}/logout`);
+    logoutUrl.searchParams.set('client_id', this._clientId);
     logoutUrl.searchParams.set('logout_uri', window.location.origin);
 
     window.location.assign(logoutUrl.toString());
@@ -106,37 +103,16 @@ export class AuthService {
     sessionStorage.setItem('pkce_code_verifier', codeVerifier);
 
     const params = new URLSearchParams({
-      client_id: this.clientId,
+      client_id: this._clientId,
       response_type: 'code',
-      scope: this.scope,
-      redirect_uri: this.redirectUri,
+      scope: this._scope,
+      redirect_uri: this._redirectUri,
       state,
       code_challenge_method: 'S256',
       code_challenge: codeChallenge,
     });
 
-    window.location.assign(`${this.domain}${path}?${params.toString()}`);
-  }
-
-  private extractUserFromIdToken(idToken: string): AuthUser {
-    const claims = this.parseJwt<Record<string, any>>(idToken);
-
-    return {
-      sub: claims['sub'],
-      email: claims['email'],
-      name: claims['name'],
-    };
-  }
-
-  private parseJwt<T>(token: string): T {
-    const payload = token.split('.')[1];
-    if (!payload) {
-      throw new Error('Invalid JWT');
-    }
-
-    const normalized = payload.replace(/-/g, '+').replace(/_/g, '/');
-    const decoded = atob(normalized);
-    return JSON.parse(decoded) as T;
+    window.location.assign(`${this._domain}${path}?${params.toString()}`);
   }
 
   private generateCodeVerifier(length = 64): string {

@@ -22,7 +22,7 @@
   @if (authService.isAuthenticated()) {
     <div ngbDropdown class="d-inline-block">
       <button class="btn text-white" id="userMenu" ngbDropdownToggle>
-        {{ authService.currentUser()?.email }}
+        {{ authService.currentUser() | json }}
       </button>
       <div ngbDropdownMenu aria-labelledby="userMenu" class="dropdown-menu dropdown-menu-end">
         <button ngbDropdownItem class="fw-bold text-danger" (click)="authService.logout()">Logout</button>

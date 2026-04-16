@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-authentication/01-create-auth-user-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: auth_user
+            columns:
+              - column: {
+                name: id,
+                type: uuid,
+                constraints: {
+                  nullable: false
+                }
+              }
+              - column: {
+                name: email,
+                type: varchar
+              }
+              - column: {
+                name: display_name,
+                type: varchar,
+              }
+              - column: {
+                name: cognito_sub,
+                type: varchar,
+              }
+              - column: {
+                name: created_at,
+                type: timestamptz,
+                defaultValueComputed: CURRENT_TIMESTAMP,
+                constraints: {
+                  nullable: false
+                }
+              }
+              - column: {
+                name: updated_at,
+                type: timestamptz,
+                defaultValueComputed: CURRENT_TIMESTAMP,
+                constraints: {
+                  nullable: false
+                }
+              }
+        - addPrimaryKey:
+            schemaName: app
+            tableName: auth_user
+            columnNames: id
+            constraintName: pk_auth_user
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_auth_user_set_updated_at
+                            BEFORE UPDATE ON app.auth_user
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();
+      
