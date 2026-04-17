@@ -8,14 +8,19 @@ resource "aws_s3_bucket" "this" {
   }
 }
 
-resource "aws_s3_bucket_website_configuration" "this" {
+resource "aws_s3_bucket_public_access_block" "this" {
   bucket = aws_s3_bucket.this.id
 
-  index_document {
-    suffix = "index.html"
-  }
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
 
-  error_document {
-    key = "index.html"
+resource "aws_s3_bucket_ownership_controls" "this" {
+  bucket = aws_s3_bucket.this.id
+
+  rule {
+    object_ownership = "BucketOwnerEnforced"
   }
 }

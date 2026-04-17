@@ -14,6 +14,14 @@ export class NavigatorService {
   ) {
   }
 
+  goToHomePage(): void {
+    this._router.navigate(['/']).then(() => console.info('Navigated to home page'));
+  }
+
+  goToErrorPage(): void {
+    this._router.navigate(['/error']).then(() => console.info('Navigated to error page'));
+  }
+
   goToPlayersPage(): void {
     this._router.navigate(['/players'])
       .then(() => console.info('Navigated to players page'));

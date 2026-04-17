@@ -1,4 +1,4 @@
-import {Component, computed, OnInit} from '@angular/core';
+import {Component, computed, inject, OnInit} from '@angular/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {NavigatorService} from "../../../core/services/navigator.service";
 import {HomePlayerListComponent} from "../home-player-list/home-player-list.component";
@@ -24,14 +24,11 @@ import {GameCoverStoreService} from "../../../core/stores/game-cover-store.servi
   styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent implements OnInit {
-  constructor(
-    private readonly _statsStore: HomeStatsStore,
-    private readonly _recentPlayersStore: HomeRecentPlayersStore,
-    private readonly _recentGamesStore: HomeRecentGamesStore,
-    private readonly _navigator: NavigatorService,
-    private readonly _gameCoverStore: GameCoverStoreService,
-  ) {
-  }
+  private readonly _statsStore = inject(HomeStatsStore);
+  private readonly _recentPlayersStore = inject(HomeRecentPlayersStore);
+  private readonly _recentGamesStore = inject(HomeRecentGamesStore);
+  private readonly _navigator = inject(NavigatorService);
+  private readonly _gameCoverStore = inject(GameCoverStoreService);
 
   readonly stats = computed(() =>
     ({

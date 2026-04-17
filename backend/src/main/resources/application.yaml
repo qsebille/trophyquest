@@ -9,6 +9,11 @@ management:
 
 spring:
   application.name: trophyquest-backend
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.eu-west-3.amazonaws.com/eu-west-3_F3LbsHccs
   datasource:
     url:
     username:
@@ -23,3 +28,10 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     default-schema: public
+
+cognito:
+  user-info-uri: https://trophyquest-prod-auth.auth.eu-west-3.amazoncognito.com/oauth2/userInfo
+
+app:
+  cors:
+    allowed-origins: http://localhost:4200

@@ -1,21 +1,42 @@
 <nav class="navbar">
-    <div class="navbar-left" routerLink="/home">
-        <img alt="" class="navbar-logo" height="32" ngSrc="/assets/icons/trophyquest-icon-32.png"
-             width="32"/>
-        <span class="navbar-title">TrophyQuest</span>
-    </div>
+  <div class="navbar-left" routerLink="/home">
+    <img alt="" class="navbar-logo" height="32" ngSrc="/assets/icons/trophyquest-icon-32.png"
+         width="32"/>
+    <span class="navbar-title">TrophyQuest</span>
+  </div>
 
-    <ul class="navbar-links">
-        <li>
-            <a id="navbar-dashboard-link" routerLink="/dashboard" routerLinkActive="active">
-                Dashboard
-            </a>
-        </li>
-        <li>
-            <a id="navbar-mapping-link" routerLink="/igdb-mapping" routerLinkActive="active">
-                IGDB Mapping Validation
-            </a>
-        </li>
-        <li><a id="navbar-players-link" routerLink="/players" routerLinkActive="active">Players</a></li>
-    </ul>
+  <ul class="navbar-links">
+    <li>
+      <a id="navbar-dashboard-link" routerLink="/dashboard" routerLinkActive="active">
+        Dashboard
+      </a>
+    </li>
+    <li>
+      <a id="navbar-mapping-link" routerLink="/igdb-mapping" routerLinkActive="active">
+        IGDB Mapping Validation
+      </a>
+    </li>
+    <li><a id="navbar-players-link" routerLink="/players" routerLinkActive="active">Players</a></li>
+  </ul>
+
+  @if (authService.isAuthenticated()) {
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn text-white" id="userMenu" ngbDropdownToggle>
+        {{ currentUserName() }}
+      </button>
+      <div ngbDropdownMenu aria-labelledby="userMenu" class="dropdown-menu dropdown-menu-end">
+        <button ngbDropdownItem class="fw-bold text-danger" (click)="authService.logout()">Logout</button>
+      </div>
+    </div>
+  } @else {
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn text-white" id="registerMenu" ngbDropdownToggle>
+        Connect
+      </button>
+      <div ngbDropdownMenu aria-labelledby="registerMenu" class="dropdown-menu dropdown-menu-end">
+        <button ngbDropdownItem (click)="authService.login()">Login</button>
+        <button ngbDropdownItem (click)="authService.register()">Register</button>
+      </div>
+    </div>
+  }
 </nav>

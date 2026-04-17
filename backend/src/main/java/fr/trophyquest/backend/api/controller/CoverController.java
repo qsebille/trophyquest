@@ -2,13 +2,15 @@ package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.game.GameCoverImageDTO;
 import fr.trophyquest.backend.service.CoverService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/cover")
-@CrossOrigin(origins = "*")
 public class CoverController {
 
     private final CoverService coverService;

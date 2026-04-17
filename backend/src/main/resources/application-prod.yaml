@@ -13,3 +13,7 @@ logging:
   level:
     root: INFO
     org.springframework: INFO
+
+app:
+  cors:
+    allowed-origins: https://d33skwwxqd9e21.cloudfront.net

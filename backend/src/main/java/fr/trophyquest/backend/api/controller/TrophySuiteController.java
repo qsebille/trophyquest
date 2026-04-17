@@ -12,7 +12,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/trophy-suite")
-@CrossOrigin(origins = "*")
 public class TrophySuiteController {
 
     private final TrophySuiteService trophySuiteService;
