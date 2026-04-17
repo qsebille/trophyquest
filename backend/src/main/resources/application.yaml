@@ -28,3 +28,10 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     default-schema: public
+
+cognito:
+  user-info-uri: https://trophyquest-prod-auth.auth.eu-west-3.amazoncognito.com/oauth2/userInfo
+
+app:
+  cors:
+    allowed-origins: http://localhost:4200

@@ -5,11 +5,13 @@ import {environment} from '../../../environments/environment';
 import {AuthState} from '../models/auth/auth-state';
 import {TokenResponse} from '../models/auth/token-response';
 import {AuthUser} from '../api/dtos/auth/auth-user';
+import {AuthApiService} from '../api/services/auth-api.service';
 
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
   private readonly _http = inject(HttpClient);
+  private readonly _authApiService = inject(AuthApiService);
 
   private readonly _domain = environment.cognito.domain;
   private readonly _clientId = environment.cognito.clientId;
@@ -92,6 +94,13 @@ export class AuthService {
     logoutUrl.searchParams.set('logout_uri', window.location.origin);
 
     window.location.assign(logoutUrl.toString());
+  }
+
+  refreshCurrentUser(): void {
+    this._authApiService.fetchCurrentUser().subscribe((user) => {
+      console.log('User:', user);
+      this.currentUser.set(user);
+    });
   }
 
   private async redirectToCognito(path: '/login' | '/signup'): Promise<void> {

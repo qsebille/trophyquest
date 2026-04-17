@@ -5,20 +5,12 @@ import fr.trophyquest.backend.api.dto.igdb.IgdbMappingDTO;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO;
 import fr.trophyquest.backend.service.IgdbCandidateService;
 import fr.trophyquest.backend.service.IgdbMappingService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/igdb-mapping")
-@CrossOrigin(origins = "*")
 public class IgdbMappingController {
 
     private final IgdbCandidateService igdbCandidateService;

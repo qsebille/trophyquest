@@ -18,6 +18,7 @@ export class AuthCallbackComponent {
     const state = this._route.snapshot.queryParamMap.get('state');
 
     await this._authService.handleCallback(code, state);
+    this._authService.refreshCurrentUser();
     await this._router.navigate(['/']);
   }
 }

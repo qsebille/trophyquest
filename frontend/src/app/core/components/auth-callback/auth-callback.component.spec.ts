@@ -14,6 +14,7 @@ describe('AuthCallbackComponent', () => {
   beforeEach(async () => {
     mockAuthService = {
       handleCallback: vi.fn(),
+      refreshCurrentUser: vi.fn(),
     } as MockedObject<AuthService>;
 
 

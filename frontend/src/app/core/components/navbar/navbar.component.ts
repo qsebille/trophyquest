@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
-import {JsonPipe, NgOptimizedImage} from '@angular/common';
+import {NgOptimizedImage} from '@angular/common';
 import {AuthService} from '../../services/auth.service';
 import {NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
 
@@ -14,12 +14,21 @@ import {NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '
     NgbDropdownMenu,
     NgbDropdownItem,
     NgbDropdownToggle,
-    JsonPipe,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  constructor(readonly authService: AuthService,) {
+  readonly authService = inject(AuthService)
+
+  currentUserName = computed(() => {
+    const currentUser = this.authService.currentUser()
+    return currentUser?.displayName ?? currentUser?.email;
+  });
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.authService.refreshCurrentUser();
+    }
   }
 }

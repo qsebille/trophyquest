@@ -2,9 +2,9 @@ package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.auth.user.AuthUserDTO;
 import fr.trophyquest.backend.api.mapper.AuthUserMapper;
+import fr.trophyquest.backend.auth.CognitoUserInfo;
 import fr.trophyquest.backend.domain.entity.AuthUser;
 import fr.trophyquest.backend.repository.AuthUserRepository;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -23,23 +23,20 @@ public class AuthUserService {
         this.authUserMapper = authUserMapper;
     }
 
-    public AuthUserDTO fetchCurrentUser(Jwt jwt) {
-        String cognitoSub = jwt.getSubject();
-        AuthUser authUser = this.authUserRepository.findByCognitoSub(cognitoSub).orElseGet(() -> saveUserFromJwt(jwt));
+    public AuthUserDTO fetchCurrentUser(CognitoUserInfo cognitoUserInfo) {
+        String cognitoSub = cognitoUserInfo.sub();
+        AuthUser authUser = this.authUserRepository.findByCognitoSub(cognitoSub)
+                .orElseGet(() -> saveUserFromJwt(cognitoUserInfo));
 
         return authUserMapper.toDTO(authUser);
     }
 
-    private AuthUser saveUserFromJwt(Jwt jwt) {
-        String cognitoSub = jwt.getSubject();
-        String email = jwt.getClaimAsString("email");
-        String displayName = jwt.getClaimAsString("preferred_name");
-
+    private AuthUser saveUserFromJwt(CognitoUserInfo cognitoUserInfo) {
         AuthUser authUser = new AuthUser();
         authUser.setId(UUID.randomUUID());
-        authUser.setEmail(email);
-        authUser.setDisplayName(displayName);
-        authUser.setCognitoSub(cognitoSub);
+        authUser.setEmail(cognitoUserInfo.email());
+        authUser.setDisplayName(cognitoUserInfo.preferredUsername());
+        authUser.setCognitoSub(cognitoUserInfo.sub());
         this.authUserRepository.save(authUser);
         return authUser;
     }
