@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-authentication/02-add-unique-constraint-cognito-sub
+      author: Junie
+      changes:
+        - addUniqueConstraint:
+            schemaName: app
+            tableName: auth_user
+            columnNames: cognito_sub
+            constraintName: uk_auth_user_cognito_sub

@@ -1,5 +1,6 @@
 package fr.trophyquest.backend.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -16,7 +17,11 @@ public class AuthUser {
     @Id
     @EqualsAndHashCode.Include
     private UUID id;
+
     private String email;
+
     private String displayName;
+
+    @Column(unique = true)
     private String cognitoSub;
 }

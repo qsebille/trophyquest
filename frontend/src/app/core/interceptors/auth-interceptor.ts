@@ -9,7 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const isApiCall = req.url.startsWith(environment.apiUrl);
 
-  if (!accessToken || !isApiCall) {
+  if (!accessToken || !isApiCall || !authService.isAuthenticated()) {
     return next(req);
   }
 
