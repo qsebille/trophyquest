@@ -21,10 +21,9 @@ export class HomeRecentGamesStore {
     this._status.set(LoadingStatus.LOADING);
     this.gameApiService.searchRecent(0, 20).subscribe({
       next: (searchResult) => {
-        const games = [...this._recentGames(), ...searchResult.content];
-        this._recentGames.set(games);
+        this._recentGames.set(searchResult.content);
         this._total.set(searchResult.total)
-        this._status.set(games.length === this._total() ? LoadingStatus.FULLY_LOADED : LoadingStatus.PARTIALLY_LOADED);
+        this._status.set(LoadingStatus.FULLY_LOADED);
       },
       error: err => {
         console.error('Failed to fetch recent games', err);

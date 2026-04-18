@@ -36,7 +36,6 @@ export class NavigatorService {
   goToTrophySuitePage(trophySuiteId: string, playerId: string): void {
     this.trophySuiteApiService.getGameIdByTrophySuiteId(trophySuiteId).pipe(
       switchMap(gameId => {
-          console.log(gameId)
           return from(
             this.router.navigate(
               ['/game', gameId.id],
