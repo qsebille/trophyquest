@@ -1,4 +1,4 @@
-import {Component, computed} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {GameCoverStoreService} from '../../../core/stores/game-cover-store.service';
 import {NgbNav, NgbNavContent, NgbNavItem, NgbNavLinkButton, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
@@ -25,60 +25,59 @@ import {GameTrophySuiteListComponent} from '../trophy-suite/game-trophy-suite-li
   styleUrl: './game-page.component.scss',
 })
 export class GamePageComponent {
-  private readonly _gameId: string;
+  private readonly gameId: string;
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly router: Router = inject(Router);
+  private readonly location: Location = inject(Location);
+  private readonly gameCoverStoreService: GameCoverStoreService = inject(GameCoverStoreService);
+  private readonly store: GamePageStoreService = inject(GamePageStoreService);
+  readonly navigator: NavigatorService = inject(NavigatorService);
 
   selectedTab = 'overview';
   selectedTrophySuiteId: string | null = null;
   selectedPlayerId: string | null = null;
 
-  readonly gameDetails = computed(() => this._store.gameDetails());
-  readonly trophySuites = computed(() => this._store.trophySuites());
-  readonly trophies = computed(() => this._store.trophies());
-  readonly playersPagination = computed(() => this._store.playersPagination());
+  readonly gameDetails = this.store.gameDetails;
+  readonly trophySuites = this.store.trophySuites;
+  readonly trophies = this.store.trophies;
+  readonly playersPagination = this.store.playersPagination;
 
-  constructor(
-    private readonly _route: ActivatedRoute,
-    private readonly _router: Router,
-    private readonly _navigatorService: NavigatorService,
-    private readonly _location: Location,
-    private readonly _gameCoverStoreService: GameCoverStoreService,
-    private readonly _store: GamePageStoreService,
-  ) {
-    this._gameId = this._route.snapshot.paramMap.get('gameId')!;
+  constructor() {
+    this.gameId = this.route.snapshot.paramMap.get('gameId')!;
   }
 
   ngOnInit(): void {
-    const queryParams = this._route.snapshot.queryParamMap;
+    const queryParams = this.route.snapshot.queryParamMap;
     this.selectedTab = queryParams.get('tab') ?? 'overview';
     this.selectedTrophySuiteId = queryParams.get('trophySuiteId');
     this.selectedPlayerId = queryParams.get('playerId');
 
-    this._gameCoverStoreService.useGameCover(this._gameId);
-    this._store.fetchDetails(this._gameId);
-    this._store.fetchPlayers(this._gameId, 0);
+    this.gameCoverStoreService.useGameCover(this.gameId);
+    this.store.fetchDetails(this.gameId);
+    this.store.fetchPlayers(this.gameId, 0);
     if (!!this.selectedTrophySuiteId) {
-      this._refreshTrophies(this.selectedTrophySuiteId);
+      this.refreshTrophies(this.selectedTrophySuiteId);
     }
   }
 
   ngOnDestroy() {
-    this._store.reset();
+    this.store.reset();
   }
 
   onTabChange(tab: string) {
     this.selectedTab = tab;
-    this._updateUrl();
+    this.updateUrl();
   }
 
   onTrophySuiteSelectedChange(tsId: string | null) {
     this.selectedTrophySuiteId = tsId;
-    this._updateUrl();
-    this._refreshTrophies(tsId);
+    this.updateUrl();
+    this.refreshTrophies(tsId);
   }
 
-  private _updateUrl(): void {
-    const urlTree = this._router.createUrlTree([], {
-      relativeTo: this._route,
+  private updateUrl(): void {
+    const urlTree = this.router.createUrlTree([], {
+      relativeTo: this.route,
       queryParams: {
         tab: this.selectedTab,
         trophySuiteId: this.selectedTrophySuiteId ?? null,
@@ -87,26 +86,22 @@ export class GamePageComponent {
       queryParamsHandling: 'merge',
     });
 
-    this._location.replaceState(this._router.serializeUrl(urlTree));
+    this.location.replaceState(this.router.serializeUrl(urlTree));
   }
 
   onPlayerPageChange(page: number) {
-    this._store.fetchPlayers(this._gameId, page);
+    this.store.fetchPlayers(this.gameId, page);
   }
 
   onPlayerSelected(playerId: string) {
     this.selectedPlayerId = playerId;
     this.selectedTab = 'trophies';
-    this._updateUrl();
-    this._refreshTrophies(this.selectedTrophySuiteId);
+    this.updateUrl();
+    this.refreshTrophies(this.selectedTrophySuiteId);
   }
 
-  onPlayerPseudoClicked(playerId: string) {
-    this._navigatorService.goToProfilePage(playerId);
-  }
-
-  private _refreshTrophies(trophySuiteId: string | null): void {
-    this._store.fetchTrophies(trophySuiteId, this.selectedPlayerId);
+  private refreshTrophies(trophySuiteId: string | null): void {
+    this.store.fetchTrophies(trophySuiteId, this.selectedPlayerId);
   }
 }
 

@@ -24,7 +24,7 @@
       <ng-template ngbNavContent>
         <tq-game-players [playersPagination]="playersPagination()"
                          (selectPlayer)="onPlayerSelected($event)"
-                         (pseudoClicked)="onPlayerPseudoClicked($event)"
+                         (pseudoClicked)="navigator.goToProfilePage($event)"
                          (pageChange)="onPlayerPageChange($event)"/>
       </ng-template>
     </li>

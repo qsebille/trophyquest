@@ -51,7 +51,7 @@ export class GameTrophySuiteListComponent {
     }
   });
 
-  displayReturnToSuiteListButton = computed(() => {
-    return this.displayMode() === GameTrophySuiteDisplayMode.SINGLE && this.trophySuites().length > 1;
-  });
+  displayReturnToSuiteListButton = computed(() =>
+    this.displayMode() === GameTrophySuiteDisplayMode.SINGLE && this.trophySuites().length > 1
+  );
 }

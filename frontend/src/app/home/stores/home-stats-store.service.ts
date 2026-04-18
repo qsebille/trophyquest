@@ -1,68 +1,63 @@
-import {computed, Injectable, signal} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {LoadingStatus} from "../../core/models/loading-status.enum";
 import {PlayerApiService} from "../../core/api/services/player-api.service";
 import {TrophyApiService} from "../../core/api/services/trophy-api.service";
 import {forkJoin} from "rxjs";
 import {GameApiService} from "../../core/api/services/game-api.service";
+import {HomeStatsData} from '../models/home-stats-data';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class HomeStatsStore {
-    private readonly _playerCount = signal<number>(0);
-    private readonly _recentPlayerCount = signal<number>(0);
-    private readonly _gameCount = signal<number>(0);
-    private readonly _recentGameCount = signal<number>(0);
-    private readonly _trophyCount = signal<number>(0);
-    private readonly _recentTrophyCount = signal<number>(0);
-    private readonly _status = signal<LoadingStatus>(LoadingStatus.NONE);
+  private readonly playerApiService: PlayerApiService = inject(PlayerApiService);
+  private readonly gameApiService: GameApiService = inject(GameApiService);
+  private readonly trophyApiService: TrophyApiService = inject(TrophyApiService);
 
-    readonly playerCount = computed(() => this._playerCount());
-    readonly recentPlayerCount = computed(() => this._recentPlayerCount());
-    readonly gameCount = computed(() => this._gameCount());
-    readonly recentGameCount = computed(() => this._recentGameCount());
-    readonly trophyCount = computed(() => this._trophyCount());
-    readonly recentTrophyCount = computed(() => this._recentTrophyCount());
-    readonly status = computed(() => this._status());
+  private readonly _data = signal<HomeStatsData | null>(null);
+  private readonly _status = signal<LoadingStatus>(LoadingStatus.NONE);
 
-    constructor(
-        private readonly _playerService: PlayerApiService,
-        private readonly _gameService: GameApiService,
-        private readonly _trophyService: TrophyApiService,
-    ) {
-    }
+  readonly data = this._data.asReadonly();
+  readonly status = this._status.asReadonly();
 
-    fetch(): void {
-        this._status.set(LoadingStatus.LOADING);
 
-        forkJoin({
-            playerCount: this._playerService.count(),
-            gameCount: this._gameService.count(),
-            trophyCount: this._trophyService.count(),
-            recentPlayerCount: this._playerService.countRecent(),
-            recentGameCount: this._gameService.countRecent(),
-            recentTrophyCount: this._trophyService.countRecentlyEarned(),
-        }).subscribe({
-            next: ({
-                       playerCount,
-                       gameCount,
-                       trophyCount,
-                       recentPlayerCount,
-                       recentGameCount,
-                       recentTrophyCount
-                   }) => {
-                this._playerCount.set(playerCount);
-                this._gameCount.set(gameCount);
-                this._trophyCount.set(trophyCount);
-                this._recentPlayerCount.set(recentPlayerCount);
-                this._recentGameCount.set(recentGameCount);
-                this._recentTrophyCount.set(recentTrophyCount);
-                this._status.set(LoadingStatus.FULLY_LOADED);
-            },
-            error: error => {
-                console.error('Failed to load stats', error);
-                this._status.set(LoadingStatus.ERROR);
-            }
-        })
-    }
+  fetch(): void {
+    this._status.set(LoadingStatus.LOADING);
+
+    forkJoin({
+      playerCount: this.playerApiService.count(),
+      gameCount: this.gameApiService.count(),
+      trophyCount: this.trophyApiService.count(),
+      recentPlayerCount: this.playerApiService.countRecent(),
+      recentGameCount: this.gameApiService.countRecent(),
+      recentTrophyCount: this.trophyApiService.countRecentlyEarned(),
+    }).subscribe({
+      next: ({
+               playerCount,
+               gameCount,
+               trophyCount,
+               recentPlayerCount,
+               recentGameCount,
+               recentTrophyCount
+             }) => {
+        this._data.set({
+          total: {
+            game: gameCount,
+            player: playerCount,
+            trophy: trophyCount,
+          },
+          lastWeek: {
+            game: recentGameCount,
+            player: recentPlayerCount,
+            trophy: recentTrophyCount,
+          }
+        });
+        this._status.set(LoadingStatus.FULLY_LOADED);
+      },
+      error: error => {
+        console.error('Failed to load stats', error);
+        this._status.set(LoadingStatus.ERROR);
+      }
+    })
+  }
 }

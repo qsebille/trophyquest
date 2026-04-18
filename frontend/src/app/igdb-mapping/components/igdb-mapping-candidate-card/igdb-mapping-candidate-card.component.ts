@@ -8,37 +8,39 @@ import {IgdbCandidate} from "../../../core/api/dtos/igdb/igdb-candidate";
 import {MatIconModule} from "@angular/material/icon";
 
 @Component({
-    selector: 'tq-igdb-mapping-candidate-card',
-    imports: [
-        DatePipe,
-        MatButtonModule,
-        MatTooltipModule,
-        MatProgressSpinnerModule,
-        MatIconModule,
-    ],
-    templateUrl: './igdb-mapping-candidate-card.component.html',
-    styleUrl: './igdb-mapping-candidate-card.component.scss',
+  selector: 'tq-igdb-mapping-candidate-card',
+  imports: [
+    DatePipe,
+    MatButtonModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+  ],
+  templateUrl: './igdb-mapping-candidate-card.component.html',
+  styleUrl: './igdb-mapping-candidate-card.component.scss',
 })
 export class IgdbMappingCandidateCardComponent {
-    readonly candidate = input.required<IgdbCandidate>();
-    readonly validationStatus = input<ValidateCandidateStatus>(ValidateCandidateStatus.NONE);
-    readonly candidateAccepted = output<number>();
+  readonly candidate = input.required<IgdbCandidate>();
+  readonly validationStatus = input<ValidateCandidateStatus>(ValidateCandidateStatus.NONE);
+  readonly candidateAccepted = output<number>();
 
-    readonly isValidationDisabled = computed(() => this.validationStatus() === ValidateCandidateStatus.LOADING);
+  readonly isValidationDisabled = computed(() => this.validationStatus() === ValidateCandidateStatus.LOADING);
 
-    readonly confidence = computed((): 'very-high' | 'high' | 'medium' | 'low' => {
-        if (this.candidate().score === 100) {
-            return "very-high"
-        } else if (this.candidate().score >= 75) {
-            return "high"
-        } else if (this.candidate().score >= 50) {
-            return "medium"
-        } else {
-            return "low"
-        }
-    });
-
-    acceptCandidate(): void {
-        this.candidateAccepted.emit(this.candidate().id);
+  readonly confidence = computed((): ConfidenceLevel => {
+    if (this.candidate().score === 100) {
+      return "very-high"
+    } else if (this.candidate().score >= 75) {
+      return "high"
+    } else if (this.candidate().score >= 50) {
+      return "medium"
+    } else {
+      return "low"
     }
+  });
+
+  acceptCandidate(): void {
+    this.candidateAccepted.emit(this.candidate().id);
+  }
 }
+
+export type ConfidenceLevel = 'very-high' | 'high' | 'medium' | 'low';

@@ -1,4 +1,4 @@
-import {Component, computed, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {PlayerListStore} from '../../stores/player-list-store';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {NavigatorService} from "../../../core/services/navigator.service";
@@ -16,42 +16,17 @@ import {GameCoverStoreService} from "../../../core/stores/game-cover-store.servi
   styleUrl: './players-page.component.scss',
 })
 export class PlayersPageComponent implements OnInit {
-
-  constructor(
-    private readonly _navigator: NavigatorService,
-    private readonly _playerListStore: PlayerListStore,
-    private readonly _gameCoverStoreService: GameCoverStoreService,
-  ) {
-  }
-
-  readonly players = computed(() => this._playerListStore.results());
-  readonly totalPlayers = computed(() => this._playerListStore.total());
-  readonly playerListStatus = computed(() => this._playerListStore.status());
-  readonly addPlayerStatus = computed(() => this._playerListStore.addStatus());
+  readonly navigator: NavigatorService = inject(NavigatorService);
+  readonly playerListStore: PlayerListStore = inject(PlayerListStore);
+  readonly gameCoverStoreService: GameCoverStoreService = inject(GameCoverStoreService);
 
   ngOnInit(): void {
     this.retrievePlayers();
-    this._gameCoverStoreService.refreshTopPlayedGame();
+    this.gameCoverStoreService.refreshTopPlayedGame();
   }
 
   retrievePlayers(): void {
-    this._playerListStore.resetSearch();
-    this._playerListStore.search();
-  }
-
-  loadMorePlayers(): void {
-    this._playerListStore.loadMore();
-  }
-
-  navigateToProfilePage(playerId: string): void {
-    this._navigator.goToProfilePage(playerId);
-  }
-
-  addPlayer(pseudo: string): void {
-    this._playerListStore.addPlayer(pseudo);
-  }
-
-  resetAddPlayerForm(): void {
-    this._playerListStore.resetAddPlayerStatus();
+    this.playerListStore.resetSearch();
+    this.playerListStore.search();
   }
 }

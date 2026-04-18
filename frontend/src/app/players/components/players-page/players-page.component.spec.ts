@@ -15,8 +15,6 @@ describe('PlayersPageComponent', () => {
   let mockPlayerListStore: MockedObject<PlayerListStore>;
   let mockGameCoverStore: MockedObject<GameCoverStoreService>;
 
-  const playerId: string = 'player-123';
-
   beforeEach(async () => {
     mockNavigator = {
       goToProfilePage: vi.fn(),
@@ -62,10 +60,5 @@ describe('PlayersPageComponent', () => {
   it('should reset search on init', () => {
     expect(mockPlayerListStore.resetSearch).toHaveBeenCalled();
     expect(mockPlayerListStore.search).toHaveBeenCalled();
-  });
-
-  it('should navigate to profile page', () => {
-    component.navigateToProfilePage(playerId);
-    expect(mockNavigator.goToProfilePage).toHaveBeenCalledWith(playerId);
   });
 });

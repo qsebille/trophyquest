@@ -18,31 +18,21 @@ describe('HomePageComponent', () => {
   let mockNavigator: MockedObject<NavigatorService>;
   let mockGameCoverStore: MockedObject<GameCoverStoreService>;
 
-  const gameId: string = 'game-123';
-  const playerId: string = 'player-123';
-
   beforeEach(async () => {
     mockGameCoverStore = {
       refreshTopPlayedGame: vi.fn()
     } as MockedObject<GameCoverStoreService>;
     mockStatsStore = {
+      data: vi.fn(),
       fetch: vi.fn(),
-      playerCount: vi.fn(),
-      gameCount: vi.fn(),
-      trophyCount: vi.fn(),
-      recentPlayerCount: vi.fn(),
-      recentGameCount: vi.fn(),
-      recentTrophyCount: vi.fn(),
       status: vi.fn(),
     } as MockedObject<HomeStatsStore>;
     mockRecentPlayersStore = {
-      reset: vi.fn(),
       fetch: vi.fn(),
       players: vi.fn(),
       status: vi.fn(),
     } as MockedObject<HomeRecentPlayersStore>;
     mockRecentGameStore = {
-      reset: vi.fn(),
       fetch: vi.fn(),
       recentGames: vi.fn(),
       total: vi.fn(),
@@ -89,20 +79,5 @@ describe('HomePageComponent', () => {
     component.ngOnInit();
     expect(mockStatsStore.fetch).toHaveBeenCalledTimes(2);
     expect(mockRecentPlayersStore.fetch).toHaveBeenCalledTimes(2);
-  });
-
-  it('should navigate to players page', () => {
-    component.navigateToPlayersPage();
-    expect(mockNavigator.goToPlayersPage).toHaveBeenCalled();
-  });
-
-  it('should navigate to profile page', () => {
-    component.navigateToProfilePage(playerId);
-    expect(mockNavigator.goToProfilePage).toHaveBeenCalledWith(playerId);
-  });
-
-  it('should navigate to player game page', () => {
-    component.navigateToTrophySuitePage(gameId, playerId);
-    expect(mockNavigator.goToTrophySuitePage).toHaveBeenCalledWith(gameId, playerId);
   });
 });

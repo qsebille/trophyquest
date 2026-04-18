@@ -94,17 +94,12 @@ describe('ProfilePageComponent', () => {
   it('should create', () => expect(component).toBeTruthy());
 
   it('should fetch profile infos on init', () => {
-    expect(mockedProfileSummaryStore.reset).toHaveBeenCalled();
     expect(mockedProfileSummaryStore.retrieve).toHaveBeenCalledWith(mockPlayer.id);
-    expect(mockedProfileTrophySuiteListStore.reset).toHaveBeenCalled();
     expect(mockedProfileTrophySuiteListStore.search).toHaveBeenCalledWith(mockPlayer.id);
-    expect(mockedProfileTrophiesStore.reset).toHaveBeenCalled();
     expect(mockedProfileTrophiesStore.search).toHaveBeenCalledWith(mockPlayer.id);
   });
 
   it('should refresh game cover when player changes', () => {
-    mockedGameCoverStore.refreshLastPlayedTrophySuiteForPlayer;
-    component.ngOnInit();
     expect(mockedGameCoverStore.refreshLastPlayedTrophySuiteForPlayer).toHaveBeenCalledWith(mockPlayer.id);
   });
 

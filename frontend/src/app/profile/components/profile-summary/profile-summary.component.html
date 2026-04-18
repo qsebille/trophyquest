@@ -1,40 +1,36 @@
 <div class="card">
-    <div class="card-body">
-        @if (isLoading()) {
-            <tq-spinner-container/>
-        } @else {
-            <div class="delete-button">
-                <a (click)="deletePlayer.emit()">Delete profile</a>
-            </div>
-            <div class="d-flex flex-column align-items-center gap-4">
-                <div class="d-flex align-items-center gap-3">
-                    <img class="avatar" [height]="100" [width]="100" [alt]="player().pseudo" [ngSrc]="player().avatar"/>
-                    <span class="fs-4 fw-bold">{{ player().pseudo }}</span>
-                </div>
-                <div class="d-flex justify-content-between align-items-center w-100">
-                    <div class="d-flex flex-column align-items-center w-50">
-                        <div class="d-flex gap-2 fs-6">
-                            <b>{{ playerStats().totalTrophySuitesPlayed | number }}</b>
-                            <span> played games</span>
-                        </div>
-                        <div class="d-flex gap-2 fs-6">
-                            <b>{{ totalEarnedTrophies() | number }}</b>
-                            <span> earned trophies</span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center gap-4 w-50">
-                        @for (trophyType of ['platinum', 'gold', 'silver', 'bronze']; track trophyType) {
-                            @if (getEarnedTrophyByType(trophyType) > 0) {
-                                <div class="d-flex flex-column align-items-center">
-                                    <img alt="" ngSrc="assets/icons/trophy-{{trophyType}}.png" [width]="32"
-                                         [height]="32"/>
-                                    <b>{{ getEarnedTrophyByType(trophyType) }}</b>
-                                </div>
-                            }
-                        }
-                    </div>
-                </div>
-            </div>
-        }
+  <div class="card-body">
+    <div class="delete-button">
+      <a (click)="deletePlayer.emit()">Delete profile</a>
     </div>
+    <div class="d-flex flex-column align-items-center gap-4">
+      <div class="d-flex align-items-center gap-3">
+        <img class="avatar" [height]="100" [width]="100" [alt]="player().pseudo" [ngSrc]="player().avatar"/>
+        <span class="fs-4 fw-bold">{{ player().pseudo }}</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <div class="d-flex flex-column align-items-center w-50">
+          <div class="d-flex gap-2 fs-6">
+            <b>{{ playerStats().totalTrophySuitesPlayed | number }}</b>
+            <span> played games</span>
+          </div>
+          <div class="d-flex gap-2 fs-6">
+            <b>{{ totalEarnedTrophies() | number }}</b>
+            <span> earned trophies</span>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center gap-4 w-50">
+          @for (trophyType of ['platinum', 'gold', 'silver', 'bronze']; track trophyType) {
+            @if (getEarnedTrophyByType(trophyType) > 0) {
+              <div class="d-flex flex-column align-items-center">
+                <img alt="" ngSrc="assets/icons/trophy-{{trophyType}}.png" [width]="32"
+                     [height]="32"/>
+                <b>{{ getEarnedTrophyByType(trophyType) }}</b>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

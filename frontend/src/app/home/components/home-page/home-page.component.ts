@@ -1,9 +1,8 @@
-import {Component, computed, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {NavigatorService} from "../../../core/services/navigator.service";
 import {HomePlayerListComponent} from "../home-player-list/home-player-list.component";
 import {HomeStatsStore} from "../../stores/home-stats-store.service";
-import {HomeStats} from "../../../core/models/dto/home-stats";
 import {HomeStatsComponent} from "../home-stats/home-stats.component";
 import {HomeRecentPlayersStore} from "../../stores/home-recent-players-store.service";
 import {HomeRecentGamesStore} from "../../stores/home-recent-games-store.service";
@@ -24,52 +23,24 @@ import {GameCoverStoreService} from "../../../core/stores/game-cover-store.servi
   styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent implements OnInit {
-  private readonly _statsStore = inject(HomeStatsStore);
-  private readonly _recentPlayersStore = inject(HomeRecentPlayersStore);
-  private readonly _recentGamesStore = inject(HomeRecentGamesStore);
-  private readonly _navigator = inject(NavigatorService);
-  private readonly _gameCoverStore = inject(GameCoverStoreService);
+  private readonly statsStore = inject(HomeStatsStore);
+  private readonly recentPlayersStore = inject(HomeRecentPlayersStore);
+  private readonly recentGamesStore = inject(HomeRecentGamesStore);
+  private readonly gameCoverStore = inject(GameCoverStoreService);
 
-  readonly stats = computed(() =>
-    ({
-      totalPlayers: this._statsStore.playerCount(),
-      totalGames: this._statsStore.gameCount(),
-      totalTrophies: this._statsStore.trophyCount(),
-      recentPlayers: this._statsStore.recentPlayerCount(),
-      recentGames: this._statsStore.recentGameCount(),
-      recentTrophies: this._statsStore.recentTrophyCount(),
-    } as HomeStats));
-  readonly statsLoadingStatus = computed(() => this._statsStore.status());
-
-  readonly games = computed(() => this._recentGamesStore.recentGames());
-  readonly gamesStatus = computed(() => this._recentGamesStore.status());
-  readonly gamesTotal = computed(() => this._recentGamesStore.total());
-
-  readonly players = computed(() => this._recentPlayersStore.players());
-  readonly playersStatus = computed(() => this._recentPlayersStore.status());
+  readonly navigator = inject(NavigatorService);
+  readonly games = this.recentGamesStore.recentGames;
+  readonly stats = this.statsStore.data;
+  readonly statsLoadingStatus = this.statsStore.status;
+  readonly gamesStatus = this.recentGamesStore.status;
+  readonly gamesTotal = this.recentGamesStore.total;
+  readonly players = this.recentPlayersStore.players;
+  readonly playersStatus = this.recentPlayersStore.status;
 
   ngOnInit(): void {
-    this._statsStore.fetch();
-    this._recentPlayersStore.reset();
-    this._recentPlayersStore.fetch();
-    this._recentGamesStore.reset();
-    this._recentGamesStore.fetch();
-    this._gameCoverStore.refreshTopPlayedGame();
-  }
-
-  navigateToPlayersPage(): void {
-    this._navigator.goToPlayersPage();
-  }
-
-  navigateToProfilePage(playerId: string): void {
-    this._navigator.goToProfilePage(playerId);
-  }
-
-  navigateToTrophySuitePage(trophySuiteId: string, playerId: string): void {
-    this._navigator.goToTrophySuitePage(trophySuiteId, playerId);
-  }
-
-  onGameClick(gameId: string): void {
-    this._navigator.goToGamePage(gameId);
+    this.statsStore.fetch();
+    this.recentPlayersStore.fetch();
+    this.recentGamesStore.fetch();
+    this.gameCoverStore.refreshTopPlayedGame();
   }
 }

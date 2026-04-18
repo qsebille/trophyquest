@@ -1,4 +1,4 @@
-import {computed, Injectable, signal} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {PlayerApiService} from '../../core/api/services/player-api.service';
 import {LoadingStatus} from '../../core/models/loading-status.enum';
 import {PlayerSearchItem} from "../../core/api/dtos/player/player-search-item";
@@ -8,90 +8,87 @@ import {Player} from "../../core/api/dtos/player/player";
 import {PlayerAddResponse} from "../../core/api/dtos/player/player-add-response";
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class PlayerListStore {
-    private readonly _pageSize = 20;
+  private readonly playerApiService: PlayerApiService = inject(PlayerApiService);
+  private readonly pageSize = 20;
+  private pageNumber = 0;
+  private readonly _results = signal<PlayerSearchItem[]>([]);
+  private readonly _total = signal<number>(0);
+  private readonly _status = signal<LoadingStatus>(LoadingStatus.NONE);
+  private readonly _addStatus = signal<AddPlayerStatus>(AddPlayerStatus.NONE);
 
-    private readonly _pageNumber = signal<number>(0);
-    private readonly _results = signal<PlayerSearchItem[]>([]);
-    private readonly _total = signal<number>(0);
-    private readonly _status = signal<LoadingStatus>(LoadingStatus.NONE);
-    private readonly _addStatus = signal<AddPlayerStatus>(AddPlayerStatus.NONE);
+  readonly results = this._results.asReadonly();
+  readonly total = this._total.asReadonly();
+  readonly status = this._status.asReadonly();
+  readonly addStatus = this._addStatus.asReadonly();
 
-    readonly results = computed(() => this._results());
-    readonly total = computed(() => this._total());
-    readonly status = computed(() => this._status());
-    readonly addStatus = computed(() => this._addStatus());
+  resetSearch(): void {
+    this.pageNumber = 0;
+    this._results.set([]);
+    this._total.set(0);
+    this._status.set(LoadingStatus.NONE);
+  }
 
-    constructor(private readonly _playerService: PlayerApiService) {
-    }
+  resetAddPlayerStatus(): void {
+    this._addStatus.set(AddPlayerStatus.NONE);
+  }
 
-    resetSearch(): void {
-        this._pageNumber.set(0);
-        this._results.set([]);
-        this._total.set(0);
-        this._status.set(LoadingStatus.NONE);
-    }
+  search(): void {
+    this._status.set(LoadingStatus.LOADING);
 
-    resetAddPlayerStatus(): void {
-        this._addStatus.set(AddPlayerStatus.NONE);
-    }
+    console.debug('Searching players...');
+    this.playerApiService.search(this.pageNumber, this.pageSize).subscribe({
+      next: searchResult => {
+        const players = [...this.results(), ...searchResult.content];
+        const loadingStatus: LoadingStatus = players.length < searchResult.total ? LoadingStatus.PARTIALLY_LOADED : LoadingStatus.FULLY_LOADED;
+        this._results.update(() => players);
+        this._total.set(searchResult.total);
+        this._status.set(loadingStatus);
+      },
+      error: error => {
+        this._status.set(LoadingStatus.ERROR);
+        console.error(error)
+      },
+    });
+  }
 
-    search(): void {
-        this._status.set(LoadingStatus.LOADING);
+  loadMore(): void {
+    this.pageNumber = this.pageNumber + 1;
+    this.search();
+  }
 
-        console.debug('Searching players...');
-        this._playerService.search(this._pageNumber(), this._pageSize).subscribe({
-            next: searchResult => {
-                const players = [...this.results(), ...searchResult.content];
-                const loadingStatus: LoadingStatus = players.length < searchResult.total ? LoadingStatus.PARTIALLY_LOADED : LoadingStatus.FULLY_LOADED;
-                this._results.update(() => players);
-                this._total.set(searchResult.total);
-                this._status.set(loadingStatus);
-            },
-            error: error => {
-                this._status.set(LoadingStatus.ERROR);
-                console.error(error)
-            },
-        });
-    }
+  addPlayer(pseudo: string): void {
+    this._addStatus.set(AddPlayerStatus.LOADING);
 
-    loadMore(): void {
-        this._pageNumber.update(n => n + 1);
-        this.search();
-    }
-
-    addPlayer(pseudo: string): void {
-        this._addStatus.set(AddPlayerStatus.LOADING);
-
-        this._playerService.fetchByPseudo(pseudo).pipe(
-            switchMap((response: Player | null) => {
-                if (response === null) {
-                    console.info("Player not found in database, adding it to database...");
-                    this._addStatus.set(AddPlayerStatus.LOADING);
-                    return this._playerService.addPlayer(pseudo);
-                } else {
-                    console.info("Player already in database, not adding it to database");
-                    this._addStatus.set(AddPlayerStatus.ALREADY_IN_DATABASE);
-                    return EMPTY;
-                }
-            }),
-            tap((lambdaResponse: PlayerAddResponse) => {
-                switch (lambdaResponse.status) {
-                    case 'OK':
-                        this._addStatus.set(AddPlayerStatus.ADDED);
-                        this.resetSearch();
-                        this.search();
-                        break;
-                    case 'ERROR':
-                        this._addStatus.set(AddPlayerStatus.ERROR_WHEN_ADDING);
-                }
-            }),
-            catchError(() => {
-                this._addStatus.set(AddPlayerStatus.ERROR_WHEN_ADDING);
-                return EMPTY;
-            })
-        ).subscribe();
-    }
+    this.playerApiService.fetchByPseudo(pseudo).pipe(
+      switchMap((response: Player | null) => {
+        if (response === null) {
+          console.info("Player not found in database, adding it to database...");
+          this._addStatus.set(AddPlayerStatus.LOADING);
+          return this.playerApiService.addPlayer(pseudo);
+        } else {
+          console.info("Player already in database, not adding it to database");
+          this._addStatus.set(AddPlayerStatus.ALREADY_IN_DATABASE);
+          return EMPTY;
+        }
+      }),
+      tap((lambdaResponse: PlayerAddResponse) => {
+        switch (lambdaResponse.status) {
+          case 'OK':
+            this._addStatus.set(AddPlayerStatus.ADDED);
+            this.resetSearch();
+            this.search();
+            break;
+          case 'ERROR':
+            this._addStatus.set(AddPlayerStatus.ERROR_WHEN_ADDING);
+        }
+      }),
+      catchError(() => {
+        this._addStatus.set(AddPlayerStatus.ERROR_WHEN_ADDING);
+        return EMPTY;
+      })
+    ).subscribe();
+  }
 }

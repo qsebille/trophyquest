@@ -1,19 +1,15 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HomeStatsComponent} from './home-stats.component';
-import {HomeStats} from "../../../core/models/dto/home-stats";
+import {HomeStatsData} from '../../models/home-stats-data';
 
 describe('HomeStatsComponent', () => {
   let component: HomeStatsComponent;
   let fixture: ComponentFixture<HomeStatsComponent>;
 
-  const stats: HomeStats = {
-    totalPlayers: 0,
-    totalGames: 1,
-    totalTrophies: 2,
-    recentPlayers: 3,
-    recentGames: 4,
-    recentTrophies: 5
+  const stats: HomeStatsData = {
+    total: {player: 0, game: 1, trophy: 2},
+    lastWeek: {player: 3, game: 4, trophy: 5},
   }
 
   beforeEach(async () => {

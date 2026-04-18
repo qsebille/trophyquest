@@ -22,7 +22,6 @@ export class GamePlayersComponent {
   readonly pseudoClicked = output<string>();
 
   readonly page = signal(1);
-
   readonly collectionSize = computed(() => this.playersPagination()?.total ?? 0);
   readonly pageSize = computed(() => this.playersPagination()?.pageSize ?? 0);
 
@@ -40,13 +39,5 @@ export class GamePlayersComponent {
   onPlayerPageChange(page: number): void {
     this.page.set(page);
     this.pageChange.emit(page - 1);
-  }
-
-  onSelectPlayer(player: GamePlayer): void {
-    this.selectPlayer.emit(player.id);
-  }
-
-  onClickPseudo(player: GamePlayer): void {
-    this.pseudoClicked.emit(player.id);
   }
 }
