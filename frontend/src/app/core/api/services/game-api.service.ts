@@ -12,7 +12,7 @@ import {GamePlayer} from '../dtos/player/game-player';
   providedIn: 'root',
 })
 export class GameApiService {
-  private readonly API_URL = `${environment.apiUrl}/api/game`;
+  private readonly API_URL = `${environment.apiUrl}/game`;
 
   constructor(private readonly _http: HttpClient) {
   }
