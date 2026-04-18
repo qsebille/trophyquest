@@ -54,4 +54,7 @@ module "frontend_cdn" {
   bucket_name                 = module.static_frontend_s3.bucket_name
   bucket_arn                  = module.static_frontend_s3.bucket_arn
   bucket_regional_domain_name = module.static_frontend_s3.bucket_regional_domain_name
+
+  backend_origin_domain_name = var.backend_origin_domain_name
+  backend_origin_http_port   = var.backend_origin_http_port
 }
