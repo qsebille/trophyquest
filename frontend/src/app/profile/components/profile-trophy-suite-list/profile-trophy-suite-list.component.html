@@ -1,26 +1,20 @@
 <div class="card">
-    <div class="card-header">
-        <h5 class="card-title">Last played games</h5>
+  <div class="card-header">
+    <h5 class="card-title">Last played games</h5>
+  </div>
+  <div class="card-body">
+    <div class="w-100 d-flex flex-column align-items-center gap-1">
+      @for (trophySuite of trophySuites(); track trophySuite.id; let i = $index) {
+        @if (i !== 0) {
+          <hr class="tq-horiz-separator"/>
+        }
+        <tq-profile-trophy-suite-card class="w-100"
+                                      (clickOnTitle)="clickOnGame.emit(trophySuite.id)"
+                                      [trophySuite]="trophySuite"/>
+      }
+      @if (hasMoreTrophySuitesToLoad()) {
+        <a (click)="loadMoreGames.emit()" class="btn btn-primary mt-2">Load more games...</a>
+      }
     </div>
-    <div class="card-body">
-        <div class="w-100 d-flex flex-column align-items-center gap-1">
-            @for (trophySuite of trophySuites(); track trophySuite.id; let i = $index) {
-                @if (i !== 0) {
-                    <hr class="tq-horiz-separator"/>
-                }
-                <tq-profile-trophy-suite-card class="w-100"
-                                              (clickOnTitle)="clickOnGame.emit(trophySuite.id)"
-                                              [trophySuite]="trophySuite"/>
-            }
-            @if (isLoading()) {
-                <tq-spinner-container/>
-            }
-            @if (hasMoreGamesToLoad() || true) {
-                <a (click)="loadMoreGames.emit()" class="btn btn-primary mt-2">Load more games...</a>
-            }
-            @if (isError()) {
-                <tq-error-message class="w-75" [errorMessage]="'Failed to load games'"/>
-            }
-        </div>
-    </div>
+  </div>
 </div>

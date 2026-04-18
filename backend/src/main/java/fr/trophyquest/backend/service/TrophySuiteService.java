@@ -2,13 +2,8 @@ package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.game.GameIdDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO;
-import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
-import fr.trophyquest.backend.api.mapper.TrophySuiteMapper;
-import fr.trophyquest.backend.domain.entity.TrophySuite;
-import fr.trophyquest.backend.exceptions.TrophySuiteNotFoundException;
 import fr.trophyquest.backend.repository.GameRepository;
 import fr.trophyquest.backend.repository.TrophyRepository;
-import fr.trophyquest.backend.repository.TrophySuiteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,29 +13,16 @@ import java.util.UUID;
 @Service
 public class TrophySuiteService {
 
-    private final TrophySuiteRepository trophySuiteRepository;
     private final TrophyRepository trophyRepository;
     private final GameRepository gameRepository;
-    private final TrophySuiteMapper trophySuiteMapper;
 
     public TrophySuiteService(
-            TrophySuiteRepository trophySuiteRepository,
             TrophyRepository trophyRepository,
-            GameRepository gameRepository,
-            TrophySuiteMapper trophySuiteMapper
+            GameRepository gameRepository
     ) {
-        this.trophySuiteRepository = trophySuiteRepository;
         this.trophyRepository = trophyRepository;
         this.gameRepository = gameRepository;
-        this.trophySuiteMapper = trophySuiteMapper;
     }
-
-    public TrophySuiteDTO retrieve(UUID trophySuiteId) {
-        TrophySuite trophySuite = this.trophySuiteRepository.findById(trophySuiteId)
-                .orElseThrow(() -> new TrophySuiteNotFoundException(trophySuiteId));
-        return this.trophySuiteMapper.toDTO(trophySuite);
-    }
-
 
     public List<EarnedTrophyDTO> fetchEarnedTrophies(UUID trophySuiteId, Optional<UUID> playerId) {
         if (playerId.isEmpty()) {

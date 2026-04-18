@@ -2,7 +2,6 @@ package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.game.GameIdDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO;
-import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
 import fr.trophyquest.backend.service.TrophySuiteService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +17,6 @@ public class TrophySuiteController {
 
     public TrophySuiteController(TrophySuiteService trophySuiteService) {
         this.trophySuiteService = trophySuiteService;
-    }
-
-    @GetMapping("/{trophySuiteId}")
-    public TrophySuiteDTO retrieve(@PathVariable UUID trophySuiteId) {
-        return this.trophySuiteService.retrieve(trophySuiteId);
     }
 
     @GetMapping("/{trophySuiteId}/trophies")

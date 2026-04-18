@@ -15,7 +15,7 @@
           @if (i !== 0) {
             <hr class="tq-horiz-separator"/>
           }
-          <tq-home-game-card [game]="game" (onGameClick)="onGameClick.emit($event)" class="w-100"/>
+          <tq-home-game-card [game]="game" (onGameClick)="clickOnGame.emit($event)" class="w-100"/>
         }
       </div>
     }

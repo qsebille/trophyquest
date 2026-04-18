@@ -19,11 +19,6 @@ public class CoverController {
         this.coverService = coverService;
     }
 
-    @GetMapping("/random")
-    public GameCoverImageDTO fetchRandomCover() {
-        return this.coverService.fetchRandomCoverImageUrl();
-    }
-
     @GetMapping("/top-played-game")
     public GameCoverImageDTO fetchTopPlayedGameCover() {
         return this.coverService.fetchTopPlayedGameCover();
@@ -32,11 +27,6 @@ public class CoverController {
     @GetMapping("/player/{playerId}/last-played-trophy-suite")
     public GameCoverImageDTO fetchLastPlayedTrophySuiteOfPlayer(@PathVariable UUID playerId) {
         return this.coverService.fetchLastPlayedTrophySuiteOfPlayer(playerId);
-    }
-
-    @GetMapping("/trophy-suite/{trophySuiteId}")
-    public GameCoverImageDTO fetchForTrophySuite(@PathVariable UUID trophySuiteId) {
-        return this.coverService.fetchForTrophySuite(trophySuiteId);
     }
 
     @GetMapping("/game/{gameId}")

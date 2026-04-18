@@ -1,13 +1,13 @@
 <div class="container pt-1 d-flex flex-column gap-3 align-items-center">
-  <tq-add-player-form [status]="addPlayerStatus()" class="w-40"
-                      (validateSuccess)="resetAddPlayerForm()"
-                      (addPlayer)="addPlayer($event)"/>
+  <tq-add-player-form [status]="playerListStore.addStatus()" class="w-40"
+                      (validateSuccess)="playerListStore.resetAddPlayerStatus();"
+                      (addPlayer)="playerListStore.addPlayer($event)"/>
 
-  <tq-player-list [status]="playerListStatus()"
+  <tq-player-list [status]="playerListStore.status()"
                   class="w-75"
-                  [players]="players()"
-                  [total]="totalPlayers()"
+                  [players]="playerListStore.results()"
+                  [total]="playerListStore.total()"
                   (retrievePlayers)="retrievePlayers()"
-                  (loadMorePlayers)="loadMorePlayers()"
-                  (clickOnPlayer)="navigateToProfilePage($event)"/>
+                  (loadMorePlayers)="playerListStore.loadMore()"
+                  (clickOnPlayer)="navigator.goToProfilePage($event)"/>
 </div>

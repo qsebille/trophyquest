@@ -1,4 +1,4 @@
-import {Component, computed, OnInit} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ProfileSummaryComponent} from '../profile-summary/profile-summary.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -13,6 +13,7 @@ import {ProfileTrophySuiteListComponent} from "../profile-trophy-suite-list/prof
 import {PlayerApiService} from "../../../core/api/services/player-api.service";
 import {catchError, EMPTY, tap} from "rxjs";
 import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
+import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
 
 @Component({
   selector: 'tq-profile-page',
@@ -22,73 +23,94 @@ import {GameCoverStoreService} from "../../../core/stores/game-cover-store.servi
     ErrorMessageComponent,
     ProfileTrophyListComponent,
     ProfileTrophySuiteListComponent,
+    SpinnerContainerComponent,
   ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',
 })
-export class ProfilePageComponent implements OnInit {
-  playerId!: string | null;
+export class ProfilePageComponent {
+  private readonly playerId: string | null;
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly playerApiService: PlayerApiService = inject(PlayerApiService);
+  private readonly gameCoverStoreService: GameCoverStoreService = inject(GameCoverStoreService);
+  private readonly profileSummaryStore: ProfileSummaryStore = inject(ProfileSummaryStore);
+  private readonly profileTrophySuiteListStore: ProfileTrophySuiteListStoreService = inject(ProfileTrophySuiteListStoreService);
+  private readonly profileTrophiesStore: ProfileTrophiesStore = inject(ProfileTrophiesStore);
 
-  constructor(
-    private readonly _route: ActivatedRoute,
-    private readonly _navigator: NavigatorService,
-    private readonly _profileSummaryStore: ProfileSummaryStore,
-    private readonly _profileTrophySuiteListStore: ProfileTrophySuiteListStoreService,
-    private readonly _profileTrophiesStore: ProfileTrophiesStore,
-    private readonly _playerApiService: PlayerApiService,
-    private readonly _gameCoverStoreService: GameCoverStoreService,
-  ) {
+  readonly navigator: NavigatorService = inject(NavigatorService);
+  readonly summary = this.profileSummaryStore.player;
+  readonly playerStats = this.profileSummaryStore.playerStats;
+  readonly trophySuites = this.profileTrophySuiteListStore.trophySuites;
+  readonly trophies = this.profileTrophiesStore.trophies;
+  readonly hasFailedLoading = computed(() =>
+    this.profileSummaryStore.status() === LoadingStatus.ERROR ||
+    this.profileTrophySuiteListStore.status() === LoadingStatus.ERROR ||
+    this.profileTrophiesStore.status() === LoadingStatus.ERROR
+  );
+  readonly isLoading = computed(() =>
+    this.profileSummaryStore.status() === LoadingStatus.LOADING ||
+    this.profileTrophySuiteListStore.status() === LoadingStatus.LOADING ||
+    this.profileTrophiesStore.status() === LoadingStatus.LOADING
+  );
+  readonly hasMoreTrophiesToLoad = computed(() =>
+    this.profileTrophiesStore.status() === LoadingStatus.PARTIALLY_LOADED
+  );
+  readonly hasMoreTrophySuitesToLoad = computed(() =>
+    this.profileTrophySuiteListStore.status() === LoadingStatus.PARTIALLY_LOADED
+  );
+
+  constructor() {
+    this.playerId = this.route.snapshot.paramMap.get('playerId');
   }
 
-  readonly player = computed(() => this._profileSummaryStore.player());
-  readonly playerStats = computed(() => this._profileSummaryStore.playerStats());
-  readonly summaryStatus = computed(() => this._profileSummaryStore.status());
-
-  readonly trophySuites = computed(() => this._profileTrophySuiteListStore.trophySuites());
-  readonly trophySuiteListStatus = computed(() => this._profileTrophySuiteListStore.status());
-
-  readonly trophies = computed(() => this._profileTrophiesStore.trophies());
-  readonly trophiesStatus = computed(() => this._profileTrophiesStore.status());
-
-  readonly hasFailedLoading = computed(() => this._profileSummaryStore.status() === LoadingStatus.ERROR);
-
   ngOnInit(): void {
-    this.playerId = this._route.snapshot.paramMap.get('playerId');
-    this._gameCoverStoreService.refreshLastPlayedTrophySuiteForPlayer(this.playerId)
+    this.gameCoverStoreService.refreshLastPlayedTrophySuiteForPlayer(this.playerId);
     this.loadProfileData();
   }
 
-  loadProfileData(): void {
-    this._profileSummaryStore.reset();
-    this._profileSummaryStore.retrieve(this.playerId);
-    this._profileTrophySuiteListStore.reset();
-    this._profileTrophySuiteListStore.search(this.playerId);
-    this._profileTrophiesStore.reset();
-    this._profileTrophiesStore.search(this.playerId);
+  ngOnDestroy(): void {
+    this.resetData();
+  }
+
+  resetAndLoad(): void {
+    this.resetData();
+    this.loadProfileData();
+  }
+
+  private resetData(): void {
+    this.profileSummaryStore.reset();
+    this.profileTrophySuiteListStore.reset();
+    this.profileTrophiesStore.reset();
+  }
+
+  private loadProfileData(): void {
+    this.profileSummaryStore.retrieve(this.playerId);
+    this.profileTrophySuiteListStore.search(this.playerId);
+    this.profileTrophiesStore.search(this.playerId);
   }
 
   navigateToPlayerTrophySuitePage(trophySuiteId: string): void {
     if (this.playerId === null) {
       console.error('Player ID is null');
     } else {
-      this._navigator.goToTrophySuitePage(trophySuiteId, this.playerId);
+      this.navigator.goToTrophySuitePage(trophySuiteId, this.playerId);
     }
   }
 
   loadMoreGames(): void {
-    this._profileTrophySuiteListStore.loadMore(this.playerId);
+    this.profileTrophySuiteListStore.loadMore(this.playerId);
   }
 
   loadMoreTrophies(): void {
-    this._profileTrophiesStore.loadMore(this.playerId);
+    this.profileTrophiesStore.loadMore(this.playerId);
   }
 
   deletePlayer(): void {
     console.log(`Deleting player ${this.playerId}...`);
-    this._playerApiService.deletePlayer(this.playerId ?? "").pipe(
+    this.playerApiService.deletePlayer(this.playerId ?? "").pipe(
       tap(() => {
         console.log(`Player ${this.playerId} deleted`);
-        this._navigator.goToPlayersPage();
+        this.navigator.goToPlayersPage();
       }),
       catchError((error) => {
         console.error(`Failed to delete player ${this.playerId}`, error);

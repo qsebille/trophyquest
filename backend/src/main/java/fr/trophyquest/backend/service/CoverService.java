@@ -3,7 +3,6 @@ package fr.trophyquest.backend.service;
 import fr.trophyquest.backend.api.dto.game.GameCoverImageDTO;
 import fr.trophyquest.backend.domain.entity.views.RecentGameSearchItem;
 import fr.trophyquest.backend.repository.GameImageRepository;
-import fr.trophyquest.backend.repository.GameRepository;
 import fr.trophyquest.backend.repository.PlayedTrophySuiteRepository;
 import fr.trophyquest.backend.repository.RecentGameSearchItemRepository;
 import org.springframework.stereotype.Service;
@@ -16,22 +15,15 @@ public class CoverService {
     private final RecentGameSearchItemRepository recentGameSearchItemRepository;
     private final GameImageRepository gameImageRepository;
     private final PlayedTrophySuiteRepository playedTrophySuiteRepository;
-    private final GameRepository gameRepository;
 
     public CoverService(
             RecentGameSearchItemRepository recentGameSearchItemRepository,
             GameImageRepository gameImageRepository,
-            PlayedTrophySuiteRepository playedTrophySuiteRepository,
-            GameRepository gameRepository
+            PlayedTrophySuiteRepository playedTrophySuiteRepository
     ) {
         this.recentGameSearchItemRepository = recentGameSearchItemRepository;
         this.gameImageRepository = gameImageRepository;
         this.playedTrophySuiteRepository = playedTrophySuiteRepository;
-        this.gameRepository = gameRepository;
-    }
-
-    public GameCoverImageDTO fetchRandomCoverImageUrl() {
-        return this.gameImageRepository.fetchRandomCoverImage();
     }
 
     public GameCoverImageDTO fetchTopPlayedGameCover() {
@@ -41,11 +33,6 @@ public class CoverService {
 
     public GameCoverImageDTO fetchLastPlayedTrophySuiteOfPlayer(UUID playerId) {
         UUID gameId = this.playedTrophySuiteRepository.findLastPlayedGameIdByPlayer(playerId);
-        return this.gameImageRepository.fetchGameCoverImage(gameId);
-    }
-
-    public GameCoverImageDTO fetchForTrophySuite(UUID trophySuiteId) {
-        UUID gameId = this.gameRepository.fetchGameIdByTrophySuiteId(trophySuiteId).orElseThrow();
         return this.gameImageRepository.fetchGameCoverImage(gameId);
     }
 

@@ -15,14 +15,6 @@ public interface GameImageRepository extends JpaRepository<GameImage, UUID> {
     @Query(value = """
             select new fr.trophyquest.backend.api.dto.game.GameCoverImageDTO(i.id, i.url)
             from GameImage i
-            where i.type = 'GAMEHUB_COVER_ART'
-            order by random()
-            limit 1""")
-    GameCoverImageDTO fetchRandomCoverImage();
-
-    @Query(value = """
-            select new fr.trophyquest.backend.api.dto.game.GameCoverImageDTO(i.id, i.url)
-            from GameImage i
             where i.type = 'GAMEHUB_COVER_ART' and i.game.id = :gameId
             order by random()
             limit 1""")

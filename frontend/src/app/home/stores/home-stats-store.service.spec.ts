@@ -8,6 +8,7 @@ import {PlayerApiService} from '../../core/api/services/player-api.service';
 import {TrophyApiService} from '../../core/api/services/trophy-api.service';
 import {GameApiService} from '../../core/api/services/game-api.service';
 import {LoadingStatus} from '../../core/models/loading-status.enum';
+import {HomeStatsData} from '../models/home-stats-data';
 
 describe('HomeStatsStore', () => {
   let store: HomeStatsStore;
@@ -65,11 +66,17 @@ describe('HomeStatsStore', () => {
     expect(mockTrophyApiService.countRecentlyEarned).toHaveBeenCalled();
 
     expect(store.status()).toBe(LoadingStatus.FULLY_LOADED);
-    expect(store.playerCount()).toBe(10);
-    expect(store.recentPlayerCount()).toBe(5);
-    expect(store.gameCount()).toBe(100);
-    expect(store.recentGameCount()).toBe(50);
-    expect(store.trophyCount()).toBe(1000);
-    expect(store.recentTrophyCount()).toBe(500);
+    expect(store.data()).toEqual({
+      total: {
+        player: 10,
+        game: 100,
+        trophy: 1000,
+      },
+      lastWeek: {
+        player: 5,
+        game: 50,
+        trophy: 500,
+      }
+    } as HomeStatsData);
   });
 });

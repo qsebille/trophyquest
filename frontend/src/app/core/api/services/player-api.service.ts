@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Player} from '../dtos/player/player';
@@ -15,10 +15,8 @@ import {PlayerAddResponse} from "../dtos/player/player-add-response";
   providedIn: 'root',
 })
 export class PlayerApiService {
-  private readonly API_URL = `${environment.apiUrl}/player`;
-
-  constructor(private readonly _http: HttpClient) {
-  }
+  private readonly apiUrl = `${environment.apiUrl}/player`;
+  private readonly http: HttpClient = inject(HttpClient);
 
   search(
     pageNumber: number,
@@ -27,19 +25,19 @@ export class PlayerApiService {
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this._http.get<SearchResult<PlayerSearchItem>>(`${this.API_URL}/search`, {params});
+    return this.http.get<SearchResult<PlayerSearchItem>>(`${this.apiUrl}/search`, {params});
   }
 
   fetch(playerId: string): Observable<Player> {
-    return this._http.get<Player>(`${this.API_URL}/${playerId}`);
+    return this.http.get<Player>(`${this.apiUrl}/${playerId}`);
   }
 
   fetchByPseudo(pseudo: string): Observable<Player | null> {
-    return this._http.get<Player>(`${this.API_URL}/pseudo/${pseudo}`);
+    return this.http.get<Player>(`${this.apiUrl}/pseudo/${pseudo}`);
   }
 
   fetchStats(playerId: string): Observable<PlayerStats> {
-    return this._http.get<PlayerStats>(`${this.API_URL}/${playerId}/stats`);
+    return this.http.get<PlayerStats>(`${this.apiUrl}/${playerId}/stats`);
   }
 
   searchPlayedTrophySuites(
@@ -50,7 +48,7 @@ export class PlayerApiService {
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this._http.get<SearchResult<PlayedTrophySuiteSearchElement>>(`${this.API_URL}/${playerId}/trophy-suite/search`, {params});
+    return this.http.get<SearchResult<PlayedTrophySuiteSearchElement>>(`${this.apiUrl}/${playerId}/trophy-suite/search`, {params});
   }
 
   searchEarnedTrophies(
@@ -61,26 +59,26 @@ export class PlayerApiService {
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this._http.get<SearchResult<EarnedTrophySearchItem>>(`${this.API_URL}/${playerId}/trophy/search`, {params});
+    return this.http.get<SearchResult<EarnedTrophySearchItem>>(`${this.apiUrl}/${playerId}/trophy/search`, {params});
   }
 
   count(): Observable<number> {
-    return this._http.get<number>(`${this.API_URL}/count`);
+    return this.http.get<number>(`${this.apiUrl}/count`);
   }
 
   countRecent(): Observable<number> {
-    return this._http.get<number>(`${this.API_URL}/recent/count`);
+    return this.http.get<number>(`${this.apiUrl}/recent/count`);
   }
 
   fetchTopRecent(): Observable<TopRecentPlayerRow[]> {
-    return this._http.get<TopRecentPlayerRow[]>(`${this.API_URL}/top-recent`);
+    return this.http.get<TopRecentPlayerRow[]>(`${this.apiUrl}/top-recent`);
   }
 
   addPlayer(pseudo: string): Observable<PlayerAddResponse> {
-    return this._http.post<PlayerAddResponse>(`${this.API_URL}/${pseudo}`, {});
+    return this.http.post<PlayerAddResponse>(`${this.apiUrl}/${pseudo}`, {});
   }
 
   deletePlayer(playerId: string): Observable<void> {
-    return this._http.delete<void>(`${this.API_URL}/${playerId}`);
+    return this.http.delete<void>(`${this.apiUrl}/${playerId}`);
   }
 }

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from "../../../../environments/environment";
@@ -7,16 +7,14 @@ import {environment} from "../../../../environments/environment";
   providedIn: 'root',
 })
 export class TrophyApiService {
-  private readonly API_URL = `${environment.apiUrl}/trophy`;
-
-  constructor(private _http: HttpClient) {
-  }
+  private readonly apiUrl = `${environment.apiUrl}/trophy`;
+  private readonly http: HttpClient = inject(HttpClient);
 
   count(): Observable<number> {
-    return this._http.get<number>(`${this.API_URL}/count`);
+    return this.http.get<number>(`${this.apiUrl}/count`);
   }
 
   countRecentlyEarned(): Observable<number> {
-    return this._http.get<number>(`${this.API_URL}/earned/recent/count`);
+    return this.http.get<number>(`${this.apiUrl}/earned/recent/count`);
   }
 }

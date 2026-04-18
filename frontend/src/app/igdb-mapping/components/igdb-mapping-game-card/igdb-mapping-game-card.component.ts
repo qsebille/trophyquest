@@ -6,31 +6,23 @@ import {IgdbMapping} from "../../../core/api/dtos/igdb/igdb-mapping";
 import {ValidateCandidateStatus} from "../../../core/models/validate-candidate-status";
 
 @Component({
-    selector: 'tq-igdb-mapping-game-card',
-    imports: [
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        IgdbMappingCandidateCardComponent,
-    ],
-    templateUrl: './igdb-mapping-game-card.component.html',
-    styleUrl: './igdb-mapping-game-card.component.scss',
+  selector: 'tq-igdb-mapping-game-card',
+  imports: [
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    IgdbMappingCandidateCardComponent,
+  ],
+  templateUrl: './igdb-mapping-game-card.component.html',
+  styleUrl: './igdb-mapping-game-card.component.scss',
 })
 export class IgdbMappingGameCardComponent {
-    readonly igdbMapping = input.required<IgdbMapping>();
-    readonly validationStatus = input<ValidateCandidateStatus>(ValidateCandidateStatus.NONE);
-    readonly candidateAccepted = output<number>();
-    readonly allRejected = output<void>();
+  readonly igdbMapping = input.required<IgdbMapping>();
+  readonly validationStatus = input<ValidateCandidateStatus>(ValidateCandidateStatus.NONE);
+  readonly candidateAccepted = output<number>();
+  readonly allRejected = output<void>();
 
-    private readonly _candidates = computed(() => this.igdbMapping().candidates ?? []);
-    readonly sortedCandidates = computed(() => this._candidates().sort((a, b) => b.score - a.score));
+  private readonly candidates = computed(() => this.igdbMapping().candidates ?? []);
+  readonly sortedCandidates = computed(() => this.candidates().sort((a, b) => b.score - a.score));
 
-    readonly isRejectButtonDisabled = computed(() => this.validationStatus() === ValidateCandidateStatus.LOADING);
-
-    acceptCandidate(candidateId: number): void {
-        this.candidateAccepted.emit(candidateId);
-    }
-
-    rejectMapping(): void {
-        this.allRejected.emit();
-    }
+  readonly isRejectButtonDisabled = computed(() => this.validationStatus() === ValidateCandidateStatus.LOADING);
 }

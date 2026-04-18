@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Router} from "@angular/router";
 import {catchError, from, of, switchMap, take} from 'rxjs';
 import {TrophySuiteApiService} from '../api/services/trophy-suite-api.service';
@@ -7,42 +7,38 @@ import {TrophySuiteApiService} from '../api/services/trophy-suite-api.service';
   providedIn: 'root',
 })
 export class NavigatorService {
-
-  constructor(
-    private _router: Router,
-    private _trophySuiteApiService: TrophySuiteApiService,
-  ) {
-  }
+  private readonly router: Router = inject(Router);
+  private readonly trophySuiteApiService: TrophySuiteApiService = inject(TrophySuiteApiService);
 
   goToHomePage(): void {
-    this._router.navigate(['/']).then(() => console.info('Navigated to home page'));
+    this.router.navigate(['/']).then(() => console.info('Navigated to home page'));
   }
 
   goToErrorPage(): void {
-    this._router.navigate(['/error']).then(() => console.info('Navigated to error page'));
+    this.router.navigate(['/error']).then(() => console.info('Navigated to error page'));
   }
 
   goToPlayersPage(): void {
-    this._router.navigate(['/players'])
+    this.router.navigate(['/players'])
       .then(() => console.info('Navigated to players page'));
   }
 
   goToProfilePage(playerId: string): void {
-    this._router.navigate(['/profile', playerId])
+    this.router.navigate(['/profile', playerId])
       .then(() => console.info(`Navigated to profile page: ${playerId}`));
   }
 
   goToGamePage(gameId: string): void {
-    this._router.navigate(['/game', gameId])
+    this.router.navigate(['/game', gameId])
       .then(() => console.info(`Navigated to game page with id: ${gameId}`));
   }
 
   goToTrophySuitePage(trophySuiteId: string, playerId: string): void {
-    this._trophySuiteApiService.getGameIdByTrophySuiteId(trophySuiteId).pipe(
+    this.trophySuiteApiService.getGameIdByTrophySuiteId(trophySuiteId).pipe(
       switchMap(gameId => {
           console.log(gameId)
           return from(
-            this._router.navigate(
+            this.router.navigate(
               ['/game', gameId.id],
               {queryParams: {trophySuiteId, playerId, tab: 'trophies'}}
             )

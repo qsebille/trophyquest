@@ -14,13 +14,12 @@ import {GameCoverStoreService} from "./core/stores/game-cover-store.service";
   styleUrl: './app.scss',
 })
 export class App {
-  private readonly _gameCoverStoreService = inject(GameCoverStoreService);
-  private readonly _idleReloadService = inject(IdleReloadService);
+  private readonly gameCoverStoreService = inject(GameCoverStoreService);
+  private readonly idleReloadService = inject(IdleReloadService);
 
-  readonly backgroundUrl = computed(() => this._gameCoverStoreService.gameCover().url);
+  readonly backgroundUrl = computed(() => this.gameCoverStoreService.gameCover().url);
 
   ngOnInit(): void {
-    this._idleReloadService.start();
+    this.idleReloadService.start();
   }
-
 }

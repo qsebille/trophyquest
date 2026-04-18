@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
@@ -12,39 +12,37 @@ import {GamePlayer} from '../dtos/player/game-player';
   providedIn: 'root',
 })
 export class GameApiService {
-  private readonly API_URL = `${environment.apiUrl}/game`;
-
-  constructor(private readonly _http: HttpClient) {
-  }
+  private readonly apiUrl = `${environment.apiUrl}/game`;
+  private readonly http: HttpClient = inject(HttpClient);
 
   count(): Observable<number> {
-    return this._http.get<number>(`${this.API_URL}/count`);
+    return this.http.get<number>(`${this.apiUrl}/count`);
   }
 
   countRecent(): Observable<number> {
-    return this._http.get<number>(`${this.API_URL}/recent/count`);
+    return this.http.get<number>(`${this.apiUrl}/recent/count`);
   }
 
   searchRecent(pageNumber: number, pageSize: number): Observable<SearchResult<RecentGame>> {
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this._http.get<SearchResult<RecentGame>>(`${this.API_URL}/recent/search`, {params});
+    return this.http.get<SearchResult<RecentGame>>(`${this.apiUrl}/recent/search`, {params});
   }
 
   fetchDetails(gameId: string): Observable<GameDetails> {
-    return this._http.get<GameDetails>(`${this.API_URL}/${gameId}/details`);
+    return this.http.get<GameDetails>(`${this.apiUrl}/${gameId}/details`);
   }
 
   fetchTrophySuites(gameId: string): Observable<TrophySuiteWithCounts[]> {
-    return this._http.get<TrophySuiteWithCounts[]>(`${this.API_URL}/${gameId}/trophy-suites`);
+    return this.http.get<TrophySuiteWithCounts[]>(`${this.apiUrl}/${gameId}/trophy-suites`);
   }
 
   fetchPlayers(gameId: string, pageNumber: number, pageSize: number): Observable<SearchResult<GamePlayer>> {
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
       .set('pageSize', pageSize);
-    return this._http.get<SearchResult<GamePlayer>>(`${this.API_URL}/${gameId}/players`, {params});
+    return this.http.get<SearchResult<GamePlayer>>(`${this.apiUrl}/${gameId}/players`, {params});
   }
 
 }
