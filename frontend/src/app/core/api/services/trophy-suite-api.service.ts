@@ -9,7 +9,7 @@ import {TrophySuite} from "../dtos/trophy-suite/trophy-suite";
   providedIn: 'root',
 })
 export class TrophySuiteApiService {
-  private readonly API_URL = `${environment.apiUrl}/api/trophy-suite`;
+  private readonly API_URL = `${environment.apiUrl}/trophy-suite`;
 
   constructor(private readonly _http: HttpClient) {
   }

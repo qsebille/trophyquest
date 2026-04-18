@@ -5,15 +5,15 @@ import {ImageUploadStats} from "../dtos/images/image-upload-stats";
 import {environment} from "../../../../environments/environment";
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class StatsApiService {
-    private readonly API_URL = `${environment.apiUrl}/api/stats`;
+  private readonly API_URL = `${environment.apiUrl}/stats`;
 
-    constructor(private _http: HttpClient) {
-    }
+  constructor(private _http: HttpClient) {
+  }
 
-    fetchImageUploadStats(category: string): Observable<ImageUploadStats> {
-        return this._http.get<ImageUploadStats>(`${this.API_URL}/image-upload/${category}`);
-    }
+  fetchImageUploadStats(category: string): Observable<ImageUploadStats> {
+    return this._http.get<ImageUploadStats>(`${this.API_URL}/image-upload/${category}`);
+  }
 }

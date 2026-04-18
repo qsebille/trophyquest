@@ -4,19 +4,19 @@ import {Observable} from 'rxjs';
 import {environment} from "../../../../environments/environment";
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class TrophyApiService {
-    private readonly API_URL = `${environment.apiUrl}/api/trophy`;
+  private readonly API_URL = `${environment.apiUrl}/trophy`;
 
-    constructor(private _http: HttpClient) {
-    }
+  constructor(private _http: HttpClient) {
+  }
 
-    count(): Observable<number> {
-        return this._http.get<number>(`${this.API_URL}/count`);
-    }
+  count(): Observable<number> {
+    return this._http.get<number>(`${this.API_URL}/count`);
+  }
 
-    countRecentlyEarned(): Observable<number> {
-        return this._http.get<number>(`${this.API_URL}/earned/recent/count`);
-    }
+  countRecentlyEarned(): Observable<number> {
+    return this._http.get<number>(`${this.API_URL}/earned/recent/count`);
+  }
 }

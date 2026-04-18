@@ -8,7 +8,7 @@ import {AuthUser} from '../dtos/auth/auth-user';
   providedIn: 'root',
 })
 export class AuthApiService {
-  private readonly API_URL = `${environment.apiUrl}/api/auth`;
+  private readonly API_URL = `${environment.apiUrl}/auth`;
   private readonly _httpClient = inject(HttpClient);
 
   fetchCurrentUser(): Observable<AuthUser> {

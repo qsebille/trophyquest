@@ -25,3 +25,12 @@ variable "callback_urls" {
 variable "logout_urls" {
   type = list(string)
 }
+
+variable "backend_origin_domain_name" {
+  type = string
+}
+
+variable "backend_origin_http_port" {
+  type    = number
+  default = 8080
+}

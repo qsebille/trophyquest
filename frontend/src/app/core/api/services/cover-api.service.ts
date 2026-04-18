@@ -8,7 +8,7 @@ import {GameCoverImage} from "../dtos/game/game-cover-image";
   providedIn: 'root',
 })
 export class CoverApiService {
-  private readonly API_URL = `${environment.apiUrl}/api/cover`;
+  private readonly API_URL = `${environment.apiUrl}/cover`;
 
   constructor(private readonly _http: HttpClient) {
   }
