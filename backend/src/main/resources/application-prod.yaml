@@ -16,4 +16,6 @@ logging:
 
 app:
   cors:
-    allowed-origins: https://d33skwwxqd9e21.cloudfront.net
+    allowed-origins:
+      - https://trophyquest.fr
+      - https://www.trophyquest.fr
