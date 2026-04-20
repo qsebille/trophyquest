@@ -18,12 +18,13 @@ variable "domain_prefix" {
   type = string
 }
 
-variable "callback_urls" {
-  type = list(string)
+variable "root_domain_name" {
+  type = string
 }
 
-variable "logout_urls" {
-  type = list(string)
+variable "additional_domain_names" {
+  type    = list(string)
+  default = []
 }
 
 variable "backend_origin_domain_name" {
