@@ -9,3 +9,7 @@ output "domain_name" {
 output "distribution_arn" {
   value = aws_cloudfront_distribution.this.arn
 }
+
+output "hosted_zone_id" {
+  value = aws_cloudfront_distribution.this.hosted_zone_id
+}

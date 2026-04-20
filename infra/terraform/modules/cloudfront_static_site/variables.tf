@@ -22,3 +22,13 @@ variable "backend_origin_http_port" {
   type    = number
   default = 8080
 }
+
+variable "aliases" {
+  type    = list(string)
+  default = []
+}
+
+variable "acm_certificate_arn" {
+  type    = string
+  default = null
+}
