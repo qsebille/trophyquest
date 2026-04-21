@@ -2,12 +2,18 @@ package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
+import fr.trophyquest.backend.api.dto.game.GameSearchItemDTO;
 import fr.trophyquest.backend.api.dto.game.RecentGameDTO;
 import fr.trophyquest.backend.api.dto.player.GamePlayerDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteWithCountsDTO;
 import fr.trophyquest.backend.service.GameService;
 import fr.trophyquest.backend.service.RecentGameService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +33,15 @@ public class GameController {
     @GetMapping("/count")
     public long count() {
         return this.gameService.count();
+    }
+
+    @GetMapping("/search")
+    public Page<GameSearchItemDTO> search(
+            @RequestParam(name = "searchTerm", defaultValue = "") String searchTerm,
+            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
+    ) {
+        return this.gameService.search(searchTerm, pageNumber, pageSize);
     }
 
     @GetMapping("/recent/count")

@@ -4,11 +4,11 @@ import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingDTO;
 import fr.trophyquest.backend.api.mapper.IgdbCandidateMapper;
 import fr.trophyquest.backend.constants.GameMatchingStatus;
-import fr.trophyquest.backend.domain.entity.Game;
+import fr.trophyquest.backend.domain.entity.PsnGame;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
-import fr.trophyquest.backend.repository.GameRepository;
 import fr.trophyquest.backend.repository.IgdbCandidateRepository;
 import fr.trophyquest.backend.repository.IgdbGameRepository;
+import fr.trophyquest.backend.repository.PsnGameRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,18 +21,18 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class IgdbCandidateService {
-    private final GameRepository gameRepository;
+    private final PsnGameRepository psnGameRepository;
     private final IgdbGameRepository igdbGameRepository;
     private final IgdbCandidateRepository igdbCandidateRepository;
     private final IgdbCandidateMapper candidateMapper;
 
     public IgdbCandidateService(
-            GameRepository gameRepository,
+            PsnGameRepository psnGameRepository,
             IgdbGameRepository igdbGameRepository,
             IgdbCandidateRepository igdbCandidateRepository,
             IgdbCandidateMapper candidateMapper
     ) {
-        this.gameRepository = gameRepository;
+        this.psnGameRepository = psnGameRepository;
         this.igdbGameRepository = igdbGameRepository;
         this.igdbCandidateRepository = igdbCandidateRepository;
         this.candidateMapper = candidateMapper;
@@ -43,8 +43,8 @@ public class IgdbCandidateService {
      */
     public SearchDTO<IgdbMappingDTO> searchMappingToValidate(int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
-        Page<UUID> gameUuids = this.gameRepository.findGamesWithValidationRequired(pageRequest);
-        List<Game> games = this.gameRepository.fetchGamesWithCandidatesByIds(gameUuids.getContent());
+        Page<UUID> gameUuids = this.psnGameRepository.findGamesWithValidationRequired(pageRequest);
+        List<PsnGame> games = this.psnGameRepository.fetchGamesWithCandidatesByIds(gameUuids.getContent());
 
         List<IgdbMappingDTO> gamesWithCandidates = games.stream()
                 .map(this.candidateMapper::toMappingDTO)
@@ -60,11 +60,11 @@ public class IgdbCandidateService {
     @Transactional
     public Boolean validateCandidate(UUID gameId, long igdbGameId) {
         try {
-            Game game = this.gameRepository.getReferenceById(gameId);
+            PsnGame game = this.psnGameRepository.getReferenceById(gameId);
             IgdbGame igdbGame = this.igdbGameRepository.getReferenceById(igdbGameId);
             game.setIgdbGame(igdbGame);
             game.setIgdbMatchStatus(GameMatchingStatus.MATCHED.getValue());
-            this.gameRepository.save(game);
+            this.psnGameRepository.save(game);
             this.igdbCandidateRepository.updateStatusAfterValidation(gameId, igdbGameId);
             return true;
         } catch (Exception e) {
@@ -76,9 +76,9 @@ public class IgdbCandidateService {
     @Transactional
     public Boolean rejectAllPendingCandidates(UUID gameId) {
         try {
-            Game game = this.gameRepository.getReferenceById(gameId);
+            PsnGame game = this.psnGameRepository.getReferenceById(gameId);
             game.setIgdbMatchStatus(GameMatchingStatus.ALL_REFUSED.getValue());
-            this.gameRepository.save(game);
+            this.psnGameRepository.save(game);
             this.igdbCandidateRepository.updateStatusToRejected(gameId);
             return true;
         } catch (Exception e) {

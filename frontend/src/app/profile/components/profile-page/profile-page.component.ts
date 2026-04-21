@@ -106,10 +106,10 @@ export class ProfilePageComponent {
   }
 
   deletePlayer(): void {
-    console.log(`Deleting player ${this.playerId}...`);
+    console.info(`Deleting player ${this.playerId}...`);
     this.playerApiService.deletePlayer(this.playerId ?? "").pipe(
       tap(() => {
-        console.log(`Player ${this.playerId} deleted`);
+        console.info(`Player ${this.playerId} deleted`);
         this.navigator.goToPlayersPage();
       }),
       catchError((error) => {

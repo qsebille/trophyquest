@@ -4,8 +4,8 @@ import fr.trophyquest.backend.api.dto.igdb.IgdbCandidateDTO;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingDTO;
 import fr.trophyquest.backend.constants.GameImageType;
 import fr.trophyquest.backend.constants.IgdbGameImageType;
-import fr.trophyquest.backend.domain.entity.Game;
-import fr.trophyquest.backend.domain.entity.GameImage;
+import fr.trophyquest.backend.domain.entity.PsnGame;
+import fr.trophyquest.backend.domain.entity.PsnGameImage;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbImage;
@@ -39,7 +39,7 @@ public class IgdbCandidateMapper {
                 .build();
     }
 
-    public IgdbMappingDTO toMappingDTO(Game game) {
+    public IgdbMappingDTO toMappingDTO(PsnGame game) {
         List<IgdbCandidateDTO> candidates = game.getIgdbCandidates()
                 .stream()
                 .map(this::toDTO)
@@ -49,7 +49,7 @@ public class IgdbCandidateMapper {
         String imageUrl = game.getImages()
                 .stream()
                 .filter(image -> GameImageType.MASTER.getValue().equals(image.getType()))
-                .map(GameImage::getUrl)
+                .map(PsnGameImage::getUrl)
                 .findFirst()
                 .orElse(null);
 

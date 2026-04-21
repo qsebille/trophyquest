@@ -70,7 +70,6 @@ export class GamePageStoreService {
   }
 
   fetchPlayers(gameId: string, page: number): void {
-    console.log('Fetching players for game', gameId, 'page', page);
     this.gameApiService.fetchPlayers(gameId, page, this.playersPagination().pageSize).subscribe({
       next: players => {
         this._playersPagination.update(pagination => ({

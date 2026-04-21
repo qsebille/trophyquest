@@ -2,8 +2,8 @@ package fr.trophyquest.backend.repository;
 
 import fr.trophyquest.backend.IntegrationTestBase;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO;
-import fr.trophyquest.backend.domain.entity.Game;
-import fr.trophyquest.backend.domain.entity.GameImage;
+import fr.trophyquest.backend.domain.entity.PsnGame;
+import fr.trophyquest.backend.domain.entity.PsnGameImage;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbImage;
@@ -21,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
-public class GameRepositoryTest extends IntegrationTestBase {
+public class PsnGameRepositoryTest extends IntegrationTestBase {
 
     @Autowired
     private EntityManager entityManager;
 
     @Autowired
-    private GameRepository gameRepository;
+    private PsnGameRepository psnGameRepository;
 
     @Autowired
     private IgdbGameRepository igdbGameRepository;
@@ -45,22 +45,22 @@ public class GameRepositoryTest extends IntegrationTestBase {
     void testFetchGamesWithCandidatesByIds_MultipleImages() {
         // Given
         UUID gameId = UUID.randomUUID();
-        Game game = new Game();
+        PsnGame game = new PsnGame();
         game.setId(gameId);
         game.setName("Test Game");
         game.setIgdbMatchStatus("VALIDATION_REQUIRED");
-        game = gameRepository.save(game);
+        game = psnGameRepository.save(game);
 
-        GameImage image1 = new GameImage();
+        PsnGameImage image1 = new PsnGameImage();
         image1.setId(UUID.randomUUID());
-        image1.setGame(game);
+        image1.setPsnGame(game);
         image1.setType("MASTER");
         image1.setPsnUrl("psn_url1");
         gameImageRepository.save(image1);
 
-        GameImage image2 = new GameImage();
+        PsnGameImage image2 = new PsnGameImage();
         image2.setId(UUID.randomUUID());
-        image2.setGame(game);
+        image2.setPsnGame(game);
         image2.setType("OTHER");
         image2.setPsnUrl("psn_url2");
         gameImageRepository.save(image2);
@@ -88,30 +88,30 @@ public class GameRepositoryTest extends IntegrationTestBase {
         igdbImage2.setImageType("screenshot");
         igdbImageRepository.save(igdbImage2);
 
-        game = gameRepository.findById(gameId).orElseThrow();
+        game = psnGameRepository.findById(gameId).orElseThrow();
         IgdbCandidate candidate = new IgdbCandidate();
         IgdbCandidateId candidateId = new IgdbCandidateId();
         candidateId.setPsnGameId(game.getId());
         candidateId.setCandidateId(igdbGame.getId());
         candidate.setId(candidateId);
-        candidate.setGame(game);
+        candidate.setPsnGame(game);
         candidate.setCandidate(igdbGame);
         candidate.setScore(100L);
         candidate.setStatus("VALIDATION_REQUIRED");
         igdbCandidateRepository.save(candidate);
 
-        gameRepository.flush();
+        psnGameRepository.flush();
         igdbCandidateRepository.flush();
         gameImageRepository.flush();
         igdbImageRepository.flush();
         entityManager.clear();
 
         // When
-        List<Game> results = gameRepository.fetchGamesWithCandidatesByIds(List.of(game.getId()));
+        List<PsnGame> results = psnGameRepository.fetchGamesWithCandidatesByIds(List.of(game.getId()));
 
         // Then
         assertEquals(1, results.size());
-        Game resultGame = results.get(0);
+        PsnGame resultGame = results.getFirst();
         assertEquals(2, resultGame.getImages().size(), "Game should have 2 PSN images");
         assertEquals(1, resultGame.getIgdbCandidates().size(), "Game should have 1 candidate");
 
@@ -131,53 +131,53 @@ public class GameRepositoryTest extends IntegrationTestBase {
         igdbGame.setId(igdbGameId);
         igdbGame.setName("IGDB Game");
 
-        Game game1 = new Game();
+        PsnGame game1 = new PsnGame();
         game1.setId(UUID.randomUUID());
         game1.setName("Game 1");
         game1.setIgdbMatchStatus("PENDING");
-        Game game2 = new Game();
+        PsnGame game2 = new PsnGame();
         game2.setId(UUID.randomUUID());
         game2.setName("Game 2");
         game2.setIgdbMatchStatus("VALIDATION_REQUIRED");
-        Game game3 = new Game();
+        PsnGame game3 = new PsnGame();
         game3.setId(UUID.randomUUID());
         game3.setName("Game 3");
         game3.setIgdbMatchStatus("VALIDATION_REQUIRED");
-        Game game4 = new Game();
+        PsnGame game4 = new PsnGame();
         game4.setId(UUID.randomUUID());
         game4.setName("Game 3");
         game4.setIgdbMatchStatus("NO_FOUND_CANDIDATE");
-        Game game5 = new Game();
+        PsnGame game5 = new PsnGame();
         game5.setId(UUID.randomUUID());
         game5.setName("Game 3");
         game5.setIgdbMatchStatus("ALL_REFUSED");
-        Game game6 = new Game();
+        PsnGame game6 = new PsnGame();
         game6.setId(UUID.randomUUID());
         game6.setName("Game 3");
         game6.setIgdbMatchStatus("ALL_REFUSED");
-        Game game7 = new Game();
+        PsnGame game7 = new PsnGame();
         game7.setId(UUID.randomUUID());
         game7.setName("Game 3");
         game7.setIgdbGame(igdbGame);
         game7.setIgdbMatchStatus("MATCHED");
-        Game game8 = new Game();
+        PsnGame game8 = new PsnGame();
         game8.setId(UUID.randomUUID());
         game8.setName("Game 3");
         game8.setIgdbGame(igdbGame);
         game8.setIgdbMatchStatus("MATCHED");
-        Game game9 = new Game();
+        PsnGame game9 = new PsnGame();
         game9.setId(UUID.randomUUID());
         game9.setName("Game 3");
         game9.setIgdbGame(igdbGame);
         game9.setIgdbMatchStatus("MATCHED");
 
         igdbGameRepository.save(igdbGame);
-        gameRepository.saveAll(List.of(game1, game2, game3, game4, game5, game6, game7, game8, game9));
+        psnGameRepository.saveAll(List.of(game1, game2, game3, game4, game5, game6, game7, game8, game9));
 
         igdbGameRepository.flush();
-        gameRepository.flush();
+        psnGameRepository.flush();
 
-        IgdbMappingStatsDTO stats = this.gameRepository.fetchIgdbMappingStats();
+        IgdbMappingStatsDTO stats = this.psnGameRepository.fetchIgdbMappingStats();
 
         assertEquals(1, stats.pending(), "Stats should display 1 pending games");
         assertEquals(2, stats.validationRequired(), "Stats should display 2 validation required games");

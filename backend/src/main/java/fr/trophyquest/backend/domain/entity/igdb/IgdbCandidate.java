@@ -1,6 +1,6 @@
 package fr.trophyquest.backend.domain.entity.igdb;
 
-import fr.trophyquest.backend.domain.entity.Game;
+import fr.trophyquest.backend.domain.entity.PsnGame;
 import fr.trophyquest.backend.domain.entity.igdb.embedded.IgdbCandidateId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -29,7 +29,7 @@ public class IgdbCandidate {
     @MapsId("psnGameId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "psn_game_id", nullable = false)
-    private Game game;
+    private PsnGame psnGame;
 
     @MapsId("candidateId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
