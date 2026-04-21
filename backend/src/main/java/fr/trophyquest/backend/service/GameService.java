@@ -12,7 +12,9 @@ import fr.trophyquest.backend.repository.PsnGameRepository;
 import fr.trophyquest.backend.repository.RecentGameSearchItemRepository;
 import fr.trophyquest.backend.repository.TrophySuiteRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +50,10 @@ public class GameService {
     }
 
     public Page<GameSearchItemDTO> search(String searchTerm, int pageNumber, int pageSize) {
-        Pageable pagination = Pageable.ofSize(pageSize).withPage(pageNumber);
+        Pageable pagination = PageRequest.of(pageNumber, pageSize, Sort.by(
+                Sort.Order.desc("nbPlayers"),
+                Sort.Order.asc("name")
+        ));
         if (searchTerm == null || searchTerm.isEmpty()) {
             return this.gameRepository.findAll(pagination)
                     .map(this.gameMapper::toGameSearchItemDTO);

@@ -21,6 +21,7 @@ public class GameMapper {
                 .id(game.getId())
                 .name(game.getName())
                 .coverUrl(game.getCoverUrl())
+                .summary(game.getSummary())
                 .genres(game.getGenres())
                 .themes(game.getThemes())
                 .platforms(game.getPlatforms())
