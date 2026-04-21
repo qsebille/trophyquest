@@ -2,6 +2,7 @@ package fr.trophyquest.backend.domain.entity;
 
 import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -20,24 +21,26 @@ import java.util.UUID;
 @Table(name = "psn_game")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Game {
+public class PsnGame {
 
     @Id
     @EqualsAndHashCode.Include
+    @Column(name = "id")
     private UUID id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "igdb_match_status")
     private String igdbMatchStatus;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "psnGame")
     private Set<IgdbCandidate> igdbCandidates = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "igdb_game_id", referencedColumnName = "id", unique = true)
     private IgdbGame igdbGame;
 
-    @OneToMany(mappedBy = "game")
-    private Set<GameImage> images = new HashSet<>();
-
+    @OneToMany(mappedBy = "psnGame")
+    private Set<PsnGameImage> images = new HashSet<>();
 }

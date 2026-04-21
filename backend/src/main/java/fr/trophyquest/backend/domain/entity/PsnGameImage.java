@@ -1,5 +1,6 @@
 package fr.trophyquest.backend.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -16,25 +17,28 @@ import java.util.UUID;
 @Table(name = "psn_game_image")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class GameImage {
-
+public class PsnGameImage {
     @Id
     @EqualsAndHashCode.Include
+    @Column(name = "id")
     private UUID id;
 
+    @Column(name = "psn_url")
     private String psnUrl;
 
+    @Column(name = "aws_url")
     private String awsUrl;
 
-    @Formula("coalesce(aws_url, psn_url)")
+    @Formula("COALESCE(aws_url, psn_url)")
     private String url;
 
+    @Column(name = "type")
     private String type;
 
+    @Column(name = "format")
     private String format;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "psn_game_id", nullable = false)
-    private Game game;
-
+    private PsnGame psnGame;
 }

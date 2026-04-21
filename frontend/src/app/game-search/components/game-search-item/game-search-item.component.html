@@ -1,0 +1,15 @@
+<div class="game-search-item d-flex align-items-center p-1 gap-3">
+  <img [src]="game().coverUrl" [alt]="game().name" class="cover" width="50" height="50"/>
+  <div class="d-flex flex-column gap-1">
+    <a [attr.data-testid]="'game-title-' + game().id"
+       class="fw-bold tq-link"
+       [routerLink]="['/game', game().id]">
+      {{ game().name }}
+    </a>
+    <div class="d-flex gap-1">
+      @for (platform of game().platforms; track platform) {
+        <span class="badge bg-primary">{{ platform }}</span>
+      }
+    </div>
+  </div>
+</div>

@@ -25,6 +25,7 @@ describe('NavbarComponent', () => {
         provideRouter([
           {path: 'players', component: DummyComponent},
           {path: 'igdb-mapping', component: DummyComponent},
+          {path: 'game-search', component: DummyComponent},
         ]),
       ],
     }).compileComponents();
@@ -47,19 +48,15 @@ describe('NavbarComponent', () => {
 
   it('should link to the players page when clicking on link', async () => {
     const playersLink = fixture.debugElement.query(By.css('#navbar-players-link'));
-
-    playersLink.triggerEventHandler('click', {button: 0});
+    playersLink.nativeElement.click();
     await fixture.whenStable();
-
     expect(router.url).toBe('/players');
   });
 
-  it('should link to the mapping page when clicking on link', async () => {
-    const mappingLink = fixture.debugElement.query(By.css('#navbar-mapping-link'));
-
-    mappingLink.triggerEventHandler('click', {button: 0});
+  it('should link to the game search page when clicking on link', async () => {
+    const gameSearchLink = fixture.debugElement.query(By.css('#navbar-game-search-link'));
+    gameSearchLink.nativeElement.click();
     await fixture.whenStable();
-
-    expect(router.url).toBe('/igdb-mapping');
+    expect(router.url).toBe('/game-search');
   });
 });

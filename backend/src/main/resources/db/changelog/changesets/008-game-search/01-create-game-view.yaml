@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-game-search/01-create-game-view
+      author: Quentin Sebille
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE OR REPLACE VIEW app.v_game
+              AS SELECT
+                g.id,
+                g.name,
+                game_image.url AS cover_url,
+                igdb.id AS igdb_id,
+                igdb.summary AS summary,
+                igdb.genres AS genres,
+                igdb.themes AS themes,
+                COALESCE(igdb.official_website, igdb.psn_website, igdb.community_wiki_website) as website,
+                igdb.release_date as release_date,
+                played_game.nb_players as nb_players,
+                trophy_suites.nb_trophy_suites as nb_trophy_suites,
+                platforms.platform_list as platforms
+              FROM app.psn_game g
+              
+              LEFT JOIN LATERAL (
+                SELECT COALESCE(gi.aws_url, gi.psn_url) AS url
+                FROM app.psn_game_image gi
+                WHERE gi.psn_game_id = g.id AND gi.type = 'MASTER'
+                ORDER BY gi.psn_game_id
+                LIMIT 1
+              ) game_image ON true
+              
+              LEFT JOIN app.igdb_game igdb ON igdb.id = g.igdb_game_id
+              
+              LEFT JOIN LATERAL (
+                SELECT COUNT(*) AS nb_players
+                FROM app.psn_played_game pg
+                WHERE pg.game_id = g.id
+              ) played_game ON true
+              
+              LEFT JOIN LATERAL (
+                SELECT COUNT(*) as nb_trophy_suites
+                FROM app.psn_trophy_suite ts
+                JOIN app.psn_edition_trophy_suite ets ON ets.trophy_suite_id = ts.id
+                JOIn app.psn_edition e ON e.id = ets.edition_id
+                WHERE e.psn_game_id = g.id
+              ) trophy_suites ON true
+              
+              LEFT JOIN LATERAL (
+                SELECT ARRAY_AGG(platform) as platform_list
+                FROM (
+                  SELECT DISTINCT e.psn_game_id AS game_id, UNNEST(pts.platforms) AS platform
+                  FROM app.psn_trophy_suite pts
+                  JOIN app.psn_edition_trophy_suite ets ON ets.trophy_suite_id = pts.id
+                  JOIN app.psn_edition e ON e.id = ets.edition_id
+                  WHERE e.psn_game_id = g.id
+                ) game_platform
+                WHERE game_platform.game_id = g.id
+              ) platforms ON true
+              ;

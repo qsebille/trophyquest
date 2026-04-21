@@ -97,7 +97,6 @@ export class AuthService {
 
   refreshCurrentUser(): void {
     this.authApiService.fetchCurrentUser().subscribe((user) => {
-      console.log('User:', user);
       this.currentUser.set(user);
     });
   }

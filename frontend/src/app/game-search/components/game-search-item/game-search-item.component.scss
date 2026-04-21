@@ -1,0 +1,11 @@
+@use 'styles/colors' as *;
+
+.cover {
+  border-radius: 10px;
+}
+
+.game-search-item {
+  border: 1px solid $tq-blue-dark;
+  border-radius: 10px;
+  background-color: $tq-blue-lighter;
+}

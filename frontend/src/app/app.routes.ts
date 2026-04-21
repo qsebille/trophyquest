@@ -7,10 +7,12 @@ import {IgdbMappingPage} from "./igdb-mapping/components/igdb-mapping-page/igdb-
 import {DashboardPageComponent} from "./dashboard/components/dashboard-page/dashboard-page.component";
 import {GamePageComponent} from './game/components/game-page/game-page.component';
 import {AuthCallbackComponent} from './core/components/auth-callback/auth-callback.component';
+import {GameSearchPageComponent} from './game-search/components/game-search-page/game-search-page.component';
 
 export const routes: Routes = [
   {path: 'home', component: HomePageComponent},
   {path: 'players', component: PlayersPageComponent},
+  {path: 'game-search', component: GameSearchPageComponent},
   {path: 'profile/:playerId', component: ProfilePageComponent},
   {path: 'game/:gameId', component: GamePageComponent},
   {path: 'error', component: ErrorPageComponent},

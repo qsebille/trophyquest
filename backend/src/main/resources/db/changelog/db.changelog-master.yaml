@@ -39,3 +39,5 @@ databaseChangeLog:
 
   - include: { file: changesets/007-authentication/01-create-auth-user-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/007-authentication/02-add-unique-constraint-cognito-sub.yaml, relativeToChangelogFile: true }
+
+  - include: { file: changesets/008-game-search/01-create-game-view.yaml, relativeToChangelogFile: true }

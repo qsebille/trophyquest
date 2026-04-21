@@ -1,0 +1,22 @@
+<div class="container pt-3 pb-5 d-flex flex-column align-items-center">
+  <div class="card w-75">
+    <div class="card-body">
+      <tq-game-search-list
+        [games]="games()"
+        [totalGames]="totalGames()"
+        (loadMore)="loadMore()"
+        (searchTermChanged)="onSearchTermChanges($event)"/>
+      @if (isLoading()) {
+        <tq-spinner-container/>
+      }
+      @if (isError()) {
+        <div class="d-flex flex-column align-items-center">
+          <div class="alert alert-danger w-50 d-flex justify-content-around align-items-center">
+            Error loading games
+            <button class="btn btn-danger" (click)="retryLoad()">Retry</button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

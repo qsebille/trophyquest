@@ -2,19 +2,37 @@ package fr.trophyquest.backend.api.mapper;
 
 import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
 import fr.trophyquest.backend.api.dto.game.GameImageDTO;
-import fr.trophyquest.backend.domain.entity.Game;
-import fr.trophyquest.backend.domain.entity.GameImage;
+import fr.trophyquest.backend.api.dto.game.GameSearchItemDTO;
+import fr.trophyquest.backend.domain.entity.PsnGame;
+import fr.trophyquest.backend.domain.entity.PsnGameImage;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbImage;
+import fr.trophyquest.backend.domain.entity.views.Game;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 @Component
-public class GameDetailsMapper {
+public class GameMapper {
 
-    public GameDetailsDTO toDTO(Game game) {
+    public GameSearchItemDTO toGameSearchItemDTO(Game game) {
+        return GameSearchItemDTO.builder()
+                .id(game.getId())
+                .name(game.getName())
+                .coverUrl(game.getCoverUrl())
+                .summary(game.getSummary())
+                .genres(game.getGenres())
+                .themes(game.getThemes())
+                .platforms(game.getPlatforms())
+                .website(game.getWebsite())
+                .releaseDate(game.getReleaseDate())
+                .nbPlayers(game.getNbPlayers())
+                .nbTrophySuites(game.getNbTrophySuites())
+                .build();
+    }
+
+    public GameDetailsDTO toGameDetailsDTO(PsnGame game) {
         List<GameImageDTO> psnImages = game.getImages()
                 .stream()
                 .map(this::toGameImageDTO)
@@ -53,7 +71,7 @@ public class GameDetailsMapper {
                 .build();
     }
 
-    private GameImageDTO toGameImageDTO(GameImage image) {
+    private GameImageDTO toGameImageDTO(PsnGameImage image) {
         return GameImageDTO.builder()
                 .imageUrl(image.getUrl())
                 .imageType(image.getType())

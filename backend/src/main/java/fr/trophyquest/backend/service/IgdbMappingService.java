@@ -1,22 +1,22 @@
 package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO;
-import fr.trophyquest.backend.repository.GameRepository;
+import fr.trophyquest.backend.repository.PsnGameRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class IgdbMappingService {
-    private final GameRepository gameRepository;
+    private final PsnGameRepository psnGameRepository;
 
-    public IgdbMappingService(GameRepository gameRepository) {
-        this.gameRepository = gameRepository;
+    public IgdbMappingService(PsnGameRepository psnGameRepository) {
+        this.psnGameRepository = psnGameRepository;
     }
 
 
     public IgdbMappingStatsDTO getStats() {
-        return this.gameRepository.fetchIgdbMappingStats();
+        return this.psnGameRepository.fetchIgdbMappingStats();
     }
 
 }

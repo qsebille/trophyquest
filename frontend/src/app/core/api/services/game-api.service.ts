@@ -7,6 +7,8 @@ import {RecentGame} from "../dtos/game/recent-game";
 import {GameDetails} from '../dtos/game/game-details';
 import {TrophySuiteWithCounts} from '../dtos/trophy-suite/trophy-suite-with-counts';
 import {GamePlayer} from '../dtos/player/game-player';
+import {GameSearchItem} from '../dtos/game/game-search-item';
+import {Page} from '../dtos/page';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +23,14 @@ export class GameApiService {
 
   countRecent(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/recent/count`);
+  }
+
+  search(searchTerm: string, pageNumber: number, pageSize: number): Observable<Page<GameSearchItem>> {
+    const params = new HttpParams()
+      .set('searchTerm', searchTerm)
+      .set('pageNumber', pageNumber)
+      .set('pageSize', pageSize);
+    return this.http.get<Page<GameSearchItem>>(`${this.apiUrl}/search`, {params});
   }
 
   searchRecent(pageNumber: number, pageSize: number): Observable<SearchResult<RecentGame>> {
