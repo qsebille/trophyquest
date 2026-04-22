@@ -25,7 +25,7 @@ describe('PlayersPageComponent', () => {
       loadMore: vi.fn(),
       addPlayer: vi.fn(),
       resetAddPlayerStatus: vi.fn(),
-      results: vi.fn(),
+      players: vi.fn(),
       total: vi.fn(),
       status: vi.fn(),
       addStatus: vi.fn(),
@@ -34,7 +34,7 @@ describe('PlayersPageComponent', () => {
       refreshTopPlayedGame: vi.fn()
     } as MockedObject<GameCoverStoreService>;
 
-    mockPlayerListStore.results.mockReturnValue([]);
+    mockPlayerListStore.players.mockReturnValue([]);
 
     await TestBed.configureTestingModule({
       imports: [PlayersPageComponent, PlayerCardComponent, AddPlayerFormComponent],

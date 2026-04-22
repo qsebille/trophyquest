@@ -7,6 +7,7 @@ import {LoadingStatus} from "../../core/models/loading-status.enum";
 import {ProfileTrophySuiteListStoreService} from "./profile-trophy-suite-list-store.service";
 import {of} from "rxjs";
 import {PlayedTrophySuiteSearchElement} from "../../core/api/dtos/trophy-suite/played-trophy-suite-search-element";
+import {Pagination} from '../../core/api/dtos/pagination';
 
 describe('ProfileTrophySuiteListStoreService', () => {
   let store: ProfileTrophySuiteListStoreService;
@@ -36,7 +37,7 @@ describe('ProfileTrophySuiteListStoreService', () => {
         {id: 'trophy-suite-2', name: 'Trophy suite 2'} as PlayedTrophySuiteSearchElement,
       ],
       total: 10
-    };
+    } as Pagination<PlayedTrophySuiteSearchElement>;
     mockedPlayerApiService.searchPlayedTrophySuites.mockReturnValue(of(mockSearchResult));
 
     store.search(mockPlayerId);

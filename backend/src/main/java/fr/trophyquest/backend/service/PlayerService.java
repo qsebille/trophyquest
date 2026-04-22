@@ -1,6 +1,6 @@
 package fr.trophyquest.backend.service;
 
-import fr.trophyquest.backend.api.dto.SearchDTO;
+import fr.trophyquest.backend.api.dto.PaginationDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerStatsDTO;
 import fr.trophyquest.backend.api.dto.player.RecentPlayerTrophiesItemDTO;
@@ -75,16 +75,13 @@ public class PlayerService {
         return this.earnedTrophyRepository.getStatsForPlayer(id);
     }
 
-    public SearchDTO<EarnedTrophySearchItemDTO> searchEarnedTrophies(UUID playerId, int pageNumber, int pageSize) {
-        Player player = this.playerRepository.findById(playerId)
-                .orElseThrow(() -> new PlayerNotFoundException(playerId));
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "earnedAt"));
-        Page<EarnedTrophySearchItemDTO> searchResult = this.earnedTrophyRepository.searchEarnedTrophiesByPlayer(
-                player.getId(), pageRequest);
-        return SearchDTO.<EarnedTrophySearchItemDTO>builder()
-                .content(searchResult.getContent())
-                .total(searchResult.getTotalElements())
-                .build();
+    public PaginationDTO<EarnedTrophySearchItemDTO> searchEarnedTrophies(UUID playerId, int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Order.desc("earnedAt"));
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+        
+        Player player = this.playerRepository.findById(playerId).orElseThrow(() -> new PlayerNotFoundException(playerId));
+        Page<EarnedTrophySearchItemDTO> result = this.earnedTrophyRepository.searchEarnedTrophiesByPlayer(player.getId(), pageRequest);
+        return new PaginationDTO<>(result);
     }
 
     public List<RecentPlayerTrophiesItemDTO> fetchTopRecent(int playerLimit, int trophyLimit) {

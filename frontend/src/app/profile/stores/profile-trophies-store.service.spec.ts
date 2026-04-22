@@ -4,10 +4,10 @@ import {TestBed} from '@angular/core/testing';
 
 import {ProfileTrophiesStore} from './profile-trophies-store.service';
 import {PlayerApiService} from "../../core/api/services/player-api.service";
-import {SearchResult} from "../../core/api/dtos/search-result";
 import {LoadingStatus} from "../../core/models/loading-status.enum";
 import {EarnedTrophySearchItem} from "../../core/api/dtos/trophy/earned-trophy-search-item";
 import {of} from "rxjs";
+import {Pagination} from '../../core/api/dtos/pagination';
 
 describe('ProfileTrophiesStore', () => {
   let store: ProfileTrophiesStore;
@@ -31,13 +31,13 @@ describe('ProfileTrophiesStore', () => {
 
   it('should search for player trophies', () => {
     const mockPlayerId = 'player-123';
-    const mockSearchResult: SearchResult<EarnedTrophySearchItem> = {
+    const mockSearchResult: Pagination<EarnedTrophySearchItem> = {
       content: [
         {id: 'trophy-1', title: 'Trophy 1'} as EarnedTrophySearchItem,
         {id: 'trophy-2', title: 'Trophy 2'} as EarnedTrophySearchItem,
       ],
       total: 10
-    };
+    } as Pagination<EarnedTrophySearchItem>;
     mockedPlayerApiService.searchEarnedTrophies.mockReturnValue(of(mockSearchResult));
 
     store.search(mockPlayerId);

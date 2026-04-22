@@ -1,4 +1,4 @@
-import {inject, Injectable, Signal, signal} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {GameApiService} from '../../core/api/services/game-api.service';
 import {catchError, forkJoin, of, Subject, switchMap} from 'rxjs';
 import {emptyGameDetails, GameDetails} from '../../core/api/dtos/game/game-details';
@@ -6,7 +6,7 @@ import {TrophySuiteApiService} from '../../core/api/services/trophy-suite-api.se
 import {EarnedTrophy} from '../../core/api/dtos/trophy/earned-trophy';
 import {TrophySuiteWithCounts} from '../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
 import {GamePlayer} from '../../core/api/dtos/player/game-player';
-import {initPagination, Pagination} from '../../core/api/dtos/pagination';
+import {Pagination} from '../../core/api/dtos/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -15,20 +15,28 @@ export class GamePageStoreService {
   private readonly gameApiService: GameApiService = inject(GameApiService);
   private readonly trophySuiteApiService: TrophySuiteApiService = inject(TrophySuiteApiService);
 
+  private readonly playersPageSize = 20;
   private readonly _gameDetails = signal<GameDetails>(emptyGameDetails);
   private readonly _trophySuites = signal<TrophySuiteWithCounts[]>([]);
   private readonly _trophies = signal<EarnedTrophy[]>([]);
-  private readonly _playersPagination = signal<Pagination<GamePlayer>>(initPagination(20));
+  private readonly _playersPagination = signal<Pagination<GamePlayer> | null>(null);
 
-  private readonly trophySuiteIdSubject = new Subject<{ trophySuiteId: string | null, playerId: string | null }>();
+  private readonly fetchTrophiesSubject = new Subject<{ trophySuiteId: string | null, playerId: string | null }>();
 
-  readonly gameDetails: Signal<GameDetails> = this._gameDetails.asReadonly();
-  readonly trophySuites: Signal<TrophySuiteWithCounts[]> = this._trophySuites.asReadonly();
-  readonly trophies: Signal<EarnedTrophy[]> = this._trophies.asReadonly();
-  readonly playersPagination: Signal<Pagination<GamePlayer>> = this._playersPagination.asReadonly();
+  readonly gameDetails = this._gameDetails.asReadonly();
+  readonly trophySuites = this._trophySuites.asReadonly();
+  readonly trophies = this._trophies.asReadonly();
+  readonly playersPagination = computed(() => {
+    return {
+      content: this._playersPagination()?.content ?? [],
+      page: this._playersPagination()?.page ?? 0,
+      total: this._playersPagination()?.total ?? 0,
+      size: this._playersPagination()?.size ?? this.playersPageSize
+    };
+  });
 
   constructor() {
-    this.trophySuiteIdSubject.pipe(
+    this.fetchTrophiesSubject.pipe(
       switchMap(data => {
         if (data.trophySuiteId == null) {
           this._trophies.set([]);
@@ -50,7 +58,7 @@ export class GamePageStoreService {
     this._gameDetails.set(emptyGameDetails);
     this._trophySuites.set([]);
     this._trophies.set([]);
-    this._playersPagination.set(initPagination(20));
+    this._playersPagination.set(null);
   }
 
   fetchDetails(gameId: string): void {
@@ -70,23 +78,14 @@ export class GamePageStoreService {
   }
 
   fetchPlayers(gameId: string, page: number): void {
-    this.gameApiService.fetchPlayers(gameId, page, this.playersPagination().pageSize).subscribe({
-      next: players => {
-        this._playersPagination.update(pagination => ({
-          ...pagination,
-          currentPage: page,
-          total: players.total,
-          content: players.content,
-        }));
-      },
-      error: (err) => {
-        console.error('Failed to fetch players', err);
-      }
-    })
+    this.gameApiService.fetchPlayers(gameId, page, this.playersPageSize).subscribe({
+      next: playersPagination => this._playersPagination.set(playersPagination),
+      error: (err) => console.error('Failed to fetch players', err)
+    });
   }
 
   fetchTrophies(trophySuiteId: string | null, playerId: string | null): void {
     const subjectData = {trophySuiteId, playerId};
-    this.trophySuiteIdSubject.next(subjectData);
+    this.fetchTrophiesSubject.next(subjectData);
   }
 }

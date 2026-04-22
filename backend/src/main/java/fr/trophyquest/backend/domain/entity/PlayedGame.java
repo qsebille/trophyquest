@@ -26,8 +26,13 @@ public class PlayedGame {
     @JoinColumn(name = "player_id", nullable = false)
     private Player player;
 
+    @MapsId("gameId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "game_id", nullable = false)
+    private PsnGame game;
+
     private Instant firstPlayedAt;
-    
+
     private Instant lastPlayedAt;
 
     @Override

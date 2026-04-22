@@ -29,7 +29,7 @@ export class HomePageComponent implements OnInit {
   private readonly gameCoverStore = inject(GameCoverStoreService);
 
   readonly navigator = inject(NavigatorService);
-  readonly games = this.recentGamesStore.recentGames;
+  readonly games = this.recentGamesStore.games;
   readonly stats = this.statsStore.data;
   readonly statsLoadingStatus = this.statsStore.status;
   readonly gamesStatus = this.recentGamesStore.status;

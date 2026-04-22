@@ -16,18 +16,20 @@ import {Pagination} from '../../../core/api/dtos/pagination';
   styleUrl: './game-players.component.scss',
 })
 export class GamePlayersComponent {
-  readonly playersPagination = input.required<Pagination<GamePlayer>>();
+  readonly playersPagination = input.required<Pagination<GamePlayer> | null>();
   readonly pageChange = output<number>();
   readonly selectPlayer = output<string>();
   readonly pseudoClicked = output<string>();
 
+  readonly content = computed(() => this.playersPagination()?.content ?? []);
   readonly page = signal(1);
-  readonly collectionSize = computed(() => this.playersPagination()?.total ?? 0);
-  readonly pageSize = computed(() => this.playersPagination()?.pageSize ?? 0);
+  readonly total = computed(() => this.playersPagination()?.total ?? 0);
+  readonly size = computed(() => this.playersPagination()?.size ?? 0);
+  readonly hasMultiplePages = computed(() => this.total() > this.size());
 
   constructor() {
     effect(() => {
-      const backendPage = this.playersPagination()?.currentPage ?? 0;
+      const backendPage = this.playersPagination()?.page ?? 0;
       const uiPage = backendPage + 1;
 
       if (this.page() !== uiPage) {

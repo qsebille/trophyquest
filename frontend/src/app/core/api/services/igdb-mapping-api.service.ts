@@ -2,9 +2,9 @@ import {inject, Injectable} from '@angular/core';
 import {environment} from "../../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {SearchResult} from "../dtos/search-result";
 import {IgdbMapping} from "../dtos/igdb/igdb-mapping";
 import {IgdbMappingStats} from "../dtos/igdb/igdb-mapping-stats";
+import {Pagination} from '../dtos/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +13,11 @@ export class IgdbMappingApiService {
   private readonly apiUrl = `${environment.apiUrl}/igdb-mapping`;
   private readonly http: HttpClient = inject(HttpClient);
 
-  searchPending(pageNumber: number, pageSize: number): Observable<SearchResult<IgdbMapping>> {
+  searchPending(page: number, size: number): Observable<Pagination<IgdbMapping>> {
     const params = new HttpParams()
-      .set('pageNumber', pageNumber)
-      .set('pageSize', pageSize);
-    return this.http.get<SearchResult<IgdbMapping>>(this.apiUrl + "/search", {params});
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<Pagination<IgdbMapping>>(this.apiUrl + "/search", {params});
   }
 
   validateCandidate(gameId: string, candidateId: number): Observable<boolean> {
