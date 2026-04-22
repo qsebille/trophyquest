@@ -1,6 +1,6 @@
 package fr.trophyquest.backend.service;
 
-import fr.trophyquest.backend.api.dto.SearchDTO;
+import fr.trophyquest.backend.api.dto.PaginationDTO;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingDTO;
 import fr.trophyquest.backend.api.mapper.IgdbCandidateMapper;
 import fr.trophyquest.backend.constants.GameMatchingStatus;
@@ -41,19 +41,20 @@ public class IgdbCandidateService {
     /**
      * Searches and maps games requiring validation
      */
-    public SearchDTO<IgdbMappingDTO> searchMappingToValidate(int pageNumber, int pageSize) {
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+    public PaginationDTO<IgdbMappingDTO> searchMappingToValidate(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
         Page<UUID> gameUuids = this.psnGameRepository.findGamesWithValidationRequired(pageRequest);
         List<PsnGame> games = this.psnGameRepository.fetchGamesWithCandidatesByIds(gameUuids.getContent());
 
         List<IgdbMappingDTO> gamesWithCandidates = games.stream()
                 .map(this.candidateMapper::toMappingDTO)
                 .toList();
-        long total = gameUuids.getTotalElements();
 
-        return SearchDTO.<IgdbMappingDTO>builder()
+        return PaginationDTO.<IgdbMappingDTO>builder()
                 .content(gamesWithCandidates)
-                .total(total)
+                .total(gameUuids.getTotalElements())
+                .page(page)
+                .size(size)
                 .build();
     }
 

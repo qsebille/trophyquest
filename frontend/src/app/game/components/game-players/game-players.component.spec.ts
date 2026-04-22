@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {GamePlayersComponent} from './game-players.component';
-import {initPagination} from '../../../core/api/dtos/pagination';
 
 describe('GamePlayersComponent', () => {
   let component: GamePlayersComponent;
@@ -15,7 +14,7 @@ describe('GamePlayersComponent', () => {
 
     fixture = TestBed.createComponent(GamePlayersComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('playersPagination', initPagination(0));
+    fixture.componentRef.setInput('playersPagination', null);
     fixture.detectChanges();
   });
 

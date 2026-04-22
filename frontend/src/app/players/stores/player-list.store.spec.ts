@@ -6,7 +6,7 @@ import {PlayerApiService} from '../../core/api/services/player-api.service';
 import {LoadingStatus} from "../../core/models/loading-status.enum";
 import {of} from "rxjs";
 import {PlayerSearchItem} from "../../core/api/dtos/player/player-search-item";
-import {SearchResult} from "../../core/api/dtos/search-result";
+import {Pagination} from '../../core/api/dtos/pagination';
 
 describe('PlayerListStore', () => {
   let store: PlayerListStore;
@@ -28,23 +28,23 @@ describe('PlayerListStore', () => {
 
   it('should be created', () => {
     expect(store).toBeTruthy();
-    expect(store.results()).toEqual([]);
+    expect(store.players()).toEqual([]);
     expect(store.total()).toEqual(0);
     expect(store.status()).toEqual(LoadingStatus.NONE);
   });
 
   it('should search for players', () => {
-    const mockSearchResult = {
+    const mockPagination = {
       content: [{id: 'player-1', pseudo: 'John Doe'} as PlayerSearchItem],
-      total: 10
-    } as SearchResult<PlayerSearchItem>;
-    mockedPlayerApiService.search.mockReturnValue(of(mockSearchResult));
+      total: 10,
+    } as Pagination<PlayerSearchItem>;
+    mockedPlayerApiService.search.mockReturnValue(of(mockPagination));
     mockedPlayerApiService.count.mockReturnValue(of(10));
 
     store.search();
 
     expect(mockedPlayerApiService.search).toHaveBeenCalledWith(0, 20);
-    expect(store.results()).toEqual(mockSearchResult.content);
+    expect(store.players()).toEqual(mockPagination.content);
     expect(store.total()).toEqual(10);
     expect(store.status()).toEqual(LoadingStatus.PARTIALLY_LOADED);
   });

@@ -1,14 +1,13 @@
 package fr.trophyquest.backend.api.controller;
 
-import fr.trophyquest.backend.api.dto.SearchDTO;
+import fr.trophyquest.backend.api.dto.PaginationDTO;
 import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
 import fr.trophyquest.backend.api.dto.game.GameSearchItemDTO;
 import fr.trophyquest.backend.api.dto.game.RecentGameDTO;
-import fr.trophyquest.backend.api.dto.player.GamePlayerDTO;
+import fr.trophyquest.backend.api.dto.player.PlayedGameDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteWithCountsDTO;
 import fr.trophyquest.backend.service.GameService;
 import fr.trophyquest.backend.service.RecentGameService;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,10 +35,10 @@ public class GameController {
     }
 
     @GetMapping("/search")
-    public Page<GameSearchItemDTO> search(
+    public PaginationDTO<GameSearchItemDTO> search(
             @RequestParam(name = "searchTerm", defaultValue = "") String searchTerm,
-            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
+            @RequestParam(name = "page", defaultValue = "0") int pageNumber,
+            @RequestParam(name = "size", defaultValue = "50") int pageSize
     ) {
         return this.gameService.search(searchTerm, pageNumber, pageSize);
     }
@@ -50,11 +49,11 @@ public class GameController {
     }
 
     @GetMapping("/recent/search")
-    public SearchDTO<RecentGameDTO> searchRecent(
-            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
+    public PaginationDTO<RecentGameDTO> searchRecent(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        return this.recentGameService.search(pageNumber, pageSize);
+        return this.recentGameService.search(page, size);
     }
 
     @GetMapping("{gameId}/details")
@@ -68,11 +67,11 @@ public class GameController {
     }
 
     @GetMapping("/{gameId}/players")
-    public SearchDTO<GamePlayerDTO> searchRecentPlayers(
+    public PaginationDTO<PlayedGameDTO> searchRecentPlayers(
             @PathVariable UUID gameId,
-            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        return this.gameService.searchRecentPlayers(gameId, pageNumber, pageSize);
+        return this.gameService.searchRecentPlayers(gameId, page, size);
     }
 }

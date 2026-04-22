@@ -1,11 +1,12 @@
 package fr.trophyquest.backend.service;
 
-import fr.trophyquest.backend.api.dto.SearchDTO;
+import fr.trophyquest.backend.api.dto.PaginationDTO;
 import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
 import fr.trophyquest.backend.api.dto.game.GameSearchItemDTO;
-import fr.trophyquest.backend.api.dto.player.GamePlayerDTO;
+import fr.trophyquest.backend.api.dto.player.PlayedGameDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteWithCountsDTO;
 import fr.trophyquest.backend.api.mapper.GameMapper;
+import fr.trophyquest.backend.api.mapper.PlayedGameMapper;
 import fr.trophyquest.backend.repository.GameRepository;
 import fr.trophyquest.backend.repository.PlayedGameRepository;
 import fr.trophyquest.backend.repository.PsnGameRepository;
@@ -28,6 +29,7 @@ public class GameService {
     private final TrophySuiteRepository trophySuiteRepository;
     private final PlayedGameRepository playedGameRepository;
     private final GameMapper gameMapper;
+    private final PlayedGameMapper playedGameMapper;
 
     public GameService(
             PsnGameRepository psnGameRepository,
@@ -35,7 +37,8 @@ public class GameService {
             RecentGameSearchItemRepository recentGameSearchItemRepository,
             TrophySuiteRepository trophySuiteRepository,
             PlayedGameRepository playedGameRepository,
-            GameMapper gameMapper
+            GameMapper gameMapper,
+            PlayedGameMapper playedGameMapper
     ) {
         this.psnGameRepository = psnGameRepository;
         this.gameRepository = gameRepository;
@@ -43,24 +46,27 @@ public class GameService {
         this.trophySuiteRepository = trophySuiteRepository;
         this.playedGameRepository = playedGameRepository;
         this.gameMapper = gameMapper;
+        this.playedGameMapper = playedGameMapper;
     }
 
     public long count() {
         return this.psnGameRepository.count();
     }
 
-    public Page<GameSearchItemDTO> search(String searchTerm, int pageNumber, int pageSize) {
-        Pageable pagination = PageRequest.of(pageNumber, pageSize, Sort.by(
+    public PaginationDTO<GameSearchItemDTO> search(String searchTerm, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(
                 Sort.Order.desc("nbPlayers"),
                 Sort.Order.asc("name")
         ));
         if (searchTerm == null || searchTerm.isEmpty()) {
-            return this.gameRepository.findAll(pagination)
+            Page<GameSearchItemDTO> result = this.gameRepository.findAll(pageable)
                     .map(this.gameMapper::toGameSearchItemDTO);
+            return new PaginationDTO<>(result);
         }
 
-        return this.gameRepository.findGamesByNameContainsIgnoreCase(searchTerm, pagination)
+        Page<GameSearchItemDTO> result = this.gameRepository.findGamesByNameContainsIgnoreCase(searchTerm, pageable)
                 .map(this.gameMapper::toGameSearchItemDTO);
+        return new PaginationDTO<>(result);
     }
 
     public long countRecentlyPlayed() {
@@ -77,13 +83,11 @@ public class GameService {
         return this.trophySuiteRepository.findByGameId(gameId).stream().toList();
     }
 
-    public SearchDTO<GamePlayerDTO> searchRecentPlayers(UUID gameId, int pageNumber, int pageSize) {
-        List<GamePlayerDTO> recentPlayers = this.playedGameRepository.fetchRecentPlayersForGame(gameId,
-                Pageable.ofSize(pageSize).withPage(pageNumber));
-        long count = this.playedGameRepository.countByIdGameId(gameId);
-        return SearchDTO.<GamePlayerDTO>builder()
-                .content(recentPlayers)
-                .total(count)
-                .build();
+    public PaginationDTO<PlayedGameDTO> searchRecentPlayers(UUID gameId, int page, int size) {
+        Pageable pagination = PageRequest.of(page, size, Sort.by("lastPlayedAt").descending());
+        Page<PlayedGameDTO> playedGames = this.playedGameRepository.findAllByIdGameId(gameId, pagination)
+                .map(this.playedGameMapper::toDTO);
+
+        return new PaginationDTO<>(playedGames);
     }
 }

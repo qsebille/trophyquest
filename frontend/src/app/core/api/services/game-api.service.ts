@@ -2,13 +2,12 @@ import {inject, Injectable} from '@angular/core';
 import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {SearchResult} from "../dtos/search-result";
 import {RecentGame} from "../dtos/game/recent-game";
 import {GameDetails} from '../dtos/game/game-details';
 import {TrophySuiteWithCounts} from '../dtos/trophy-suite/trophy-suite-with-counts';
 import {GamePlayer} from '../dtos/player/game-player';
 import {GameSearchItem} from '../dtos/game/game-search-item';
-import {Page} from '../dtos/page';
+import {Pagination} from '../dtos/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -25,19 +24,19 @@ export class GameApiService {
     return this.http.get<number>(`${this.apiUrl}/recent/count`);
   }
 
-  search(searchTerm: string, pageNumber: number, pageSize: number): Observable<Page<GameSearchItem>> {
+  search(searchTerm: string, page: number, size: number): Observable<Pagination<GameSearchItem>> {
     const params = new HttpParams()
       .set('searchTerm', searchTerm)
-      .set('pageNumber', pageNumber)
-      .set('pageSize', pageSize);
-    return this.http.get<Page<GameSearchItem>>(`${this.apiUrl}/search`, {params});
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<Pagination<GameSearchItem>>(`${this.apiUrl}/search`, {params});
   }
 
-  searchRecent(pageNumber: number, pageSize: number): Observable<SearchResult<RecentGame>> {
+  searchRecent(page: number, size: number): Observable<Pagination<RecentGame>> {
     const params = new HttpParams()
-      .set('pageNumber', pageNumber)
-      .set('pageSize', pageSize);
-    return this.http.get<SearchResult<RecentGame>>(`${this.apiUrl}/recent/search`, {params});
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<Pagination<RecentGame>>(`${this.apiUrl}/recent/search`, {params});
   }
 
   fetchDetails(gameId: string): Observable<GameDetails> {
@@ -48,11 +47,10 @@ export class GameApiService {
     return this.http.get<TrophySuiteWithCounts[]>(`${this.apiUrl}/${gameId}/trophy-suites`);
   }
 
-  fetchPlayers(gameId: string, pageNumber: number, pageSize: number): Observable<SearchResult<GamePlayer>> {
+  fetchPlayers(gameId: string, page: number, size: number): Observable<Pagination<GamePlayer>> {
     const params = new HttpParams()
-      .set('pageNumber', pageNumber)
-      .set('pageSize', pageSize);
-    return this.http.get<SearchResult<GamePlayer>>(`${this.apiUrl}/${gameId}/players`, {params});
+      .set('page', page)
+      .set('size', size);
+    return this.http.get<Pagination<GamePlayer>>(`${this.apiUrl}/${gameId}/players`, {params});
   }
-
 }

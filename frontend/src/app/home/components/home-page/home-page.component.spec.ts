@@ -34,7 +34,7 @@ describe('HomePageComponent', () => {
     } as MockedObject<HomeRecentPlayersStore>;
     mockRecentGameStore = {
       fetch: vi.fn(),
-      recentGames: vi.fn(),
+      games: vi.fn(),
       total: vi.fn(),
       status: vi.fn(),
     } as MockedObject<HomeRecentGamesStore>;

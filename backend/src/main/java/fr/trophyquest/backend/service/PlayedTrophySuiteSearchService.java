@@ -1,11 +1,9 @@
 package fr.trophyquest.backend.service;
 
-import fr.trophyquest.backend.api.dto.SearchDTO;
+import fr.trophyquest.backend.api.dto.PaginationDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.PlayedTrophySuiteSearchItemDTO;
 import fr.trophyquest.backend.api.mapper.PlayedTrophySuiteSearchItemMapper;
-import fr.trophyquest.backend.domain.entity.views.PlayedTrophySuiteSearchItem;
 import fr.trophyquest.backend.repository.PlayedTrophySuiteSearchItemRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -26,13 +24,10 @@ public class PlayedTrophySuiteSearchService {
         this.mapper = mapper;
     }
 
-    public SearchDTO<PlayedTrophySuiteSearchItemDTO> searchTrophySuitesOfPlayer(UUID playerId, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("lastPlayedAt").descending());
-        Page<PlayedTrophySuiteSearchItem> searchResult = repository.findAllByIdPlayerId(playerId, pageRequest);
+    public PaginationDTO<PlayedTrophySuiteSearchItemDTO> searchTrophySuitesOfPlayer(UUID playerId, int page, int size) {
+        Sort sort = Sort.by("lastPlayedAt").descending();
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-        return SearchDTO.<PlayedTrophySuiteSearchItemDTO>builder()
-                .content(searchResult.getContent().stream().map(mapper::toDTO).toList())
-                .total(searchResult.getTotalElements())
-                .build();
+        return new PaginationDTO<>(this.repository.findAllByIdPlayerId(playerId, pageRequest).map(this.mapper::toDTO));
     }
 }

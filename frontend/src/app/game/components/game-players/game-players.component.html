@@ -3,7 +3,7 @@
 <div class="d-flex flex-column gap-3 align-items-center">
 
   <div class="d-flex gap-2 flex-column w-75">
-    @for (player of playersPagination().content; track player) {
+    @for (player of content(); track player) {
       <div class="d-flex justify-content-between align-items-center w-100">
         <div class="d-flex player-block p-2 align-items-center justify-content-between w-75">
           <div class="d-flex gap-3 align-items-center">
@@ -22,10 +22,11 @@
     }
   </div>
 
-  <ngb-pagination [collectionSize]="collectionSize()"
-                  [pageSize]="pageSize()"
+  <ngb-pagination [collectionSize]="total()"
+                  [pageSize]="size()"
                   [page]="page()"
                   (pageChange)="onPlayerPageChange($event)"
+                  [hidden]="!hasMultiplePages()"
                   [directionLinks]="false"/>
 
 </div>

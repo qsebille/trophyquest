@@ -1,6 +1,6 @@
 package fr.trophyquest.backend.api.controller;
 
-import fr.trophyquest.backend.api.dto.SearchDTO;
+import fr.trophyquest.backend.api.dto.PaginationDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerSearchItemDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerStatsDTO;
@@ -15,7 +15,13 @@ import fr.trophyquest.backend.service.PsnFetcherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 
 import java.util.List;
@@ -45,11 +51,11 @@ public class PlayerController {
     }
 
     @GetMapping("/search")
-    public SearchDTO<PlayerSearchItemDTO> search(
-            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
+    public PaginationDTO<PlayerSearchItemDTO> search(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        return this.playerSearchService.searchPlayers(pageNumber, pageSize);
+        return this.playerSearchService.searchPlayers(page, size);
     }
 
     @GetMapping("/count")
@@ -78,21 +84,21 @@ public class PlayerController {
     }
 
     @GetMapping("{playerId}/trophy-suite/search")
-    public SearchDTO<PlayedTrophySuiteSearchItemDTO> SearchPlayedTrophySuites(
+    public PaginationDTO<PlayedTrophySuiteSearchItemDTO> SearchPlayedTrophySuites(
             @PathVariable UUID playerId,
-            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        return this.playedTrophySuiteSearchService.searchTrophySuitesOfPlayer(playerId, pageNumber, pageSize);
+        return this.playedTrophySuiteSearchService.searchTrophySuitesOfPlayer(playerId, page, size);
     }
 
     @GetMapping("{playerId}/trophy/search")
-    public SearchDTO<EarnedTrophySearchItemDTO> searchEarnedTrophies(
+    public PaginationDTO<EarnedTrophySearchItemDTO> searchEarnedTrophies(
             @PathVariable UUID playerId,
-            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        return this.playerService.searchEarnedTrophies(playerId, pageNumber, pageSize);
+        return this.playerService.searchEarnedTrophies(playerId, page, size);
     }
 
     @GetMapping("/pseudo/{pseudo}")
