@@ -4,7 +4,6 @@ import {TestBed} from '@angular/core/testing';
 
 import {ProfileTrophiesStore} from './profile-trophies-store.service';
 import {PlayerApiService} from "../../core/api/services/player-api.service";
-import {LoadingStatus} from "../../core/models/loading-status.enum";
 import {EarnedTrophySearchItem} from "../../core/api/dtos/trophy/earned-trophy-search-item";
 import {of} from "rxjs";
 import {Pagination} from '../../core/api/dtos/pagination';
@@ -26,7 +25,6 @@ describe('ProfileTrophiesStore', () => {
 
   it('should be created', () => {
     expect(store).toBeTruthy();
-    expect(store.status()).toEqual(LoadingStatus.NONE);
   });
 
   it('should search for player trophies', () => {
@@ -43,7 +41,6 @@ describe('ProfileTrophiesStore', () => {
     store.search(mockPlayerId);
 
     expect(mockedPlayerApiService.searchEarnedTrophies).toHaveBeenCalledWith(mockPlayerId, 0, 20);
-    expect(store.status()).toEqual(LoadingStatus.PARTIALLY_LOADED);
     expect(store.trophies()).toEqual(mockSearchResult.content);
   });
 });

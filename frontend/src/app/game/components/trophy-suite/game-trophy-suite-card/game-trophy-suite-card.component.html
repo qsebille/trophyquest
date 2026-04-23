@@ -6,7 +6,7 @@
   <div class="d-flex gap-2 w-50 align-items-center">
     <span class="fs-5">{{ trophySuite().title }}</span>
     @for (platform of trophySuite().platforms; track platform) {
-      <tq-platform-label [platform]="platform"/>
+      <div class="badge bg-primary">{{ platform }}</div>
     }
   </div>
   <div class="d-flex gap-2 w-25 align-items-center justify-content-center">

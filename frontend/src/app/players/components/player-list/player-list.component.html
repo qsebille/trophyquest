@@ -1,35 +1,31 @@
 <div class="card">
-    <div class="card-header">
-        <h5 class="card-title">List of players</h5>
-    </div>
-    <div class="card-body">
-        @if (isLoading()) {
-            <tq-spinner-container/>
-        } @else if (isError()) {
-            <div class="d-flex justify-content-center">
-                <tq-error-message (retry)="retrievePlayers.emit()"
-                                  class="w-75"
-                                  [hasRetryButton]="true"
-                                  [errorMessage]="'Failed to load players'"/>
-            </div>
-        } @else {
-            <div class="d-flex flex-column align-items-center">
-                @for (playerSearchItem of players(); track playerSearchItem.id; let i = $index) {
-                    @if (i !== 0) {
-                        <hr class="tq-horiz-separator"/>
-                    }
-                    <tq-player-card
-                            (clickOnPseudo)="clickOnPlayer.emit(playerSearchItem.id)"
-                            [playerSearchItem]="playerSearchItem"
-                            class="w-100"/>
-                }
-
-                @if (hasMorePlayersToLoad()) {
-                    <div (click)="loadMorePlayers.emit()" class="btn btn-link text-decoration-none">
-                        Load more players...
-                    </div>
-                }
-            </div>
+  <div class="card-header">
+    <h5 class="card-title">List of players</h5>
+  </div>
+  <div class="card-body">
+    <div class="d-flex flex-column align-items-center gap-1">
+      @if (isEmpty()) {
+        <div class="d-flex justify-content-center">
+          <span class="text-muted">No players</span>
+        </div>
+      } @else {
+        @for (playerSearchItem of players(); track playerSearchItem.id; let i = $index) {
+          @if (i !== 0) {
+            <hr class="tq-horiz-separator"/>
+          }
+          <tq-player-card
+            (clickOnPseudo)="onClickOnPlayer.emit(playerSearchItem.id)"
+            [playerSearchItem]="playerSearchItem"
+            class="w-100"/>
         }
+        <ngb-pagination class="mt-5"
+                        [collectionSize]="collectionSize()"
+                        [pageSize]="pageSize()"
+                        [page]="page()"
+                        (pageChange)="changePage($event)"
+                        [hidden]="hasOnePage()"
+                        [directionLinks]="false"/>
+      }
     </div>
+  </div>
 </div>

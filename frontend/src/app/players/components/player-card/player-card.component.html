@@ -1,27 +1,25 @@
 <div class="d-flex align-items-center justify-content-between">
-    <div class="d-flex align-items-center gap-3 w-25">
-        <img [height]="60" [width]="60" alt="" class="avatar" ngSrc="{{ playerSearchItem().avatar }}"/>
-        <div (click)="clickOnPseudo.emit()" class="text-primary fw-bold">
-            <a class="tq-link fs-6">{{ playerSearchItem().pseudo }}</a>
-        </div>
+  <div class="d-flex align-items-center gap-3 w-25">
+    <img alt="" class="avatar" [ngSrc]="playerSearchItem().avatar" height="50" width="50"/>
+    <div (click)="clickOnPseudo.emit()" class="text-primary fw-bold">
+      <a class="tq-link fs-6">{{ playerSearchItem().pseudo }}</a>
     </div>
-    <div class="d-flex gap-3 align-items-center w-75 justify-content-end">
-        <div class="d-flex flex-column align-items-center"
-             ngbTooltip="Total games played: {{playerSearchItem().totalPlayedGames}}">
-            <mat-icon fontIcon="sports_esports"></mat-icon>
-            <span class="fw-bold">{{ playerSearchItem().totalPlayedGames }}</span>
-        </div>
-        <div class="w-25 d-flex align-items-center">
-            @for (trophyType of trophyTypes; track trophyType) {
-                <div class="d-flex flex-column align-items-center w-25"
-                     ngbTooltip="Total earned {{ trophyType }} trophies: {{trophyCount()[trophyType]}}">
-                    @if (trophyCount()[trophyType] > 0) {
-                        <img [height]="24" [width]="24" [alt]="trophyType"
-                             ngSrc="/assets/icons/trophy-{{ trophyType }}.png"/>
-                        <span class="fw-bold">{{ trophyCount()[trophyType] }}</span>
-                    }
-                </div>
-            }
-        </div>
-    </div>
+  </div>
+  <div class="d-flex flex-column align-items-center w-25"
+       ngbTooltip="Total games played: {{playerSearchItem().totalPlayedGames}}">
+    <mat-icon fontIcon="sports_esports"></mat-icon>
+    <span class="fw-bold">{{ playerSearchItem().totalPlayedGames }}</span>
+  </div>
+  <div class="d-flex align-items-center w-50">
+    @for (trophyType of trophyTypes; track trophyType) {
+      <div class="d-flex flex-column align-items-center w-25"
+           ngbTooltip="Total earned {{ trophyType }} trophies: {{trophyCount()[trophyType]}}">
+        @if (trophyCount()[trophyType] > 0) {
+          <img [height]="24" [width]="24" [alt]="trophyType"
+               ngSrc="/assets/icons/trophy-{{ trophyType }}.png"/>
+          <span class="fw-bold">{{ trophyCount()[trophyType] }}</span>
+        }
+      </div>
+    }
+  </div>
 </div>

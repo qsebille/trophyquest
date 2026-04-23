@@ -1,61 +1,52 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
-import {LoadingStatus} from "../../core/models/loading-status.enum";
 import {PlayerApiService} from "../../core/api/services/player-api.service";
 import {PlayedTrophySuiteSearchElement} from "../../core/api/dtos/trophy-suite/played-trophy-suite-search-element";
 import {Pagination} from '../../core/api/dtos/pagination';
-import {map} from 'rxjs';
+import {finalize, map} from 'rxjs';
+import {NotificationService} from '../../core/services/notification.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileTrophySuiteListStoreService {
   private readonly playerApiService: PlayerApiService = inject(PlayerApiService);
+  private readonly notificationService = inject(NotificationService);
   private readonly pageSize = 20
   private readonly pagination = signal<Pagination<PlayedTrophySuiteSearchElement> | null>(null);
+  private readonly _isLoading = signal<boolean>(false);
   private readonly currentPage = computed(() => this.pagination()?.page ?? 0);
-  private readonly _status = signal<LoadingStatus>(LoadingStatus.NONE)
-
+  
   readonly trophySuites = computed(() => this.pagination()?.content ?? []);
-  readonly status = this._status.asReadonly()
+  readonly total = computed(() => this.pagination()?.total ?? 0);
+  readonly isLoading = this._isLoading.asReadonly()
 
   reset(): void {
     this.pagination.set(null);
-    this._status.set(LoadingStatus.NONE);
+    this._isLoading.set(false);
   }
 
-  search(playerId: string | null, pageNumber: number = this.currentPage()): void {
-    if (playerId == null) {
-      console.error('Invalid player id');
-      this._status.set(LoadingStatus.ERROR);
-      return;
-    }
-    if (this._status() === LoadingStatus.LOADING) return;
-    this._status.set(LoadingStatus.LOADING);
+  search(playerId: string, pageNumber: number = this.currentPage()): void {
+    if (this._isLoading()) return;
+    this._isLoading.set(true);
 
     this.playerApiService.searchPlayedTrophySuites(playerId, pageNumber, this.pageSize)
       .pipe(
         map(pagination => {
-          console.log(pagination);
           const content = [...this.trophySuites(), ...pagination.content];
           return {...pagination, content} as Pagination<PlayedTrophySuiteSearchElement>;
-        })
+        }),
+        finalize(() => this._isLoading.set(false))
       )
       .subscribe({
-        next: pagination => {
-          this.pagination.set(pagination);
-          const loadingStatus: LoadingStatus = pagination.content.length < pagination.total ?
-            LoadingStatus.PARTIALLY_LOADED :
-            LoadingStatus.FULLY_LOADED;
-          this._status.set(loadingStatus);
-        },
+        next: pagination => this.pagination.set(pagination),
         error: () => {
           console.error(`Failed loading trophy suites for player ${playerId}`);
-          this._status.set(LoadingStatus.ERROR);
+          this.notificationService.error('Failed to retrieve trophy suites for player');
         }
-      })
+      });
   }
 
-  loadMore(playerId: string | null): void {
+  loadMore(playerId: string): void {
     this.search(playerId, this.currentPage() + 1);
   }
 }

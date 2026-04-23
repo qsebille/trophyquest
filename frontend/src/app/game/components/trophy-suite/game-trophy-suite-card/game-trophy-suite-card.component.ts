@@ -1,6 +1,5 @@
 import {Component, input, output} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common";
-import {PlatformLabelComponent} from "../../../../core/components/platform-label/platform-label.component";
 import {TrophySuiteWithCounts} from '../../../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
 import {TrophyType} from '../../../../core/models/enums/trophy-type.enum';
 import {GameTrophySuiteDisplayMode} from '../../../models/game-trophy-suite-display-mode.enum';
@@ -8,8 +7,7 @@ import {GameTrophySuiteDisplayMode} from '../../../models/game-trophy-suite-disp
 @Component({
   selector: 'tq-game-trophy-suite-card',
   imports: [
-    NgOptimizedImage,
-    PlatformLabelComponent
+    NgOptimizedImage
   ],
   templateUrl: './game-trophy-suite-card.component.html',
   styleUrl: './game-trophy-suite-card.component.scss',

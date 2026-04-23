@@ -1,8 +1,6 @@
 <div class="container p-2">
   @if (isLoading()) {
     <tq-spinner-container/>
-  } @else if (hasFailedLoading()) {
-    <tq-error-message [errorMessage]="'Failed to load dashboard'"/>
   } @else {
     <div class="d-flex flex-column align-items-center gap-2">
       <tq-dashboard-igdb-mapping class="w-75" [stats]="igdbMappingStats()"/>

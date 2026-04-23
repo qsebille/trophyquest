@@ -5,6 +5,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {PlayerStats} from "../../../core/api/dtos/player/player-stats";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
 
 @Component({
   selector: 'tq-profile-summary',
@@ -14,6 +15,7 @@ import {MatButtonModule} from "@angular/material/button";
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
+    SpinnerContainerComponent,
   ],
   templateUrl: './profile-summary.component.html',
   styleUrl: './profile-summary.component.scss',
@@ -21,6 +23,7 @@ import {MatButtonModule} from "@angular/material/button";
 export class ProfileSummaryComponent {
   readonly player = input.required<Player>();
   readonly playerStats = input.required<PlayerStats>();
+  readonly isLoading = input.required<boolean>();
   readonly deletePlayer = output();
 
   readonly totalEarnedTrophies = computed(() => this.playerStats().totalPlatinumTrophies +

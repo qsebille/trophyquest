@@ -1,5 +1,7 @@
 @if (noTrophySuite()) {
-  <tq-error-message errorMessage="No trophy suite available for this game"/>
+  <div class="alert alert-danger">
+    No trophy suite available for this game
+  </div>
 } @else {
   @if (displayReturnToSuiteListButton()) {
     <button class="btn btn-link fs-10px" (click)="this.trophySuiteChange.emit(null)">

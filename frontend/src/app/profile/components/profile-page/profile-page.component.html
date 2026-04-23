@@ -1,30 +1,26 @@
 <div class="p-2 d-flex flex-column align-items-center container gap-2">
-  @if (isLoading()) {
-    <tq-spinner-container/>
-  } @else if (hasFailedLoading()) {
-    <tq-error-message class="w-40"
-                      [hasRetryButton]="true"
-                      (retry)="resetAndLoad()"
-                      [errorMessage]="'Failed to load profile information'"/>
-  } @else {
-    <tq-profile-summary class="w-50"
-                        [player]="summary()"
-                        [playerStats]="playerStats()"
-                        [style.animationDelay.ms]="100"
-                        (deletePlayer)="deletePlayer()"
-                        animate.enter="block-enter"/>
+  <tq-profile-summary class="w-50"
+                      [player]="summary()"
+                      [playerStats]="playerStats()"
+                      [isLoading]="isLoadingSummary()"
+                      [style.animationDelay.ms]="300"
+                      (deletePlayer)="deletePlayer()"
+                      animate.enter="block-enter"/>
 
-    <div class="d-flex w-100 gap-3" [style.animationDelay.ms]="200" animate.enter="block-enter">
-      <tq-profile-trophy-suite-list class="w-60"
-                                    [trophySuites]="trophySuites()"
-                                    [hasMoreTrophySuitesToLoad]="hasMoreTrophySuitesToLoad()"
-                                    (clickOnGame)="navigateToPlayerTrophySuitePage($event)"
-                                    (loadMoreGames)="loadMoreGames()"/>
+  <div class="d-flex w-100 gap-3">
+    <tq-profile-trophy-suite-list class="w-60"
+                                  [style.animationDelay.ms]="400" animate.enter="block-enter"
+                                  [trophySuites]="trophySuites()"
+                                  [total]="totalTrophySuites()"
+                                  [isLoading]="isLoadingTrophySuites()"
+                                  (clickOnGame)="navigateToPlayerTrophySuitePage($event)"
+                                  (loadMoreGames)="loadMoreGames()"/>
 
-      <tq-profile-trophy-list class="w-40"
-                              [trophies]="trophies()"
-                              [hasMoreTrophiesToLoad]="hasMoreTrophiesToLoad()"
-                              (loadMoreTrophies)="loadMoreTrophies()"/>
-    </div>
-  }
+    <tq-profile-trophy-list class="w-40"
+                            [style.animationDelay.ms]="400" animate.enter="block-enter"
+                            [trophies]="trophies()"
+                            [total]="totalTrophies()"
+                            [isLoading]="isLoadingTrophies()"
+                            (loadMoreTrophies)="loadMoreTrophies()"/>
+  </div>
 </div>
