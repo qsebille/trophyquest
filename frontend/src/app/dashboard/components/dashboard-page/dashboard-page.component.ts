@@ -1,17 +1,13 @@
-import {Component, computed, inject} from '@angular/core';
-import {DashboardIgdbStatsStoreService} from "../../stores/dashboard-igdb-stats-store.service";
-import {LoadingStatus} from "../../../core/models/loading-status.enum";
+import {Component, inject} from '@angular/core';
 import {SpinnerContainerComponent} from "../../../core/components/spinner-container/spinner-container.component";
-import {ErrorMessageComponent} from "../../../core/components/error-message/error-message.component";
 import {DashboardIgdbMappingComponent} from "../dashboard-igdb-mapping/dashboard-igdb-mapping.component";
 import {DashboardImageUploadComponent} from "../dashboard-image-upload/dashboard-image-upload.component";
-import {DashboardImageStatsStoreService} from "../../stores/dashboard-image-stats-store.service";
+import {DashboardService} from '../../services/dashboard.service';
 
 @Component({
   selector: 'tq-dashboard-page',
   imports: [
     SpinnerContainerComponent,
-    ErrorMessageComponent,
     DashboardIgdbMappingComponent,
     DashboardImageUploadComponent,
     DashboardImageUploadComponent
@@ -20,27 +16,14 @@ import {DashboardImageStatsStoreService} from "../../stores/dashboard-image-stat
   styleUrl: './dashboard-page.component.scss',
 })
 export class DashboardPageComponent {
-  private readonly dashboardIgdbStore: DashboardIgdbStatsStoreService = inject(DashboardIgdbStatsStoreService);
-  private readonly dashboardImageUploadStore: DashboardImageStatsStoreService = inject(DashboardImageStatsStoreService);
+  private readonly dashboardService = inject(DashboardService);
 
-  readonly isLoading = computed(() => {
-    return [
-      this.dashboardIgdbStore.loadingStatus(),
-      this.dashboardImageUploadStore.loadingStatus(),
-    ].some(status => status === LoadingStatus.LOADING)
-  });
-  readonly hasFailedLoading = computed(() => {
-    return [
-      this.dashboardIgdbStore.loadingStatus(),
-      this.dashboardImageUploadStore.loadingStatus(),
-    ].some(status => status === LoadingStatus.ERROR)
-  });
-  readonly igdbMappingStats = this.dashboardIgdbStore.igdbMappingStats;
-  readonly imageUploadStats = this.dashboardImageUploadStore.uploads;
+  readonly isLoading = this.dashboardService.isLoading;
+  readonly igdbMappingStats = this.dashboardService.igdbMappingStats;
+  readonly imageUploadStats = this.dashboardService.uploadStats;
 
 
   ngOnInit(): void {
-    this.dashboardIgdbStore.fetchStats();
-    this.dashboardImageUploadStore.loadStats();
+    this.dashboardService.fetchData();
   }
 }

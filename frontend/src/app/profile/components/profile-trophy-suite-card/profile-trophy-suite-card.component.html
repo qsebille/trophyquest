@@ -1,37 +1,37 @@
 <div [class.completed]="isCompleted()" class="trophy-card d-flex align-items-center justify-content-between p-2">
-    <div id="game-infos" class="d-flex align-items-center gap-3">
-        <img alt="" class="game-image" src="{{trophySuite().imageUrl}}"/>
+  <div id="game-infos" class="d-flex align-items-center gap-3">
+    <img alt="" class="game-image" src="{{trophySuite().imageUrl}}"/>
 
-        <div class="completion-spinner-wrapper" [class.completed]="isCompleted()">
-            <mat-spinner class="progress-spinner" [value]="completionScore()" diameter="50" mode="determinate"/>
-            <div class="spinner-center">
-                @if (isCompleted()) {
-                    <mat-icon class="check-icon">check</mat-icon>
-                } @else {
-                    {{ completionScore() | number:'1.0-0':'en-US' }}%
-                }
-            </div>
-        </div>
-
-        <div class="d-flex flex-column gap-1">
-            <a (click)="clickOnTitle.emit()" class="tq-link">{{ trophySuite().name }}</a>
-            <div class="d-flex gap-2">
-                @for (platform of trophySuite().platforms; track platform) {
-                    <tq-platform-label [platform]="platform"/>
-                }
-            </div>
-        </div>
-    </div>
-
-    <div id="game-trophies" class="d-flex align-items-center gap-3">
-        @for (trophyType of ['platinum', 'gold', 'silver', 'bronze']; track trophyType) {
-            @if (getEarnedTrophyByType(trophyType) > 0) {
-                <div class="d-flex flex-column align-items-center" id="{{trophyType}}-trophy-count">
-                    <img alt="{{trophyType}} trophy" class="trophy-icon" [width]="32" [height]="32"
-                         ngSrc="assets/icons/trophy-{{trophyType}}.png"/>
-                    <b>{{ getEarnedTrophyByType(trophyType) }}</b>
-                </div>
-            }
+    <div class="completion-spinner-wrapper" [class.completed]="isCompleted()">
+      <mat-spinner class="progress-spinner" [value]="completionScore()" diameter="50" mode="determinate"/>
+      <div class="spinner-center">
+        @if (isCompleted()) {
+          <mat-icon class="check-icon">check</mat-icon>
+        } @else {
+          {{ completionScore() | number:'1.0-0':'en-US' }}%
         }
+      </div>
     </div>
+
+    <div class="d-flex flex-column gap-1">
+      <a (click)="clickOnTitle.emit()" class="tq-link">{{ trophySuite().name }}</a>
+      <div class="d-flex gap-2">
+        @for (platform of trophySuite().platforms; track platform) {
+          <div class="badge bg-primary"> {{ platform }}</div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div id="game-trophies" class="d-flex align-items-center gap-3">
+    @for (trophyType of ['platinum', 'gold', 'silver', 'bronze']; track trophyType) {
+      @if (getEarnedTrophyByType(trophyType) > 0) {
+        <div class="d-flex flex-column align-items-center" id="{{trophyType}}-trophy-count">
+          <img alt="{{trophyType}} trophy" class="trophy-icon" [width]="32" [height]="32"
+               ngSrc="assets/icons/trophy-{{trophyType}}.png"/>
+          <b>{{ getEarnedTrophyByType(trophyType) }}</b>
+        </div>
+      }
+    }
+  </div>
 </div>

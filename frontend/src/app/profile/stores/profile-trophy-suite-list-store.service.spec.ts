@@ -3,7 +3,6 @@ import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {TestBed} from '@angular/core/testing';
 
 import {PlayerApiService} from "../../core/api/services/player-api.service";
-import {LoadingStatus} from "../../core/models/loading-status.enum";
 import {ProfileTrophySuiteListStoreService} from "./profile-trophy-suite-list-store.service";
 import {of} from "rxjs";
 import {PlayedTrophySuiteSearchElement} from "../../core/api/dtos/trophy-suite/played-trophy-suite-search-element";
@@ -26,7 +25,6 @@ describe('ProfileTrophySuiteListStoreService', () => {
 
   it('should be created', () => {
     expect(store).toBeTruthy();
-    expect(store.status()).toEqual(LoadingStatus.NONE);
   });
 
   it('should search for trophy suites played by player', () => {
@@ -43,7 +41,6 @@ describe('ProfileTrophySuiteListStoreService', () => {
     store.search(mockPlayerId);
 
     expect(mockedPlayerApiService.searchPlayedTrophySuites).toHaveBeenCalledWith(mockPlayerId, 0, 20);
-    expect(store.status()).toEqual(LoadingStatus.PARTIALLY_LOADED);
     expect(store.trophySuites()).toEqual(mockSearchResult.content);
   });
 });

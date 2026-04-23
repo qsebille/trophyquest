@@ -15,13 +15,15 @@
       <span class="igdb-mapping-page--block-title">List of games to validate</span>
     </ng-template>
     <ng-template tqBlockContent>
-      <tq-igdb-mapping-list [mappingList]="store.mappingList()"
-                            [status]="store.status()"
-                            [validationStatus]="store.validationStatus()"
-                            (rejectCandidates)="store.rejectCandidates($event.gameId)"
-                            (candidateAccepted)="store.validateCandidate($event.gameId, $event.candidateId)"/>
+      <tq-igdb-mapping-list [mappingList]="mappingList()"
+                            [isLoading]="isLoading()"
+                            [validationStatus]="validationStatus()"
+                            (rejectCandidates)="rejectCandidates($event.gameId)"
+                            (candidateAccepted)="validateCandidate($event.gameId, $event.candidateId)"/>
     </ng-template>
   </tq-block>
 
-  <a class="igdb-mapping-page--load-more-button" (click)="store.loadMore()">Load more</a>
+  <button class="btn btn-outline-light mb-2" [hidden]="!showLoadMoreButton()" (click)="loadMore()">
+    Load more
+  </button>
 </div>

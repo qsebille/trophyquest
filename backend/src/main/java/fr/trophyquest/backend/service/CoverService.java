@@ -2,9 +2,9 @@ package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.game.GameCoverImageDTO;
 import fr.trophyquest.backend.domain.entity.views.RecentGameSearchItem;
-import fr.trophyquest.backend.repository.GameImageRepository;
-import fr.trophyquest.backend.repository.PlayedTrophySuiteRepository;
 import fr.trophyquest.backend.repository.RecentGameSearchItemRepository;
+import fr.trophyquest.backend.repository.psn.PsnGameImageRepository;
+import fr.trophyquest.backend.repository.psn.PsnPlayedTrophySuiteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -13,13 +13,13 @@ import java.util.UUID;
 public class CoverService {
 
     private final RecentGameSearchItemRepository recentGameSearchItemRepository;
-    private final GameImageRepository gameImageRepository;
-    private final PlayedTrophySuiteRepository playedTrophySuiteRepository;
+    private final PsnGameImageRepository gameImageRepository;
+    private final PsnPlayedTrophySuiteRepository playedTrophySuiteRepository;
 
     public CoverService(
             RecentGameSearchItemRepository recentGameSearchItemRepository,
-            GameImageRepository gameImageRepository,
-            PlayedTrophySuiteRepository playedTrophySuiteRepository
+            PsnGameImageRepository gameImageRepository,
+            PsnPlayedTrophySuiteRepository playedTrophySuiteRepository
     ) {
         this.recentGameSearchItemRepository = recentGameSearchItemRepository;
         this.gameImageRepository = gameImageRepository;

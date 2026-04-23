@@ -1,13 +1,14 @@
 <div class="container pt-1 d-flex flex-column gap-3 align-items-center">
-  <tq-add-player-form [status]="playerListStore.addStatus()" class="w-40"
-                      (validateSuccess)="playerListStore.resetAddPlayerStatus();"
-                      (addPlayer)="playerListStore.addPlayer($event)"/>
+  <tq-add-player-form class="w-40"
+                      [isLoading]="isLoadingAddPlayerForm()"
+                      (onAddPlayer)="addPlayer($event)"/>
 
-  <tq-player-list [status]="playerListStore.status()"
-                  class="w-75"
-                  [players]="playerListStore.players()"
-                  [total]="playerListStore.total()"
-                  (retrievePlayers)="retrievePlayers()"
-                  (loadMorePlayers)="playerListStore.loadMore()"
-                  (clickOnPlayer)="navigator.goToProfilePage($event)"/>
+  @if (isLoadingPlayerList()) {
+    <tq-spinner-container/>
+  } @else {
+    <tq-player-list class="w-75"
+                    [paginatedPlayers]="paginatedPlayers()"
+                    (onClickOnPlayer)="goToProfilePage($event)"
+                    (onPageChange)="loadPageOfPlayers($event)"/>
+  }
 </div>

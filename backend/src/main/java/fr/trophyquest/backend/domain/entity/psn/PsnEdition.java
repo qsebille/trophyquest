@@ -1,0 +1,35 @@
+package fr.trophyquest.backend.domain.entity.psn;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Formula;
+
+import java.util.UUID;
+
+@Entity
+@Table(name = "psn_edition")
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class PsnEdition {
+
+    @Id
+    @EqualsAndHashCode.Include
+    private UUID id;
+
+    private String name;
+
+    @Formula("coalesce(aws_image_url, psn_image_url)")
+    private String image;
+
+    private String category;
+
+    private String service;
+
+    @Column(name = "psn_game_id")
+    private UUID gameId;
+
+}

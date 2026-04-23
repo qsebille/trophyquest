@@ -1,7 +1,6 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {GameCoverStoreService} from '../../../core/stores/game-cover-store.service';
 import {GameSearchService} from '../../services/game-search.service';
-import {LoadingStatus} from '../../../core/models/loading-status.enum';
 import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
 import {GameSearchListComponent} from '../game-search-list/game-search-list.component';
 
@@ -19,16 +18,11 @@ export class GameSearchPageComponent {
 
   readonly games = this.gameSearchService.games;
   readonly totalGames = this.gameSearchService.total;
-  readonly isLoading = computed(() => this.gameSearchService.loadStatus() === LoadingStatus.LOADING);
-  readonly isError = computed(() => this.gameSearchService.loadStatus() === LoadingStatus.ERROR);
+  readonly isLoading = this.gameSearchService.isLoading;
 
   ngOnInit(): void {
     this.gameCoverStoreService.refreshTopPlayedGame();
     this.gameSearchService.reset();
-    this.gameSearchService.searchAndAppend();
-  }
-
-  retryLoad(): void {
     this.gameSearchService.searchAndAppend();
   }
 

@@ -12,9 +12,10 @@
                                       (clickOnTitle)="clickOnGame.emit(trophySuite.id)"
                                       [trophySuite]="trophySuite"/>
       }
-      @if (hasMoreTrophySuitesToLoad()) {
-        <a (click)="loadMoreGames.emit()" class="btn btn-primary mt-2">Load more games...</a>
-      }
+      <div [hidden]="hideLoadMoreButton()" (click)="loadMoreGames.emit()" class="btn btn-primary mt-4">
+        Load more games...
+      </div>
+      <tq-spinner-container [hidden]="!isLoading()"/>
     </div>
   </div>
 </div>

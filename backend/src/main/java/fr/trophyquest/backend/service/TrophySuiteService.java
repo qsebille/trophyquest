@@ -2,8 +2,8 @@ package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.game.GameIdDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO;
-import fr.trophyquest.backend.repository.PsnGameRepository;
-import fr.trophyquest.backend.repository.TrophyRepository;
+import fr.trophyquest.backend.repository.psn.PsnGameRepository;
+import fr.trophyquest.backend.repository.psn.PsnTrophyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.UUID;
 @Service
 public class TrophySuiteService {
 
-    private final TrophyRepository trophyRepository;
+    private final PsnTrophyRepository trophyRepository;
     private final PsnGameRepository psnGameRepository;
 
     public TrophySuiteService(
-            TrophyRepository trophyRepository,
+            PsnTrophyRepository trophyRepository,
             PsnGameRepository psnGameRepository
     ) {
         this.trophyRepository = trophyRepository;

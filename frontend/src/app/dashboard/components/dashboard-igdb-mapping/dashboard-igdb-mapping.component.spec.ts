@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DashboardIgdbMappingComponent} from './dashboard-igdb-mapping.component';
-import {EMPTY_IGDB_MAPPING_STATS} from "../../../core/api/dtos/igdb/igdb-mapping-stats";
+import {emptyStats} from "../../../core/api/dtos/igdb/igdb-mapping-stats";
 
 describe('DashboardIgdbMappingComponent', () => {
   let component: DashboardIgdbMappingComponent;
@@ -13,7 +13,7 @@ describe('DashboardIgdbMappingComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardIgdbMappingComponent);
-    fixture.componentRef.setInput('stats', EMPTY_IGDB_MAPPING_STATS);
+    fixture.componentRef.setInput('stats', emptyStats);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

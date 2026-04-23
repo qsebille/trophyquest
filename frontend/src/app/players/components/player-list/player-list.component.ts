@@ -1,32 +1,34 @@
 import {Component, computed, input, output} from '@angular/core';
-import {ErrorMessageComponent} from "../../../core/components/error-message/error-message.component";
-import {LoadingStatus} from "../../../core/models/loading-status.enum";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {PlayerCardComponent} from "../player-card/player-card.component";
 import {PlayerSearchItem} from "../../../core/api/dtos/player/player-search-item";
-import {SpinnerContainerComponent} from "../../../core/components/spinner-container/spinner-container.component";
+import {Pagination} from '../../../core/api/dtos/pagination';
+import {NgbPagination} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tq-player-list',
   imports: [
-    ErrorMessageComponent,
-    MatProgressSpinnerModule,
     PlayerCardComponent,
-    SpinnerContainerComponent
+    NgbPagination
   ],
   templateUrl: './player-list.component.html',
   styleUrl: './player-list.component.scss',
 })
 export class PlayerListComponent {
-  readonly players = input<PlayerSearchItem[]>([]);
-  readonly total = input<number>(0);
-  readonly status = input<LoadingStatus>(LoadingStatus.NONE);
+  readonly paginatedPlayers = input.required<Pagination<PlayerSearchItem>>();
 
-  readonly retrievePlayers = output<void>();
-  readonly loadMorePlayers = output<void>();
-  readonly clickOnPlayer = output<string>();
+  readonly onClickOnPlayer = output<string>();
+  readonly onPageChange = output<number>();
 
-  readonly isLoading = computed(() => this.status() === LoadingStatus.LOADING);
-  readonly isError = computed(() => this.status() === LoadingStatus.ERROR);
-  readonly hasMorePlayersToLoad = computed(() => this.status() === LoadingStatus.PARTIALLY_LOADED);
+  changePage(page: number): void {
+    if (page !== this.page()) {
+      this.onPageChange.emit(page - 1);
+    }
+  }
+
+  readonly players = computed(() => this.paginatedPlayers()?.content);
+  readonly collectionSize = computed(() => this.paginatedPlayers()?.total);
+  readonly pageSize = computed(() => this.paginatedPlayers()?.size);
+  readonly page = computed(() => this.paginatedPlayers()?.page + 1);
+  readonly isEmpty = computed(() => this.players().length === 0);
+  readonly hasOnePage = computed(() => this.collectionSize() <= this.pageSize());
 }

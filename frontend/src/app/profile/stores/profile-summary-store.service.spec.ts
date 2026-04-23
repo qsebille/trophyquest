@@ -4,9 +4,8 @@ import {TestBed} from '@angular/core/testing';
 
 import {ProfileSummaryStore} from './profile-summary-store.service';
 import {PlayerApiService} from "../../core/api/services/player-api.service";
-import {EMPTY_PLAYER, Player} from "../../core/api/dtos/player/player";
+import {emptyPlayer, Player} from "../../core/api/dtos/player/player";
 import {of} from "rxjs";
-import {LoadingStatus} from "../../core/models/loading-status.enum";
 import {PlayerStats} from "../../core/api/dtos/player/player-stats";
 
 describe('ProfileSummaryStore', () => {
@@ -27,8 +26,7 @@ describe('ProfileSummaryStore', () => {
 
   it('should be created', () => {
     expect(store).toBeTruthy();
-    expect(store.player()).toEqual(EMPTY_PLAYER);
-    expect(store.status()).toEqual(LoadingStatus.NONE);
+    expect(store.player()).toEqual(emptyPlayer);
   });
 
   it('should load player summary when retrieve is called', () => {
@@ -49,6 +47,5 @@ describe('ProfileSummaryStore', () => {
 
     expect(store.player()).toEqual(mockPlayer);
     expect(store.playerStats()).toEqual(mockPlayerStats);
-    expect(store.status()).toEqual(LoadingStatus.FULLY_LOADED);
   });
 });
