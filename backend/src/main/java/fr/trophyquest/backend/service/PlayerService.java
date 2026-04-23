@@ -6,12 +6,12 @@ import fr.trophyquest.backend.api.dto.player.PlayerStatsDTO;
 import fr.trophyquest.backend.api.dto.player.RecentPlayerTrophiesItemDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophySearchItemDTO;
 import fr.trophyquest.backend.api.mapper.PlayerMapper;
-import fr.trophyquest.backend.domain.entity.Player;
+import fr.trophyquest.backend.domain.entity.psn.PsnPlayer;
 import fr.trophyquest.backend.domain.projection.RecentPlayerRow;
 import fr.trophyquest.backend.exceptions.PlayerNotFoundException;
-import fr.trophyquest.backend.repository.EarnedTrophyRepository;
-import fr.trophyquest.backend.repository.PlayedTrophySuiteRepository;
 import fr.trophyquest.backend.repository.PlayerRepository;
+import fr.trophyquest.backend.repository.psn.PsnEarnedTrophyRepository;
+import fr.trophyquest.backend.repository.psn.PsnPlayedTrophySuiteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,15 +30,15 @@ import java.util.UUID;
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
-    private final PlayedTrophySuiteRepository playedTrophySuiteRepository;
-    private final EarnedTrophyRepository earnedTrophyRepository;
+    private final PsnPlayedTrophySuiteRepository playedTrophySuiteRepository;
+    private final PsnEarnedTrophyRepository earnedTrophyRepository;
 
     private final PlayerMapper playerMapper;
 
     public PlayerService(
             PlayerRepository playerRepository,
-            PlayedTrophySuiteRepository playedTrophySuiteRepository,
-            EarnedTrophyRepository earnedTrophyRepository,
+            PsnPlayedTrophySuiteRepository playedTrophySuiteRepository,
+            PsnEarnedTrophyRepository earnedTrophyRepository,
             PlayerMapper playerMapper
     ) {
         this.playerRepository = playerRepository;
@@ -57,13 +57,13 @@ public class PlayerService {
     }
 
     public PlayerDTO fetch(UUID id) {
-        Player player = this.playerRepository.findById(id).orElseThrow();
+        PsnPlayer player = this.playerRepository.findById(id).orElseThrow();
         return this.playerMapper.toDTO(player);
     }
 
     @Transactional
     public void delete(UUID id) {
-        Player player = this.playerRepository.findById(id).orElseThrow();
+        PsnPlayer player = this.playerRepository.findById(id).orElseThrow();
         this.playerRepository.delete(player);
     }
 
@@ -78,8 +78,8 @@ public class PlayerService {
     public PaginationDTO<EarnedTrophySearchItemDTO> searchEarnedTrophies(UUID playerId, int pageNumber, int pageSize) {
         Sort sort = Sort.by(Sort.Order.desc("earnedAt"));
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
-        
-        Player player = this.playerRepository.findById(playerId).orElseThrow(() -> new PlayerNotFoundException(playerId));
+
+        PsnPlayer player = this.playerRepository.findById(playerId).orElseThrow(() -> new PlayerNotFoundException(playerId));
         Page<EarnedTrophySearchItemDTO> result = this.earnedTrophyRepository.searchEarnedTrophiesByPlayer(player.getId(), pageRequest);
         return new PaginationDTO<>(result);
     }

@@ -1,6 +1,6 @@
-package fr.trophyquest.backend.domain.entity;
+package fr.trophyquest.backend.domain.entity.psn;
 
-import fr.trophyquest.backend.domain.entity.embedded.EarnedTrophyId;
+import fr.trophyquest.backend.domain.entity.psn.embedded.PsnPlayedGameId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,29 +14,31 @@ import java.time.Instant;
 import java.util.Objects;
 
 @Entity
-@Table(name = "psn_earned_trophy")
+@Table(name = "psn_played_game")
 @Data
-public class EarnedTrophy {
+public class PsnPlayedGame {
 
     @EmbeddedId
-    private EarnedTrophyId id;
-
-    private Instant earnedAt;
+    private PsnPlayedGameId id;
 
     @MapsId("playerId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "player_id", nullable = false)
-    private Player player;
+    private PsnPlayer player;
 
-    @MapsId("trophyId")
+    @MapsId("gameId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "trophy_id", nullable = false)
-    private Trophy trophy;
+    @JoinColumn(name = "game_id", nullable = false)
+    private PsnGame game;
+
+    private Instant firstPlayedAt;
+
+    private Instant lastPlayedAt;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EarnedTrophy that)) return false;
+        if (!(o instanceof PsnPlayedGame that)) return false;
         return Objects.equals(id, that.id);
     }
 

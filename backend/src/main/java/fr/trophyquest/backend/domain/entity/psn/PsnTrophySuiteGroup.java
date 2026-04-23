@@ -1,4 +1,4 @@
-package fr.trophyquest.backend.domain.entity;
+package fr.trophyquest.backend.domain.entity.psn;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Table(name = "psn_trophy_suite_group")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class TrophySuiteGroup {
+public class PsnTrophySuiteGroup {
 
     @Id
     @EqualsAndHashCode.Include

@@ -1,4 +1,4 @@
-package fr.trophyquest.backend.domain.entity;
+package fr.trophyquest.backend.domain.entity.psn;
 
 import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;

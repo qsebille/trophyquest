@@ -1,7 +1,7 @@
-package fr.trophyquest.backend.repository;
+package fr.trophyquest.backend.repository.psn;
 
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO;
-import fr.trophyquest.backend.domain.entity.PsnGame;
+import fr.trophyquest.backend.domain.entity.psn.PsnGame;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -37,8 +37,8 @@ public interface PsnGameRepository extends JpaRepository<PsnGame, UUID> {
     @Query("""
                 SELECT g.id FROM PsnGame g WHERE g.id = (
                     SELECT DISTINCT e.gameId
-                    FROM EditionTrophySuite ets
-                    JOIN Edition e ON e.id = ets.id.editionId
+                    FROM PsnEditionTrophySuite ets
+                    JOIN PsnEdition e ON e.id = ets.id.editionId
                     WHERE ets.id.trophySuiteId = :trophySuiteId
                 )
             """)

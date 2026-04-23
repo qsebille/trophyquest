@@ -1,4 +1,4 @@
-package fr.trophyquest.backend.domain.entity;
+package fr.trophyquest.backend.domain.entity.psn;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "psn_trophy_suite")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class TrophySuite {
+public class PsnTrophySuite {
 
     @Id
     @EqualsAndHashCode.Include
@@ -35,9 +35,9 @@ public class TrophySuite {
     private String awsImageUrl;
 
     @OneToMany(mappedBy = "trophySuite")
-    private Set<EditionTrophySuite> editions = new HashSet<>();
+    private Set<PsnEditionTrophySuite> editions = new HashSet<>();
 
     @OneToMany(mappedBy = "trophySuite")
-    private Set<Trophy> trophies = new HashSet<>();
+    private Set<PsnTrophy> trophies = new HashSet<>();
 
 }

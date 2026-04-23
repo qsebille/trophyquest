@@ -1,4 +1,4 @@
-package fr.trophyquest.backend.domain.entity;
+package fr.trophyquest.backend.domain.entity.psn;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Table(name = "psn_edition")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Edition {
+public class PsnEdition {
 
     @Id
     @EqualsAndHashCode.Include

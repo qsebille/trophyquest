@@ -3,10 +3,10 @@ package fr.trophyquest.backend.api.mapper;
 import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
 import fr.trophyquest.backend.api.dto.game.GameImageDTO;
 import fr.trophyquest.backend.api.dto.game.GameSearchItemDTO;
-import fr.trophyquest.backend.domain.entity.PsnGame;
-import fr.trophyquest.backend.domain.entity.PsnGameImage;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbImage;
+import fr.trophyquest.backend.domain.entity.psn.PsnGame;
+import fr.trophyquest.backend.domain.entity.psn.PsnGameImage;
 import fr.trophyquest.backend.domain.entity.views.Game;
 import org.springframework.stereotype.Component;
 

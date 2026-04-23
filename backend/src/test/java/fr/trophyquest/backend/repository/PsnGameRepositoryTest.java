@@ -2,13 +2,18 @@ package fr.trophyquest.backend.repository;
 
 import fr.trophyquest.backend.IntegrationTestBase;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO;
-import fr.trophyquest.backend.domain.entity.PsnGame;
-import fr.trophyquest.backend.domain.entity.PsnGameImage;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbImage;
 import fr.trophyquest.backend.domain.entity.igdb.embedded.IgdbCandidateId;
 import fr.trophyquest.backend.domain.entity.igdb.embedded.IgdbImageId;
+import fr.trophyquest.backend.domain.entity.psn.PsnGame;
+import fr.trophyquest.backend.domain.entity.psn.PsnGameImage;
+import fr.trophyquest.backend.repository.igdb.IgdbCandidateRepository;
+import fr.trophyquest.backend.repository.igdb.IgdbGameRepository;
+import fr.trophyquest.backend.repository.igdb.IgdbImageRepository;
+import fr.trophyquest.backend.repository.psn.PsnGameImageRepository;
+import fr.trophyquest.backend.repository.psn.PsnGameRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +41,7 @@ public class PsnGameRepositoryTest extends IntegrationTestBase {
     private IgdbCandidateRepository igdbCandidateRepository;
 
     @Autowired
-    private GameImageRepository gameImageRepository;
+    private PsnGameImageRepository gameImageRepository;
 
     @Autowired
     private IgdbImageRepository igdbImageRepository;

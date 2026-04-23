@@ -1,6 +1,6 @@
 package fr.trophyquest.backend.domain.entity.views;
 
-import fr.trophyquest.backend.domain.entity.embedded.PlayedTrophySuiteId;
+import fr.trophyquest.backend.domain.entity.psn.embedded.PsnPlayedTrophySuiteId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -18,7 +18,7 @@ import java.util.Objects;
 public class PlayedTrophySuiteSearchItem {
 
     @EmbeddedId
-    private PlayedTrophySuiteId id;
+    private PsnPlayedTrophySuiteId id;
 
     private String trophySuiteName;
 

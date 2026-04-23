@@ -1,7 +1,7 @@
-package fr.trophyquest.backend.repository;
+package fr.trophyquest.backend.repository.psn;
 
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteWithCountsDTO;
-import fr.trophyquest.backend.domain.entity.TrophySuite;
+import fr.trophyquest.backend.domain.entity.psn.PsnTrophySuite;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface TrophySuiteRepository extends JpaRepository<TrophySuite, UUID> {
+public interface PsnTrophySuiteRepository extends JpaRepository<PsnTrophySuite, UUID> {
     long countTrophySuiteByAwsImageUrlIsNotNull();
 
     long countTrophySuiteByAwsImageUrlIsNull();
@@ -26,12 +26,12 @@ public interface TrophySuiteRepository extends JpaRepository<TrophySuite, UUID> 
                 SUM(CASE WHEN t.trophyType = 'silver' THEN 1 ELSE 0 END),
                 SUM(CASE WHEN t.trophyType = 'bronze' THEN 1 ELSE 0 END)
             )
-            FROM TrophySuite ts
+            FROM PsnTrophySuite ts
             LEFT JOIN ts.trophies t
             WHERE EXISTS (
                 SELECT 1
                 FROM ts.editions e
-                JOIN Edition ed ON ed.id = e.id.editionId
+                JOIN PsnEdition ed ON ed.id = e.id.editionId
                 WHERE ed.gameId = :gameId
                     AND e.edition = ed
             )

@@ -1,4 +1,4 @@
-package fr.trophyquest.backend.domain.entity;
+package fr.trophyquest.backend.domain.entity.psn;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "psn_player")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Player {
+public class PsnPlayer {
 
     @Id
     @EqualsAndHashCode.Include
@@ -31,15 +31,15 @@ public class Player {
     private String awsAvatarUrl;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlayedGame> playedGames = new ArrayList<>();
+    private List<PsnPlayedGame> playedGames = new ArrayList<>();
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlayedTrophySuite> playedTrophySuites = new ArrayList<>();
+    private List<PsnPlayedTrophySuite> playedTrophySuites = new ArrayList<>();
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlayedEdition> playedEditions = new ArrayList<>();
+    private List<PsnPlayedEdition> playedEditions = new ArrayList<>();
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EarnedTrophy> earnedTrophies = new ArrayList<>();
+    private List<PsnEarnedTrophy> earnedTrophies = new ArrayList<>();
 
 }

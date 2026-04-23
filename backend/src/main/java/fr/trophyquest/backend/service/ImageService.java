@@ -1,27 +1,27 @@
 package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.stats.ImageUploadStats;
-import fr.trophyquest.backend.repository.GameImageRepository;
-import fr.trophyquest.backend.repository.IgdbImageRepository;
 import fr.trophyquest.backend.repository.PlayerRepository;
-import fr.trophyquest.backend.repository.TrophyRepository;
-import fr.trophyquest.backend.repository.TrophySuiteRepository;
+import fr.trophyquest.backend.repository.igdb.IgdbImageRepository;
+import fr.trophyquest.backend.repository.psn.PsnGameImageRepository;
+import fr.trophyquest.backend.repository.psn.PsnTrophyRepository;
+import fr.trophyquest.backend.repository.psn.PsnTrophySuiteRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ImageService {
-    private final GameImageRepository gameImageRepository;
+    private final PsnGameImageRepository gameImageRepository;
     private final IgdbImageRepository igdbImageRepository;
-    private final TrophySuiteRepository trophySuiteRepository;
-    private final TrophyRepository trophyRepository;
+    private final PsnTrophySuiteRepository trophySuiteRepository;
+    private final PsnTrophyRepository trophyRepository;
     private final PlayerRepository playerRepository;
 
 
     public ImageService(
-            GameImageRepository gameImageRepository,
+            PsnGameImageRepository gameImageRepository,
             IgdbImageRepository igdbImageRepository,
-            TrophySuiteRepository trophySuiteRepository,
-            TrophyRepository trophyRepository,
+            PsnTrophySuiteRepository trophySuiteRepository,
+            PsnTrophyRepository trophyRepository,
             PlayerRepository playerRepository
     ) {
         this.gameImageRepository = gameImageRepository;

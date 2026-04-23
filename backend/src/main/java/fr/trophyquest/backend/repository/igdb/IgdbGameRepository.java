@@ -1,4 +1,4 @@
-package fr.trophyquest.backend.repository;
+package fr.trophyquest.backend.repository.igdb;
 
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import org.springframework.data.jpa.repository.JpaRepository;

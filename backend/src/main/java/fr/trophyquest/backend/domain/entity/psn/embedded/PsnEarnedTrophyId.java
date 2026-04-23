@@ -1,4 +1,4 @@
-package fr.trophyquest.backend.domain.entity.embedded;
+package fr.trophyquest.backend.domain.entity.psn.embedded;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Embeddable
 @Data
-public class EarnedTrophyId implements java.io.Serializable {
+public class PsnEarnedTrophyId implements java.io.Serializable {
 
     @Column(name = "player_id")
     private UUID playerId;
@@ -20,7 +20,7 @@ public class EarnedTrophyId implements java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EarnedTrophyId that)) return false;
+        if (!(o instanceof PsnEarnedTrophyId that)) return false;
         return Objects.equals(playerId, that.playerId) && Objects.equals(trophyId, that.trophyId);
     }
 

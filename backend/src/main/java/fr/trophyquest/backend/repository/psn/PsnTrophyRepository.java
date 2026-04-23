@@ -1,7 +1,7 @@
-package fr.trophyquest.backend.repository;
+package fr.trophyquest.backend.repository.psn;
 
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO;
-import fr.trophyquest.backend.domain.entity.Trophy;
+import fr.trophyquest.backend.domain.entity.psn.PsnTrophy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
+public interface PsnTrophyRepository extends JpaRepository<PsnTrophy, UUID> {
 
     @Query(value = """
             select new fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO(
@@ -25,7 +25,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                 t.trophySuiteGroup.name,
                 null
             )
-            from Trophy t
+            from PsnTrophy t
                 left join t.trophySuiteGroup
             where t.trophySuite.id = :trophySuiteId
             order by t.rank asc
@@ -45,7 +45,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                t.trophySuiteGroup.name,
                et.earnedAt
             )
-            from Trophy t
+            from PsnTrophy t
                 left join t.earnedBy et on et.player.id = :playerId
                 left join t.trophySuiteGroup
             where t.trophySuite.id = :trophySuiteId

@@ -1,6 +1,6 @@
 package fr.trophyquest.backend.repository;
 
-import fr.trophyquest.backend.domain.entity.Player;
+import fr.trophyquest.backend.domain.entity.psn.PsnPlayer;
 import fr.trophyquest.backend.domain.projection.RecentPlayerRow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PlayerRepository extends JpaRepository<Player, UUID> {
+public interface PlayerRepository extends JpaRepository<PsnPlayer, UUID> {
 
     @Query(value = """
             with active as (select et.player_id, count(*) as trophy_count
@@ -53,7 +53,7 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
             Instant limitDate
     );
 
-    Optional<Player> findByPseudo(String pseudo);
+    Optional<PsnPlayer> findByPseudo(String pseudo);
 
     long countPlayerByAwsAvatarUrlIsNotNull();
 

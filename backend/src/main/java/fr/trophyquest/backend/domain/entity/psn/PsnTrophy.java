@@ -1,4 +1,4 @@
-package fr.trophyquest.backend.domain.entity;
+package fr.trophyquest.backend.domain.entity.psn;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Table(name = "psn_trophy")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Trophy {
+public class PsnTrophy {
 
     @Id
     @EqualsAndHashCode.Include
@@ -44,14 +44,14 @@ public class Trophy {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trophy_suite_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private TrophySuite trophySuite;
+    private PsnTrophySuite trophySuite;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trophy_suite_group_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private TrophySuiteGroup trophySuiteGroup;
+    private PsnTrophySuiteGroup trophySuiteGroup;
 
     @OneToMany(mappedBy = "trophy")
-    private Set<EarnedTrophy> earnedBy = new HashSet<>();
+    private Set<PsnEarnedTrophy> earnedBy = new HashSet<>();
 
 }

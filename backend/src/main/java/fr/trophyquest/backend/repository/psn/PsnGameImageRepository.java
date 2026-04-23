@@ -1,7 +1,7 @@
-package fr.trophyquest.backend.repository;
+package fr.trophyquest.backend.repository.psn;
 
 import fr.trophyquest.backend.api.dto.game.GameCoverImageDTO;
-import fr.trophyquest.backend.domain.entity.PsnGameImage;
+import fr.trophyquest.backend.domain.entity.psn.PsnGameImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface GameImageRepository extends JpaRepository<PsnGameImage, UUID> {
+public interface PsnGameImageRepository extends JpaRepository<PsnGameImage, UUID> {
 
     @Query(value = """
             SELECT new fr.trophyquest.backend.api.dto.game.GameCoverImageDTO(i.id, i.url)

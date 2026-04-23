@@ -1,4 +1,4 @@
-package fr.trophyquest.backend.domain.entity;
+package fr.trophyquest.backend.domain.entity.psn;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

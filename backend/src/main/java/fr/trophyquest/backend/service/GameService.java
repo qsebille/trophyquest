@@ -8,10 +8,10 @@ import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteWithCountsDTO;
 import fr.trophyquest.backend.api.mapper.GameMapper;
 import fr.trophyquest.backend.api.mapper.PlayedGameMapper;
 import fr.trophyquest.backend.repository.GameRepository;
-import fr.trophyquest.backend.repository.PlayedGameRepository;
-import fr.trophyquest.backend.repository.PsnGameRepository;
 import fr.trophyquest.backend.repository.RecentGameSearchItemRepository;
-import fr.trophyquest.backend.repository.TrophySuiteRepository;
+import fr.trophyquest.backend.repository.psn.PsnGameRepository;
+import fr.trophyquest.backend.repository.psn.PsnPlayedGameRepository;
+import fr.trophyquest.backend.repository.psn.PsnTrophySuiteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +26,8 @@ public class GameService {
     private final PsnGameRepository psnGameRepository;
     private final GameRepository gameRepository;
     private final RecentGameSearchItemRepository recentGameSearchItemRepository;
-    private final TrophySuiteRepository trophySuiteRepository;
-    private final PlayedGameRepository playedGameRepository;
+    private final PsnTrophySuiteRepository trophySuiteRepository;
+    private final PsnPlayedGameRepository playedGameRepository;
     private final GameMapper gameMapper;
     private final PlayedGameMapper playedGameMapper;
 
@@ -35,8 +35,8 @@ public class GameService {
             PsnGameRepository psnGameRepository,
             GameRepository gameRepository,
             RecentGameSearchItemRepository recentGameSearchItemRepository,
-            TrophySuiteRepository trophySuiteRepository,
-            PlayedGameRepository playedGameRepository,
+            PsnTrophySuiteRepository trophySuiteRepository,
+            PsnPlayedGameRepository playedGameRepository,
             GameMapper gameMapper,
             PlayedGameMapper playedGameMapper
     ) {
