@@ -3,7 +3,7 @@ import {GamePageStoreService} from './game-page-store.service';
 import {GameApiService} from '../../core/api/services/game-api.service';
 import {TrophySuiteApiService} from '../../core/api/services/trophy-suite-api.service';
 import {of, throwError} from 'rxjs';
-import {EarnedTrophy} from '../../core/api/dtos/trophy/earned-trophy';
+import {Trophy} from '../../core/api/dtos/trophy/trophy';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 
 describe('GamePageStoreService', () => {
@@ -39,7 +39,7 @@ describe('GamePageStoreService', () => {
     const trophySuiteId1 = 'suite-1';
     const trophySuiteId2 = 'suite-2';
     const playerId = 'player-1';
-    const trophies: EarnedTrophy[] = [{id: 't1', name: 'Trophy 1'} as unknown as EarnedTrophy];
+    const trophies: Trophy[] = [{id: 't1', name: 'Trophy 1'} as unknown as Trophy];
 
     // First call fails
     trophySuiteApiServiceMock.fetchTrophies.mockReturnValueOnce(throwError(() => new Error('API Error')));

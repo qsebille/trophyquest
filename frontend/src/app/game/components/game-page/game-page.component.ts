@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {GameCoverStoreService} from '../../../core/stores/game-cover-store.service';
+import {BackgroundImageService} from '../../../core/stores/background-image.service';
 import {NgbNav, NgbNavContent, NgbNavItem, NgbNavLinkButton, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
 import {GamePageStoreService} from '../../stores/game-page-store.service';
 import {GameDetailsComponent} from '../game-details/game-details.component';
@@ -26,12 +26,12 @@ import {GameTrophySuiteListComponent} from '../trophy-suite/game-trophy-suite-li
 })
 export class GamePageComponent {
   private readonly gameId: string;
-  private readonly route: ActivatedRoute = inject(ActivatedRoute);
-  private readonly router: Router = inject(Router);
-  private readonly location: Location = inject(Location);
-  private readonly gameCoverStoreService: GameCoverStoreService = inject(GameCoverStoreService);
-  private readonly store: GamePageStoreService = inject(GamePageStoreService);
-  readonly navigator: NavigatorService = inject(NavigatorService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly backgroundImageService = inject(BackgroundImageService);
+  private readonly store = inject(GamePageStoreService);
+  private readonly navigator = inject(NavigatorService);
 
   selectedTab = 'overview';
   selectedTrophySuiteId: string | null = null;
@@ -52,7 +52,7 @@ export class GamePageComponent {
     this.selectedTrophySuiteId = queryParams.get('trophySuiteId');
     this.selectedPlayerId = queryParams.get('playerId');
 
-    this.gameCoverStoreService.useGameCover(this.gameId);
+    this.backgroundImageService.useGameBackground(this.gameId);
     this.store.fetchDetails(this.gameId);
     this.store.fetchPlayers(this.gameId, 0);
     if (!!this.selectedTrophySuiteId) {
@@ -98,6 +98,10 @@ export class GamePageComponent {
     this.selectedTab = 'trophies';
     this.updateUrl();
     this.refreshTrophies(this.selectedTrophySuiteId);
+  }
+
+  goToProfilePage(playerId: string): void {
+    this.navigator.goToProfilePage(playerId);
   }
 
   private refreshTrophies(trophySuiteId: string | null): void {

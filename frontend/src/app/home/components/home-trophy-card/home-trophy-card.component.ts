@@ -1,6 +1,6 @@
 import {Component, input, output} from '@angular/core';
 import {DatePipe, NgOptimizedImage} from '@angular/common';
-import {EarnedTrophy} from "../../../core/api/dtos/trophy/earned-trophy";
+import {HomeActivePlayerTrophy} from '../../models/home-active-player-trophy';
 
 @Component({
   selector: 'tq-home-trophy-card',
@@ -12,6 +12,6 @@ import {EarnedTrophy} from "../../../core/api/dtos/trophy/earned-trophy";
   styleUrl: './home-trophy-card.component.scss',
 })
 export class HomeTrophyCardComponent {
-  readonly trophy = input.required<EarnedTrophy>();
-  readonly clickOnGameTitle = output();
+  readonly trophy = input.required<HomeActivePlayerTrophy>();
+  readonly onClickOnGameTitle = output();
 }

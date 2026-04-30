@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {GameCoverStoreService} from '../../../core/stores/game-cover-store.service';
+import {BackgroundImageService} from '../../../core/stores/background-image.service';
 import {GameSearchService} from '../../services/game-search.service';
 import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
 import {GameSearchListComponent} from '../game-search-list/game-search-list.component';
@@ -13,7 +13,7 @@ import {GameSearchListComponent} from '../game-search-list/game-search-list.comp
   styleUrl: './game-search-page.component.scss',
 })
 export class GameSearchPageComponent {
-  private readonly gameCoverStoreService = inject(GameCoverStoreService);
+  private readonly backgroundImageService = inject(BackgroundImageService);
   private readonly gameSearchService = inject(GameSearchService);
 
   readonly games = this.gameSearchService.games;
@@ -21,7 +21,7 @@ export class GameSearchPageComponent {
   readonly isLoading = this.gameSearchService.isLoading;
 
   ngOnInit(): void {
-    this.gameCoverStoreService.refreshTopPlayedGame();
+    this.backgroundImageService.useTopPlayedGame();
     this.gameSearchService.reset();
     this.gameSearchService.searchAndAppend();
   }

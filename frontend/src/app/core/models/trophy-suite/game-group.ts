@@ -1,7 +1,7 @@
-import {EarnedTrophy} from "../../api/dtos/trophy/earned-trophy";
+import {Trophy} from "../../api/dtos/trophy/trophy";
 
 export interface GameGroup {
-    groupId: string;
-    groupName: string;
-    trophies: EarnedTrophy[];
+  groupId: string;
+  groupName: string;
+  trophies: Trophy[];
 }

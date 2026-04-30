@@ -14,6 +14,7 @@ public record GameDetailsDTO(
         List<String> genres,
         List<String> themes,
         Date releaseDate,
-        List<GameImageDTO> images
+        String coverUrl,
+        List<String> screenshotsUrl
 ) {
 }

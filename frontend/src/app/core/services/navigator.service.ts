@@ -1,14 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {Router} from "@angular/router";
-import {catchError, from, of, switchMap, take} from 'rxjs';
-import {TrophySuiteApiService} from '../api/services/trophy-suite-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NavigatorService {
   private readonly router: Router = inject(Router);
-  private readonly trophySuiteApiService: TrophySuiteApiService = inject(TrophySuiteApiService);
 
   goToHomePage(): void {
     this.router.navigate(['/']).then(() => console.info('Navigated to home page'));
@@ -33,22 +30,9 @@ export class NavigatorService {
       .then(() => console.info(`Navigated to game page with id: ${gameId}`));
   }
 
-  goToTrophySuitePage(trophySuiteId: string, playerId: string): void {
-    this.trophySuiteApiService.getGameIdByTrophySuiteId(trophySuiteId).pipe(
-      switchMap(gameId => {
-          return from(
-            this.router.navigate(
-              ['/game', gameId.id],
-              {queryParams: {trophySuiteId, playerId, tab: 'trophies'}}
-            )
-          )
-        }
-      ),
-      catchError(error => {
-        console.error('Impossible to navigate to trophy suite page', error);
-        return of(false);
-      }),
-      take(1)
-    ).subscribe();
+  goToTrophySuitePage(trophySuiteId: string, gameId: string, playerId: string): void {
+    console.log(`TrophySuiteId: ${trophySuiteId}, GameId: ${gameId}, PlayerId: ${playerId}`)
+    this.router.navigate(['/game', gameId], {queryParams: {trophySuiteId, playerId, tab: 'trophies'}})
+      .then(() => console.info(`Navigated to trophy suite page with id: ${trophySuiteId}`));
   }
 }

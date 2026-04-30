@@ -6,7 +6,7 @@ import {NavigatorService} from "../../../core/services/navigator.service";
 import {HomeStatsStore} from "../../stores/home-stats-store.service";
 import {HomeRecentPlayersStore} from "../../stores/home-recent-players-store.service";
 import {HomeRecentGamesStore} from "../../stores/home-recent-games-store.service";
-import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
+import {BackgroundImageService} from "../../../core/stores/background-image.service";
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -16,12 +16,12 @@ describe('HomePageComponent', () => {
   let mockRecentPlayersStore: MockedObject<HomeRecentPlayersStore>;
   let mockRecentGameStore: MockedObject<HomeRecentGamesStore>;
   let mockNavigator: MockedObject<NavigatorService>;
-  let mockGameCoverStore: MockedObject<GameCoverStoreService>;
+  let mockGameCoverStore: MockedObject<BackgroundImageService>;
 
   beforeEach(async () => {
     mockGameCoverStore = {
-      refreshTopPlayedGame: vi.fn()
-    } as MockedObject<GameCoverStoreService>;
+      useTopPlayedGame: vi.fn()
+    } as MockedObject<BackgroundImageService>;
     mockStatsStore = {
       data: vi.fn(),
       fetch: vi.fn(),
@@ -55,7 +55,7 @@ describe('HomePageComponent', () => {
           {provide: HomeRecentPlayersStore, useValue: mockRecentPlayersStore},
           {provide: HomeRecentGamesStore, useValue: mockRecentGameStore},
           {provide: NavigatorService, useValue: mockNavigator},
-          {provide: GameCoverStoreService, useValue: mockGameCoverStore},
+          {provide: BackgroundImageService, useValue: mockGameCoverStore},
         ],
       }
     });
@@ -68,9 +68,9 @@ describe('HomePageComponent', () => {
   it('should create', () => expect(component).toBeTruthy());
 
   it('should refresh game cover on init', () => {
-    expect(mockGameCoverStore.refreshTopPlayedGame).toHaveBeenCalledTimes(1);
+    expect(mockGameCoverStore.useTopPlayedGame).toHaveBeenCalledTimes(1);
     component.ngOnInit();
-    expect(mockGameCoverStore.refreshTopPlayedGame).toHaveBeenCalledTimes(2);
+    expect(mockGameCoverStore.useTopPlayedGame).toHaveBeenCalledTimes(2);
   });
 
   it('should fetch store data on init', () => {

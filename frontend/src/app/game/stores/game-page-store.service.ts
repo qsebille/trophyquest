@@ -3,8 +3,8 @@ import {GameApiService} from '../../core/api/services/game-api.service';
 import {catchError, forkJoin, of, Subject, switchMap} from 'rxjs';
 import {emptyGameDetails, GameDetails} from '../../core/api/dtos/game/game-details';
 import {TrophySuiteApiService} from '../../core/api/services/trophy-suite-api.service';
-import {EarnedTrophy} from '../../core/api/dtos/trophy/earned-trophy';
-import {TrophySuiteWithCounts} from '../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
+import {Trophy} from '../../core/api/dtos/trophy/trophy';
+import {TrophySuite} from '../../core/api/dtos/trophy-suite/trophy-suite';
 import {GamePlayer} from '../../core/api/dtos/player/game-player';
 import {Pagination} from '../../core/api/dtos/pagination';
 
@@ -17,8 +17,8 @@ export class GamePageStoreService {
 
   private readonly playersPageSize = 20;
   private readonly _gameDetails = signal<GameDetails>(emptyGameDetails);
-  private readonly _trophySuites = signal<TrophySuiteWithCounts[]>([]);
-  private readonly _trophies = signal<EarnedTrophy[]>([]);
+  private readonly _trophySuites = signal<TrophySuite[]>([]);
+  private readonly _trophies = signal<Trophy[]>([]);
   private readonly _playersPagination = signal<Pagination<GamePlayer> | null>(null);
 
   private readonly fetchTrophiesSubject = new Subject<{ trophySuiteId: string | null, playerId: string | null }>();

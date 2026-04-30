@@ -8,14 +8,14 @@ import {PlayerStats} from "../../../core/api/dtos/player/player-stats";
 describe('ProfileSummaryComponent', () => {
   let component: ProfileSummaryComponent;
   let fixture: ComponentFixture<ProfileSummaryComponent>;
-  
+
   const mockPlayer = {id: 'player-123', pseudo: 'PlayerId', avatar: 'avatar.png'} as Player;
   const mockPlayerStats = {
-    totalTrophySuitesPlayed: 100,
-    totalPlatinumTrophies: 1,
-    totalGoldTrophies: 2,
-    totalSilverTrophies: 3,
-    totalBronzeTrophies: 4,
+    nbGamesPlayed: 100,
+    nbEarnedPlatinum: 1,
+    nbEarnedGold: 2,
+    nbEarnedSilver: 3,
+    nbEarnedBronze: 4,
   } as PlayerStats;
 
   beforeEach(async () => {

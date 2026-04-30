@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {GameTrophyCardComponent} from './game-trophy-card.component';
-import {EarnedTrophy} from '../../../../core/api/dtos/trophy/earned-trophy';
+import {Trophy} from '../../../../core/api/dtos/trophy/trophy';
 
 describe('GameTrophyCardComponent', () => {
   let component: GameTrophyCardComponent;
@@ -15,7 +15,7 @@ describe('GameTrophyCardComponent', () => {
 
     fixture = TestBed.createComponent(GameTrophyCardComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('trophy', {icon: 'trophy.png'} as unknown as EarnedTrophy)
+    fixture.componentRef.setInput('trophy', {icon: 'trophy.png'} as unknown as Trophy)
     fixture.detectChanges();
   });
 

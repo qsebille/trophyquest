@@ -10,6 +10,10 @@ public record TrophySuiteDTO(
         UUID id,
         String title,
         List<String> platforms,
-        String image
+        String imageUrl,
+        long nbPlatinumTrophies,
+        long nbGoldTrophies,
+        long nbSilverTrophies,
+        long nbBronzeTrophies
 ) {
 }

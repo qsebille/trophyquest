@@ -1,7 +1,7 @@
 import {Component, computed, input} from '@angular/core';
 import {DatePipe, NgOptimizedImage} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
-import {EarnedTrophy} from '../../../../core/api/dtos/trophy/earned-trophy';
+import {Trophy} from '../../../../core/api/dtos/trophy/trophy';
 
 @Component({
   selector: 'tq-game-trophy-card',
@@ -14,7 +14,7 @@ import {EarnedTrophy} from '../../../../core/api/dtos/trophy/earned-trophy';
   styleUrl: './game-trophy-card.component.scss',
 })
 export class GameTrophyCardComponent {
-  trophy = input.required<EarnedTrophy>();
+  trophy = input.required<Trophy>();
   showHiddenTrophies = input<boolean>(false);
 
   isTrophyHidden = computed(() => this.trophy().isHidden && !this.showHiddenTrophies());

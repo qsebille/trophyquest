@@ -2,7 +2,7 @@ import {Component, computed, input, output} from '@angular/core';
 import {DecimalPipe, NgOptimizedImage} from '@angular/common';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatIconModule} from "@angular/material/icon";
-import {PlayedTrophySuiteSearchElement} from "../../../core/api/dtos/trophy-suite/played-trophy-suite-search-element";
+import {PlayerTrophySuite} from "../../../core/api/dtos/trophy-suite/player-trophy-suite";
 
 @Component({
   selector: 'tq-profile-trophy-suite-card',
@@ -16,29 +16,29 @@ import {PlayedTrophySuiteSearchElement} from "../../../core/api/dtos/trophy-suit
   styleUrl: './profile-trophy-suite-card.component.scss',
 })
 export class ProfileTrophySuiteCardComponent {
-  readonly trophySuite = input.required<PlayedTrophySuiteSearchElement>();
-  readonly clickOnTitle = output();
+  readonly trophySuite = input.required<PlayerTrophySuite>();
+  readonly onClickOnGame = output();
 
   readonly completionScore = computed(() => {
-    const earnedTrophies: number = this.trophySuite().totalEarnedPlatinum +
-      this.trophySuite().totalEarnedGold +
-      this.trophySuite().totalEarnedSilver +
-      this.trophySuite().totalEarnedBronze;
+    const earnedTrophies: number = this.trophySuite().nbEarnedPlatinum +
+      this.trophySuite().nbEarnedGold +
+      this.trophySuite().nbEarnedSilver +
+      this.trophySuite().nbEarnedBronze;
 
-    return earnedTrophies / this.trophySuite().totalTrophies * 100;
+    return earnedTrophies / this.trophySuite().nbTrophies * 100;
   });
   readonly isCompleted = computed(() => this.completionScore() === 100);
 
   getEarnedTrophyByType(type: string): number {
     switch (type) {
       case 'platinum':
-        return this.trophySuite().totalEarnedPlatinum;
+        return this.trophySuite().nbEarnedPlatinum;
       case 'gold':
-        return this.trophySuite().totalEarnedGold;
+        return this.trophySuite().nbEarnedGold;
       case 'silver':
-        return this.trophySuite().totalEarnedSilver;
+        return this.trophySuite().nbEarnedSilver;
       case 'bronze':
-        return this.trophySuite().totalEarnedBronze;
+        return this.trophySuite().nbEarnedBronze;
       default:
         return 0;
     }

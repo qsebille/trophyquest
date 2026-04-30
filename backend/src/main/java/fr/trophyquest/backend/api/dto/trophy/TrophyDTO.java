@@ -2,6 +2,7 @@ package fr.trophyquest.backend.api.dto.trophy;
 
 import lombok.Builder;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Builder
@@ -12,7 +13,9 @@ public record TrophyDTO(
         String description,
         String trophyType,
         Boolean isHidden,
-        String icon,
-        String gameGroupId
+        String iconUrl,
+        String groupType,
+        String groupName,
+        Date earnedAt
 ) {
 }

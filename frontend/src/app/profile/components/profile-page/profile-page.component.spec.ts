@@ -13,7 +13,7 @@ import {ProfileTrophiesStore} from "../../stores/profile-trophies-store.service"
 import {Player} from "../../../core/api/dtos/player/player";
 import {PlayerStats} from "../../../core/api/dtos/player/player-stats";
 import {PlayerApiService} from "../../../core/api/services/player-api.service";
-import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
+import {BackgroundImageService} from "../../../core/stores/background-image.service";
 
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
@@ -24,15 +24,15 @@ describe('ProfilePageComponent', () => {
   let mockedProfileTrophiesStore: MockedObject<ProfileTrophiesStore>;
   let mockedPlayerApiService: MockedObject<PlayerApiService>;
   let mockedNavigator: MockedObject<NavigatorService>;
-  let mockedGameCoverStore: MockedObject<GameCoverStoreService>;
+  let mockedGameCoverStore: MockedObject<BackgroundImageService>;
 
   const mockPlayer = {id: 'player-123', pseudo: 'PlayerId', avatar: 'avatar.png'} as Player;
   const mockPlayerStats = {
-    totalTrophySuitesPlayed: 100,
-    totalPlatinumTrophies: 1,
-    totalGoldTrophies: 2,
-    totalSilverTrophies: 3,
-    totalBronzeTrophies: 4,
+    nbGamesPlayed: 100,
+    nbEarnedPlatinum: 1,
+    nbEarnedGold: 2,
+    nbEarnedSilver: 3,
+    nbEarnedBronze: 4,
   } as PlayerStats;
 
   beforeEach(async () => {
@@ -64,8 +64,8 @@ describe('ProfilePageComponent', () => {
       deletePlayer: vi.fn()
     } as MockedObject<PlayerApiService>;
     mockedGameCoverStore = {
-      refreshLastPlayedTrophySuiteForPlayer: vi.fn()
-    } as MockedObject<GameCoverStoreService>;
+      usePlayerLastGameBackground: vi.fn()
+    } as MockedObject<BackgroundImageService>;
 
     mockedProfileSummaryStore.player.mockReturnValue(mockPlayer);
     mockedProfileSummaryStore.playerStats.mockReturnValue(mockPlayerStats);
@@ -81,7 +81,7 @@ describe('ProfilePageComponent', () => {
         {provide: ProfileTrophySuiteListStoreService, useValue: mockedProfileTrophySuiteListStore},
         {provide: ProfileTrophiesStore, useValue: mockedProfileTrophiesStore},
         {provide: PlayerApiService, useValue: mockedPlayerApiService},
-        {provide: GameCoverStoreService, useValue: mockedGameCoverStore},
+        {provide: BackgroundImageService, useValue: mockedGameCoverStore},
         {provide: ActivatedRoute, useValue: {snapshot: {paramMap: routeParamMap}}},
       ]
     }).compileComponents();
@@ -100,7 +100,7 @@ describe('ProfilePageComponent', () => {
   });
 
   it('should refresh game cover when player changes', () => {
-    expect(mockedGameCoverStore.refreshLastPlayedTrophySuiteForPlayer).toHaveBeenCalledWith(mockPlayer.id);
+    expect(mockedGameCoverStore.usePlayerLastGameBackground).toHaveBeenCalledWith(mockPlayer.id);
   });
 
   it('should navigate to game page when clicking on game card', () => {

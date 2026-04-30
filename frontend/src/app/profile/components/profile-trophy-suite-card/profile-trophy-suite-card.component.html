@@ -14,7 +14,7 @@
     </div>
 
     <div class="d-flex flex-column gap-1">
-      <a (click)="clickOnTitle.emit()" class="tq-link">{{ trophySuite().name }}</a>
+      <a (click)="onClickOnGame.emit()" class="tq-link">{{ trophySuite().name }}</a>
       <div class="d-flex gap-2">
         @for (platform of trophySuite().platforms; track platform) {
           <div class="badge bg-primary"> {{ platform }}</div>

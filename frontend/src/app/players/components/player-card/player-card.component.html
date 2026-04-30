@@ -6,9 +6,9 @@
     </div>
   </div>
   <div class="d-flex flex-column align-items-center w-25"
-       ngbTooltip="Total games played: {{playerSearchItem().totalPlayedGames}}">
+       ngbTooltip="Total games played: {{playerSearchItem().nbPlayedGames}}">
     <mat-icon fontIcon="sports_esports"></mat-icon>
-    <span class="fw-bold">{{ playerSearchItem().totalPlayedGames }}</span>
+    <span class="fw-bold">{{ playerSearchItem().nbPlayedGames }}</span>
   </div>
   <div class="d-flex align-items-center w-50">
     @for (trophyType of trophyTypes; track trophyType) {

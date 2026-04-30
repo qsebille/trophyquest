@@ -1,11 +1,7 @@
 <div class="container pt-3 pb-5 d-flex gap-2">
-  <div class="d-flex flex-column gap-3 w-60 align-items-center">
-    <tq-home-stats class="w-90" [stats]="stats()"/>
-    <tq-home-games class="w-100" [games]="games()" (clickOnGame)="navigateToGamePage($event)"/>
-  </div>
-
+  <tq-home-games class="w-60" [games]="games()" (clickOnGame)="navigateToGamePage($event)"/>
   <tq-home-player-list class="w-40"
-                       [players]="players()"
+                       [activePlayerTrophies]="activePlayerTrophies()"
                        (clickOnPlayer)="navigateToProfilePage($event)"
-                       (clickOnGame)="navigateToTrophySuitePage($event.trophySuiteId, $event.playerId)"/>
+                       (clickOnGame)="navigateToTrophySuitePage($event)"/>
 </div>

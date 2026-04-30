@@ -1,17 +1,17 @@
 package fr.trophyquest.backend.api.mapper;
 
 import fr.trophyquest.backend.api.dto.player.PlayedGameDTO;
-import fr.trophyquest.backend.domain.entity.psn.PsnPlayedGame;
+import fr.trophyquest.backend.domain.entity.views.fact.PlayedGame;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PlayedGameMapper {
 
-    public PlayedGameDTO toDTO(PsnPlayedGame playedGame) {
+    public PlayedGameDTO toDTO(PlayedGame playedGame) {
         return PlayedGameDTO.builder()
                 .id(playedGame.getPlayer().getId())
                 .pseudo(playedGame.getPlayer().getPseudo())
-                .avatar(playedGame.getPlayer().getAvatar())
+                .avatar(playedGame.getPlayer().getAvatarUrl())
                 .lastPlayedAt(playedGame.getLastPlayedAt())
                 .build();
     }

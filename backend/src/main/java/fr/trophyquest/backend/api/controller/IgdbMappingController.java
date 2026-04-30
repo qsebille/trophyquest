@@ -2,9 +2,7 @@ package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.PaginationDTO;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingDTO;
-import fr.trophyquest.backend.api.dto.igdb.IgdbMappingStatsDTO;
 import fr.trophyquest.backend.service.IgdbCandidateService;
-import fr.trophyquest.backend.service.IgdbMappingService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +18,9 @@ import java.util.UUID;
 public class IgdbMappingController {
 
     private final IgdbCandidateService igdbCandidateService;
-    private final IgdbMappingService igdbMappingService;
 
-    public IgdbMappingController(IgdbCandidateService igdbCandidateService, IgdbMappingService igdbMappingService) {
+    public IgdbMappingController(IgdbCandidateService igdbCandidateService) {
         this.igdbCandidateService = igdbCandidateService;
-        this.igdbMappingService = igdbMappingService;
     }
 
     @GetMapping("/search")
@@ -43,11 +39,6 @@ public class IgdbMappingController {
     @PutMapping("/{gameId}/candidate/reject-all")
     public Boolean rejectAllCandidates(@PathVariable UUID gameId) {
         return this.igdbCandidateService.rejectAllPendingCandidates(gameId);
-    }
-
-    @GetMapping("/stats")
-    public IgdbMappingStatsDTO getStats() {
-        return this.igdbMappingService.getStats();
     }
 
 }

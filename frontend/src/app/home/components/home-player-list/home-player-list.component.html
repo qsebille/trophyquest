@@ -3,22 +3,25 @@
     <h5 class="card-title">Top recent players</h5>
   </div>
   <div class="card-body">
-    @if (hasNoRecentPlayers()) {
+    @if (hasNoRecentData()) {
       <span class="card-subtitle mb-2 text-muted">No recent players</span>
     } @else {
       <div class="w-100 d-flex flex-column gap-2">
-        @for (recentPlayer of players(); track recentPlayer.player.id) {
+        @for (activePlayer of activePlayerData(); track activePlayer.id) {
           <div class="d-flex flex-column align-items-center">
             <tq-home-player-card class="w-100"
-                                 [player]="recentPlayer.player"
-                                 [trophyCount]="recentPlayer.recentTrophyCount"
-                                 (clickOnPseudo)="clickOnPlayer.emit(recentPlayer.player.id)"/>
+                                 [player]="activePlayer"
+                                 (onClickOnPseudo)="clickOnPlayer.emit(activePlayer.id)"/>
             <div class="d-flex align-items-stretch w-100">
               <div class="delimiter-box"></div>
               <div class="player-trophies w-95">
-                @for (trophy of recentPlayer.lastTrophies; track trophy.id) {
+                @for (trophy of activePlayer.trophies; track trophy.id) {
                   <tq-home-trophy-card [trophy]="trophy"
-                                       (clickOnGameTitle)="clickOnGame.emit({trophySuiteId: trophy.trophySuiteId, playerId: recentPlayer.player.id})"/>
+                                       (onClickOnGameTitle)="clickOnGame.emit({
+                                       trophySuiteId: trophy.trophySuiteId,
+                                       playerId: activePlayer.id,
+                                       gameId: trophy.gameId,
+                                       })"/>
                 }
               </div>
             </div>

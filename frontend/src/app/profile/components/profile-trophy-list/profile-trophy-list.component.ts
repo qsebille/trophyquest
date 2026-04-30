@@ -1,7 +1,7 @@
 import {Component, computed, input, output} from '@angular/core';
 import {ProfileTrophyCardComponent} from "../profile-trophy-card/profile-trophy-card.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {EarnedTrophySearchItem} from "../../../core/api/dtos/trophy/earned-trophy-search-item";
+import {PlayerEarnedTrophy} from "../../../core/api/dtos/trophy/player-earned-trophy";
 import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
 
 @Component({
@@ -15,7 +15,7 @@ import {SpinnerContainerComponent} from '../../../core/components/spinner-contai
   styleUrl: './profile-trophy-list.component.scss',
 })
 export class ProfileTrophyListComponent {
-  readonly trophies = input<EarnedTrophySearchItem[]>([]);
+  readonly trophies = input<PlayerEarnedTrophy[]>([]);
   readonly isLoading = input<boolean>(false);
   readonly total = input<number>(0);
   readonly loadMoreTrophies = output();

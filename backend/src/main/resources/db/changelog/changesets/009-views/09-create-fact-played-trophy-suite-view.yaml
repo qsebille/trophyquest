@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/09-create-fact-played-trophy-suite-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: v_fact_played_trophy_suite
+            selectQuery: |
+              SELECT
+                GEN_RANDOM_UUID()   AS id,
+                pts.player_id,
+                edition.psn_game_id AS game_id,
+                pts.trophy_suite_id,
+                pts.last_played_at
+              FROM app.psn_played_trophy_suite pts
+                JOIN LATERAL (
+                  SELECT e.psn_game_id
+                  FROM app.psn_edition_trophy_suite ets
+                    JOIN app.psn_edition e ON ets.edition_id = e.id
+                  WHERE ets.trophy_suite_id = pts.trophy_suite_id
+                ) edition ON TRUE

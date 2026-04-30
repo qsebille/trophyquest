@@ -9,10 +9,10 @@
           <hr class="tq-horiz-separator"/>
         }
         <tq-profile-trophy-suite-card class="w-100"
-                                      (clickOnTitle)="clickOnGame.emit(trophySuite.id)"
+                                      (onClickOnGame)="onClickOnGame.emit({ gameId: trophySuite.gameId, trophySuiteId: trophySuite.id })"
                                       [trophySuite]="trophySuite"/>
       }
-      <div [hidden]="hideLoadMoreButton()" (click)="loadMoreGames.emit()" class="btn btn-primary mt-4">
+      <div [hidden]="hideLoadMoreButton()" (click)="onLoadMoreGames.emit()" class="btn btn-primary mt-4">
         Load more games...
       </div>
       <tq-spinner-container [hidden]="!isLoading()"/>

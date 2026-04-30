@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {PlayerApiService} from "../../core/api/services/player-api.service";
-import {EarnedTrophySearchItem} from "../../core/api/dtos/trophy/earned-trophy-search-item";
+import {PlayerEarnedTrophy} from "../../core/api/dtos/trophy/player-earned-trophy";
 import {Pagination} from '../../core/api/dtos/pagination';
 import {finalize, map} from 'rxjs';
 import {NotificationService} from '../../core/services/notification.service';
@@ -12,7 +12,7 @@ export class ProfileTrophiesStore {
   private readonly playerApiService: PlayerApiService = inject(PlayerApiService);
   private readonly notificationService = inject(NotificationService);
   private readonly pageSize = 20;
-  private readonly pagination = signal<Pagination<EarnedTrophySearchItem> | null>(null);
+  private readonly pagination = signal<Pagination<PlayerEarnedTrophy> | null>(null);
   private readonly _isLoading = signal<boolean>(false);
   private readonly currentPageNumber = computed(() => this.pagination()?.page ?? 0);
 
@@ -33,7 +33,7 @@ export class ProfileTrophiesStore {
       .pipe(
         map(pagination => {
           const content = [...this.trophies(), ...pagination.content];
-          return {...pagination, content} as Pagination<EarnedTrophySearchItem>;
+          return {...pagination, content} as Pagination<PlayerEarnedTrophy>;
         }),
         finalize(() => this._isLoading.set(false)),
       )

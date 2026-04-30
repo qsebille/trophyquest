@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {beforeEach, describe, expect, it} from 'vitest';
 import {ProfileTrophyCardComponent} from './profile-trophy-card.component';
-import {EarnedTrophySearchItem} from "../../../core/api/dtos/trophy/earned-trophy-search-item";
+import {PlayerEarnedTrophy} from "../../../core/api/dtos/trophy/player-earned-trophy";
 
 describe('ProfileTrophyCardComponent', () => {
   let component: ProfileTrophyCardComponent;
@@ -16,7 +16,7 @@ describe('ProfileTrophyCardComponent', () => {
     trophySuiteId: 'ts-1',
     trophySuiteTitle: 'Set 1',
     earnedAt: new Date(),
-  } as EarnedTrophySearchItem;
+  } as PlayerEarnedTrophy;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -10,7 +10,7 @@ import java.util.UUID;
 public record GameSearchItemDTO(
         UUID id,
         String name,
-        String coverUrl,
+        String imageUrl,
         String summary,
         List<String> genres,
         List<String> themes,

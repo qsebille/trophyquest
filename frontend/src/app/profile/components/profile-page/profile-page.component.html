@@ -1,7 +1,6 @@
 <div class="p-2 d-flex flex-column align-items-center container gap-2">
   <tq-profile-summary class="w-50"
-                      [player]="summary()"
-                      [playerStats]="playerStats()"
+                      [player]="player()"
                       [isLoading]="isLoadingSummary()"
                       [style.animationDelay.ms]="300"
                       (deletePlayer)="deletePlayer()"
@@ -13,8 +12,8 @@
                                   [trophySuites]="trophySuites()"
                                   [total]="totalTrophySuites()"
                                   [isLoading]="isLoadingTrophySuites()"
-                                  (clickOnGame)="navigateToPlayerTrophySuitePage($event)"
-                                  (loadMoreGames)="loadMoreGames()"/>
+                                  (onClickOnGame)="navigateToPlayerTrophySuitePage($event)"
+                                  (onLoadMoreGames)="loadMoreGames()"/>
 
     <tq-profile-trophy-list class="w-40"
                             [style.animationDelay.ms]="400" animate.enter="block-enter"

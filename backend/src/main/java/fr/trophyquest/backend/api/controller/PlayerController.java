@@ -1,16 +1,15 @@
 package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.PaginationDTO;
+import fr.trophyquest.backend.api.dto.player.ActivePlayerTrophyDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerSearchItemDTO;
-import fr.trophyquest.backend.api.dto.player.PlayerStatsDTO;
-import fr.trophyquest.backend.api.dto.player.RecentPlayerTrophiesItemDTO;
 import fr.trophyquest.backend.api.dto.psn.PsnFetchResponse;
-import fr.trophyquest.backend.api.dto.trophy.EarnedTrophySearchItemDTO;
-import fr.trophyquest.backend.api.dto.trophysuite.PlayedTrophySuiteSearchItemDTO;
-import fr.trophyquest.backend.service.PlayedTrophySuiteSearchService;
-import fr.trophyquest.backend.service.PlayerSearchService;
+import fr.trophyquest.backend.api.dto.trophy.PlayerTrophyDTO;
+import fr.trophyquest.backend.api.dto.trophysuite.PlayerTrophySuiteDTO;
 import fr.trophyquest.backend.service.PlayerService;
+import fr.trophyquest.backend.service.PlayerTrophyService;
+import fr.trophyquest.backend.service.PlayerTrophySuiteService;
 import fr.trophyquest.backend.service.PsnFetcherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,19 +34,19 @@ public class PlayerController {
 
     private final PsnFetcherService psnFetcherService;
     private final PlayerService playerService;
-    private final PlayerSearchService playerSearchService;
-    private final PlayedTrophySuiteSearchService playedTrophySuiteSearchService;
+    private final PlayerTrophySuiteService playerTrophySuiteService;
+    private final PlayerTrophyService playerTrophyService;
 
     public PlayerController(
             PsnFetcherService psnFetcherService,
             PlayerService playerService,
-            PlayerSearchService playerSearchService,
-            PlayedTrophySuiteSearchService playedTrophySuiteSearchService
+            PlayerTrophySuiteService playerTrophySuiteService,
+            PlayerTrophyService playerTrophyService
     ) {
         this.psnFetcherService = psnFetcherService;
         this.playerService = playerService;
-        this.playerSearchService = playerSearchService;
-        this.playedTrophySuiteSearchService = playedTrophySuiteSearchService;
+        this.playerTrophySuiteService = playerTrophySuiteService;
+        this.playerTrophyService = playerTrophyService;
     }
 
     @GetMapping("/search")
@@ -55,21 +54,11 @@ public class PlayerController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        return this.playerSearchService.searchPlayers(page, size);
-    }
-
-    @GetMapping("/count")
-    public long count() {
-        return this.playerService.count();
-    }
-
-    @GetMapping("/recent/count")
-    public long countRecentlyActive() {
-        return this.playerService.countRecentlyActive();
+        return this.playerService.searchPlayers(page, size);
     }
 
     @GetMapping("{playerId}")
-    public PlayerDTO fetch(@PathVariable UUID playerId) {
+    public PlayerSearchItemDTO fetch(@PathVariable UUID playerId) {
         return this.playerService.fetch(playerId);
     }
 
@@ -78,27 +67,22 @@ public class PlayerController {
         this.playerService.delete(playerId);
     }
 
-    @GetMapping("{playerId}/stats")
-    public PlayerStatsDTO fetchWithStats(@PathVariable UUID playerId) {
-        return this.playerService.fetchStats(playerId);
-    }
-
     @GetMapping("{playerId}/trophy-suite/search")
-    public PaginationDTO<PlayedTrophySuiteSearchItemDTO> SearchPlayedTrophySuites(
+    public PaginationDTO<PlayerTrophySuiteDTO> SearchPlayedTrophySuites(
             @PathVariable UUID playerId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        return this.playedTrophySuiteSearchService.searchTrophySuitesOfPlayer(playerId, page, size);
+        return this.playerTrophySuiteService.searchTrophySuitesOfPlayer(playerId, page, size);
     }
 
     @GetMapping("{playerId}/trophy/search")
-    public PaginationDTO<EarnedTrophySearchItemDTO> searchEarnedTrophies(
+    public PaginationDTO<PlayerTrophyDTO> searchEarnedTrophies(
             @PathVariable UUID playerId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        return this.playerService.searchEarnedTrophies(playerId, page, size);
+        return this.playerTrophyService.searchTrophiesOfPlayer(playerId, page, size);
     }
 
     @GetMapping("/pseudo/{pseudo}")
@@ -106,12 +90,9 @@ public class PlayerController {
         return this.playerService.findByPseudo(pseudo);
     }
 
-    @GetMapping("/top-recent")
-    public List<RecentPlayerTrophiesItemDTO> fetchTopRecent(
-            @RequestParam(name = "playerLimit", defaultValue = "5") int playerLimit,
-            @RequestParam(name = "trophyLimit", defaultValue = "5") int trophyLimit
-    ) {
-        return this.playerService.fetchTopRecent(playerLimit, trophyLimit);
+    @GetMapping("/top-active")
+    public List<ActivePlayerTrophyDTO> fetchTopActive() {
+        return this.playerTrophyService.fetchTopActivePlayerTrophies();
     }
 
     @PostMapping("/{profileName}")

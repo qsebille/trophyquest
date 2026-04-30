@@ -3,7 +3,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {NavigatorService} from "../../../core/services/navigator.service";
 import {AddPlayerFormComponent} from "../add-player-form/add-player-form.component";
 import {PlayerListComponent} from "../player-list/player-list.component";
-import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
+import {BackgroundImageService} from "../../../core/stores/background-image.service";
 import {PlayersService} from '../../services/players.service';
 import {PlayersAddService} from '../../services/players-add.service';
 import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
@@ -21,8 +21,8 @@ import {SpinnerContainerComponent} from '../../../core/components/spinner-contai
 export class PlayersPageComponent implements OnInit {
   private readonly playersService = inject(PlayersService);
   private readonly playersAddService = inject(PlayersAddService);
-  private readonly navigator: NavigatorService = inject(NavigatorService);
-  private readonly gameCoverStoreService: GameCoverStoreService = inject(GameCoverStoreService);
+  private readonly navigator = inject(NavigatorService);
+  private readonly backgroundImageService = inject(BackgroundImageService);
 
   readonly paginatedPlayers = this.playersService.pagination;
   readonly isLoadingPlayerList = this.playersService.isLoading;
@@ -30,7 +30,7 @@ export class PlayersPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPageOfPlayers(0);
-    this.gameCoverStoreService.refreshTopPlayedGame();
+    this.backgroundImageService.useTopPlayedGame();
   }
 
   ngOnDestroy(): void {

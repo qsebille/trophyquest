@@ -33,11 +33,11 @@ describe('ProfileSummaryStore', () => {
     const mockPlayerId = 'player-123';
     const mockPlayer: Player = {id: mockPlayerId, pseudo: 'John Doe', avatar: 'avatar.png'};
     const mockPlayerStats: PlayerStats = {
-      totalTrophySuitesPlayed: 1,
-      totalPlatinumTrophies: 2,
-      totalGoldTrophies: 3,
-      totalSilverTrophies: 4,
-      totalBronzeTrophies: 5
+      nbGamesPlayed: 1,
+      nbEarnedPlatinum: 2,
+      nbEarnedGold: 3,
+      nbEarnedSilver: 4,
+      nbEarnedBronze: 5
     };
 
     mockedPlayerApiService.fetch.mockReturnValue(of(mockPlayer));

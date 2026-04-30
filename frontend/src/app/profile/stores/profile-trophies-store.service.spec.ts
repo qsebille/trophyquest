@@ -4,7 +4,7 @@ import {TestBed} from '@angular/core/testing';
 
 import {ProfileTrophiesStore} from './profile-trophies-store.service';
 import {PlayerApiService} from "../../core/api/services/player-api.service";
-import {EarnedTrophySearchItem} from "../../core/api/dtos/trophy/earned-trophy-search-item";
+import {PlayerEarnedTrophy} from "../../core/api/dtos/trophy/player-earned-trophy";
 import {of} from "rxjs";
 import {Pagination} from '../../core/api/dtos/pagination';
 
@@ -29,13 +29,13 @@ describe('ProfileTrophiesStore', () => {
 
   it('should search for player trophies', () => {
     const mockPlayerId = 'player-123';
-    const mockSearchResult: Pagination<EarnedTrophySearchItem> = {
+    const mockSearchResult: Pagination<PlayerEarnedTrophy> = {
       content: [
-        {id: 'trophy-1', title: 'Trophy 1'} as EarnedTrophySearchItem,
-        {id: 'trophy-2', title: 'Trophy 2'} as EarnedTrophySearchItem,
+        {id: 'trophy-1', title: 'Trophy 1'} as PlayerEarnedTrophy,
+        {id: 'trophy-2', title: 'Trophy 2'} as PlayerEarnedTrophy,
       ],
       total: 10
-    } as Pagination<EarnedTrophySearchItem>;
+    } as Pagination<PlayerEarnedTrophy>;
     mockedPlayerApiService.searchEarnedTrophies.mockReturnValue(of(mockSearchResult));
 
     store.search(mockPlayerId);

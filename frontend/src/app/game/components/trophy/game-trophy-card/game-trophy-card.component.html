@@ -2,7 +2,7 @@
      [class.hidden]="isTrophyHidden()"
      class="d-flex align-items-center gap-1 justify-content-between trophy-card">
   <div class="d-flex align-items-center gap-2">
-    <img class="trophy-icon" [ngSrc]="trophy().icon" [alt]="trophy().title" height="50" width="50"/>
+    <img class="trophy-icon" [ngSrc]="trophy().iconUrl" [alt]="trophy().title" height="50" width="50"/>
     <div class="d-flex flex-column gap-1">
       <span class="fw-bold">{{ isTrophyHidden() ? 'Hidden trophy' : trophy().title }}</span>
       <span

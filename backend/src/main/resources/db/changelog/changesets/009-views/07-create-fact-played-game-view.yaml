@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/07-create-fact-played-game-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: v_fact_played_game
+            selectQuery: |
+              SELECT
+                GEN_RANDOM_UUID() AS id,              
+                player_id,
+                game_id,
+                last_played_at
+              FROM app.psn_played_game

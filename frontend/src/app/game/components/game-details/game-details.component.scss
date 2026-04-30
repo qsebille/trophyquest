@@ -15,6 +15,12 @@
   }
 }
 
+.game-cover {
+  border: 1px solid $tq-blue-dark;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
 .section-title {
   font-size: 16px;
   font-weight: 600;

@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {beforeEach, describe, expect, it} from 'vitest';
 
 import {ProfileTrophySuiteCardComponent} from './profile-trophy-suite-card.component';
-import {PlayedTrophySuiteSearchElement} from "../../../core/api/dtos/trophy-suite/played-trophy-suite-search-element";
+import {PlayerTrophySuite} from "../../../core/api/dtos/trophy-suite/player-trophy-suite";
 
 describe('ProfileTrophySuiteCardComponent', () => {
   let component: ProfileTrophySuiteCardComponent;
@@ -14,12 +14,12 @@ describe('ProfileTrophySuiteCardComponent', () => {
     platforms: ['PS4'],
     imageUrl: 'suite.png',
     lastPlayedAt: new Date(),
-    totalTrophies: 100,
-    totalEarnedPlatinum: 1,
-    totalEarnedGold: 5,
-    totalEarnedSilver: 10,
-    totalEarnedBronze: 20,
-  } as PlayedTrophySuiteSearchElement
+    nbTrophies: 100,
+    nbEarnedPlatinum: 1,
+    nbEarnedGold: 5,
+    nbEarnedSilver: 10,
+    nbEarnedBronze: 20,
+  } as PlayerTrophySuite
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

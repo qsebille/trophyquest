@@ -3,12 +3,14 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {IgdbMappingGameCardComponent} from "../igdb-mapping-game-card/igdb-mapping-game-card.component";
 import {IgdbMapping} from "../../../core/api/dtos/igdb/igdb-mapping";
 import {ValidateCandidateStatus} from "../../../core/models/validate-candidate-status";
+import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
 
 @Component({
   selector: 'tq-igdb-mapping-list',
   imports: [
     MatProgressSpinnerModule,
     IgdbMappingGameCardComponent,
+    SpinnerContainerComponent,
   ],
   templateUrl: './igdb-mapping-list.component.html',
   styleUrl: './igdb-mapping-list.component.scss',

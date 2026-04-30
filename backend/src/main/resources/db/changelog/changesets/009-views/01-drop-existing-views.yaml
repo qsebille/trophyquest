@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/01-drop-existing-views
+      author: Quentin Sebille
+      changes:
+        - dropView:
+            schemaName: app
+            viewName: v_game
+            ifExists: true
+        - dropView:
+            schemaName: app
+            viewName: v_played_trophy_suite_search_item
+            ifExists: true
+        - dropView:
+            schemaName: app
+            viewName: v_player_search_item
+            ifExists: true
+        - dropView:
+            schemaName: app
+            viewName: v_recent_game_search_item
+            ifExists: true

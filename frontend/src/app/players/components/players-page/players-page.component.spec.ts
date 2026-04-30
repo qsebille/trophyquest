@@ -5,7 +5,7 @@ import {PlayerListStore} from '../../stores/player-list-store';
 import {NavigatorService} from "../../../core/services/navigator.service";
 import {PlayerCardComponent} from "../player-card/player-card.component";
 import {AddPlayerFormComponent} from "../add-player-form/add-player-form.component";
-import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
+import {BackgroundImageService} from "../../../core/stores/background-image.service";
 
 describe('PlayersPageComponent', () => {
   let component: PlayersPageComponent;
@@ -13,7 +13,7 @@ describe('PlayersPageComponent', () => {
 
   let mockNavigator: MockedObject<NavigatorService>;
   let mockPlayerListStore: MockedObject<PlayerListStore>;
-  let mockGameCoverStore: MockedObject<GameCoverStoreService>;
+  let mockGameCoverStore: MockedObject<BackgroundImageService>;
 
   beforeEach(async () => {
     mockNavigator = {
@@ -31,8 +31,8 @@ describe('PlayersPageComponent', () => {
       addStatus: vi.fn(),
     } as MockedObject<PlayerListStore>;
     mockGameCoverStore = {
-      refreshTopPlayedGame: vi.fn()
-    } as MockedObject<GameCoverStoreService>;
+      useTopPlayedGame: vi.fn()
+    } as MockedObject<BackgroundImageService>;
 
     mockPlayerListStore.players.mockReturnValue([]);
 
@@ -41,7 +41,7 @@ describe('PlayersPageComponent', () => {
       providers: [
         {provide: NavigatorService, useValue: mockNavigator},
         {provide: PlayerListStore, useValue: mockPlayerListStore},
-        {provide: GameCoverStoreService, useValue: mockGameCoverStore},
+        {provide: BackgroundImageService, useValue: mockGameCoverStore},
       ]
     }).compileComponents();
 
@@ -54,7 +54,7 @@ describe('PlayersPageComponent', () => {
 
   it('should refresh game cover when players page loads', () => {
     component.ngOnInit();
-    expect(mockGameCoverStore.refreshTopPlayedGame).toHaveBeenCalled();
+    expect(mockGameCoverStore.useTopPlayedGame).toHaveBeenCalled();
   });
 
   it('should reset search on init', () => {

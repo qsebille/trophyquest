@@ -8,7 +8,7 @@ import {ProfileTrophiesStore} from "../../stores/profile-trophies-store.service"
 import {ProfileTrophyListComponent} from "../profile-trophy-list/profile-trophy-list.component";
 import {ProfileTrophySuiteListStoreService} from "../../stores/profile-trophy-suite-list-store.service";
 import {ProfileTrophySuiteListComponent} from "../profile-trophy-suite-list/profile-trophy-suite-list.component";
-import {GameCoverStoreService} from "../../../core/stores/game-cover-store.service";
+import {BackgroundImageService} from "../../../core/stores/background-image.service";
 import {ProfileDeleteService} from '../../services/profile-delete.service';
 
 @Component({
@@ -27,14 +27,13 @@ export class ProfilePageComponent {
   private readonly playerId: string;
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   private readonly profileDeleteService = inject(ProfileDeleteService);
-  private readonly gameCoverStoreService: GameCoverStoreService = inject(GameCoverStoreService);
-  private readonly profileSummaryStore: ProfileSummaryStore = inject(ProfileSummaryStore);
-  private readonly profileTrophySuiteListStore: ProfileTrophySuiteListStoreService = inject(ProfileTrophySuiteListStoreService);
-  private readonly profileTrophiesStore: ProfileTrophiesStore = inject(ProfileTrophiesStore);
-  private readonly navigator: NavigatorService = inject(NavigatorService);
+  private readonly backgroundImageService = inject(BackgroundImageService);
+  private readonly profileSummaryStore = inject(ProfileSummaryStore);
+  private readonly profileTrophySuiteListStore = inject(ProfileTrophySuiteListStoreService);
+  private readonly profileTrophiesStore = inject(ProfileTrophiesStore);
+  private readonly navigator = inject(NavigatorService);
 
-  readonly summary = this.profileSummaryStore.player;
-  readonly playerStats = this.profileSummaryStore.playerStats;
+  readonly player = this.profileSummaryStore.player;
   readonly trophySuites = this.profileTrophySuiteListStore.trophySuites;
   readonly trophies = this.profileTrophiesStore.trophies;
   readonly totalTrophySuites = this.profileTrophySuiteListStore.total;
@@ -55,7 +54,7 @@ export class ProfilePageComponent {
     this.profileSummaryStore.retrieve(this.playerId);
     this.profileTrophySuiteListStore.search(this.playerId);
     this.profileTrophiesStore.search(this.playerId);
-    this.gameCoverStoreService.refreshLastPlayedTrophySuiteForPlayer(this.playerId);
+    this.backgroundImageService.usePlayerLastGameBackground(this.playerId);
   }
 
   ngOnDestroy(): void {
@@ -64,8 +63,8 @@ export class ProfilePageComponent {
     this.profileTrophiesStore.reset();
   }
 
-  navigateToPlayerTrophySuitePage(trophySuiteId: string): void {
-    this.navigator.goToTrophySuitePage(trophySuiteId, this.playerId);
+  navigateToPlayerTrophySuitePage(event: { gameId: string, trophySuiteId: string }): void {
+    this.navigator.goToTrophySuitePage(event.trophySuiteId, event.gameId, this.playerId);
   }
 
   loadMoreGames(): void {

@@ -1,6 +1,6 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {PlayerApiService} from "../../core/api/services/player-api.service";
-import {PlayedTrophySuiteSearchElement} from "../../core/api/dtos/trophy-suite/played-trophy-suite-search-element";
+import {PlayerTrophySuite} from "../../core/api/dtos/trophy-suite/player-trophy-suite";
 import {Pagination} from '../../core/api/dtos/pagination';
 import {finalize, map} from 'rxjs';
 import {NotificationService} from '../../core/services/notification.service';
@@ -12,10 +12,10 @@ export class ProfileTrophySuiteListStoreService {
   private readonly playerApiService: PlayerApiService = inject(PlayerApiService);
   private readonly notificationService = inject(NotificationService);
   private readonly pageSize = 20
-  private readonly pagination = signal<Pagination<PlayedTrophySuiteSearchElement> | null>(null);
+  private readonly pagination = signal<Pagination<PlayerTrophySuite> | null>(null);
   private readonly _isLoading = signal<boolean>(false);
   private readonly currentPage = computed(() => this.pagination()?.page ?? 0);
-  
+
   readonly trophySuites = computed(() => this.pagination()?.content ?? []);
   readonly total = computed(() => this.pagination()?.total ?? 0);
   readonly isLoading = this._isLoading.asReadonly()
@@ -33,7 +33,7 @@ export class ProfileTrophySuiteListStoreService {
       .pipe(
         map(pagination => {
           const content = [...this.trophySuites(), ...pagination.content];
-          return {...pagination, content} as Pagination<PlayedTrophySuiteSearchElement>;
+          return {...pagination, content} as Pagination<PlayerTrophySuite>;
         }),
         finalize(() => this._isLoading.set(false))
       )

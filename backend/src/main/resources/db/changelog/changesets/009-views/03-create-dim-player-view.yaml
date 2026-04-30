@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/03-create-dim-player-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: v_dim_player
+            selectQuery: |
+              SELECT
+                p.id,
+                p.pseudo,
+                COALESCE(p.aws_avatar_url, p.psn_avatar_url) AS avatar_url,
+                played_game_count.count                      AS nb_played_games,
+                trophy_count.sum_platinum                    AS nb_earned_platinum,
+                trophy_count.sum_gold                        AS nb_earned_gold,
+                trophy_count.sum_silver                      AS nb_earned_silver,
+                trophy_count.sum_bronze                      AS nb_earned_bronze,
+                trophy_count.count                           AS nb_earned_trophies
+              FROM app.psn_player p
+                LEFT JOIN LATERAL (
+                  SELECT COUNT(*) AS count
+                  FROM app.psn_played_game pg
+                  WHERE pg.player_id = p.id
+                ) played_game_count ON TRUE
+              
+                LEFT JOIN LATERAL (
+                  SELECT
+                    COUNT(*) AS count,
+                    SUM(CASE WHEN t.trophy_type = 'platinum' THEN 1 ELSE 0 END) AS sum_platinum,
+                    SUM(CASE WHEN t.trophy_type = 'gold' THEN 1 ELSE 0 END)     AS sum_gold,
+                    SUM(CASE WHEN t.trophy_type = 'silver' THEN 1 ELSE 0 END)   AS sum_silver,
+                    SUM(CASE WHEN t.trophy_type = 'bronze' THEN 1 ELSE 0 END)   AS sum_bronze
+                  FROM app.psn_earned_trophy et
+                  JOIN app.psn_trophy t ON t.id = et.trophy_id
+                  WHERE et.player_id = p.id
+                ) trophy_count ON TRUE
+

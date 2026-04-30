@@ -5,7 +5,7 @@ import {TestBed} from '@angular/core/testing';
 import {PlayerApiService} from "../../core/api/services/player-api.service";
 import {ProfileTrophySuiteListStoreService} from "./profile-trophy-suite-list-store.service";
 import {of} from "rxjs";
-import {PlayedTrophySuiteSearchElement} from "../../core/api/dtos/trophy-suite/played-trophy-suite-search-element";
+import {PlayerTrophySuite} from "../../core/api/dtos/trophy-suite/player-trophy-suite";
 import {Pagination} from '../../core/api/dtos/pagination';
 
 describe('ProfileTrophySuiteListStoreService', () => {
@@ -31,11 +31,11 @@ describe('ProfileTrophySuiteListStoreService', () => {
     const mockPlayerId = 'player-123';
     const mockSearchResult = {
       content: [
-        {id: 'trophy-suite-1', name: 'Trophy suite 1'} as PlayedTrophySuiteSearchElement,
-        {id: 'trophy-suite-2', name: 'Trophy suite 2'} as PlayedTrophySuiteSearchElement,
+        {id: 'trophy-suite-1', name: 'Trophy suite 1'} as PlayerTrophySuite,
+        {id: 'trophy-suite-2', name: 'Trophy suite 2'} as PlayerTrophySuite,
       ],
       total: 10
-    } as Pagination<PlayedTrophySuiteSearchElement>;
+    } as Pagination<PlayerTrophySuite>;
     mockedPlayerApiService.searchPlayedTrophySuites.mockReturnValue(of(mockSearchResult));
 
     store.search(mockPlayerId);
