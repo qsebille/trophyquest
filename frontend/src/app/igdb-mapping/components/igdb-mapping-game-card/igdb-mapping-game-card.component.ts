@@ -3,7 +3,6 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {IgdbMappingCandidateCardComponent} from "../igdb-mapping-candidate-card/igdb-mapping-candidate-card.component";
 import {IgdbMapping} from "../../../core/api/dtos/igdb/igdb-mapping";
-import {ValidateCandidateStatus} from "../../../core/models/validate-candidate-status";
 
 @Component({
   selector: 'tq-igdb-mapping-game-card',
@@ -17,12 +16,10 @@ import {ValidateCandidateStatus} from "../../../core/models/validate-candidate-s
 })
 export class IgdbMappingGameCardComponent {
   readonly igdbMapping = input.required<IgdbMapping>();
-  readonly validationStatus = input<ValidateCandidateStatus>(ValidateCandidateStatus.NONE);
+  readonly isLoadingValidation = input<boolean>(false);
   readonly candidateAccepted = output<number>();
   readonly allRejected = output<void>();
 
   private readonly candidates = computed(() => this.igdbMapping().candidates ?? []);
   readonly sortedCandidates = computed(() => this.candidates().sort((a, b) => b.score - a.score));
-
-  readonly isRejectButtonDisabled = computed(() => this.validationStatus() === ValidateCandidateStatus.LOADING);
 }

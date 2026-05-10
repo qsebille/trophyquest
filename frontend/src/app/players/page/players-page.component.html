@@ -1,0 +1,18 @@
+@if (listLoadingError()) {
+  <div class="container mt-3 alert alert-danger">Error loading players</div>
+} @else {
+  <div class="container mt-3 d-flex flex-column gap-3 align-items-center">
+    <tq-add-player-form class="w-40"
+                        [isLoading]="isLoadingAddPlayerForm()"
+                        (onAddPlayer)="addPlayer($event)"/>
+
+    @if (isLoadingPlayerList()) {
+      <tq-spinner-container/>
+    } @else {
+      <tq-player-list class="w-75"
+                      [paginatedPlayers]="paginatedPlayers()"
+                      (onClickOnPlayer)="goToProfilePage($event)"
+                      (onPageChange)="loadPageOfPlayers($event)"/>
+    }
+  </div>
+}

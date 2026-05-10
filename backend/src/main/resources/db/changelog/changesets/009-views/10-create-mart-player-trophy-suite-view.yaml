@@ -25,28 +25,25 @@ databaseChangeLog:
                 COALESCE(earned_trophies.nb_earned_silver, 0)   AS nb_earned_silver,
                 COALESCE(earned_trophies.nb_earned_bronze, 0)   AS nb_earned_bronze,
                 pts.last_played_at                              AS last_played_at
-                FROM app.v_fact_played_trophy_suite pts
-              
-                  JOIN app.v_dim_trophy_suite ts ON pts.trophy_suite_id = ts.id
-                  JOIN app.v_dim_game g ON pts.game_id = g.id
-              
-                  LEFT JOIN LATERAL (
-                    SELECT
-                      SUM(CASE WHEN t.trophy_type = 'platinum' THEN 1 ELSE 0 END) AS nb_platinum,
-                      SUM(CASE WHEN t.trophy_type = 'gold' THEN 1 ELSE 0 END)     AS nb_gold,
-                      SUM(CASE WHEN t.trophy_type = 'silver' THEN 1 ELSE 0 END)   AS nb_silver,
-                      SUM(CASE WHEN t.trophy_type = 'bronze' THEN 1 ELSE 0 END)   AS nb_bronze
-                    FROM app.psn_trophy t
-                    WHERE t.trophy_suite_id = pts.trophy_suite_id
-                  ) trophies ON TRUE
-              
-                  LEFT JOIN LATERAL (
-                    SELECT
-                      SUM(CASE WHEN t.trophy_type = 'platinum' THEN 1 ELSE 0 END) AS nb_earned_platinum,
-                      SUM(CASE WHEN t.trophy_type = 'gold' THEN 1 ELSE 0 END)     AS nb_earned_gold,
-                      SUM(CASE WHEN t.trophy_type = 'silver' THEN 1 ELSE 0 END)   AS nb_earned_silver,
-                      SUM(CASE WHEN t.trophy_type = 'bronze' THEN 1 ELSE 0 END)   AS nb_earned_bronze
-                    FROM app.psn_earned_trophy et
-                    JOIN app.psn_trophy t ON et.trophy_id = t.id
-                    WHERE t.trophy_suite_id = pts.trophy_suite_id
+              FROM app.v_fact_played_trophy_suite pts
+                JOIN app.v_dim_trophy_suite ts ON pts.trophy_suite_id = ts.id
+                JOIN app.v_dim_game g ON pts.game_id = g.id
+                LEFT JOIN LATERAL (
+                  SELECT
+                    SUM(CASE WHEN t.trophy_type = 'platinum' THEN 1 ELSE 0 END) AS nb_platinum,
+                    SUM(CASE WHEN t.trophy_type = 'gold' THEN 1 ELSE 0 END)     AS nb_gold,
+                    SUM(CASE WHEN t.trophy_type = 'silver' THEN 1 ELSE 0 END)   AS nb_silver,
+                    SUM(CASE WHEN t.trophy_type = 'bronze' THEN 1 ELSE 0 END)   AS nb_bronze
+                  FROM app.psn_trophy t
+                  WHERE t.trophy_suite_id = pts.trophy_suite_id
+                ) trophies ON TRUE
+                LEFT JOIN LATERAL (
+                  SELECT
+                    SUM(CASE WHEN t.trophy_type = 'platinum' THEN 1 ELSE 0 END) AS nb_earned_platinum,
+                    SUM(CASE WHEN t.trophy_type = 'gold' THEN 1 ELSE 0 END)     AS nb_earned_gold,
+                    SUM(CASE WHEN t.trophy_type = 'silver' THEN 1 ELSE 0 END)   AS nb_earned_silver,
+                    SUM(CASE WHEN t.trophy_type = 'bronze' THEN 1 ELSE 0 END)   AS nb_earned_bronze
+                  FROM app.psn_earned_trophy et
+                  JOIN app.psn_trophy t ON et.trophy_id = t.id
+                  WHERE t.trophy_suite_id = pts.trophy_suite_id AND et.player_id = pts.player_id
                   ) earned_trophies ON TRUE

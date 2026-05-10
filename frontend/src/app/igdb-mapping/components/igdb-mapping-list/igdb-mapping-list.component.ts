@@ -2,7 +2,6 @@ import {Component, computed, input, output} from '@angular/core';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {IgdbMappingGameCardComponent} from "../igdb-mapping-game-card/igdb-mapping-game-card.component";
 import {IgdbMapping} from "../../../core/api/dtos/igdb/igdb-mapping";
-import {ValidateCandidateStatus} from "../../../core/models/validate-candidate-status";
 import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
 
 @Component({
@@ -18,11 +17,11 @@ import {SpinnerContainerComponent} from '../../../core/components/spinner-contai
 export class IgdbMappingListComponent {
   readonly mappingList = input<IgdbMapping[]>([]);
   readonly isLoading = input<boolean>(false);
-  readonly validationStatus = input<ValidateCandidateStatus>(ValidateCandidateStatus.NONE);
+  readonly isLoadingValidation = input<boolean>(false);
   readonly candidateAccepted = output<{ gameId: string, candidateId: number }>();
   readonly rejectCandidates = output<{ gameId: string }>();
 
-  hasNoResults = computed(() => this.mappingList().length === 0);
+  readonly hasNoResults = computed(() => this.mappingList().length === 0 && !this.isLoading());
 
   acceptCandidate(gameId: string, candidateId: number): void {
     this.candidateAccepted.emit({gameId: gameId, candidateId});

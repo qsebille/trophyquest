@@ -10,7 +10,7 @@ databaseChangeLog:
               WITH earned_trophy_period AS (
                 SELECT *
                 FROM app.v_fact_earned_trophy
-                WHERE earned_at >= NOW() - INTERVAL '1 month'
+                WHERE earned_at >= NOW() - INTERVAL '1 WEEK'
               ),
               ranked_players AS (
                 SELECT

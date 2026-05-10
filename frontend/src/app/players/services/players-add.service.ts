@@ -1,15 +1,13 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {PlayerApiService} from '../../core/api/services/player-api.service';
 import {finalize, of, switchMap} from 'rxjs';
-import {PlayersService} from './players.service';
 import {NotificationService} from '../../core/services/notification.service';
+import {PlayersDataService} from './players-data.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PlayersAddService {
   private readonly playerApiService = inject(PlayerApiService);
-  private readonly playersService = inject(PlayersService);
+  private readonly playersDataService = inject(PlayersDataService);
   private readonly notificationService = inject(NotificationService);
   private readonly _isLoading = signal<boolean>(false);
 
@@ -37,11 +35,12 @@ export class PlayersAddService {
       next: response => {
         switch (response.status) {
           case 'OK':
-            this.playersService.search(0);
+            this.playersDataService.search(0);
             this.notificationService.success(`Player ${pseudo} added successfully`);
             break;
           case 'ERROR':
             console.error('Error when adding player: ', response);
+            this.notificationService.error(`Failed to add player ${pseudo}`)
         }
       },
       error: error => {

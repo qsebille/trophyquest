@@ -17,8 +17,9 @@ import {SpinnerContainerComponent} from '../../../core/components/spinner-contai
 export class ProfileTrophyListComponent {
   readonly trophies = input<PlayerEarnedTrophy[]>([]);
   readonly isLoading = input<boolean>(false);
+  readonly isError = input<boolean>(false);
   readonly total = input<number>(0);
   readonly loadMoreTrophies = output();
 
-  readonly hideLoadMoreButton = computed(() => this.isLoading() || this.trophies().length === this.total());
+  readonly showLoadMoreButton = computed(() => !this.isLoading() && this.trophies().length < this.total());
 }

@@ -1,0 +1,33 @@
+@if (hasErrorLoadingMappings()) {
+  <div class="container mt-3 alert alert-danger">Error loading IGDB mappings</div>
+} @else {
+  <div class="igdb-mapping-page container">
+    <tq-block class="igdb-mapping-page--header-block">
+      <ng-template tqBlockHeader>
+        <span class="igdb-mapping-page--block-title">Game metadata validation</span>
+      </ng-template>
+      <ng-template tqBlockContent>
+        <p class="content">These are the games with no metadata.</p>
+        <p class="content">Each game has a list of candidate retrieved from IGDB database. You can
+          manually validate which game corresponds to the game amongst the proposed ones. </p>
+      </ng-template>
+    </tq-block>
+
+    <tq-block class="igdb-mapping-page--candidate-list-block">
+      <ng-template tqBlockHeader>
+        <span class="igdb-mapping-page--block-title">List of games to validate</span>
+      </ng-template>
+      <ng-template tqBlockContent>
+        <tq-igdb-mapping-list [mappingList]="mappingList()"
+                              [isLoading]="isLoadingMappings()"
+                              [isLoadingValidation]="isLoadingValidation()"
+                              (rejectCandidates)="rejectCandidates($event.gameId)"
+                              (candidateAccepted)="validateCandidate($event.gameId, $event.candidateId)"/>
+      </ng-template>
+    </tq-block>
+
+    <button class="btn btn-outline-light mb-2" [hidden]="!showLoadMoreButton()" (click)="loadMore()">
+      Load more
+    </button>
+  </div>
+}

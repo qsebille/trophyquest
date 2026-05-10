@@ -21,7 +21,8 @@ import {PlayerSearchItem} from '../../../core/api/dtos/player/player-search-item
 })
 export class ProfileSummaryComponent {
   readonly player = input.required<PlayerSearchItem>();
-  readonly isLoading = input.required<boolean>();
+  readonly isLoading = input<boolean>(false);
+  readonly isError = input<boolean>(false);
   readonly deletePlayer = output();
 
   readonly totalEarnedTrophies = computed(() => this.player().nbEarnedPlatinum +

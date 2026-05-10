@@ -3,15 +3,21 @@
     <h5 class="card-title">Last earned trophies</h5>
   </div>
   <div class="card-body w-100 d-flex flex-column align-items-center">
-    @for (trophy of trophies(); track trophy.id; let i = $index) {
-      @if (i !== 0) {
-        <hr class="separator"/>
+    @if (isError()) {
+      <div class="alert alert-danger w-90 text-center">
+        An error occurred while loading trophies. Please try again later.
+      </div>
+    } @else {
+      @for (trophy of trophies(); track trophy.id; let i = $index) {
+        <hr class="separator" [hidden]="i === 0"/>
+        <tq-profile-trophy-card [trophy]="trophy" class="w-100"/>
       }
-      <tq-profile-trophy-card [trophy]="trophy" class="w-100"/>
+      @if (showLoadMoreButton()) {
+        <div class="btn btn-primary mt-4" (click)="loadMoreTrophies.emit()">Load more trophies</div>
+      }
+      @if (isLoading()) {
+        <tq-spinner-container/>
+      }
     }
-    <div class="btn btn-primary mt-4" [hidden]="hideLoadMoreButton()" (click)="loadMoreTrophies.emit()">
-      Load more trophies
-    </div>
-    <tq-spinner-container [hidden]="!isLoading()"/>
   </div>
 </div>

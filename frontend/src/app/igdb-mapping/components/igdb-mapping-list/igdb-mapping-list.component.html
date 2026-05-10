@@ -1,4 +1,4 @@
-@if (hasNoResults() && isLoading()) {
+@if (hasNoResults()) {
   <p class="text-muted">There is no game that need IGDB metadata validation</p>
 } @else {
   <div class="d-flex flex-column gap-5">
@@ -6,10 +6,12 @@
       <hr class="w-80" [hidden]="$index == 0"/>
       <tq-igdb-mapping-game-card class="w-100"
                                  [igdbMapping]="mappingElement"
-                                 [validationStatus]="validationStatus()"
+                                 [isLoadingValidation]="isLoadingValidation()"
                                  (allRejected)="rejectAllCandidates(mappingElement.psnGameId)"
                                  (candidateAccepted)="acceptCandidate(mappingElement.psnGameId, $event)"/>
     }
-    <tq-spinner-container [hidden]="isLoading() && false"/>
+    @if (isLoading()) {
+      <tq-spinner-container/>
+    }
   </div>
 }

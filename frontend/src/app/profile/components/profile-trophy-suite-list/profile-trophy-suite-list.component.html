@@ -4,18 +4,26 @@
   </div>
   <div class="card-body">
     <div class="w-100 d-flex flex-column align-items-center gap-1">
-      @for (trophySuite of trophySuites(); track trophySuite.id; let i = $index) {
-        @if (i !== 0) {
-          <hr class="tq-horiz-separator"/>
+      @if (isError()) {
+        <div class="alert alert-danger w-90 text-center">
+          An error occurred while loading trophies. Please try again later.
+        </div>
+      } @else {
+        @for (trophySuite of trophySuites(); track trophySuite.id; let i = $index) {
+          <hr class="tq-horiz-separator" [hidden]="i === 0"/>
+          <tq-profile-trophy-suite-card class="w-100"
+                                        (onClickOnGame)="onClickOnGame.emit({ gameId: trophySuite.gameId, trophySuiteId: trophySuite.id })"
+                                        [trophySuite]="trophySuite"/>
         }
-        <tq-profile-trophy-suite-card class="w-100"
-                                      (onClickOnGame)="onClickOnGame.emit({ gameId: trophySuite.gameId, trophySuiteId: trophySuite.id })"
-                                      [trophySuite]="trophySuite"/>
+        @if (showLoadMoreButton()) {
+          <div (click)="onLoadMoreGames.emit()" class="btn btn-primary mt-4">
+            Load more games...
+          </div>
+        }
+        @if (isLoading()) {
+          <tq-spinner-container/>
+        }
       }
-      <div [hidden]="hideLoadMoreButton()" (click)="onLoadMoreGames.emit()" class="btn btn-primary mt-4">
-        Load more games...
-      </div>
-      <tq-spinner-container [hidden]="!isLoading()"/>
     </div>
   </div>
 </div>

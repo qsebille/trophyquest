@@ -1,7 +1,0 @@
-<div class="container pt-3 pb-5 d-flex gap-2">
-  <tq-home-games class="w-60" [games]="games()" (clickOnGame)="navigateToGamePage($event)"/>
-  <tq-home-player-list class="w-40"
-                       [activePlayerTrophies]="activePlayerTrophies()"
-                       (clickOnPlayer)="navigateToProfilePage($event)"
-                       (clickOnGame)="navigateToTrophySuitePage($event)"/>
-</div>

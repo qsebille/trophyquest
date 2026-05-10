@@ -1,6 +1,12 @@
 <div class="card">
   <div class="card-body">
-    @if (isLoading()) {
+    @if (isError()) {
+      <div class="d-flex flex-column align-items-center">
+        <div class="alert alert-danger w-90 text-center" role="alert">
+          An error occurred while loading the profile summary.
+        </div>
+      </div>
+    } @else if (isLoading()) {
       <tq-spinner-container/>
     } @else {
       <div class="delete-button">

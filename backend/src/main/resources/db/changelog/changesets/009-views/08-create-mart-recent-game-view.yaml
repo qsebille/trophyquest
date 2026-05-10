@@ -20,5 +20,5 @@ databaseChangeLog:
                     MAX(pg.last_played_at) AS last_played_at
                   FROM app.v_fact_played_game pg
                   WHERE pg.game_id = g.id
-                    AND pg.last_played_at > NOW() - INTERVAL '1 month'
+                    AND pg.last_played_at > NOW() - INTERVAL '1 WEEK'
                 ) player_count ON TRUE

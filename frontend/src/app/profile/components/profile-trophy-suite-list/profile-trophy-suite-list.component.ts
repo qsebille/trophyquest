@@ -17,10 +17,11 @@ import {SpinnerContainerComponent} from '../../../core/components/spinner-contai
 export class ProfileTrophySuiteListComponent {
   readonly trophySuites = input<PlayerTrophySuite[]>([]);
   readonly isLoading = input<boolean>(false);
+  readonly isError = input<boolean>(false);
   readonly total = input<number>(0);
 
   readonly onClickOnGame = output<{ gameId: string, trophySuiteId: string }>();
   readonly onLoadMoreGames = output();
 
-  readonly hideLoadMoreButton = computed(() => this.isLoading() || this.trophySuites().length === this.total());
+  readonly showLoadMoreButton = computed(() => !this.isLoading() && this.trophySuites().length < this.total());
 }

@@ -19,5 +19,4 @@ export class ProfileTrophyCardComponent {
   toggleExpansion(): void {
     this.isExpanded = !this.isExpanded;
   }
-
 }
