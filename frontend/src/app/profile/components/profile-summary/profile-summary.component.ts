@@ -25,10 +25,12 @@ export class ProfileSummaryComponent {
   readonly isError = input<boolean>(false);
   readonly deletePlayer = output();
 
-  readonly totalEarnedTrophies = computed(() => this.player().nbEarnedPlatinum +
-    this.player().nbEarnedGold +
-    this.player().nbEarnedSilver +
-    this.player().nbEarnedBronze);
+  readonly totalEarnedTrophies = computed(() => {
+    return this.player().nbEarnedPlatinum +
+      this.player().nbEarnedGold +
+      this.player().nbEarnedSilver +
+      this.player().nbEarnedBronze
+  });
 
   getEarnedTrophyByType(trophyType: string): number {
     switch (trophyType) {

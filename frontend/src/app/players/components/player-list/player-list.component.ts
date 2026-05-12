@@ -25,7 +25,7 @@ export class PlayerListComponent {
     }
   }
 
-  readonly players = computed(() => this.paginatedPlayers()?.content);
+  readonly players = computed(() => this.paginatedPlayers()?.content ?? []);
   readonly collectionSize = computed(() => this.paginatedPlayers()?.total);
   readonly pageSize = computed(() => this.paginatedPlayers()?.size);
   readonly page = computed(() => this.paginatedPlayers()?.page + 1);

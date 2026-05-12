@@ -1,7 +1,7 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {GameApiService} from '../../core/api/services/game-api.service';
 import {TrophySuiteApiService} from '../../core/api/services/trophy-suite-api.service';
-import {emptyGameDetails, GameDetails} from '../../core/api/dtos/game/game-details';
+import {GameDetails} from '../../core/api/dtos/game/game-details';
 import {TrophySuite} from '../../core/api/dtos/trophy-suite/trophy-suite';
 import {Trophy} from '../../core/api/dtos/trophy/trophy';
 import {Pagination} from '../../core/api/dtos/pagination';
@@ -17,13 +17,13 @@ export class GameDataService {
 
   private readonly playersPageSize = 20;
   private readonly fetchTrophiesSubject = new Subject<{ trophySuiteId: string | null, playerId: string | null }>();
-  private readonly _gameDetails = signal<GameDetails>(emptyGameDetails);
+  private readonly _gameDetails = signal<GameDetails | null>(null);
   private readonly _trophySuites = signal<TrophySuite[]>([]);
   private readonly _trophies = signal<Trophy[]>([]);
   private readonly _playersPagination = signal<Pagination<GamePlayer> | null>(null);
   private readonly _isError = signal<boolean>(false);
 
-  readonly gameDetails = this._gameDetails.asReadonly();
+  readonly gameDetails = computed(() => this._gameDetails() ?? {} as GameDetails);
   readonly trophySuites = this._trophySuites.asReadonly();
   readonly trophies = this._trophies.asReadonly();
   readonly playersPagination = computed(() => {
@@ -32,7 +32,7 @@ export class GameDataService {
       page: this._playersPagination()?.page ?? 0,
       total: this._playersPagination()?.total ?? 0,
       size: this._playersPagination()?.size ?? this.playersPageSize
-    };
+    } as Pagination<GamePlayer>;
   });
   readonly isError = this._isError.asReadonly();
 
@@ -55,7 +55,7 @@ export class GameDataService {
   }
 
   reset(): void {
-    this._gameDetails.set(emptyGameDetails);
+    this._gameDetails.set(null);
     this._trophySuites.set([]);
     this._trophies.set([]);
     this._playersPagination.set(null);

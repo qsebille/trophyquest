@@ -1,7 +1,11 @@
 <div class="p-2 d-flex align-items-center justify-content-between home-player-card">
   <div class="d-flex align-items-center gap-3">
     <img [height]="50" [width]="50" alt="" [ngSrc]="player().avatarUrl" class="avatar"/>
-    <a class="fs-5 fw-bold tq-link" (click)="onClickOnPseudo.emit()">{{ player().pseudo }}</a>
+    <a class="fs-5 fw-bold tq-link"
+       [attr.data-testid]="'player-pseudo'"
+       (click)="onClickOnPseudo.emit()">
+      {{ player().pseudo }}
+    </a>
   </div>
   <div class="fs-6">
     <b>{{ player().nbRecentlyEarnedTrophies | number }}</b>

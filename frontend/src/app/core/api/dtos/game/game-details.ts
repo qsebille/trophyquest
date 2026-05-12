@@ -8,5 +8,3 @@ export interface GameDetails {
   coverUrl: string,
   screenshotsUrl: string[],
 }
-
-export const emptyGameDetails: GameDetails = {id: '', name: '', description: ''} as GameDetails;

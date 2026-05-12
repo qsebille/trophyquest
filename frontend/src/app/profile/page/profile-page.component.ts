@@ -11,7 +11,6 @@ import {BackgroundImageService} from "../../core/stores/background-image.service
 import {ProfileDeleteService} from '../services/profile-delete.service';
 import {ProfileTrophySuiteDataService} from '../services/profile-trophy-suite-data.service';
 import {ProfileSummaryDataService} from '../services/profile-summary-data.service';
-import {NotificationService} from '../../core/services/notification.service';
 import {ProfileTrophyDataService} from '../services/profile-trophy-data.service';
 
 @Component({
@@ -34,13 +33,13 @@ import {ProfileTrophyDataService} from '../services/profile-trophy-data.service'
 export class ProfilePageComponent {
   private readonly playerId: string | null;
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
-  private readonly profileDeleteService = inject(ProfileDeleteService);
+
   private readonly backgroundImageService = inject(BackgroundImageService);
+  private readonly profileDeleteService = inject(ProfileDeleteService);
   private readonly profileSummaryDataService = inject(ProfileSummaryDataService);
   private readonly profileTrophySuiteDataService = inject(ProfileTrophySuiteDataService);
   private readonly profileTrophyDataService = inject(ProfileTrophyDataService);
   private readonly navigator = inject(NavigatorService);
-  private readonly notificationService = inject(NotificationService);
 
   readonly summary = this.profileSummaryDataService.data;
   readonly isLoadingSummary = this.profileSummaryDataService.isLoading;
@@ -79,10 +78,7 @@ export class ProfilePageComponent {
 
   navigateToPlayerTrophySuitePage(event: { gameId: string, trophySuiteId: string }): void {
     const playerId = this.playerId;
-    if (playerId === null) {
-      this.notificationService.error('Unable to navigate to game page');
-      return;
-    }
+    if (playerId === null) return;
     this.navigator.goToTrophySuitePage(event.trophySuiteId, event.gameId, playerId);
   }
 

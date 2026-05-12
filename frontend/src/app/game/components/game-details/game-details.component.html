@@ -1,11 +1,16 @@
 <div class="d-flex flex-column gap-3">
   <div class="d-flex gap-3">
-    <img [ngSrc]="gameDetails().coverUrl" height="100" width="100" class="game-cover"
+    <img [ngSrc]="gameDetails().coverUrl"
+         height="100" width="100"
+         class="game-cover"
          alt="{{ gameDetails().name }} cover"/>
     <div class="d-flex flex-column">
       <h1>{{ gameDetails().name }}</h1>
-      <p class="text-muted" [hidden]="!gameDetails().releaseDate">Release
-        Date: {{ gameDetails().releaseDate | date }}</p>
+      @if (!!gameDetails().releaseDate) {
+        <div class="text-muted" [hidden]="!gameDetails().releaseDate">
+          Release Date: {{ gameDetails().releaseDate | date }}
+        </div>
+      }
     </div>
   </div>
 

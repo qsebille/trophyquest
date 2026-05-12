@@ -3,9 +3,3 @@ export interface Player {
   pseudo: string;
   avatar: string;
 }
-
-export const emptyPlayer: Player = {
-  id: '',
-  pseudo: '',
-  avatar: 'empty.png'
-};

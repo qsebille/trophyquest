@@ -1,61 +1,42 @@
-import type {MockedObject} from "vitest";
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HomePageComponent} from './home-page.component';
 import {NavigatorService} from "../../core/services/navigator.service";
-import {HomeStatsStore} from "../../stores/home-stats-store.service";
-import {HomeRecentPlayersStore} from "../../stores/home-recent-players-store.service";
-import {HomeRecentGamesStore} from "../../stores/home-recent-games-store.service";
-import {BackgroundImageService} from "../../core/stores/background-image.service";
+import {signal} from '@angular/core';
+import {ActivePlayerTrophy} from '../../core/api/dtos/player/active-player-trophy';
+import {HomeDataService} from '../services/home-data.service';
+import {BackgroundImageService} from '../../core/stores/background-image.service';
+import {RecentGame} from '../../core/api/dtos/game/recent-game';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
   let fixture: ComponentFixture<HomePageComponent>;
 
-  let mockStatsStore: MockedObject<HomeStatsStore>;
-  let mockRecentPlayersStore: MockedObject<HomeRecentPlayersStore>;
-  let mockRecentGameStore: MockedObject<HomeRecentGamesStore>;
-  let mockNavigator: MockedObject<NavigatorService>;
-  let mockGameCoverStore: MockedObject<BackgroundImageService>;
+  const backgroundImageServiceMock = {
+    useTopPlayedGame: vi.fn(),
+  }
+  const homeDataServiceMock = {
+    fetchData: vi.fn(),
+    reset: vi.fn(),
+    isLoading: signal<boolean>(false),
+    isError: signal<boolean>(false),
+    recentGames: signal<RecentGame[]>([]),
+    topActivePlayerTrophies: signal<ActivePlayerTrophy[]>([]),
+  }
+  const navigatorMock = {
+    goToGamePage: vi.fn(),
+    goToProfilePage: vi.fn(),
+    goToTrophySuitePage: vi.fn(),
+  };
 
   beforeEach(async () => {
-    mockGameCoverStore = {
-      useTopPlayedGame: vi.fn()
-    } as MockedObject<BackgroundImageService>;
-    mockStatsStore = {
-      data: vi.fn(),
-      fetch: vi.fn(),
-      status: vi.fn(),
-    } as MockedObject<HomeStatsStore>;
-    mockRecentPlayersStore = {
-      fetch: vi.fn(),
-      players: vi.fn(),
-      status: vi.fn(),
-    } as MockedObject<HomeRecentPlayersStore>;
-    mockRecentGameStore = {
-      fetch: vi.fn(),
-      games: vi.fn(),
-      total: vi.fn(),
-      status: vi.fn(),
-    } as MockedObject<HomeRecentGamesStore>;
-    mockNavigator = {
-      goToPlayersPage: vi.fn(),
-      goToProfilePage: vi.fn(),
-      goToTrophySuitePage: vi.fn(),
-    } as MockedObject<NavigatorService>;
-
-    mockRecentPlayersStore.players.mockReturnValue([]);
-
     await TestBed.configureTestingModule({}).compileComponents();
-
     TestBed.overrideComponent(HomePageComponent, {
       set: {
         providers: [
-          {provide: HomeStatsStore, useValue: mockStatsStore},
-          {provide: HomeRecentPlayersStore, useValue: mockRecentPlayersStore},
-          {provide: HomeRecentGamesStore, useValue: mockRecentGameStore},
-          {provide: NavigatorService, useValue: mockNavigator},
-          {provide: BackgroundImageService, useValue: mockGameCoverStore},
+          {provide: HomeDataService, useValue: homeDataServiceMock},
+          {provide: NavigatorService, useValue: navigatorMock},
+          {provide: BackgroundImageService, useValue: backgroundImageServiceMock},
         ],
       }
     });
@@ -65,19 +46,36 @@ describe('HomePageComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => vi.clearAllMocks());
+
   it('should create', () => expect(component).toBeTruthy());
 
-  it('should refresh game cover on init', () => {
-    expect(mockGameCoverStore.useTopPlayedGame).toHaveBeenCalledTimes(1);
-    component.ngOnInit();
-    expect(mockGameCoverStore.useTopPlayedGame).toHaveBeenCalledTimes(2);
+  describe('Component setup', () => {
+    it('should fetch data on init', () => {
+      expect(backgroundImageServiceMock.useTopPlayedGame).toHaveBeenCalled();
+      expect(homeDataServiceMock.fetchData).toHaveBeenCalled();
+    });
   });
 
-  it('should fetch store data on init', () => {
-    expect(mockStatsStore.fetch).toHaveBeenCalledTimes(1);
-    expect(mockRecentPlayersStore.fetch).toHaveBeenCalledTimes(1);
-    component.ngOnInit();
-    expect(mockStatsStore.fetch).toHaveBeenCalledTimes(2);
-    expect(mockRecentPlayersStore.fetch).toHaveBeenCalledTimes(2);
+  describe('Navigation', () => {
+    it('should navigate to game page', () => {
+      component.navigateToGamePage('game-123');
+      expect(navigatorMock.goToGamePage).toHaveBeenCalledWith('game-123');
+    });
+
+    it('should navigate to profile page', () => {
+      component.navigateToProfilePage('player-123');
+      expect(navigatorMock.goToProfilePage).toHaveBeenCalledWith('player-123');
+    });
+
+    it('should navigate to trophy suite page', () => {
+      const data = {
+        playerId: 'player-123',
+        gameId: 'game-123',
+        trophySuiteId: 'suite-123',
+      }
+      component.navigateToTrophySuitePage(data);
+      expect(navigatorMock.goToTrophySuitePage).toHaveBeenCalledWith('suite-123', 'game-123', 'player-123');
+    });
   });
 });

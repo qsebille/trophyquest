@@ -10,10 +10,10 @@ export class PlayersDataService {
   private readonly playerApiService: PlayerApiService = inject(PlayerApiService);
   private readonly notificationService = inject(NotificationService);
   private readonly pageSize = 20;
+  private readonly searchSubject = new Subject<number>();
   private readonly _pagination = signal<Pagination<PlayerSearchItem> | null>(null);
   private readonly _isLoading = signal<boolean>(false);
   private readonly _isError = signal<boolean>(false);
-  private readonly searchSubject = new Subject<number>();
 
   readonly pagination = computed(() => this._pagination() ?? {
     content: [],
@@ -40,7 +40,7 @@ export class PlayersDataService {
                 this.notificationService.error('Failed to retrieve player list');
                 return of(null);
               })
-            )
+            );
         }),
       )
       .subscribe(pagination => {

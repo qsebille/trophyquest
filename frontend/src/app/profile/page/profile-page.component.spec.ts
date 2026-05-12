@@ -1,4 +1,3 @@
-import type {MockedObject} from "vitest";
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
@@ -7,84 +6,84 @@ import {ActivatedRoute} from '@angular/router';
 import {NavigatorService} from "../../core/services/navigator.service";
 import {ProfileSummaryComponent} from "../components/profile-summary/profile-summary.component";
 import {ProfileTrophyCardComponent} from "../components/profile-trophy-card/profile-trophy-card.component";
-import {ProfileSummaryStore} from "../../stores/profile-summary-store.service";
-import {ProfileTrophySuiteListStoreService} from "../../stores/profile-trophy-suite-list-store.service";
-import {ProfileTrophiesStore} from "../../stores/profile-trophies-store.service";
-import {Player} from "../../core/api/dtos/player/player";
-import {PlayerStats} from "../../../core/api/dtos/player/player-stats";
-import {PlayerApiService} from "../../core/api/services/player-api.service";
 import {BackgroundImageService} from "../../core/stores/background-image.service";
+import {ProfileDeleteService} from '../services/profile-delete.service';
+import {ProfileSummaryDataService} from '../services/profile-summary-data.service';
+import {ProfileTrophySuiteDataService} from '../services/profile-trophy-suite-data.service';
+import {ProfileTrophyDataService} from '../services/profile-trophy-data.service';
+import {PlayerSearchItem} from '../../core/api/dtos/player/player-search-item';
+import {signal} from "@angular/core";
 
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
   let fixture: ComponentFixture<ProfilePageComponent>;
 
-  let mockedProfileSummaryStore: MockedObject<ProfileSummaryStore>;
-  let mockedProfileTrophySuiteListStore: MockedObject<ProfileTrophySuiteListStoreService>;
-  let mockedProfileTrophiesStore: MockedObject<ProfileTrophiesStore>;
-  let mockedPlayerApiService: MockedObject<PlayerApiService>;
-  let mockedNavigator: MockedObject<NavigatorService>;
-  let mockedGameCoverStore: MockedObject<BackgroundImageService>;
+  const backgroundImageServiceMock = {
+    usePlayerLastGameBackground: vi.fn()
+  };
+  const profileDeleteServiceMock = {
+    deleteProfile: vi.fn(),
+  };
+  const profileSummaryDataServiceMock = {
+    retrieve: vi.fn(),
+    reset: vi.fn(),
+    data: signal({} as PlayerSearchItem),
+    isLoading: signal(false),
+    isError: signal(false),
+  };
+  const profileTrophySuiteDataServiceMock = {
+    init: vi.fn(),
+    reset: vi.fn(),
+    loadMore: vi.fn(),
+    trophySuites: signal([]),
+    total: signal(0),
+    isLoading: signal(false),
+    isError: signal(false),
+  };
+  const profileTrophyDataServiceMock = {
+    init: vi.fn(),
+    reset: vi.fn(),
+    loadMore: vi.fn(),
+    trophies: signal([]),
+    total: signal(0),
+    isLoading: signal(false),
+    isError: signal(false),
+  };
+  const navigatorMock = {
+    goToErrorPage: vi.fn(),
+    goToTrophySuitePage: vi.fn()
+  };
 
-  const mockPlayer = {id: 'player-123', pseudo: 'PlayerId', avatar: 'avatar.png'} as Player;
-  const mockPlayerStats = {
-    nbGamesPlayed: 100,
-    nbEarnedPlatinum: 1,
-    nbEarnedGold: 2,
-    nbEarnedSilver: 3,
-    nbEarnedBronze: 4,
-  } as PlayerStats;
+  const playerMock = {
+    id: 'player-123',
+    pseudo: 'Player 123',
+    avatar: 'avatar.png',
+  } as PlayerSearchItem;
 
   beforeEach(async () => {
-    mockedNavigator = {
-      goToTrophySuitePage: vi.fn()
-    } as MockedObject<NavigatorService>;
-    mockedProfileSummaryStore = {
-      retrieve: vi.fn(),
-      reset: vi.fn(),
-      player: vi.fn(),
-      playerStats: vi.fn(),
-      status: vi.fn()
-    } as MockedObject<ProfileSummaryStore>;
-    mockedProfileTrophySuiteListStore = {
-      search: vi.fn(),
-      reset: vi.fn(),
-      loadMore: vi.fn(),
-      trophySuites: vi.fn(),
-      status: vi.fn()
-    } as MockedObject<ProfileTrophySuiteListStoreService>;
-    mockedProfileTrophiesStore = {
-      search: vi.fn(),
-      reset: vi.fn(),
-      loadMore: vi.fn(),
-      trophies: vi.fn(),
-      status: vi.fn()
-    } as MockedObject<ProfileTrophiesStore>;
-    mockedPlayerApiService = {
-      deletePlayer: vi.fn()
-    } as MockedObject<PlayerApiService>;
-    mockedGameCoverStore = {
-      usePlayerLastGameBackground: vi.fn()
-    } as MockedObject<BackgroundImageService>;
-
-    mockedProfileSummaryStore.player.mockReturnValue(mockPlayer);
-    mockedProfileSummaryStore.playerStats.mockReturnValue(mockPlayerStats);
+    profileSummaryDataServiceMock.data.set(playerMock);
 
     const routeParamMap = new Map<string, string>();
-    routeParamMap.set('playerId', mockPlayer.id);
+    routeParamMap.set('playerId', playerMock.id);
 
     await TestBed.configureTestingModule({
       imports: [ProfilePageComponent, ProfileSummaryComponent, ProfileTrophyCardComponent],
       providers: [
-        {provide: NavigatorService, useValue: mockedNavigator},
-        {provide: ProfileSummaryStore, useValue: mockedProfileSummaryStore},
-        {provide: ProfileTrophySuiteListStoreService, useValue: mockedProfileTrophySuiteListStore},
-        {provide: ProfileTrophiesStore, useValue: mockedProfileTrophiesStore},
-        {provide: PlayerApiService, useValue: mockedPlayerApiService},
-        {provide: BackgroundImageService, useValue: mockedGameCoverStore},
         {provide: ActivatedRoute, useValue: {snapshot: {paramMap: routeParamMap}}},
       ]
     }).compileComponents();
+    TestBed.overrideComponent(ProfilePageComponent, {
+      set: {
+        providers: [
+          {provide: BackgroundImageService, useValue: backgroundImageServiceMock},
+          {provide: ProfileSummaryDataService, useValue: profileSummaryDataServiceMock},
+          {provide: ProfileTrophySuiteDataService, useValue: profileTrophySuiteDataServiceMock},
+          {provide: ProfileTrophyDataService, useValue: profileTrophyDataServiceMock},
+          {provide: ProfileDeleteService, useValue: profileDeleteServiceMock},
+          {provide: NavigatorService, useValue: navigatorMock},
+        ]
+      }
+    });
 
     fixture = TestBed.createComponent(ProfilePageComponent);
     component = fixture.componentInstance;
@@ -93,21 +92,47 @@ describe('ProfilePageComponent', () => {
 
   it('should create', () => expect(component).toBeTruthy());
 
-  it('should fetch profile infos on init', () => {
-    expect(mockedProfileSummaryStore.retrieve).toHaveBeenCalledWith(mockPlayer.id);
-    expect(mockedProfileTrophySuiteListStore.search).toHaveBeenCalledWith(mockPlayer.id);
-    expect(mockedProfileTrophiesStore.search).toHaveBeenCalledWith(mockPlayer.id);
-  });
+  describe('Component setup', () => {
+    it('should fetch profile infos on init', () => {
+      component.ngOnInit();
+      expect(profileSummaryDataServiceMock.retrieve).toHaveBeenCalledWith(playerMock.id);
+      expect(profileTrophySuiteDataServiceMock.init).toHaveBeenCalledWith(playerMock.id);
+      expect(profileTrophyDataServiceMock.init).toHaveBeenCalledWith(playerMock.id);
+    });
 
-  it('should refresh game cover when player changes', () => {
-    expect(mockedGameCoverStore.usePlayerLastGameBackground).toHaveBeenCalledWith(mockPlayer.id);
+    it('should refresh game cover when player changes', () => {
+      component.ngOnInit();
+      expect(backgroundImageServiceMock.usePlayerLastGameBackground).toHaveBeenCalledWith(playerMock.id);
+    });
   });
 
   it('should navigate to game page when clicking on game card', () => {
-    const trophySuiteId: string = 'suite-123';
-    component.navigateToPlayerTrophySuitePage(trophySuiteId);
+    const event = {gameId: 'game-123', trophySuiteId: 'suite-123'};
+    component.navigateToPlayerTrophySuitePage(event);
 
-    expect(mockedNavigator.goToTrophySuitePage).toHaveBeenCalledTimes(1);
-    expect(mockedNavigator.goToTrophySuitePage).toHaveBeenCalledWith(trophySuiteId, mockPlayer.id);
+    expect(navigatorMock.goToTrophySuitePage).toHaveBeenCalledTimes(1);
+    expect(navigatorMock.goToTrophySuitePage).toHaveBeenCalledWith(event.trophySuiteId, event.gameId, playerMock.id);
+  });
+
+  it('should call loadMoreTrophySuites', () => {
+    component.loadMoreTrophySuites();
+    expect(profileTrophySuiteDataServiceMock.loadMore).toHaveBeenCalled();
+  });
+
+  it('should call loadMoreTrophies', () => {
+    component.loadMoreTrophies();
+    expect(profileTrophyDataServiceMock.loadMore).toHaveBeenCalled();
+  });
+
+  it('should call deletePlayer', () => {
+    component.deletePlayer();
+    expect(profileDeleteServiceMock.deleteProfile).toHaveBeenCalledWith(playerMock.id);
+  });
+
+  it('should reset data on destroy', () => {
+    component.ngOnDestroy();
+    expect(profileSummaryDataServiceMock.reset).toHaveBeenCalled();
+    expect(profileTrophySuiteDataServiceMock.reset).toHaveBeenCalled();
+    expect(profileTrophyDataServiceMock.reset).toHaveBeenCalled();
   });
 });

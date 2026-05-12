@@ -1,52 +1,48 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {PlayerApiService} from '../../core/api/services/player-api.service';
-import {finalize, of, switchMap} from 'rxjs';
+import {catchError, defer, EMPTY, finalize, Observable, of, switchMap, throwError} from 'rxjs';
 import {NotificationService} from '../../core/services/notification.service';
-import {PlayersDataService} from './players-data.service';
+import {PlayerAddResponse} from '../../core/api/dtos/player/player-add-response';
 
 @Injectable()
 export class PlayersAddService {
   private readonly playerApiService = inject(PlayerApiService);
-  private readonly playersDataService = inject(PlayersDataService);
   private readonly notificationService = inject(NotificationService);
   private readonly _isLoading = signal<boolean>(false);
 
   readonly isLoading = this._isLoading.asReadonly();
 
-  addPlayer(pseudo: string): void {
-    if (this.isLoading()) return;
-    this._isLoading.set(true);
+  addPlayer$(pseudo: string): Observable<PlayerAddResponse> {
+    return defer(() => {
+      if (this.isLoading()) return EMPTY;
+      this._isLoading.set(true);
 
-    this.playerApiService.fetchByPseudo(pseudo)
-      .pipe(
-        switchMap(response => {
-          if (response === null) {
-            console.info("Player not found in database, adding it to database...");
+      return this.playerApiService.fetchByPseudo(pseudo)
+        .pipe(
+          switchMap(response => {
+            if (response !== null) {
+              this.notificationService.error(`Player ${pseudo} already registered`);
+              return EMPTY;
+            }
+
             this.notificationService.info(`Adding ${pseudo} to TrophyQuest...`);
-            return this.playerApiService.addPlayer(pseudo);
-          } else {
-            console.info("Player already in database, not adding it to database");
-            this.notificationService.error(`Player ${pseudo} already registered`);
-            return of({status: 'ERROR', message: 'Player already in database'});
-          }
-        }),
-        finalize(() => this._isLoading.set(false))
-      ).subscribe({
-      next: response => {
-        switch (response.status) {
-          case 'OK':
-            this.playersDataService.search(0);
-            this.notificationService.success(`Player ${pseudo} added successfully`);
-            break;
-          case 'ERROR':
-            console.error('Error when adding player: ', response);
-            this.notificationService.error(`Failed to add player ${pseudo}`)
-        }
-      },
-      error: error => {
-        console.error('Error when adding player: ', error);
-        this.notificationService.error(`Failed to add player ${pseudo}`);
-      }
+
+            return this.playerApiService.addPlayer(pseudo).pipe(
+              switchMap(response => {
+                if (response.status === 'OK') {
+                  this.notificationService.success(`Player ${pseudo} added successfully`);
+                  return of(response);
+                }
+                return throwError(() => new Error(`Failed to add player ${pseudo}`));
+              })
+            );
+          }),
+          catchError(error => {
+            this.notificationService.error(`Failed to add player ${pseudo}`);
+            return throwError(() => error);
+          }),
+          finalize(() => this._isLoading.set(false))
+        );
     });
   }
 }

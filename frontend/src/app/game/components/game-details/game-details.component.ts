@@ -1,4 +1,4 @@
-import {Component, computed, input, InputSignal} from '@angular/core';
+import {Component, computed, input} from '@angular/core';
 import {GameDetails} from '../../../core/api/dtos/game/game-details';
 import {NgbCarousel, NgbSlide} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe, NgOptimizedImage} from '@angular/common';
@@ -16,7 +16,7 @@ import {DatePipe, NgOptimizedImage} from '@angular/common';
   styleUrl: './game-details.component.scss',
 })
 export class GameDetailsComponent {
-  readonly gameDetails: InputSignal<GameDetails> = input.required<GameDetails>();
+  readonly gameDetails = input.required<GameDetails>();
 
   readonly hasScreenshots = computed(() => this.gameDetails()?.screenshotsUrl?.length > 0)
 

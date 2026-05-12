@@ -10,14 +10,14 @@ export class ProfileTrophySuiteDataService {
   private readonly playerApiService: PlayerApiService = inject(PlayerApiService);
   private readonly notificationService = inject(NotificationService);
 
-  private readonly currentPlayerId = signal<string | null>(null);
   private readonly pageSize = 20
+  private readonly initSubject = new Subject<string | null>();
+  private readonly loadMoreSubject = new Subject<void>();
+  private readonly currentPlayerId = signal<string | null>(null);
   private readonly pagination = signal<Pagination<PlayerTrophySuite> | null>(null);
   private readonly _isLoading = signal<boolean>(false);
   private readonly _isError = signal<boolean>(false);
   private readonly currentPage = computed(() => this.pagination()?.page ?? 0);
-  private readonly initSubject = new Subject<string | null>();
-  private readonly loadMoreSubject = new Subject<void>();
 
   readonly trophySuites = computed(() => this.pagination()?.content ?? []);
   readonly total = computed(() => this.pagination()?.total ?? 0);

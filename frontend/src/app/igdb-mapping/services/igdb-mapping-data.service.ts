@@ -7,15 +7,16 @@ import {catchError, EMPTY, exhaustMap, finalize, Observable, Subject, switchMap,
 
 @Injectable()
 export class IgdbMappingDataService {
-  private readonly igdbCandidateApiService: IgdbMappingApiService = inject(IgdbMappingApiService);
+  private readonly igdbMappingApiService = inject(IgdbMappingApiService);
   private readonly notificationService = inject(NotificationService);
+
   private readonly pageSize = 20;
+  private readonly initSubject = new Subject<void>();
+  private readonly loadMoreSubject = new Subject<number>();
   private readonly mappingPagination = signal<Pagination<IgdbMapping> | null>(null);
   private readonly _isLoading = signal<boolean>(false);
   private readonly _isError = signal<boolean>(false);
   private readonly currentPage = computed(() => this.mappingPagination()?.page ?? 0);
-  private readonly initSubject = new Subject<void>();
-  private readonly loadMoreSubject = new Subject<number>();
 
   readonly mappingList = computed(() => this.mappingPagination()?.content ?? []);
   readonly total = computed(() => this.mappingPagination()?.total ?? 0);
@@ -50,10 +51,10 @@ export class IgdbMappingDataService {
     this.loadMoreSubject.next(this.currentPage() + 1);
   }
 
-  private searchPage$(pageNumber: number): Observable<Pagination<IgdbMapping> | null> {
+  private searchPage$(pageNumber: number): Observable<Pagination<IgdbMapping>> {
     this._isLoading.set(true);
     this._isError.set(false);
-    return this.igdbCandidateApiService.searchPending(pageNumber, this.pageSize)
+    return this.igdbMappingApiService.searchPending(pageNumber, this.pageSize)
       .pipe(
         finalize(() => this._isLoading.set(false)),
         catchError(err => {

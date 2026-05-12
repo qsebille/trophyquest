@@ -3,7 +3,7 @@ import {PlayerApiService} from '../../core/api/services/player-api.service';
 import {NotificationService} from '../../core/services/notification.service';
 import {Pagination} from '../../core/api/dtos/pagination';
 import {PlayerEarnedTrophy} from '../../core/api/dtos/trophy/player-earned-trophy';
-import {catchError, exhaustMap, finalize, map, Observable, of, Subject, switchMap} from 'rxjs';
+import {catchError, EMPTY, exhaustMap, finalize, map, Observable, Subject, switchMap, tap} from 'rxjs';
 
 @Injectable()
 export class ProfileTrophyDataService {
@@ -26,44 +26,43 @@ export class ProfileTrophyDataService {
   constructor() {
     this.initSubject.pipe(
       switchMap(playerId => {
-        if (playerId === null) return of(null);
+        if (playerId === null) return EMPTY;
         this.reset();
         this.currentPlayerId.set(playerId);
         return this.searchPage(playerId, 0);
-      })
-    ).subscribe(pagination => {
-      if (pagination != null) {
-        this.pagination.set(pagination);
-      }
-    });
+      }),
+      tap(pagination => this.pagination.set(pagination))
+    ).subscribe();
 
     this.loadMoreSubject.pipe(
       exhaustMap(() => {
         const playerId = this.currentPlayerId();
         const pageNumber = this.currentPageNumber() + 1;
-        if (playerId === null) return of(null);
+        if (playerId === null) return EMPTY;
         return this.searchPage(playerId, pageNumber);
-      })
-    )
+      }),
+      tap(pagination => this.pagination.set(pagination))
+    ).subscribe();
   }
 
-  private searchPage(playerId: string, pageNumber: number = this.currentPageNumber()): Observable<Pagination<PlayerEarnedTrophy> | null> {
+  private searchPage(playerId: string, pageNumber: number = this.currentPageNumber()): Observable<Pagination<PlayerEarnedTrophy>> {
     this._isLoading.set(true);
     this._isError.set(false);
 
-    return this.playerApiService.searchEarnedTrophies(playerId, pageNumber, this.pageSize).pipe(
-      map(pagination => {
-        const content = pageNumber === 0 ? pagination.content : [...this.trophies(), ...pagination.content];
-        return {...pagination, content} as Pagination<PlayerEarnedTrophy>;
-      }),
-      catchError(err => {
-        console.error(`Failed loading earned trophies for player ${playerId}`, err);
-        this.notificationService.error('Failed to retrieve earned trophies for player');
-        this._isError.set(true);
-        return of(null);
-      }),
-      finalize(() => this._isLoading.set(false))
-    );
+    return this.playerApiService.searchEarnedTrophies(playerId, pageNumber, this.pageSize)
+      .pipe(
+        map(pagination => {
+          const content = pageNumber === 0 ? pagination.content : [...this.trophies(), ...pagination.content];
+          return {...pagination, content} as Pagination<PlayerEarnedTrophy>;
+        }),
+        catchError(err => {
+          console.error(`Failed loading earned trophies for player ${playerId}`, err);
+          this.notificationService.error('Failed to retrieve earned trophies for player');
+          this._isError.set(true);
+          return EMPTY;
+        }),
+        finalize(() => this._isLoading.set(false))
+      );
   }
 
   reset(): void {
