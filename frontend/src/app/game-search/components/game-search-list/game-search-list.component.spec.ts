@@ -25,9 +25,6 @@ describe('GameSearchListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Component setup', () => {
-  });
-
   describe('Load more games button', () => {
     it('should be hidden if no more games to load', () => {
       fixture.componentRef.setInput('hasMoreGames', false);
