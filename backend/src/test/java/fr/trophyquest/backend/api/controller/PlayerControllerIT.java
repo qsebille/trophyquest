@@ -17,13 +17,17 @@ class PlayerControllerIT extends IntegrationTestBase {
     MockMvc mockMvc;
 
     @Test
-    void should_count_players() throws Exception {
+    void should_search_for_players() throws Exception {
         runScript("/sql/clean-db.sql");
         runScript("/sql/players/insert-players.sql");
 
-        mockMvc.perform(get(BASE_PATH + "/count"))
+        mockMvc.perform(get(BASE_PATH + "/search"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(2))
+                .andExpect(jsonPath("$.content").isArray())
+                .andExpect(jsonPath("$.content[0].id").value("00000001-0000-0000-0000-000000000000"))
+                .andExpect(jsonPath("$.content[0].pseudo").value("Player 1"))
+                .andExpect(jsonPath("$.content[1].id").value("00000002-0000-0000-0000-000000000000"))
+                .andExpect(jsonPath("$.content[1].pseudo").value("Player 2"))
         ;
     }
 }

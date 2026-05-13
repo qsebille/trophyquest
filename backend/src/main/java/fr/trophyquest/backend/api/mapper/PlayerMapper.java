@@ -14,11 +14,11 @@ public class PlayerMapper {
                 .id(player.getId())
                 .pseudo(player.getPseudo())
                 .avatar(player.getAvatarUrl())
-                .nbPlayedGames(player.getNbPlayedGames())
-                .nbEarnedPlatinum(player.getNbEarnedPlatinum())
-                .nbEarnedGold(player.getNbEarnedGold())
-                .nbEarnedSilver(player.getNbEarnedSilver())
-                .nbEarnedBronze(player.getNbEarnedBronze())
+                .nbPlayedGames(player.getNbPlayedGames() != null ? player.getNbPlayedGames() : 0)
+                .nbEarnedPlatinum(player.getNbEarnedPlatinum() != null ? player.getNbEarnedPlatinum() : 0)
+                .nbEarnedGold(player.getNbEarnedGold() != null ? player.getNbEarnedGold() : 0)
+                .nbEarnedSilver(player.getNbEarnedSilver() != null ? player.getNbEarnedSilver() : 0)
+                .nbEarnedBronze(player.getNbEarnedBronze() != null ? player.getNbEarnedBronze() : 0)
                 .build();
     }
 
