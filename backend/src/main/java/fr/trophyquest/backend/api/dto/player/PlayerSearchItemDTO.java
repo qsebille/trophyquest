@@ -9,10 +9,10 @@ public record PlayerSearchItemDTO(
         UUID id,
         String pseudo,
         String avatar,
-        Long totalPlayedGames,
-        Long totalEarnedPlatinum,
-        Long totalEarnedGold,
-        Long totalEarnedSilver,
-        Long totalEarnedBronze
+        int nbPlayedGames,
+        int nbEarnedPlatinum,
+        int nbEarnedGold,
+        int nbEarnedSilver,
+        int nbEarnedBronze
 ) {
 }

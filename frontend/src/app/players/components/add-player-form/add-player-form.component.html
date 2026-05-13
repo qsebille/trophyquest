@@ -1,35 +1,21 @@
 <div class="card">
-    <div class="card-header">
-        <h5 class="card-title">Add a player</h5>
+  <div class="card-header">
+    <h5 class="card-title">Add a player</h5>
+  </div>
+  <div class="card-body">
+    <div class="d-flex flex-column align-items-center">
+      <span class="card-subtitle mb-2 text-muted">Add a player to TrophyQuest</span>
+      <input type="text"
+             placeholder="Enter a PSN pseudo"
+             class="form-control w-75"
+             #searchInput
+             (change)="validate(searchInput.value)"/>
     </div>
-    <div class="card-body">
-        <span class="card-subtitle mb-2 text-muted">Add a player to TrophyQuest</span>
-        <div class="d-flex align-items-center">
-            <mat-form-field class="w-50">
-                <mat-label>Profile name</mat-label>
-                <input [disabled]="isLoading()" matInput type="text" [(ngModel)]="inputValue"
-                       (keydown.enter)="validate()">
-                @if (inputValue) {
-                    <button matSuffix matIconButton aria-label="clear" (click)="inputValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                }
-            </mat-form-field>
-            <div class="w-50 d-flex justify-content-end">
-                <div class="btn btn-primary w-50" (click)="validate()">Add</div>
-            </div>
-        </div>
-        @if (isLoading()) {
-            <tq-spinner-container class="mb-1"/>
-            <span>Adding user... this step may take a minute.</span>
-        } @else if (isAlreadyInDatabase()) {
-            <tq-error-message [errorMessage]="sentUsername + ' is already registered in TrophyQuest'"/>
-        } @else if (hasFailedAddPlayer()) {
-            <tq-error-message
-                    [errorMessage]="'An error occurred when adding player ' + sentUsername +' in Trophyquest'"/>
-        } @else if (hasSucceededAddPlayer()) {
-            <tq-success-message [message]="sentUsername + ' has been added to TrophyQuest!'" [hasButton]="true"
-                                (onClick)="validateSuccess.emit()"/>
-        }
-    </div>
+    @if (isLoading()) {
+      <div class="d-flex flex-column align-items-center mt-3">
+        <tq-spinner-container class="mb-1"/>
+        <span class="text-muted">Adding user... this step may take a minute.</span>
+      </div>
+    }
+  </div>
 </div>

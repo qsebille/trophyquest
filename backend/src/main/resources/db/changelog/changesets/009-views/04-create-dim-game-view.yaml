@@ -1,0 +1,86 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/04-create-dim-game-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: v_dim_game
+            selectQuery: |
+              SELECT
+                g.id,
+                g.name,
+                master_image.url                                                               AS master_image_url,
+                background_image.url                                                           AS background_image_url,
+                igdb.summary                                                                   AS summary,
+                igdb.genres                                                                    AS genres,
+                igdb.themes                                                                    AS themes,
+                COALESCE(igdb.official_website, igdb.psn_website, igdb.community_wiki_website) AS website,
+                igdb.release_date                                                              AS release_date,
+                trophy_suites.nb_trophy_suites                                                 AS nb_trophy_suites,
+                played.count                                                                   AS nb_players,
+                platforms.platform_list                                                        AS platforms,
+                screenshots.url_list                                                           AS screenshots_url
+              FROM app.psn_game g
+              
+              LEFT JOIN LATERAL (
+                SELECT COALESCE(gi.aws_url, gi.psn_url) AS url
+                FROM app.psn_game_image gi
+                WHERE gi.psn_game_id = g.id AND gi.type = 'MASTER'
+                ORDER BY gi.psn_game_id
+                LIMIT 1
+              ) master_image ON TRUE
+              
+              LEFT JOIN LATERAL (
+                SELECT COALESCE(gi.aws_url, gi.psn_url) AS url
+                FROM app.psn_game_image gi
+                WHERE gi.psn_game_id = g.id AND gi.type = 'GAMEHUB_COVER_ART'
+                ORDER BY gi.psn_game_id
+                LIMIT 1
+              ) background_image ON TRUE
+              
+              LEFT JOIN app.igdb_game igdb ON igdb.id = g.igdb_game_id
+              
+              LEFT JOIN LATERAL (
+                SELECT COUNT(*) as nb_trophy_suites
+                FROM app.psn_trophy_suite ts
+                  JOIN app.psn_edition_trophy_suite ets ON ets.trophy_suite_id = ts.id
+                  JOIN app.psn_edition e ON e.id = ets.edition_id
+                WHERE e.psn_game_id = g.id
+              ) trophy_suites ON TRUE
+              
+              LEFT JOIN LATERAL (
+                SELECT COUNT(*) as count
+                FROM app.psn_played_game pg
+                WHERE pg.game_id = g.id
+              ) played ON TRUE
+              
+              LEFT JOIN LATERAL (
+                SELECT ARRAY_AGG(platform) as platform_list
+                FROM (
+                  SELECT DISTINCT e.psn_game_id AS game_id, UNNEST(pts.platforms) AS platform
+                  FROM app.psn_trophy_suite pts
+                    JOIN app.psn_edition_trophy_suite ets ON ets.trophy_suite_id = pts.id
+                    JOIN app.psn_edition e ON e.id = ets.edition_id
+                  WHERE e.psn_game_id = g.id
+                ) game_platform
+                WHERE game_platform.game_id = g.id
+              ) platforms ON TRUE
+              
+              LEFT JOIN LATERAL (
+                SELECT
+                  ARRAY_AGG(DISTINCT screenshot_url ORDER BY screenshot_url) FILTER (WHERE screenshot_url IS NOT NULL) AS url_list
+                FROM (
+                  SELECT COALESCE(ii.aws_url, ii.igdb_url) AS screenshot_url
+                  FROM app.igdb_image ii
+                  WHERE ii.igdb_game_id = g.igdb_game_id
+                    AND ii.image_type = 'screenshot'
+
+                  UNION ALL
+
+                  SELECT COALESCE(pgi.aws_url, pgi.psn_url) AS screenshot_url
+                  FROM app.psn_game_image pgi
+                  WHERE pgi.psn_game_id = g.id
+                    AND pgi.type = 'SCREENSHOT'
+                ) all_screenshots
+              ) screenshots ON TRUE

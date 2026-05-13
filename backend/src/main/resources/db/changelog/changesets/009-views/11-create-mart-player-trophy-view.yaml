@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/11-create-mart-player-trophy-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: v_mart_player_trophy
+            selectQuery: |
+              SELECT
+                et.id,
+                et.player_id,
+                t.title,
+                t.trophy_type,
+                t.icon_url,
+                t.description,
+                et.trophy_suite_id,
+                et.game_id,
+                ts.name AS trophy_suite_name,
+                et.earned_at
+              FROM app.v_fact_earned_trophy et
+                JOIN app.v_dim_trophy t ON t.id = et.trophy_id
+                JOIN app.v_dim_trophy_suite ts ON ts.id = t.trophy_suite_id

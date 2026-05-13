@@ -1,7 +1,7 @@
-import {Component, computed, input, InputSignal, Signal} from '@angular/core';
+import {Component, computed, input} from '@angular/core';
 import {GameDetails} from '../../../core/api/dtos/game/game-details';
 import {NgbCarousel, NgbSlide} from '@ng-bootstrap/ng-bootstrap';
-import {DatePipe} from '@angular/common';
+import {DatePipe, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'tq-game-details',
@@ -9,22 +9,19 @@ import {DatePipe} from '@angular/common';
     NgbCarousel,
     NgbSlide,
     DatePipe,
+    NgOptimizedImage,
 
   ],
   templateUrl: './game-details.component.html',
   styleUrl: './game-details.component.scss',
 })
 export class GameDetailsComponent {
-  readonly gameDetails: InputSignal<GameDetails> = input.required<GameDetails>();
+  readonly gameDetails = input.required<GameDetails>();
 
-  readonly hasIgdbInfo: Signal<boolean> = computed(() => !!this.gameDetails()?.description ||
+  readonly hasScreenshots = computed(() => this.gameDetails()?.screenshotsUrl?.length > 0)
+
+  readonly hasIgdbInfo = computed(() => !!this.gameDetails()?.description ||
     this.gameDetails()?.genres?.length > 0 ||
     this.gameDetails()?.themes?.length > 0
   );
-
-  readonly images: Signal<string[]> = computed(() => {
-    return (this.gameDetails()?.images ?? [])
-      .filter(i => i.imageType === 'screenshot' || i.imageType === 'SCREENSHOT')
-      .map(i => i.imageUrl)
-  });
 }

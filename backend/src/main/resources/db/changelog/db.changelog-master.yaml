@@ -41,3 +41,16 @@ databaseChangeLog:
   - include: { file: changesets/007-authentication/02-add-unique-constraint-cognito-sub.yaml, relativeToChangelogFile: true }
 
   - include: { file: changesets/008-game-search/01-create-game-view.yaml, relativeToChangelogFile: true }
+
+  - include: { file: changesets/009-views/01-drop-existing-views.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/02-create-fact-earned-trophy-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/03-create-dim-player-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/04-create-dim-game-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/05-create-dim-trophy-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/06-create-dim-trophy-suite-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/07-create-fact-played-game-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/08-create-mart-recent-game-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/09-create-fact-played-trophy-suite-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/10-create-mart-player-trophy-suite-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/11-create-mart-player-trophy-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/12-create-mart-active-player-trophy-view.yaml, relativeToChangelogFile: true }

@@ -4,11 +4,11 @@ import fr.trophyquest.backend.api.dto.igdb.IgdbCandidateDTO;
 import fr.trophyquest.backend.api.dto.igdb.IgdbMappingDTO;
 import fr.trophyquest.backend.constants.GameImageType;
 import fr.trophyquest.backend.constants.IgdbGameImageType;
-import fr.trophyquest.backend.domain.entity.PsnGame;
-import fr.trophyquest.backend.domain.entity.PsnGameImage;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
 import fr.trophyquest.backend.domain.entity.igdb.IgdbImage;
+import fr.trophyquest.backend.domain.entity.psn.PsnGame;
+import fr.trophyquest.backend.domain.entity.psn.PsnGameImage;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;

@@ -1,0 +1,28 @@
+<div class="mt-4 d-flex flex-column align-items-center container gap-3">
+  <tq-profile-summary class="w-50"
+                      [player]="summary()"
+                      [isLoading]="isLoadingSummary()"
+                      [isError]="isSummaryInError()"
+                      [style.animationDelay.ms]="300"
+                      (deletePlayer)="deletePlayer()"
+                      animate.enter="block-enter"/>
+
+  <div class="d-flex w-100 gap-3">
+    <tq-profile-trophy-suite-list class="w-60"
+                                  [style.animationDelay.ms]="400" animate.enter="block-enter"
+                                  [trophySuites]="trophySuites()"
+                                  [total]="totalTrophySuites()"
+                                  [isLoading]="isLoadingTrophySuites()"
+                                  [isError]="isTrophySuitesInError()"
+                                  (onClickOnGame)="navigateToPlayerTrophySuitePage($event)"
+                                  (onLoadMoreGames)="loadMoreTrophySuites()"/>
+
+    <tq-profile-trophy-list class="w-40"
+                            [style.animationDelay.ms]="400" animate.enter="block-enter"
+                            [trophies]="trophies()"
+                            [total]="totalTrophies()"
+                            [isLoading]="isLoadingTrophies()"
+                            [isError]="isTrophiesInError()"
+                            (loadMoreTrophies)="loadMoreTrophies()"/>
+  </div>
+</div>

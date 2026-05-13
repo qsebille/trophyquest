@@ -11,7 +11,11 @@
     }
   </div>
 
-  <div class="btn btn-outline-primary" (click)="loadMore.emit()" [hidden]="!hasMoreGamesToLoad()">
-    <span>Load more games...</span>
-  </div>
+  @if (hasMoreGames()) {
+    <div class="btn btn-outline-primary"
+         [attr.data-testid]="'load-more-button'"
+         (click)="loadMore.emit()">
+      <span>Load more games...</span>
+    </div>
+  }
 </div>

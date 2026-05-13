@@ -1,7 +1,7 @@
 export interface GameSearchItem {
   id: string;
   name: string;
-  coverUrl: string;
+  imageUrl: string;
   summary: string;
   genres: string[];
   themes: string[];

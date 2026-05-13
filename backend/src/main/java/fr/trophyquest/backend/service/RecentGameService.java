@@ -3,7 +3,8 @@ package fr.trophyquest.backend.service;
 import fr.trophyquest.backend.api.dto.PaginationDTO;
 import fr.trophyquest.backend.api.dto.game.RecentGameDTO;
 import fr.trophyquest.backend.api.mapper.RecentGameMapper;
-import fr.trophyquest.backend.repository.RecentGameSearchItemRepository;
+import fr.trophyquest.backend.domain.entity.views.mart.RecentGame;
+import fr.trophyquest.backend.domain.repository.views.mart.RecentGameRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -12,14 +13,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class RecentGameService {
 
-    private final RecentGameSearchItemRepository recentGameSearchItemRepository;
+    private final RecentGameRepository recentGameRepository;
     private final RecentGameMapper recentGameMapper;
 
     public RecentGameService(
-            RecentGameSearchItemRepository recentGameSearchItemRepository,
+            RecentGameRepository recentGameRepository,
             RecentGameMapper recentGameMapper
     ) {
-        this.recentGameSearchItemRepository = recentGameSearchItemRepository;
+        this.recentGameRepository = recentGameRepository;
         this.recentGameMapper = recentGameMapper;
     }
 
@@ -29,8 +30,7 @@ public class RecentGameService {
                 Sort.Order.desc("lastPlayedAt")
         );
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
-        Page<RecentGameDTO> result = this.recentGameSearchItemRepository.findAll(pageRequest)
-                .map(this.recentGameMapper::toDTO);
-        return new PaginationDTO<>(result);
+        Page<RecentGame> result = this.recentGameRepository.findAllPlayed(pageRequest);
+        return new PaginationDTO<>(result.map(this.recentGameMapper::toRecentGameDTO));
     }
 }

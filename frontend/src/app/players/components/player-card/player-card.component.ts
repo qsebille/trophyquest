@@ -7,28 +7,28 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {NgbTooltip} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-    selector: 'tq-player-card',
-    imports: [
-        NgOptimizedImage,
-        MatIconModule,
-        MatTooltipModule,
-        NgbTooltip,
-    ],
-    templateUrl: './player-card.component.html',
-    styleUrl: './player-card.component.scss',
+  selector: 'tq-player-card',
+  imports: [
+    NgOptimizedImage,
+    MatIconModule,
+    MatTooltipModule,
+    NgbTooltip,
+  ],
+  templateUrl: './player-card.component.html',
+  styleUrl: './player-card.component.scss',
 })
 export class PlayerCardComponent {
-    readonly playerSearchItem = input.required<PlayerSearchItem>();
-    readonly clickOnPseudo = output();
+  readonly playerSearchItem = input.required<PlayerSearchItem>();
+  readonly clickOnPseudo = output();
 
-    readonly trophyCount = computed(() => (
-        {
-            platinum: this.playerSearchItem().totalEarnedPlatinum,
-            gold: this.playerSearchItem().totalEarnedGold,
-            silver: this.playerSearchItem().totalEarnedSilver,
-            bronze: this.playerSearchItem().totalEarnedBronze,
-        } as TrophyCountPerType
-    ));
+  readonly trophyCount = computed(() => (
+    {
+      platinum: this.playerSearchItem().nbEarnedPlatinum,
+      gold: this.playerSearchItem().nbEarnedGold,
+      silver: this.playerSearchItem().nbEarnedSilver,
+      bronze: this.playerSearchItem().nbEarnedBronze,
+    } as TrophyCountPerType
+  ));
 
-    readonly trophyTypes = ['platinum', 'gold', 'silver', 'bronze'] as const;
+  readonly trophyTypes = ['platinum', 'gold', 'silver', 'bronze'] as const;
 }

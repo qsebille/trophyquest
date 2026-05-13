@@ -1,7 +1,7 @@
 package fr.trophyquest.backend.domain.entity.igdb;
 
-import fr.trophyquest.backend.domain.entity.PsnGame;
 import fr.trophyquest.backend.domain.entity.igdb.embedded.IgdbCandidateId;
+import fr.trophyquest.backend.domain.entity.psn.PsnGame;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

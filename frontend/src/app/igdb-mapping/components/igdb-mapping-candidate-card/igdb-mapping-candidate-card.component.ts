@@ -2,7 +2,6 @@ import {Component, computed, input, output} from '@angular/core';
 import {DatePipe} from "@angular/common";
 import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {ValidateCandidateStatus} from "../../../core/models/validate-candidate-status";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {IgdbCandidate} from "../../../core/api/dtos/igdb/igdb-candidate";
 import {MatIconModule} from "@angular/material/icon";
@@ -21,10 +20,8 @@ import {MatIconModule} from "@angular/material/icon";
 })
 export class IgdbMappingCandidateCardComponent {
   readonly candidate = input.required<IgdbCandidate>();
-  readonly validationStatus = input<ValidateCandidateStatus>(ValidateCandidateStatus.NONE);
+  readonly isLoadingValidation = input<boolean>(false);
   readonly candidateAccepted = output<number>();
-
-  readonly isValidationDisabled = computed(() => this.validationStatus() === ValidateCandidateStatus.LOADING);
 
   readonly confidence = computed((): ConfidenceLevel => {
     if (this.candidate().score === 100) {

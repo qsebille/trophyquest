@@ -1,7 +1,6 @@
 import {Component, computed, effect, input, output, untracked} from '@angular/core';
-import {TrophySuiteWithCounts} from '../../../../core/api/dtos/trophy-suite/trophy-suite-with-counts';
-import {EarnedTrophy} from '../../../../core/api/dtos/trophy/earned-trophy';
-import {ErrorMessageComponent} from '../../../../core/components/error-message/error-message.component';
+import {TrophySuite} from '../../../../core/api/dtos/trophy-suite/trophy-suite';
+import {Trophy} from '../../../../core/api/dtos/trophy/trophy';
 import {GameTrophySuiteCardComponent} from '../game-trophy-suite-card/game-trophy-suite-card.component';
 import {GameTrophySuiteDisplayMode} from '../../../models/game-trophy-suite-display-mode.enum';
 import {GameTrophyListComponent} from '../../trophy/game-trophy-list/game-trophy-list.component';
@@ -9,7 +8,6 @@ import {GameTrophyListComponent} from '../../trophy/game-trophy-list/game-trophy
 @Component({
   selector: 'tq-game-trophy-suite-list',
   imports: [
-    ErrorMessageComponent,
     GameTrophySuiteCardComponent,
     GameTrophyListComponent
   ],
@@ -17,8 +15,8 @@ import {GameTrophyListComponent} from '../../trophy/game-trophy-list/game-trophy
   styleUrl: './game-trophy-suite-list.component.scss',
 })
 export class GameTrophySuiteListComponent {
-  trophySuites = input.required<TrophySuiteWithCounts[]>();
-  trophies = input.required<EarnedTrophy[]>();
+  trophySuites = input.required<TrophySuite[]>();
+  trophies = input.required<Trophy[]>();
   trophySuiteId = input<string | null>(null);
   selectedPlayerId = input<string | null>(null);
   trophySuiteChange = output<string | null>();

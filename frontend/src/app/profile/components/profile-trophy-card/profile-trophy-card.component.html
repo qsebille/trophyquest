@@ -1,18 +1,18 @@
 <div class="d-flex flex-column trophy-card">
-    <div id="trophy-header" class="d-flex justify-content-between align-items-center" (click)="toggleExpansion()">
-        <div id="trophy-infos" class="d-flex align-items-center gap-2">
-            <img [height]="48" [ngSrc]="trophy().icon" [width]="48" alt="Trophy" class="profile-trophy-card--icon"/>
-            <div id="trophy-name-and-game" class="d-flex flex-column align-items-start">
-                <span class="fw-bold">{{ trophy().title }}</span>
-                <span class="text-muted">{{ trophy().trophySuiteTitle }}</span>
-            </div>
-        </div>
-        <div id="trophy-icon-and-earned-date" class="d-flex flex-column align-items-end gap-1">
-            <img [height]="28" [width]="28" alt="" ngSrc="assets/icons/trophy-{{trophy().trophyType}}.png"/>
-            <span class="fs-10px text-muted">{{ trophy().earnedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
-        </div>
+  <div class="d-flex justify-content-between align-items-center" (click)="toggleExpansion()">
+    <div class="d-flex align-items-center gap-2">
+      <img [height]="48" [ngSrc]="trophy().icon" [width]="48" alt="Trophy" class="profile-trophy-card--icon"/>
+      <div class="d-flex flex-column align-items-start">
+        <span class="fw-bold">{{ trophy().title }}</span>
+        <span class="text-muted">{{ trophy().trophySuiteTitle }}</span>
+      </div>
     </div>
-    @if (isExpanded) {
-        <div id="trophy-description" class="p-2">{{ trophy().description }}</div>
-    }
+    <div class="d-flex flex-column align-items-end gap-1">
+      <img [height]="28" [width]="28" alt="" ngSrc="assets/icons/trophy-{{trophy().trophyType}}.png"/>
+      <span class="fs-10px text-muted">{{ trophy().earnedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+    </div>
+  </div>
+  @if (isExpanded) {
+    <div class="p-2">{{ trophy().description }}</div>
+  }
 </div>

@@ -1,19 +1,25 @@
-import {Component, input, output} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {ProfileTrophyCardComponent} from "../profile-trophy-card/profile-trophy-card.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {EarnedTrophySearchItem} from "../../../core/api/dtos/trophy/earned-trophy-search-item";
+import {PlayerEarnedTrophy} from "../../../core/api/dtos/trophy/player-earned-trophy";
+import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
 
 @Component({
   selector: 'tq-profile-trophy-list',
   imports: [
     MatProgressSpinnerModule,
     ProfileTrophyCardComponent,
+    SpinnerContainerComponent,
   ],
   templateUrl: './profile-trophy-list.component.html',
   styleUrl: './profile-trophy-list.component.scss',
 })
 export class ProfileTrophyListComponent {
-  readonly trophies = input<EarnedTrophySearchItem[]>([]);
-  readonly hasMoreTrophiesToLoad = input<boolean>(false);
+  readonly trophies = input<PlayerEarnedTrophy[]>([]);
+  readonly isLoading = input<boolean>(false);
+  readonly isError = input<boolean>(false);
+  readonly total = input<number>(0);
   readonly loadMoreTrophies = output();
+
+  readonly showLoadMoreButton = computed(() => !this.isLoading() && this.trophies().length < this.total());
 }

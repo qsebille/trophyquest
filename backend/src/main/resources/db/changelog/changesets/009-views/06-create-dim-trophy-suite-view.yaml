@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/06-create-dim-trophy-suite-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: v_dim_trophy_suite
+            selectQuery: |
+              SELECT
+                ts.id,
+                game.psn_game_id                             AS game_id,
+                ts.name,
+                ts.platforms,
+                COALESCE(ts.aws_image_url, ts.psn_image_url) AS image_url,
+                trophy_count.*
+              FROM app.psn_trophy_suite ts
+                JOIN LATERAL (
+                  SELECT
+                    SUM(CASE WHEN t.trophy_type = 'platinum' THEN 1 ELSE 0 END) AS nb_platinum,
+                    SUM(CASE WHEN t.trophy_type = 'gold' THEN 1 ELSE 0 END)     AS nb_gold,
+                    SUM(CASE WHEN t.trophy_type = 'silver' THEN 1 ELSE 0 END)   AS nb_silver,
+                    SUM(CASE WHEN t.trophy_type = 'bronze' THEN 1 ELSE 0 END)   AS nb_bronze
+                  FROM app.psn_trophy t
+                  WHERE t.trophy_suite_id = ts.id
+                ) trophy_count ON TRUE
+              
+                JOIN LATERAL (
+                  SELECT e.psn_game_id
+                  FROM app.psn_edition_trophy_suite pets
+                    JOIN app.psn_edition e ON e.id = pets.edition_id
+                  WHERE pets.trophy_suite_id = ts.id
+                  ORDER BY e.id DESC
+                  LIMIT 1
+                ) game ON TRUE

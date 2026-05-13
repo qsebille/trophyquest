@@ -4,7 +4,7 @@ import fr.trophyquest.backend.api.dto.auth.user.AuthUserDTO;
 import fr.trophyquest.backend.api.mapper.AuthUserMapper;
 import fr.trophyquest.backend.auth.CognitoUserInfo;
 import fr.trophyquest.backend.domain.entity.AuthUser;
-import fr.trophyquest.backend.repository.AuthUserRepository;
+import fr.trophyquest.backend.domain.repository.AuthUserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 

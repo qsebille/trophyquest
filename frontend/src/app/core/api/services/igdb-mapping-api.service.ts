@@ -3,7 +3,6 @@ import {environment} from "../../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {IgdbMapping} from "../dtos/igdb/igdb-mapping";
-import {IgdbMappingStats} from "../dtos/igdb/igdb-mapping-stats";
 import {Pagination} from '../dtos/pagination';
 
 @Injectable({
@@ -26,9 +25,5 @@ export class IgdbMappingApiService {
 
   rejectCandidates(gameId: string): Observable<boolean> {
     return this.http.put<boolean>(`${this.apiUrl}/${gameId}/candidate/reject-all`, null);
-  }
-
-  fetchStats(): Observable<IgdbMappingStats> {
-    return this.http.get<IgdbMappingStats>(`${this.apiUrl}/stats`);
   }
 }

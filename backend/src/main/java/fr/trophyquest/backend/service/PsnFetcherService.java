@@ -1,7 +1,7 @@
 package fr.trophyquest.backend.service;
 
-import fr.trophyquest.backend.domain.entity.Player;
-import fr.trophyquest.backend.repository.PlayerRepository;
+import fr.trophyquest.backend.domain.entity.psn.PsnPlayer;
+import fr.trophyquest.backend.domain.repository.psn.PsnPlayerRepository;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.lambda.LambdaClient;
@@ -14,16 +14,16 @@ import java.util.Optional;
 @Service
 public class PsnFetcherService {
     private final LambdaClient lambdaClient;
-    private final PlayerRepository playerRepository;
+    private final PsnPlayerRepository psnPlayerRepository;
 
 
-    public PsnFetcherService(LambdaClient lambdaClient, PlayerRepository playerRepository) {
+    public PsnFetcherService(LambdaClient lambdaClient, PsnPlayerRepository psnPlayerRepository) {
         this.lambdaClient = lambdaClient;
-        this.playerRepository = playerRepository;
+        this.psnPlayerRepository = psnPlayerRepository;
     }
 
     public InvokeResponse trigger(String profileName) throws Exception {
-        Optional<Player> player = playerRepository.findByPseudo(profileName).stream().findFirst();
+        Optional<PsnPlayer> player = psnPlayerRepository.findByPseudo(profileName).stream().findFirst();
         if (player.isPresent()) {
             throw new Exception("Player already in database!");
         } else {

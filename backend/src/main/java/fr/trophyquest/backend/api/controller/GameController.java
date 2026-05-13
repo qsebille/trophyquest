@@ -5,9 +5,11 @@ import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
 import fr.trophyquest.backend.api.dto.game.GameSearchItemDTO;
 import fr.trophyquest.backend.api.dto.game.RecentGameDTO;
 import fr.trophyquest.backend.api.dto.player.PlayedGameDTO;
-import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteWithCountsDTO;
+import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
 import fr.trophyquest.backend.service.GameService;
+import fr.trophyquest.backend.service.PlayedGameService;
 import fr.trophyquest.backend.service.RecentGameService;
+import fr.trophyquest.backend.service.TrophySuiteService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,15 +25,19 @@ public class GameController {
 
     private final GameService gameService;
     private final RecentGameService recentGameService;
+    private final PlayedGameService playedGameService;
+    private final TrophySuiteService trophySuiteService;
 
-    public GameController(GameService gameService, RecentGameService recentGameService) {
+    public GameController(
+            GameService gameService,
+            RecentGameService recentGameService,
+            PlayedGameService playedGameService,
+            TrophySuiteService trophySuiteService
+    ) {
         this.gameService = gameService;
         this.recentGameService = recentGameService;
-    }
-
-    @GetMapping("/count")
-    public long count() {
-        return this.gameService.count();
+        this.playedGameService = playedGameService;
+        this.trophySuiteService = trophySuiteService;
     }
 
     @GetMapping("/search")
@@ -41,11 +47,6 @@ public class GameController {
             @RequestParam(name = "size", defaultValue = "50") int pageSize
     ) {
         return this.gameService.search(searchTerm, pageNumber, pageSize);
-    }
-
-    @GetMapping("/recent/count")
-    public long countRecent() {
-        return this.gameService.countRecentlyPlayed();
     }
 
     @GetMapping("/recent/search")
@@ -62,8 +63,8 @@ public class GameController {
     }
 
     @GetMapping("/{gameId}/trophy-suites")
-    public List<TrophySuiteWithCountsDTO> searchTrophySuites(@PathVariable UUID gameId) {
-        return this.gameService.fetchTrophySuites(gameId);
+    public List<TrophySuiteDTO> searchTrophySuites(@PathVariable UUID gameId) {
+        return this.trophySuiteService.findForGame(gameId);
     }
 
     @GetMapping("/{gameId}/players")
@@ -72,6 +73,6 @@ public class GameController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size
     ) {
-        return this.gameService.searchRecentPlayers(gameId, page, size);
+        return this.playedGameService.searchRecentPlayers(gameId, page, size);
     }
 }

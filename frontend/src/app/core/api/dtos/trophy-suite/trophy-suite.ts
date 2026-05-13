@@ -1,8 +1,10 @@
 export interface TrophySuite {
-    id: string,
-    title: string,
-    platforms: string[],
-    image: string
+  id: string,
+  title: string,
+  platforms: string[],
+  imageUrl: string,
+  nbPlatinumTrophies: number,
+  nbGoldTrophies: number,
+  nbSilverTrophies: number,
+  nbBronzeTrophies: number,
 }
-
-export const EMPTY_TROPHY_SUITE: TrophySuite = {id: '', title: '', platforms: [], image: ''};

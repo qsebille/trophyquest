@@ -1,13 +1,13 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HomeTrophyCardComponent} from './home-trophy-card.component';
-import {EarnedTrophy} from "../../../core/api/dtos/trophy/earned-trophy";
+import {Trophy} from "../../../core/api/dtos/trophy/trophy";
 
 describe('HomeTrophyCardComponent', () => {
   let component: HomeTrophyCardComponent;
   let fixture: ComponentFixture<HomeTrophyCardComponent>;
 
-  const mockEarnedTrophy = {id: '001', rank: 0, title: 'Trophy 1', icon: 'trophy.png'} as EarnedTrophy;
+  const mockEarnedTrophy = {id: '001', rank: 0, title: 'Trophy 1', iconUrl: 'trophy.png'} as Trophy;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

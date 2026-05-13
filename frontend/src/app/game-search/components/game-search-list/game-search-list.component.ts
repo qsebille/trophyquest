@@ -1,4 +1,4 @@
-import {Component, computed, input, output} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {GameSearchItem} from '../../../core/api/dtos/game/game-search-item';
 import {GameSearchItemComponent} from '../game-search-item/game-search-item.component';
 
@@ -12,9 +12,7 @@ import {GameSearchItemComponent} from '../game-search-item/game-search-item.comp
 })
 export class GameSearchListComponent {
   readonly games = input.required<GameSearchItem[]>();
-  readonly totalGames = input.required<number>();
+  readonly hasMoreGames = input.required<boolean>();
   readonly loadMore = output<void>();
   readonly searchTermChanged = output<string>();
-
-  readonly hasMoreGamesToLoad = computed(() => this.totalGames() > this.games().length);
 }

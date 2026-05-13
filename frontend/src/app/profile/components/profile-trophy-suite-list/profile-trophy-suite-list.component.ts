@@ -1,21 +1,27 @@
-import {Component, input, output} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {ProfileTrophySuiteCardComponent} from "../profile-trophy-suite-card/profile-trophy-suite-card.component";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {PlayedTrophySuiteSearchElement} from "../../../core/api/dtos/trophy-suite/played-trophy-suite-search-element";
+import {PlayerTrophySuite} from "../../../core/api/dtos/trophy-suite/player-trophy-suite";
+import {SpinnerContainerComponent} from '../../../core/components/spinner-container/spinner-container.component';
 
 @Component({
   selector: 'tq-profile-trophy-suite-list',
   imports: [
     MatProgressSpinnerModule,
     ProfileTrophySuiteCardComponent,
+    SpinnerContainerComponent,
   ],
   templateUrl: './profile-trophy-suite-list.component.html',
   styleUrl: './profile-trophy-suite-list.component.scss',
 })
 export class ProfileTrophySuiteListComponent {
-  readonly trophySuites = input<PlayedTrophySuiteSearchElement[]>([]);
-  readonly hasMoreTrophySuitesToLoad = input<boolean>(false);
+  readonly trophySuites = input<PlayerTrophySuite[]>([]);
+  readonly isLoading = input<boolean>(false);
+  readonly isError = input<boolean>(false);
+  readonly total = input<number>(0);
 
-  readonly clickOnGame = output<string>();
-  readonly loadMoreGames = output();
+  readonly onClickOnGame = output<{ gameId: string, trophySuiteId: string }>();
+  readonly onLoadMoreGames = output();
+
+  readonly showLoadMoreButton = computed(() => !this.isLoading() && this.trophySuites().length < this.total());
 }

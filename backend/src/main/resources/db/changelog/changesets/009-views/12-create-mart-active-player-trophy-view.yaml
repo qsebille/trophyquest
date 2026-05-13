@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/12-create-mart-active-player-trophy-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: v_mart_active_player_trophy
+            selectQuery: |
+              WITH earned_trophy_period AS (
+                SELECT *
+                FROM app.v_fact_earned_trophy
+                WHERE earned_at >= NOW() - INTERVAL '1 WEEK'
+              ),
+              ranked_players AS (
+                SELECT
+                  player_id,
+                  COUNT(*) AS player_trophy_count,
+                  ROW_NUMBER() OVER ( ORDER BY COUNT(*) DESC, MAX(earned_at) DESC, player_id ) AS player_rank
+                FROM earned_trophy_period
+                GROUP BY player_id
+              ),
+              ranked_trophies_player AS (
+                SELECT
+                  player_id,
+                  trophy_id,
+                  trophy_suite_id,
+                  game_id,
+                  earned_at,
+                  ROW_NUMBER() OVER ( PARTITION BY player_id ORDER BY earned_at DESC, trophy_id ) AS trophy_rank
+                FROM earned_trophy_period
+              )
+              
+              SELECT
+                GEN_RANDOM_UUID() AS id,
+                rtp.player_id,
+                rtp.trophy_id,
+                rtp.trophy_suite_id,
+                rtp.game_id,
+                g.name AS game_name,
+                p.pseudo AS player_pseudo,
+                p.avatar_url AS player_avatar_url,
+                t.title AS trophy_title,
+                t.trophy_type,
+                t.icon_url AS trophy_icon_url,
+                rtp.earned_at AS trophy_earned_at,
+                rp.player_trophy_count
+              FROM ranked_trophies_player rtp
+                JOIN ranked_players rp ON rp.player_id = rtp.player_id
+                JOIN app.v_dim_game g ON g.id = rtp.game_id
+                JOIN app.v_dim_player p ON p.id = rtp.player_id
+                JOIN app.v_dim_trophy t ON t.id = rtp.trophy_id
+              WHERE rp.player_rank <= 5
+                AND rtp.trophy_rank <= 5
+              ORDER BY rp.player_rank, rtp.trophy_rank

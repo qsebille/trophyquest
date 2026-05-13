@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/08-create-mart-recent-game-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: v_mart_recent_game
+            selectQuery: |
+              SELECT g.id,
+                g.name,
+                g.master_image_url,
+                g.background_image_url,
+                player_count.count AS nb_players,
+                player_count.last_played_at AS last_played_at
+              FROM app.v_dim_game g
+                LEFT JOIN LATERAL (
+                  SELECT
+                    COUNT(*) AS count,
+                    MAX(pg.last_played_at) AS last_played_at
+                  FROM app.v_fact_played_game pg
+                  WHERE pg.game_id = g.id
+                    AND pg.last_played_at > NOW() - INTERVAL '1 WEEK'
+                ) player_count ON TRUE
