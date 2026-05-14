@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/13-replace-dim-trophy-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            replaceIfExists: true
+            schemaName: app
+            viewName: v_dim_trophy
+            selectQuery: |
+              SELECT
+                t.id,
+                t.trophy_suite_id,
+                game.psn_game_id AS game_id,
+                t.title,
+                t.description,
+                t.rank,
+                t.trophy_type,
+                t.is_hidden,
+                COALESCE(t.aws_icon_url, t.psn_icon_url) AS icon_url,
+                tsg.psn_id AS group_type,
+                tsg.name AS group_name
+              FROM app.psn_trophy t
+                JOIN app.psn_trophy_suite_group tsg ON tsg.id = t.trophy_suite_group_id
+                JOIN LATERAL (
+                  SELECT e.psn_game_id
+                  FROM app.psn_edition_trophy_suite pets
+                    JOIN app.psn_edition e ON e.id = pets.edition_id
+                  WHERE pets.trophy_suite_id = t.trophy_suite_id
+                  ORDER BY e.id DESC
+                  LIMIT 1
+                ) game ON TRUE

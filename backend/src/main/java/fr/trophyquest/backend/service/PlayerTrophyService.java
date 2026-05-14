@@ -19,18 +19,18 @@ import java.util.stream.Collectors;
 @Service
 public class PlayerTrophyService {
     private final PlayerTrophyRepository playerTrophyRepository;
-    private final ActivePlayerTrophyRepository activePlayerRepository;
+    private final ActivePlayerTrophyRepository activePlayerTrophyRepository;
     private final PlayerTrophyMapper playerTrophyMapper;
     private final ActivePlayerTrophyMapper activePlayerTrophyMapper;
 
     public PlayerTrophyService(
             PlayerTrophyRepository playerTrophyRepository,
-            ActivePlayerTrophyRepository activePlayerRepository,
+            ActivePlayerTrophyRepository activePlayerTrophyRepository,
             PlayerTrophyMapper playerTrophyMapper,
             ActivePlayerTrophyMapper activePlayerTrophyMapper
     ) {
         this.playerTrophyRepository = playerTrophyRepository;
-        this.activePlayerRepository = activePlayerRepository;
+        this.activePlayerTrophyRepository = activePlayerTrophyRepository;
         this.playerTrophyMapper = playerTrophyMapper;
         this.activePlayerTrophyMapper = activePlayerTrophyMapper;
     }
@@ -44,7 +44,7 @@ public class PlayerTrophyService {
     }
 
     public List<ActivePlayerTrophyDTO> fetchTopActivePlayerTrophies() {
-        return this.activePlayerRepository.findAll()
+        return this.activePlayerTrophyRepository.findAll()
                 .stream()
                 .map(this.activePlayerTrophyMapper::toActivePlayerTrophyDTO)
                 .collect(Collectors.toList());
