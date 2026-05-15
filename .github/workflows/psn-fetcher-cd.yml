@@ -66,13 +66,13 @@ jobs:
           zip -r "../psn-refresher.zip" .
 
       - name: Upload fetcher artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: psn-fetcher-lambda
           path: psn_fetcher/psn-fetcher.zip
 
       - name: Upload refresher artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: psn-refresher-lambda
           path: psn_fetcher/psn-refresher.zip
@@ -85,12 +85,12 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download fetcher artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: psn-fetcher-lambda
 
       - name: Download refresher artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: psn-refresher-lambda
 

@@ -52,7 +52,7 @@ jobs:
           echo "zip_path=image_uploader/lambda.zip" >> $GITHUB_OUTPUT
 
       - name: Upload zip artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: image-uploader-lambda
           path: image_uploader/lambda.zip
@@ -65,7 +65,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download zip artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: image-uploader-lambda
 
