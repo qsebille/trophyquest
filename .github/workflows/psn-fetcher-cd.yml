@@ -21,14 +21,14 @@ jobs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
           cache-dependency-path: psn_fetcher/package-lock.json
 
@@ -52,10 +52,7 @@ jobs:
         run: |
           rm -rf packaged-lambda-fetcher psn-fetcher.zip
           mkdir -p packaged-lambda-fetcher
-          cp package.json packaged-lambda-fetcher/
-          cp package-lock.json packaged-lambda-fetcher/
-          cp -r dist packaged-lambda-fetcher/
-          cp -r node_modules packaged-lambda-fetcher/
+          cp dist/fetcher.mjs packaged-lambda-fetcher/index.mjs
           cd packaged-lambda-fetcher
           zip -r "../psn-fetcher.zip" .
 
@@ -64,10 +61,7 @@ jobs:
         run: |
           rm -rf packaged-lambda-refresher psn-refresher.zip
           mkdir -p packaged-lambda-refresher
-          cp package.json packaged-lambda-refresher/
-          cp package-lock.json packaged-lambda-refresher/
-          cp -r dist packaged-lambda-refresher/
-          cp -r node_modules packaged-lambda-refresher/
+          cp dist/refresher.mjs packaged-lambda-refresher/index.mjs
           cd packaged-lambda-refresher
           zip -r "../psn-refresher.zip" .
 
@@ -88,7 +82,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download fetcher artifact
         uses: actions/download-artifact@v4

@@ -19,7 +19,7 @@ jobs:
       jar_path: ${{ steps.build.outputs.jar_path }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
