@@ -52,7 +52,7 @@ jobs:
           echo "zip_path=igdb_enricher/lambda.zip" >> $GITHUB_OUTPUT
 
       - name: Upload zip artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: igdb-enricher-lambda
           path: igdb_enricher/lambda.zip
