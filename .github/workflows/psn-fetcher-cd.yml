@@ -21,14 +21,14 @@ jobs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
           cache-dependency-path: psn_fetcher/package-lock.json
 
@@ -52,10 +52,7 @@ jobs:
         run: |
           rm -rf packaged-lambda-fetcher psn-fetcher.zip
           mkdir -p packaged-lambda-fetcher
-          cp package.json packaged-lambda-fetcher/
-          cp package-lock.json packaged-lambda-fetcher/
-          cp -r dist packaged-lambda-fetcher/
-          cp -r node_modules packaged-lambda-fetcher/
+          cp dist/fetcher.mjs packaged-lambda-fetcher/
           cd packaged-lambda-fetcher
           zip -r "../psn-fetcher.zip" .
 
@@ -64,21 +61,18 @@ jobs:
         run: |
           rm -rf packaged-lambda-refresher psn-refresher.zip
           mkdir -p packaged-lambda-refresher
-          cp package.json packaged-lambda-refresher/
-          cp package-lock.json packaged-lambda-refresher/
-          cp -r dist packaged-lambda-refresher/
-          cp -r node_modules packaged-lambda-refresher/
+          cp dist/refresher.mjs packaged-lambda-refresher/
           cd packaged-lambda-refresher
           zip -r "../psn-refresher.zip" .
 
       - name: Upload fetcher artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: psn-fetcher-lambda
           path: psn_fetcher/psn-fetcher.zip
 
       - name: Upload refresher artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: psn-refresher-lambda
           path: psn_fetcher/psn-refresher.zip
@@ -88,15 +82,15 @@ jobs:
     needs: build
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download fetcher artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: psn-fetcher-lambda
 
       - name: Download refresher artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: psn-refresher-lambda
 

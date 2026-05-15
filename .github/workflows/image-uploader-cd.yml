@@ -19,7 +19,7 @@ jobs:
       zip_path: ${{ steps.package.outputs.zip_path }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -52,7 +52,7 @@ jobs:
           echo "zip_path=image_uploader/lambda.zip" >> $GITHUB_OUTPUT
 
       - name: Upload zip artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: image-uploader-lambda
           path: image_uploader/lambda.zip
@@ -62,10 +62,10 @@ jobs:
     needs: build
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download zip artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: image-uploader-lambda
 
