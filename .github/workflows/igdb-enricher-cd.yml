@@ -65,7 +65,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download zip artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: igdb-enricher-lambda
 

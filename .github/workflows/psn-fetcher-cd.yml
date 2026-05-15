@@ -85,12 +85,12 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download fetcher artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: psn-fetcher-lambda
 
       - name: Download refresher artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: psn-refresher-lambda
 
