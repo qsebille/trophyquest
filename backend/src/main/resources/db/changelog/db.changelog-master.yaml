@@ -55,3 +55,4 @@ databaseChangeLog:
   - include: { file: changesets/009-views/11-create-mart-player-trophy-view.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/009-views/12-create-mart-active-player-trophy-view.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/009-views/13-replace-dim-trophy-view.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/009-views/14-replace-fact-earned-trophy-view.yaml, relativeToChangelogFile: true }
