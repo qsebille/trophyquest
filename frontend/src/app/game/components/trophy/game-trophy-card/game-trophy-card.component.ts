@@ -17,6 +17,6 @@ export class GameTrophyCardComponent {
   trophy = input.required<Trophy>();
   showHiddenTrophies = input<boolean>(false);
 
-  isTrophyHidden = computed(() => this.trophy().isHidden && !this.showHiddenTrophies());
   isTrophyEarned = computed(() => !!this.trophy().earnedAt);
+  isTrophyHidden = computed(() => this.trophy().isHidden && !this.showHiddenTrophies() && !this.isTrophyEarned());
 }
