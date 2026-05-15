@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-views/14-replace-fact-earned-trophy-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            replaceIfExists: true
+            schemaName: app
+            viewName: v_fact_earned_trophy
+            selectQuery: |
+              SELECT
+                GEN_RANDOM_UUID() AS id,
+                et.player_id,
+                et.trophy_id,
+                t.trophy_suite_id,
+                game.game_id,
+                et.earned_at
+              FROM app.psn_earned_trophy et
+                JOIN app.psn_trophy t ON t.id = et.trophy_id
+                JOIN app.psn_trophy_suite ts ON ts.id = t.trophy_suite_id
+                JOIN LATERAL (
+                  SELECT e.psn_game_id AS game_id
+                  FROM app.psn_edition_trophy_suite ets
+                  JOIN app.psn_edition e ON e.id = ets.edition_id
+                  WHERE ets.trophy_suite_id = ts.id
+                  LIMIT 1
+                ) game ON TRUE
