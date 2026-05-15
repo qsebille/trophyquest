@@ -52,7 +52,7 @@ jobs:
         run: |
           rm -rf packaged-lambda-fetcher psn-fetcher.zip
           mkdir -p packaged-lambda-fetcher
-          cp dist/fetcher.mjs packaged-lambda-fetcher/index.mjs
+          cp dist/fetcher.mjs packaged-lambda-fetcher/
           cd packaged-lambda-fetcher
           zip -r "../psn-fetcher.zip" .
 
@@ -61,7 +61,7 @@ jobs:
         run: |
           rm -rf packaged-lambda-refresher psn-refresher.zip
           mkdir -p packaged-lambda-refresher
-          cp dist/refresher.mjs packaged-lambda-refresher/index.mjs
+          cp dist/refresher.mjs packaged-lambda-refresher/
           cd packaged-lambda-refresher
           zip -r "../psn-refresher.zip" .
 

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "npm run build-fetcher && npm run build-refresher",
-    "build-fetcher": "esbuild src/fetcher.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/fetcher.mjs --external:playwright",
+    "build-fetcher": "esbuild src/fetcher.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/fetcher.mjs",
     "build-refresher": "esbuild src/refresher.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/refresher.mjs",
     "start-fetcher": "tsx src/fetcher.ts",
     "start-refresher": "tsx src/refresher.ts",
