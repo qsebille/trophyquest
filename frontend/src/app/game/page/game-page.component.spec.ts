@@ -6,10 +6,12 @@ import {BehaviorSubject} from 'rxjs';
 import {GamePageComponent} from './game-page.component';
 import {BackgroundImageService} from '../../core/stores/background-image.service';
 import {GameDetails} from '../../core/api/dtos/game/game-details';
-import {GameDataService} from '../services/game-data.service';
 import {Pagination} from '../../core/api/dtos/pagination';
 import {GamePlayer} from '../../core/api/dtos/player/game-player';
 import {NavigatorService} from '../../core/services/navigator.service';
+import {GameDetailsDataService} from '../services/game-details-data.service';
+import {GamePlayersDataService} from '../services/game-players-data.service';
+import {GameTrophyDataService} from '../services/game-trophy-data.service';
 
 describe('GamePageComponent', () => {
   let component: GamePageComponent;
@@ -37,21 +39,33 @@ describe('GamePageComponent', () => {
     useGameBackground: vi.fn(),
   };
 
-  const dataServiceMock = {
+  const gameDetailsDataServiceMock = {
     reset: vi.fn(),
-    fetchDetails: vi.fn(),
-    fetchPlayers: vi.fn(),
-    fetchTrophies: vi.fn(),
-    isError: signal(false),
+    fetch: vi.fn(),
     gameDetails: signal(gameDetailsMock),
-    trophySuites: signal([]),
-    trophies: signal([]),
+    hasError: signal(false),
+  };
+
+  const gamePlayersDataServiceMock = {
+    reset: vi.fn(),
+    fetch: vi.fn(),
     playersPagination: signal({
       content: [],
       page: 0,
       total: 0,
       size: 10,
     } as unknown as Pagination<GamePlayer>),
+    hasError: signal(false),
+  };
+
+  const gameTrophyDataServiceMock = {
+    reset: vi.fn(),
+    fetchTrophySuites: vi.fn(),
+    fetchTrophies: vi.fn(),
+    trophySuites: signal([]),
+    trophies: signal([]),
+    hasErrorInTrophySuites: signal(false),
+    hasErrorInTrophies: signal(false),
   };
 
   const navigatorMock = {
@@ -75,7 +89,9 @@ describe('GamePageComponent', () => {
       .overrideComponent(GamePageComponent, {
         set: {
           providers: [
-            {provide: GameDataService, useValue: dataServiceMock},
+            {provide: GameDetailsDataService, useValue: gameDetailsDataServiceMock},
+            {provide: GameTrophyDataService, useValue: gameTrophyDataServiceMock},
+            {provide: GamePlayersDataService, useValue: gamePlayersDataServiceMock},
           ],
         },
       })
@@ -117,8 +133,8 @@ describe('GamePageComponent', () => {
       createComponent();
 
       expect(backgroundImageServiceMock.useGameBackground).toHaveBeenCalledWith('game-123');
-      expect(dataServiceMock.fetchDetails).toHaveBeenCalledWith('game-123');
-      expect(dataServiceMock.fetchPlayers).toHaveBeenCalledWith('game-123', 0);
+      expect(gameDetailsDataServiceMock.fetch).toHaveBeenCalledWith('game-123');
+      expect(gamePlayersDataServiceMock.fetch).toHaveBeenCalledWith('game-123', 0);
     });
 
     it('should fetch trophies on init when trophySuiteId is present', () => {
@@ -127,7 +143,7 @@ describe('GamePageComponent', () => {
         playerId: 'player-123',
       });
 
-      expect(dataServiceMock.fetchTrophies).toHaveBeenCalledWith(
+      expect(gameTrophyDataServiceMock.fetchTrophies).toHaveBeenCalledWith(
         'suite-123',
         'player-123'
       );
@@ -152,8 +168,9 @@ describe('GamePageComponent', () => {
       });
     });
 
-    it('should update url and fetch trophies when trophy suite changes', () => {
+    it('should update url when trophy suite changes', () => {
       component.onTrophySuiteSelectedChange('suite-123');
+      fixture.detectChanges();
 
       expect(routerMock.navigate).toHaveBeenCalledWith([], {
         relativeTo: activatedRouteMock,
@@ -163,20 +180,14 @@ describe('GamePageComponent', () => {
         queryParamsHandling: 'merge',
         replaceUrl: true,
       });
-
-      expect(dataServiceMock.fetchTrophies).toHaveBeenCalledWith(
-        'suite-123',
-        null
-      );
     });
 
-    it('should update url and fetch trophies when player is selected', () => {
+    it('should update url when player is selected', () => {
       queryParamMapSubject.next(convertToParamMap({
         trophySuiteId: 'suite-123',
       }));
 
       fixture.detectChanges();
-
       component.onPlayerSelected('player-123');
 
       expect(routerMock.navigate).toHaveBeenCalledWith([], {
@@ -188,11 +199,6 @@ describe('GamePageComponent', () => {
         queryParamsHandling: 'merge',
         replaceUrl: true,
       });
-
-      expect(dataServiceMock.fetchTrophies).toHaveBeenCalledWith(
-        'suite-123',
-        'player-123'
-      );
     });
 
     it('should navigate to profile page', () => {
@@ -208,7 +214,7 @@ describe('GamePageComponent', () => {
 
       component.onPlayerPageChange(2);
 
-      expect(dataServiceMock.fetchPlayers).toHaveBeenCalledWith('game-123', 2);
+      expect(gamePlayersDataServiceMock.fetch).toHaveBeenCalledWith('game-123', 2);
     });
   });
 
@@ -218,7 +224,9 @@ describe('GamePageComponent', () => {
 
       fixture.destroy();
 
-      expect(dataServiceMock.reset).toHaveBeenCalled();
+      expect(gameDetailsDataServiceMock.reset).toHaveBeenCalled();
+      expect(gameTrophyDataServiceMock.reset).toHaveBeenCalled();
+      expect(gamePlayersDataServiceMock.reset).toHaveBeenCalled();
     });
   });
 });

@@ -14,4 +14,11 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Trophy suite not found");
         return problemDetail;
     }
+
+    @ExceptionHandler(GameNotFoundException.class)
+    public ProblemDetail handleGameNotFound(GameNotFoundException exception) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+        problemDetail.setTitle("Game not found");
+        return problemDetail;
+    }
 }

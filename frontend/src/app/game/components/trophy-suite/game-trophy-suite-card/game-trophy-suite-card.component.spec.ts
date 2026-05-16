@@ -16,7 +16,7 @@ describe('GameTrophySuiteCardComponent', () => {
     fixture = TestBed.createComponent(GameTrophySuiteCardComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('trophySuite', {} as unknown as GameTrophySuiteCardComponent)
-    fixture.componentRef.setInput('displayMode', GameTrophySuiteDisplayMode.NONE)
+    fixture.componentRef.setInput('displayMode', GameTrophySuiteDisplayMode.SINGLE)
     fixture.detectChanges();
   });
 

@@ -1,21 +1,15 @@
 import {TestBed} from '@angular/core/testing';
 
-import {GameDataService} from './game-data.service';
+import {GamePlayersDataService} from './game-players-data.service';
 import {GameApiService} from '../../core/api/services/game-api.service';
-import {TrophySuiteApiService} from '../../core/api/services/trophy-suite-api.service';
 import {NotificationService} from '../../core/services/notification.service';
 
-describe('GameDataService', () => {
-  let service: GameDataService;
+describe('GamePlayersDataService', () => {
+  let service: GamePlayersDataService;
 
   const gameApiServiceMock = {
-    fetchDetails: vi.fn(),
-    fetchTrophySuites: vi.fn(),
     fetchPlayers: vi.fn(),
   };
-  const trophySuiteApiServiceMock = {
-    fetchTrophies: vi.fn(),
-  }
   const notificationServiceMock = {
     error: vi.fn(),
   }
@@ -23,13 +17,12 @@ describe('GameDataService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        GameDataService,
+        GamePlayersDataService,
         {provide: GameApiService, useValue: gameApiServiceMock},
-        {provide: TrophySuiteApiService, useValue: trophySuiteApiServiceMock},
         {provide: NotificationService, useValue: notificationServiceMock},
-      ]
+      ],
     });
-    service = TestBed.inject(GameDataService);
+    service = TestBed.inject(GamePlayersDataService);
   });
 
   it('should be created', () => {
