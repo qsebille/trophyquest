@@ -19,17 +19,14 @@
     <li [ngbNavItem]="'trophies'">
       <button ngbNavLink>Trophies</button>
       <ng-template ngbNavContent>
-        @if (trophySuitesInError()) {
-          <div class="alert alert-danger" role="alert">Failed to fetch trophy suites</div>
-        } @else {
-          <tq-game-trophy-suite-list
-            [trophySuites]="trophySuites()"
-            [trophies]="trophies()"
-            [trophySuiteId]="selectedTrophySuiteId()"
-            [trophiesInError]="trophiesInError()"
-            [selectedPlayerId]="selectedPlayerId()"
-            (trophySuiteChange)="onTrophySuiteSelectedChange($event)"/>
-        }
+        <tq-game-trophy-suite-list
+          [trophySuites]="trophySuites()"
+          [trophySuitesInError]="trophySuitesInError()"
+          [trophies]="trophies()"
+          [trophySuiteId]="selectedTrophySuiteId()"
+          [trophiesInError]="trophiesInError()"
+          [selectedPlayerId]="selectedPlayerId()"
+          (trophySuiteChange)="onTrophySuiteSelectedChange($event)"/>
       </ng-template>
     </li>
 

@@ -19,6 +19,7 @@ export class GameTrophySuiteListComponent {
   trophies = input.required<Trophy[]>();
   trophySuiteId = input<string | null>(null);
   selectedPlayerId = input<string | null>(null);
+  trophySuitesInError = input<boolean>(false);
   trophiesInError = input<boolean>(false);
   trophySuiteChange = output<string | null>();
 
