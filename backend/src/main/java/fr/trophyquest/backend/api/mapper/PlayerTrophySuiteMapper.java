@@ -10,7 +10,7 @@ public class PlayerTrophySuiteMapper {
     public PlayerTrophySuiteDTO toPlayerTrophySuiteDTO(PlayerTrophySuite entity) {
         int nbTrophies = entity.getNbPlatinum() + entity.getNbGold() + entity.getNbSilver() + entity.getNbBronze();
         return PlayerTrophySuiteDTO.builder()
-                .id(entity.getId())
+                .id(entity.getTrophySuiteId())
                 .gameId(entity.getGameId())
                 .name(entity.getName())
                 .platforms(entity.getPlatforms())
