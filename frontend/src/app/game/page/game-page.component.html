@@ -1,44 +1,50 @@
-@if (isError()) {
-  <div class="container m-5 alert alert-danger">Error when fetching game data</div>
-} @else {
-  <div class="container m-5">
-    <ul ngbNav
-        [activeId]="selectedTab()"
-        (activeIdChange)="onTabChange($event)"
-        #nav="ngbNav"
-        class="nav-tabs">
+<div class="container m-5">
+  <ul ngbNav
+      [activeId]="selectedTab()"
+      (activeIdChange)="onTabChange($event)"
+      #nav="ngbNav"
+      class="nav-tabs">
 
-      <li [ngbNavItem]="'overview'">
-        <button ngbNavLink>Presentation</button>
-        <ng-template ngbNavContent>
+    <li [ngbNavItem]="'overview'">
+      <button ngbNavLink>Presentation</button>
+      <ng-template ngbNavContent>
+        @if (gameDetailsInError()) {
+          <div class="alert alert-danger" role="alert">Failed to fetch game details</div>
+        } @else {
           <tq-game-details [gameDetails]="gameDetails()"/>
-        </ng-template>
-      </li>
+        }
+      </ng-template>
+    </li>
 
-      <li [ngbNavItem]="'trophies'">
-        <button ngbNavLink>Trophies</button>
-        <ng-template ngbNavContent>
-          <tq-game-trophy-suite-list
-            [trophySuites]="trophySuites()"
-            [trophies]="trophies()"
-            [trophySuiteId]="selectedTrophySuiteId()"
-            [selectedPlayerId]="selectedPlayerId()"
-            (trophySuiteChange)="onTrophySuiteSelectedChange($event)"/>
-        </ng-template>
-      </li>
+    <li [ngbNavItem]="'trophies'">
+      <button ngbNavLink>Trophies</button>
+      <ng-template ngbNavContent>
+        <tq-game-trophy-suite-list
+          [trophySuites]="trophySuites()"
+          [trophySuitesInError]="trophySuitesInError()"
+          [trophies]="trophies()"
+          [trophySuiteId]="selectedTrophySuiteId()"
+          [trophiesInError]="trophiesInError()"
+          [selectedPlayerId]="selectedPlayerId()"
+          (trophySuiteChange)="onTrophySuiteSelectedChange($event)"/>
+      </ng-template>
+    </li>
 
-      <li [ngbNavItem]="'players'">
-        <button ngbNavLink>Players</button>
-        <ng-template ngbNavContent>
+    <li [ngbNavItem]="'players'">
+      <button ngbNavLink>Players</button>
+      <ng-template ngbNavContent>
+        @if (playersInError()) {
+          <div class="alert alert-danger" role="alert">Failed to fetch players</div>
+        } @else {
           <tq-game-players
             [playersPagination]="playersPagination()"
             (selectPlayer)="onPlayerSelected($event)"
             (pseudoClicked)="goToProfilePage($event)"
             (pageChange)="onPlayerPageChange($event)"/>
-        </ng-template>
-      </li>
-    </ul>
+        }
+      </ng-template>
+    </li>
+  </ul>
 
-    <div class="game-page-content" [ngbNavOutlet]="nav"></div>
-  </div>
-}
+  <div class="game-page-content" [ngbNavOutlet]="nav"></div>
+</div>

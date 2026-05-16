@@ -19,6 +19,8 @@ export class GameTrophySuiteListComponent {
   trophies = input.required<Trophy[]>();
   trophySuiteId = input<string | null>(null);
   selectedPlayerId = input<string | null>(null);
+  trophySuitesInError = input<boolean>(false);
+  trophiesInError = input<boolean>(false);
   trophySuiteChange = output<string | null>();
 
   constructor() {
@@ -33,13 +35,10 @@ export class GameTrophySuiteListComponent {
   }
 
   displayMode = computed(() => {
-    if (this.trophySuites().length === 0) return GameTrophySuiteDisplayMode.NONE;
     if (this.trophySuites().length === 1) return GameTrophySuiteDisplayMode.SINGLE;
 
     return this.trophySuiteId() == null ? GameTrophySuiteDisplayMode.MULTIPLE : GameTrophySuiteDisplayMode.SINGLE;
   });
-
-  noTrophySuite = computed(() => this.displayMode() === GameTrophySuiteDisplayMode.NONE);
 
   displayedTrophySuites = computed(() => {
     if (this.trophySuiteId() == null) {

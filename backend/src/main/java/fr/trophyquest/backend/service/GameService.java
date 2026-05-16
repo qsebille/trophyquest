@@ -3,6 +3,7 @@ package fr.trophyquest.backend.service;
 import fr.trophyquest.backend.api.dto.PaginationDTO;
 import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
 import fr.trophyquest.backend.api.dto.game.GameSearchItemDTO;
+import fr.trophyquest.backend.api.exception.GameNotFoundException;
 import fr.trophyquest.backend.api.mapper.GameMapper;
 import fr.trophyquest.backend.domain.repository.views.dim.GameRepository;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,6 @@ public class GameService {
     public GameDetailsDTO fetchDetails(UUID gameId) {
         return this.gameRepository.findFirstById(gameId)
                 .map(this.gameMapper::toGameDetailsDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Game not found with id: " + gameId));
+                .orElseThrow(() -> new GameNotFoundException(gameId));
     }
 }

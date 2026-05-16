@@ -2,6 +2,7 @@ package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.trophy.TrophyDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
+import fr.trophyquest.backend.api.exception.TrophySuiteNotFoundException;
 import fr.trophyquest.backend.api.mapper.TrophyMapper;
 import fr.trophyquest.backend.api.mapper.TrophySuiteMapper;
 import fr.trophyquest.backend.domain.entity.views.dim.Trophy;
@@ -39,6 +40,10 @@ public class TrophySuiteService {
     }
 
     public List<TrophyDTO> fetchEarnedTrophies(UUID trophySuiteId, Optional<UUID> playerId) {
+        if (!this.trophySuiteRepository.existsById(trophySuiteId)) {
+            throw new TrophySuiteNotFoundException(trophySuiteId);
+        }
+
         List<Trophy> trophies = this.trophyRepository.findAllByTrophySuiteId(trophySuiteId);
         List<EarnedTrophy> earnedTrophies = this.earnedTrophyRepository.findAllByPlayerIdAndTrophySuiteId(playerId.orElse(null), trophySuiteId);
 

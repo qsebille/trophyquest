@@ -1,19 +1,23 @@
-@if (noTrophySuite()) {
-  <div class="alert alert-danger">
-    No trophy suite available for this game
-  </div>
+@if (displayReturnToSuiteListButton()) {
+  <button class="btn btn-link fs-10px" (click)="this.trophySuiteChange.emit(null)">
+    Select another trophy suite for this game
+  </button>
+}
+
+@if (trophySuitesInError()) {
+  <div class="alert alert-danger" role="alert">Failed to fetch trophy suites</div>
 } @else {
-  @if (displayReturnToSuiteListButton()) {
-    <button class="btn btn-link fs-10px" (click)="this.trophySuiteChange.emit(null)">
-      Select another trophy suite for this game
-    </button>
-  }
   <div class="row gap-2">
-    @for (trophySuite of displayedTrophySuites(); track trophySuite.id) {
-      <tq-game-trophy-suite-card class="row w-100 justify-content-center"
-                                 [trophySuite]="trophySuite"
-                                 [displayMode]="displayMode()"
-                                 (selectTrophySuite)="this.trophySuiteChange.emit(trophySuite.id)"/>
+    @if (trophiesInError()) {
+      <div class="alert alert-danger" role="alert">Failed to fetch trophies</div>
+    } @else {
+      @for (trophySuite of displayedTrophySuites(); track trophySuite.id) {
+        <tq-game-trophy-suite-card
+          class="row w-100 justify-content-center"
+          [trophySuite]="trophySuite"
+          [displayMode]="displayMode()"
+          (selectTrophySuite)="this.trophySuiteChange.emit(trophySuite.id)"/>
+      }
     }
   </div>
   @if (!!trophySuiteId()) {
