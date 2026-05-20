@@ -56,6 +56,9 @@ export class GameTrophyListComponent {
       }
     }
 
-    return groups;
+    return groups.map(group => ({
+      ...group,
+      trophies: [...group.trophies].sort((a, b) => a.rank - b.rank),
+    }));
   });
 }
