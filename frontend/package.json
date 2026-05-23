@@ -1,6 +1,6 @@
 {
   "name": "trophyquest-frontend",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "scripts": {
     "ng": "ng",
     "build": "ng build",
