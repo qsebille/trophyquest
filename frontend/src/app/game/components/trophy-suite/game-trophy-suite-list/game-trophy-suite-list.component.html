@@ -10,6 +10,10 @@
   <div class="row gap-2">
     @if (trophiesInError()) {
       <div class="alert alert-danger" role="alert">Failed to fetch trophies</div>
+    } @else if (displayedTrophySuites().length == 0) {
+      <div class="text-muted">
+        This game has no registered trophy suite
+      </div>
     } @else {
       @for (trophySuite of displayedTrophySuites(); track trophySuite.id) {
         <tq-game-trophy-suite-card
