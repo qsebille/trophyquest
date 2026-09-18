@@ -1,6 +1,6 @@
 import logging
 
-from igdb_enricher.run import run_enricher
+from igdb_enricher.run import run_igdb_enricher
 
 
 def setup_logging_lambda():
@@ -17,13 +17,13 @@ def igdb_enricher_handler(event, context):
     setup_logging_lambda()
 
     logger = logging.getLogger(__name__)
-    logger.info("IGDB Enricher: START")
+    logger.info("🟢 IGDB Enricher: START")
     logger.info(f"Received event for IGDB Enricher: {event}")
     logger.info(f"Received context for IGDB Enricher: {context}")
 
     nb_game_to_match = int(event.get("limit", 20))
     logger.info(f"nb_game_to_match: {nb_game_to_match}")
 
-    run_enricher(nb_game_to_match=nb_game_to_match)
+    run_igdb_enricher(suite_limit=nb_game_to_match)
 
     logger.info("IGDB Enricher: END")
