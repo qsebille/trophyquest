@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-igdb-schema-setup/02-create-updated-at-function
+      author: Quentin Sebille
+      changes:
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE OR REPLACE FUNCTION igdb.set_updated_at()
+              RETURNS trigger AS $$
+              BEGIN
+                NEW.updated_at = CURRENT_TIMESTAMP;
+                RETURN NEW;
+              END;
+              $$ LANGUAGE plpgsql;

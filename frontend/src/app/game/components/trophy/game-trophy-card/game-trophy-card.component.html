@@ -15,7 +15,7 @@
         <img [height]="28" [width]="28" alt="Hidden Trophy" ngSrc="assets/icons/trophy-hidden.png"/>
       } @else {
         <img [height]="28" [width]="28" alt="Trophy"
-             ngSrc="assets/icons/trophy-{{trophy().trophyType}}.png"/>
+             ngSrc="assets/icons/trophy-{{trophy().color}}.png"/>
         @if (isTrophyEarned()) {
           <mat-icon class="trophy-check-icon">check</mat-icon>
         }

@@ -37,9 +37,6 @@ public class PsnPlayer {
     private List<PsnPlayedTrophySuite> playedTrophySuites = new ArrayList<>();
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PsnPlayedEdition> playedEditions = new ArrayList<>();
-
-    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PsnEarnedTrophy> earnedTrophies = new ArrayList<>();
 
 }

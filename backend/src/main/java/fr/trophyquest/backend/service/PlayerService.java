@@ -1,13 +1,12 @@
 package fr.trophyquest.backend.service;
 
-import fr.trophyquest.backend.api.dto.PaginationDTO;
+import fr.trophyquest.backend.api.common.dto.Pagination;
 import fr.trophyquest.backend.api.dto.player.PlayerDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerSearchItemDTO;
 import fr.trophyquest.backend.api.mapper.PlayerMapper;
 import fr.trophyquest.backend.domain.entity.psn.PsnPlayer;
-import fr.trophyquest.backend.domain.entity.views.dim.Player;
+import fr.trophyquest.backend.domain.repository.PlayerRepository;
 import fr.trophyquest.backend.domain.repository.psn.PsnPlayerRepository;
-import fr.trophyquest.backend.domain.repository.views.dim.PlayerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -34,17 +33,13 @@ public class PlayerService {
         this.playerMapper = playerMapper;
     }
 
-    public PaginationDTO<PlayerSearchItemDTO> searchPlayers(int pageNumber, int pageSize) {
+    public Pagination<PlayerSearchItemDTO> searchPlayers(int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by("nbEarnedTrophies").descending());
         Page<PlayerSearchItemDTO> playersPage = this.playerRepository.findAll(pageRequest)
                 .map(playerMapper::toPlayerSearchItemDTO);
-        return new PaginationDTO<>(playersPage);
+        return new Pagination<>(playersPage);
     }
 
-    public PlayerSearchItemDTO fetch(UUID id) {
-        Player player = this.playerRepository.findById(id).orElseThrow();
-        return this.playerMapper.toPlayerSearchItemDTO(player);
-    }
 
     @Transactional
     public void delete(UUID id) {

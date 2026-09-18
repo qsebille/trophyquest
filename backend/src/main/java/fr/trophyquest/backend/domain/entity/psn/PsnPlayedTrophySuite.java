@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 @Entity
-@Table(name = "psn_played_trophy_suite")
+@Table(name = "psn_played_suite")
 @Data
 public class PsnPlayedTrophySuite {
 
@@ -28,7 +28,7 @@ public class PsnPlayedTrophySuite {
 
     @MapsId("trophySuiteId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "trophy_suite_id", nullable = false)
+    @JoinColumn(name = "suite_id", nullable = false)
     private PsnTrophySuite trophySuite;
 
     private Instant lastPlayedAt;

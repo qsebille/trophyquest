@@ -45,6 +45,7 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation "org.jboss.logging:jboss-logging:3.6.1.Final"
 }
 
 tasks.named('test') {

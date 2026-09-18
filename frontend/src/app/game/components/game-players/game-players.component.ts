@@ -1,9 +1,8 @@
 import {Component, computed, effect, input, output, signal} from '@angular/core';
 import {DatePipe, NgOptimizedImage} from '@angular/common';
 import {NgbPagination} from '@ng-bootstrap/ng-bootstrap';
-
-import {GamePlayer} from '../../../core/api/dtos/player/game-player';
 import {Pagination} from '../../../core/api/dtos/pagination';
+import {GamePlayerItem} from '../../../pages/game-details/models/game-player-item';
 
 @Component({
   selector: 'tq-game-players',
@@ -16,7 +15,7 @@ import {Pagination} from '../../../core/api/dtos/pagination';
   styleUrl: './game-players.component.scss',
 })
 export class GamePlayersComponent {
-  readonly playersPagination = input.required<Pagination<GamePlayer> | null>();
+  readonly playersPagination = input.required<Pagination<GamePlayerItem> | null>();
   readonly pageChange = output<number>();
   readonly selectPlayer = output<string>();
   readonly pseudoClicked = output<string>();

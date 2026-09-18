@@ -1,0 +1,59 @@
+<div class="container matching-page">
+  <div class="matching-header p-3">
+    <div class="d-flex flex-column">
+      <span class="fs-5 fw-semibold">
+        Association Suite PSN – Jeu IGDB
+      </span>
+
+      <div class="text-muted mt-1">
+        <b>{{ totalAssociations() }}</b> suites à valider
+      </div>
+    </div>
+
+    <div class="header-navigation">
+      <div class="text-muted text-nowrap">
+        {{ pageNumber() + 1 }} / {{ totalAssociations() }}
+      </div>
+
+      <div class="navigation-buttons">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="previousAssociation()">
+          Précédent
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="nextAssociation()">
+          Suivant
+        </button>
+      </div>
+    </div>
+  </div>
+
+  @if (association(); as association) {
+    <main class="main-block">
+      <aside class="suite-panel">
+        <tq-association-suite-card
+          [suite]="association.suite"/>
+      </aside>
+
+      <section class="right-panel">
+        <div class="candidates-heading">
+          <span class="fw-semibold">Candidats IGDB</span>
+          <span class="text-muted small">Classés par score de correspondance</span>
+        </div>
+
+        <div class="candidate-list">
+          @for (candidate of candidates(); track candidate) {
+            <tq-association-candidate-card [candidate]="candidate"
+                                           [isSelected]="isSelected(candidate.gameId)"
+                                           (selectCandidate)="selectCandidate(candidate.gameId)"/>
+          }
+        </div>
+      </section>
+    </main>
+  }
+</div>

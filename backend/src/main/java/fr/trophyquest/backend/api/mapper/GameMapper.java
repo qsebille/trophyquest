@@ -2,7 +2,7 @@ package fr.trophyquest.backend.api.mapper;
 
 import fr.trophyquest.backend.api.dto.game.GameDetailsDTO;
 import fr.trophyquest.backend.api.dto.game.GameSearchItemDTO;
-import fr.trophyquest.backend.domain.entity.views.dim.Game;
+import fr.trophyquest.backend.domain.entity.Game;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,15 +11,16 @@ public class GameMapper {
         return GameSearchItemDTO.builder()
                 .id(game.getId())
                 .name(game.getName())
-                .imageUrl(game.getMasterImageUrl())
+                .coverUrl(game.getCoverUrl())
                 .summary(game.getSummary())
                 .genres(game.getGenres())
                 .themes(game.getThemes())
                 .platforms(game.getPlatforms())
-                .website(game.getWebsite())
+                .officialWebsite(game.getOfficialWebsite())
+                .wikiaWebsite(game.getWikiaWebsite())
                 .releaseDate(game.getReleaseDate())
                 .nbPlayers(game.getNbPlayers())
-                .nbTrophySuites(game.getNbTrophySuites())
+                .nbTrophySuites(game.getNbSuites())
                 .build();
     }
 
@@ -31,7 +32,7 @@ public class GameMapper {
                 .genres(game.getGenres())
                 .themes(game.getThemes())
                 .releaseDate(game.getReleaseDate())
-                .coverUrl(game.getMasterImageUrl())
+                .coverUrl(game.getCoverUrl())
                 .screenshotsUrl(game.getScreenshotsUrl())
                 .build();
     }

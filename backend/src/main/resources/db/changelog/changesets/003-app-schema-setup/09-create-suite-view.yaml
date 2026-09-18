@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-app-schema-setup/09-create-suite-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: suite
+            replaceIfExists: true
+            selectQuery: |
+              SELECT
+                s.id,
+                s.name,
+                s.platforms,
+                COALESCE(s.aws_image_url, s.psn_image_url) AS image_url,
+                COALESCE(trophy_count.bronze_count, 0) AS nb_bronze_trophies,
+                COALESCE(trophy_count.silver_count, 0) AS nb_silver_trophies,
+                COALESCE(trophy_count.gold_count, 0) AS nb_gold_trophies,
+                COALESCE(trophy_count.platinum_count, 0) AS nb_platinum_trophies,
+                matched_game.matched_game_id AS game_id,
+                last_player.player_id AS last_player_id
+              FROM psn.suite s
+              
+              LEFT JOIN (
+                SELECT
+                  suite_id,
+                  COUNT(*) FILTER (WHERE t.color = 'bronze') AS bronze_count,
+                  COUNT(*) FILTER (WHERE t.color = 'silver') AS silver_count,
+                  COUNT(*) FILTER (WHERE t.color = 'gold') AS gold_count,
+                  COUNT(*) FILTER (WHERE t.color = 'platinum') AS platinum_count
+                FROM psn.trophy t
+                GROUP BY t.suite_id
+              ) trophy_count ON trophy_count.suite_id = s.id
+              
+              LEFT JOIN (
+                SELECT
+                  m.suite_id,
+                  g.id AS matched_game_id
+                FROM app.igdb_matching m
+                LEFT JOIN igdb.game g on m.matched_game_id = g.id
+              ) matched_game ON matched_game.suite_id = s.id
+              
+              LEFT JOIN (
+                SELECT DISTINCT ON (ps.suite_id)
+                  ps.suite_id,
+                  ps.player_id
+                FROM psn.played_suite ps
+                ORDER BY ps.suite_id, ps.last_played_at DESC
+              ) last_player ON last_player.suite_id = s.id
+              ;

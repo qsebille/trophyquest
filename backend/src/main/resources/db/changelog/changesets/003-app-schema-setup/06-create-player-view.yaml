@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-app-schema-setup/06-create-player-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: player
+            selectQuery: |
+              SELECT
+                p.id,
+                p.pseudo,
+                COALESCE(p.aws_avatar_url, p.psn_avatar_url) AS avatar_url,
+                COALESCE(g.played_suite_count, 0) AS nb_played_suites,
+                COALESCE(t.bronze_count, 0) AS nb_earned_bronze_trophies,
+                COALESCE(t.silver_count, 0) AS nb_earned_silver_trophies,
+                COALESCE(t.gold_count, 0) AS nb_earned_gold_trophies,
+                COALESCE(t.platinum_count, 0) AS nb_earned_platinum_trophies,
+                COALESCE(t.total_count, 0) AS nb_earned_trophies,
+                COALESCE(t.recent_count, 0) AS nb_recent_trophies
+              FROM psn.player p
+              
+              LEFT JOIN (
+                SELECT
+                  player_id,
+                  COUNT(DISTINCT suite_id) AS played_suite_count
+                FROM psn.played_suite
+                GROUP BY player_id
+              ) g ON g.player_id = p.id
+              
+              LEFT JOIN (
+                SELECT
+                  et.player_id,
+                  COUNT(*) FILTER (WHERE t.color = 'bronze') AS bronze_count,
+                  COUNT(*) FILTER (WHERE t.color = 'silver') AS silver_count,
+                  COUNT(*) FILTER (WHERE t.color = 'gold') AS gold_count,
+                  COUNT(*) FILTER (WHERE t.color = 'platinum') AS platinum_count,
+                  COUNT(*) FILTER (WHERE et.earned_at >= CURRENT_TIMESTAMP - INTERVAL '7 days') AS recent_count,
+                  COUNT(*) AS total_count
+                FROM psn.earned_trophy et
+                JOIN psn.trophy t ON t.id = et.trophy_id
+                GROUP BY et.player_id
+              ) t ON t.player_id = p.id;
+
+        

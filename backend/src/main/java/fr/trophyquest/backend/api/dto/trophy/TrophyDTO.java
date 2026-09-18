@@ -14,7 +14,6 @@ public record TrophyDTO(
         String trophyType,
         Boolean isHidden,
         String iconUrl,
-        String groupType,
         String groupName,
         Date earnedAt
 ) {

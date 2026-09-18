@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-igdb-schema-setup/01-create-igdb-schema
+      author: Quentin Sebille
+      changes:
+        - sql:
+            sql: CREATE SCHEMA IF NOT EXISTS igdb;

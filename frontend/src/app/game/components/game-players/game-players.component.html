@@ -7,8 +7,8 @@
       <div class="d-flex justify-content-between align-items-center w-100">
         <div class="d-flex player-block p-2 align-items-center justify-content-between w-75">
           <div class="d-flex gap-3 align-items-center">
-            <img [ngSrc]="player.avatar" alt="Player avatar" width="50" height="50" class="avatar"/>
-            <span class="fs-6 tq-link" (click)="pseudoClicked.emit(player.id)">{{ player.pseudo }}</span>
+            <img [ngSrc]="player.avatarUrl" alt="Player avatar" width="50" height="50" class="avatar"/>
+            <span class="fs-6 tq-link" (click)="pseudoClicked.emit(player.playerId)">{{ player.pseudo }}</span>
           </div>
           <div class="d-flex flex-column gap-0 align-items-center">
             <span class="text-primary-emphasis">{{ player.lastPlayedAt | date }}</span>
@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="d-flex w-20">
-          <button class="btn btn-primary" (click)="selectPlayer.emit(player.id)">Select Profile</button>
+          <button class="btn btn-primary" (click)="selectPlayer.emit(player.playerId)">Select Profile</button>
         </div>
       </div>
     }

@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-app-schema-setup/08-create-earned-trophy-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: earned_trophy
+            selectQuery: |
+              SELECT
+                et.player_id,
+                et.trophy_id,
+                et.earned_at
+              FROM psn.earned_trophy et
+              ;

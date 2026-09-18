@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-psn-schema-setup/07-create-played-suite-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: psn
+            tableName: played_suite
+            columns:
+              - column: { name: player_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_player, references: psn.player(id) } }
+              - column: { name: suite_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_suite, references: psn.suite(id) } }
+              - column: { name: last_played_at, type: timestamptz }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - addPrimaryKey:
+            schemaName: psn
+            tableName: played_suite
+            columnNames: suite_id,player_id
+            constraintName: pk_played_suite
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_psn_played_suite_set_updated_at
+                            BEFORE UPDATE ON psn.played_suite
+                            FOR EACH ROW
+                            EXECUTE FUNCTION psn.set_updated_at();

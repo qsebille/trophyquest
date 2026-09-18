@@ -26,13 +26,13 @@ export class NavigatorService {
   }
 
   goToGamePage(gameId: string): void {
-    this.router.navigate(['/game', gameId])
+    this.router.navigate(['/game-details', gameId])
       .then(() => console.info(`Navigated to game page with id: ${gameId}`));
   }
 
   goToTrophySuitePage(trophySuiteId: string, gameId: string, playerId: string): void {
     console.log(`TrophySuiteId: ${trophySuiteId}, GameId: ${gameId}, PlayerId: ${playerId}`)
-    this.router.navigate(['/game', gameId], {queryParams: {trophySuiteId, playerId, tab: 'trophies'}})
+    this.router.navigate(['/game-details', gameId], {queryParams: {trophySuiteId, playerId, tab: 'trophies'}})
       .then(() => console.info(`Navigated to trophy suite page with id: ${trophySuiteId}`));
   }
 }

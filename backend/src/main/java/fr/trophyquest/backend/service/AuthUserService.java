@@ -1,10 +1,10 @@
 package fr.trophyquest.backend.service;
 
-import fr.trophyquest.backend.api.dto.auth.user.AuthUserDTO;
+import fr.trophyquest.backend.api.dto.user.UserDTO;
 import fr.trophyquest.backend.api.mapper.AuthUserMapper;
 import fr.trophyquest.backend.auth.CognitoUserInfo;
-import fr.trophyquest.backend.domain.entity.AuthUser;
-import fr.trophyquest.backend.domain.repository.AuthUserRepository;
+import fr.trophyquest.backend.domain.entity.User;
+import fr.trophyquest.backend.domain.repository.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -13,39 +13,39 @@ import java.util.UUID;
 @Service
 public class AuthUserService {
 
-    private final AuthUserRepository authUserRepository;
+    private final UserRepository userRepository;
     private final AuthUserMapper authUserMapper;
 
     public AuthUserService(
-            AuthUserRepository authUserRepository,
+            UserRepository userRepository,
             AuthUserMapper authUserMapper
     ) {
-        this.authUserRepository = authUserRepository;
+        this.userRepository = userRepository;
         this.authUserMapper = authUserMapper;
     }
 
-    public AuthUserDTO fetchCurrentUser(CognitoUserInfo cognitoUserInfo) {
+    public UserDTO fetchCurrentUser(CognitoUserInfo cognitoUserInfo) {
         String cognitoSub = cognitoUserInfo.sub();
-        AuthUser authUser = this.authUserRepository.findByCognitoSub(cognitoSub)
+        User user = this.userRepository.findByCognitoSub(cognitoSub)
                 .orElseGet(() -> {
                     try {
                         return createAndSaveFromCognito(cognitoUserInfo);
                     } catch (DataIntegrityViolationException e) {
-                        return this.authUserRepository.findByCognitoSub(cognitoSub)
+                        return this.userRepository.findByCognitoSub(cognitoSub)
                                 .orElseThrow(() -> e);
                     }
                 });
 
-        return authUserMapper.toDTO(authUser);
+        return authUserMapper.toDTO(user);
     }
 
-    protected AuthUser createAndSaveFromCognito(CognitoUserInfo cognitoUserInfo) {
-        AuthUser authUser = new AuthUser();
-        authUser.setId(UUID.randomUUID());
-        authUser.setEmail(cognitoUserInfo.email());
-        authUser.setDisplayName(cognitoUserInfo.preferredUsername());
-        authUser.setCognitoSub(cognitoUserInfo.sub());
-        this.authUserRepository.save(authUser);
-        return authUser;
+    protected User createAndSaveFromCognito(CognitoUserInfo cognitoUserInfo) {
+        User user = new User();
+        user.setId(UUID.randomUUID());
+        user.setEmail(cognitoUserInfo.email());
+        user.setDisplayName(cognitoUserInfo.preferredUsername());
+        user.setCognitoSub(cognitoUserInfo.sub());
+        this.userRepository.save(user);
+        return user;
     }
 }

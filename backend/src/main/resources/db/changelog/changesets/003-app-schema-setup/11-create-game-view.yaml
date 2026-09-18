@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-app-schema-setup/11-create-game-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: game
+            selectQuery: |
+              SELECT
+                g.id,
+                g.name,
+                COALESCE(g.aws_cover_url, g.igdb_cover_url)           AS cover_url,
+                COALESCE(g.aws_background_url, g.igdb_background_url) AS background_url,
+                g.summary,
+                g.genres,
+                g.themes,
+                match_suites.platforms                                AS platforms,
+                g.official_website,
+                g.wikia_website,
+                g.release_date,
+                match_suites.suite_count                              AS nb_suites,
+                played_suites.count                                   AS nb_players,
+                screenshots.url                                       AS screenshot_urls
+              FROM igdb.game g
+              
+              INNER JOIN(
+                SELECT 
+                  im.matched_game_id   AS game_id,
+                  COUNT(DISTINCT s.id) AS suite_count,
+                  COALESCE(
+                    ARRAY_AGG(DISTINCT p.platform ORDER BY p.platform)
+                    FILTER (WHERE p.platform IS NOT NULL),
+                    ARRAY []::text[]
+                  )                    AS platforms
+                FROM psn.suite s
+                  JOIN app.igdb_matching im ON im.suite_id = s.id
+                  LEFT JOIN LATERAL UNNEST(s.platforms) AS p(platform) ON TRUE
+                WHERE im.matched_game_id IS NOT NULL
+                GROUP BY im.matched_game_id
+              ) match_suites ON match_suites.game_id = g.id
+              
+              LEFT JOIN(
+                SELECT
+                  im.matched_game_id,
+                  COUNT(DISTINCT ps.player_id)
+                FROM psn.played_suite ps
+                  LEFT JOIN psn.suite s ON s.id = ps.suite_id
+                  LEFT JOIN app.igdb_matching im ON im.suite_id = s.id
+                WHERE im.matched_game_id IS NOT NULL
+                GROUP BY im.matched_game_id
+              ) played_suites ON played_suites.matched_game_id = g.id
+              
+              LEFT JOIN (
+                SELECT
+                  s.game_id,
+                  ARRAY_AGG(DISTINCT COALESCE(s.aws_url, s.igdb_url)) AS url
+                FROM igdb.screenshot s
+                GROUP BY s.game_id
+              ) screenshots ON screenshots.game_id = g.id
+              ;

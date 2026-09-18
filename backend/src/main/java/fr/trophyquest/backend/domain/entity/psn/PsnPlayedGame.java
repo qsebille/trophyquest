@@ -1,6 +1,7 @@
 package fr.trophyquest.backend.domain.entity.psn;
 
 import fr.trophyquest.backend.domain.entity.psn.embedded.PsnPlayedGameId;
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,8 +32,7 @@ public class PsnPlayedGame {
     @JoinColumn(name = "game_id", nullable = false)
     private PsnGame game;
 
-    private Instant firstPlayedAt;
-
+    @Column(name = "last_played_at")
     private Instant lastPlayedAt;
 
     @Override

@@ -1,5 +1,5 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {BackgroundImage} from "../api/dtos/game/background-image";
+import {BackgroundImageResponse} from "../api/dtos/background-image-response";
 import {Observable} from "rxjs";
 import {BackgroundImageApiService} from "../api/services/background-image-api.service";
 
@@ -8,28 +8,28 @@ import {BackgroundImageApiService} from "../api/services/background-image-api.se
 })
 export class BackgroundImageService {
   private readonly backgroundImageApiService: BackgroundImageApiService = inject(BackgroundImageApiService);
-  private readonly _backgroundImage = signal<BackgroundImage>({url: ''});
+  private readonly _backgroundImage = signal<BackgroundImageResponse>({url: ''});
 
   readonly backgroundImage = this._backgroundImage.asReadonly();
 
   useTopPlayedGame(): void {
-    this.replaceBackground(this.backgroundImageApiService.fetchTopPlayedGame())
+    this.replaceBackground(this.backgroundImageApiService.fetchForHome())
   }
 
   usePlayerLastGameBackground(playerId: string | null): void {
     if (playerId == null) return;
-    this.replaceBackground(this.backgroundImageApiService.fetchPlayerLastGameBackground(playerId))
+    this.replaceBackground(this.backgroundImageApiService.fetchForPlayer(playerId))
   }
 
   useGameBackground(gameId: string): void {
     this.replaceBackground(this.backgroundImageApiService.fetchForGame(gameId))
   }
 
-  private replaceBackground(gameCoverImageObservable: Observable<BackgroundImage>): void {
+  private replaceBackground(gameCoverImageObservable: Observable<BackgroundImageResponse>): void {
     gameCoverImageObservable
       .subscribe({
         next: url => this._backgroundImage.set(url),
-        error: (err) => console.error("Failed to fetch cover image", err)
+        error: (err) => console.error("Failed to fetch background", err)
       })
   }
 }

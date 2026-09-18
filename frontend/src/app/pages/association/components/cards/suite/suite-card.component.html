@@ -1,0 +1,32 @@
+<div class="suite-card">
+  <div class="suite-image-container">
+    @if (imageUrl()) {
+      <img class="suite-image"
+           [src]="imageUrl()"
+           [alt]="suite().title">
+    }
+  </div>
+
+  <div class="suite-content">
+    <span class="fs-6">{{ suite().title }}</span>
+
+    <div class="suite-platforms">
+      @for (platform of suite().platforms; track platform) {
+        <span class="badge rounded-pill bg-primary">{{ platform }}</span>
+      }
+    </div>
+
+    <span class="text-muted small">{{ suite().nbTrophies }} trophées</span>
+  </div>
+
+  <div class="suite-player">
+    <img class="player-avatar"
+         [src]="suite().lastPlayerAvatar"
+         [alt]="suite().lastPlayerPseudo">
+
+    <div class="d-flex flex-column">
+      <span class="text-muted player-label">Dernier joueur</span>
+      <span class="player-name">{{ suite().lastPlayerPseudo }}</span>
+    </div>
+  </div>
+</div>

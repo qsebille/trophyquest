@@ -1,14 +1,10 @@
 package fr.trophyquest.backend.api.controller;
 
-import fr.trophyquest.backend.api.dto.PaginationDTO;
-import fr.trophyquest.backend.api.dto.igdb.IgdbMappingDTO;
 import fr.trophyquest.backend.service.IgdbCandidateService;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -21,14 +17,6 @@ public class IgdbMappingController {
 
     public IgdbMappingController(IgdbCandidateService igdbCandidateService) {
         this.igdbCandidateService = igdbCandidateService;
-    }
-
-    @GetMapping("/search")
-    public PaginationDTO<IgdbMappingDTO> search(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "50") int size
-    ) {
-        return this.igdbCandidateService.searchMappingToValidate(page, size);
     }
 
     @PostMapping("/{gameId}/candidate/{igdbGameId}/validate")

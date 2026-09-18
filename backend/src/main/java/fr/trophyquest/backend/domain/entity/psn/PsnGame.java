@@ -1,7 +1,7 @@
 package fr.trophyquest.backend.domain.entity.psn;
 
-import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
-import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
+import fr.trophyquest.backend.domain.entity.igdb.OldIgdbCandidate;
+import fr.trophyquest.backend.domain.entity.igdb.OldIgdbGame;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,18 +28,18 @@ public class PsnGame {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "name")
+    @Column(name = "title")
     private String name;
 
     @Column(name = "igdb_match_status")
     private String igdbMatchStatus;
 
     @OneToMany(mappedBy = "psnGame")
-    private Set<IgdbCandidate> igdbCandidates = new HashSet<>();
+    private Set<OldIgdbCandidate> oldIgdbCandidates = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "igdb_game_id", referencedColumnName = "id", unique = true)
-    private IgdbGame igdbGame;
+    private OldIgdbGame oldIgdbGame;
 
     @OneToMany(mappedBy = "psnGame")
     private Set<PsnGameImage> images = new HashSet<>();

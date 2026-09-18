@@ -4,18 +4,18 @@ import lombok.Builder;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Builder
 public record GameSearchItemDTO(
-        UUID id,
+        long id,
         String name,
-        String imageUrl,
+        String coverUrl,
         String summary,
         List<String> genres,
         List<String> themes,
         List<String> platforms,
-        String website,
+        String officialWebsite,
+        String wikiaWebsite,
         Date releaseDate,
         int nbPlayers,
         int nbTrophySuites

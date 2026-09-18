@@ -1,0 +1,15 @@
+<div class="d-flex justify-content-left gap-4 align-items-center">
+  <!-- Image du jeu-->
+  <img class="game-image" [width]="80" [height]="120" [ngSrc]="game().coverUrl" [alt]="game().title"/>
+
+  <div class="d-flex flex-column gap-3">
+    <!-- Titre du jeu -->
+    <div class="fs-6 tq-link" (click)="onGameClick.emit(game().gameId)">{{ game().title }}</div>
+
+    <!-- Nombre de joueurs -->
+    <div class="d-flex align-items-center gap-1" [ngbTooltip]="game().nbRecentPlayers + ' recent players'">
+      <mat-icon>groups</mat-icon>
+      <span>{{ game().nbRecentPlayers }} player{{ game().nbRecentPlayers > 1 ? 's' : '' }}</span>
+    </div>
+  </div>
+</div>

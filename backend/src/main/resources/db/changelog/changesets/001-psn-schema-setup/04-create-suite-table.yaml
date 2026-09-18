@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-psn-schema-setup/04-create-suite-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: psn
+            tableName: suite
+            columns:
+              - column: { name: id, type: uuid, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_suite } }
+              - column: { name: name, type: text, constraints: { nullable: false } }
+              - column: { name: psn_image_url, type: text }
+              - column: { name: aws_image_url, type: text }
+              - column: { name: platforms, type: "text[]" }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_psn_suite_set_updated_at
+                            BEFORE UPDATE ON psn.suite
+                            FOR EACH ROW
+                            EXECUTE FUNCTION psn.set_updated_at();

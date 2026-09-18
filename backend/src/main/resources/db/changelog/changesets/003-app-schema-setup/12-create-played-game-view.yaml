@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-app-schema-setup/12-create-played-game-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: played_game
+            selectQuery: |
+              SELECT
+                gen_random_uuid() AS id,
+                p.id AS player_id,
+                s.game_id AS game_id,
+                MAX(ps.last_played_at) AS last_played_at
+              FROM psn.player p
+                LEFT JOIN psn.played_suite ps ON p.id = ps.player_id
+                LEFT JOIN app.suite s ON s.id = ps.suite_id
+                LEFT JOIN app.game g ON g.id = s.game_id
+              WHERE game_id IS NOT NULL
+              GROUP BY p.id, s.game_id, g.name
+              ;

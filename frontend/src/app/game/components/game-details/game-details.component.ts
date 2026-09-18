@@ -1,7 +1,7 @@
 import {Component, computed, input} from '@angular/core';
-import {GameDetails} from '../../../core/api/dtos/game/game-details';
 import {NgbCarousel, NgbSlide} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe, NgOptimizedImage} from '@angular/common';
+import {GameDetailsResponse} from '../../../pages/game-details/models/game-details-response';
 
 @Component({
   selector: 'tq-game-details',
@@ -16,11 +16,11 @@ import {DatePipe, NgOptimizedImage} from '@angular/common';
   styleUrl: './game-details.component.scss',
 })
 export class GameDetailsComponent {
-  readonly gameDetails = input.required<GameDetails>();
+  readonly gameDetails = input.required<GameDetailsResponse>();
 
-  readonly hasScreenshots = computed(() => this.gameDetails()?.screenshotsUrl?.length > 0)
+  readonly hasScreenshots = computed(() => this.gameDetails()?.screenshotUrls?.length > 0)
 
-  readonly hasIgdbInfo = computed(() => !!this.gameDetails()?.description ||
+  readonly hasIgdbInfo = computed(() => !!this.gameDetails()?.summary ||
     this.gameDetails()?.genres?.length > 0 ||
     this.gameDetails()?.themes?.length > 0
   );

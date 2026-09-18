@@ -1,0 +1,26 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title">Last played games</h5>
+  </div>
+  <div class="card-body">
+    <div class="w-100 d-flex flex-column align-items-center gap-1">
+      @for (suite of suites(); track suite.suiteId; let i = $index) {
+        <hr class="tq-horiz-separator" [hidden]="i === 0"/>
+        <tq-profile-suite-card class="w-100"
+                               (onClickOnSuite)="onClickOnSuite.emit(suite.suiteId)"
+                               [suite]="suite"/>
+      }
+      @if (showLoadMoreButton()) {
+        <div (click)="onLoadMoreGames.emit()" class="btn btn-primary mt-4">
+          Load more games...
+        </div>
+      }
+      @if (isLoading()) {
+        <tq-spinner-container/>
+      }
+      @if (hasError()) {
+        <tq-error-message [message]="'An error occurred while loading games.'"/>
+      }
+    </div>
+  </div>
+</div>

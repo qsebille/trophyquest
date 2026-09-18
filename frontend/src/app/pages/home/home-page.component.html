@@ -1,0 +1,27 @@
+<div class="container mt-3">
+  <div class="d-flex gap-2">
+
+    <!-- Games -->
+    <div class="w-60">
+      @if (isLoadingGames()) {
+        <tq-spinner-container/>
+      } @else if (hasGamesError()) {
+        <tq-error-message message="Error loading games"/>
+      } @else {
+        <tq-home-game-list class="w-60" [games]="games()" (clickOnGame)="navigateToGamePage($event)"/>
+      }
+    </div>
+
+    <!-- Players -->
+    <div class="w-40">
+      @if (isLoadingPlayers()) {
+        <tq-spinner-container/>
+      } @else if (hasPlayersError()) {
+        <tq-error-message message="Error loading players"/>
+      } @else {
+        <tq-home-player-list class="w-40" [players]="players()" (clickOnPlayer)="navigateToProfilePage($event)"/>
+      }
+    </div>
+  </div>
+
+</div>

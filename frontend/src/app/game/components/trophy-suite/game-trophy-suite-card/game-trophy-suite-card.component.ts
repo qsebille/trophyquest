@@ -1,8 +1,10 @@
 import {Component, input, output} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common";
-import {TrophySuite} from '../../../../core/api/dtos/trophy-suite/trophy-suite';
 import {TrophyType} from '../../../../core/models/enums/trophy-type.enum';
-import {GameTrophySuiteDisplayMode} from '../../../models/game-trophy-suite-display-mode.enum';
+import {
+  GameTrophySuiteDisplayMode
+} from '../../../../pages/game-details/models/constants/game-trophy-suite-display-mode.enum';
+import {GameSuiteItem} from '../../../../pages/game-details/models/game-suite-item';
 
 @Component({
   selector: 'tq-game-trophy-suite-card',
@@ -13,7 +15,7 @@ import {GameTrophySuiteDisplayMode} from '../../../models/game-trophy-suite-disp
   styleUrl: './game-trophy-suite-card.component.scss',
 })
 export class GameTrophySuiteCardComponent {
-  trophySuite = input.required<TrophySuite>();
+  suite = input.required<GameSuiteItem>();
   displayMode = input.required<GameTrophySuiteDisplayMode>();
   selectTrophySuite = output<void>()
 
@@ -23,13 +25,13 @@ export class GameTrophySuiteCardComponent {
   countTrophyByColor(trophyType: TrophyType): number {
     switch (trophyType) {
       case TrophyType.PLATINUM:
-        return this.trophySuite().nbPlatinumTrophies;
+        return this.suite().nbPlatinumTrophies;
       case TrophyType.GOLD:
-        return this.trophySuite().nbGoldTrophies;
+        return this.suite().nbGoldTrophies;
       case TrophyType.SILVER:
-        return this.trophySuite().nbSilverTrophies;
+        return this.suite().nbSilverTrophies;
       case TrophyType.BRONZE:
-        return this.trophySuite().nbBronzeTrophies;
+        return this.suite().nbBronzeTrophies;
       default:
         return 0;
     }

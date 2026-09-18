@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-psn-schema-setup/01-create-psn-schema
+      author: Quentin Sebille
+      changes:
+        - sql:
+            sql: CREATE SCHEMA IF NOT EXISTS psn;

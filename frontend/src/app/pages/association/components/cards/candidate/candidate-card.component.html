@@ -1,0 +1,88 @@
+<div class="candidate-card"
+     (click)="selectCandidate.emit()"
+     [class.selected]="isSelected()">
+
+  <div class="candidate-header">
+    <div class="candidate-title">
+      @if (isSelected()) {
+        <mat-icon class="selection-icon">check_circle</mat-icon>
+      }
+
+      <span class="fw-semibold">{{ candidate().title }}</span>
+    </div>
+
+    <span class="badge bg-primary">Score : {{ score() | number:'1.0-0' }}</span>
+  </div>
+
+  <div class="candidate-content">
+    <img class="candidate-image"
+         [ngSrc]="coverUrl()"
+         [alt]="candidate().title"
+         width="150"
+         height="200">
+
+    <div class="candidate-information">
+      <div class="basic-properties">
+        @if (candidate().releaseDate) {
+          <span>
+            <strong>Sortie :</strong>
+            {{ candidate().releaseDate | date:'mediumDate' }}
+          </span>
+        }
+
+        <span>
+          <strong>Type :</strong>
+          {{ candidate().gameType }}
+        </span>
+      </div>
+
+      @if (candidate().platforms.length > 0) {
+        <div class="property-group">
+          <span class="property-label">Plateformes</span>
+
+          <div class="property-values">
+            @for (platform of platforms(); track platform) {
+              <span class="property-badge platform-badge">
+              {{ platform }}
+            </span>
+            }
+          </div>
+        </div>
+      }
+
+      @if (candidate().genres.length > 0) {
+        <div class="property-group">
+          <span class="property-label">Genres</span>
+
+          <div class="property-values">
+            @for (genre of candidate().genres; track genre) {
+              <span class="property-badge genre-badge">
+              {{ genre }}
+            </span>
+            }
+          </div>
+        </div>
+      }
+
+      @if (candidate().themes.length > 0) {
+        <div class="property-group">
+          <span class="property-label">Thèmes</span>
+
+          <div class="property-values">
+            @for (theme of candidate().themes; track theme) {
+              <span class="property-badge theme-badge">
+              {{ theme }}
+            </span>
+            }
+          </div>
+        </div>
+      }
+
+      @if (candidate().description) {
+        <div class="description text-muted">
+          {{ candidate().description }}
+        </div>
+      }
+    </div>
+  </div>
+</div>

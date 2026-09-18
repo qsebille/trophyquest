@@ -7,12 +7,12 @@ import {
   NgbAccordionHeader,
   NgbAccordionItem
 } from "@ng-bootstrap/ng-bootstrap";
-import {Trophy} from '../../../../core/api/dtos/trophy/trophy';
 import {GameTrophyCardComponent} from '../game-trophy-card/game-trophy-card.component';
 import {
   EarnedTrophyFilterState,
   GameTrophyFiltersComponent
 } from '../game-trophy-filters/game-trophy-filters.component';
+import {GameTrophyItem} from '../../../../pages/game-details/models/game-trophy-item';
 
 @Component({
   selector: 'tq-game-trophy-list',
@@ -30,7 +30,7 @@ import {
   styleUrl: './game-trophy-list.component.scss',
 })
 export class GameTrophyListComponent {
-  trophies = input.required<Trophy[]>();
+  trophies = input.required<GameTrophyItem[]>();
   selectedPlayerId = input<string | null>(null);
 
   showHiddenTrophies = signal(false);
@@ -46,13 +46,13 @@ export class GameTrophyListComponent {
 
   trophyGroups = computed(() => {
     const groupIds: string[] = []
-    const groups: { trophyGroupId: string, trophyGroupName: string, trophies: Trophy[] }[] = []
+    const groups: { trophyGroupId: string, trophyGroupName: string, trophies: GameTrophyItem[] }[] = []
     for (const trophy of this.filteredTrophies()) {
-      if (!groupIds.includes(trophy.groupType)) {
-        groupIds.push(trophy.groupType);
-        groups.push({trophyGroupId: trophy.groupType, trophyGroupName: trophy.groupName, trophies: [trophy]});
+      if (!groupIds.includes(trophy.groupName)) {
+        groupIds.push(trophy.groupName);
+        groups.push({trophyGroupId: trophy.groupName, trophyGroupName: trophy.groupName, trophies: [trophy]});
       } else {
-        groups.find(g => g.trophyGroupId === trophy.groupType)!.trophies.push(trophy);
+        groups.find(g => g.trophyGroupId === trophy.groupName)!.trophies.push(trophy);
       }
     }
 

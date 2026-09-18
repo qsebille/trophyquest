@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title">Top recent players</h5>
+  </div>
+  <div class="card-body">
+    @if (noRecentPlayers()) {
+      <span class="card-subtitle mb-2 text-muted">No recent players</span>
+    }
+
+
+    <div class="w-100 d-flex flex-column gap-2">
+      @for (player of players(); track player.playerId) {
+        <div class="d-flex flex-column align-items-center">
+          <tq-home-player-card class="w-100"
+                               [player]="player"
+                               (onClickOnPseudo)="clickOnPlayer.emit(player.playerId)"/>
+        </div>
+      }
+    </div>
+  </div>
+</div>

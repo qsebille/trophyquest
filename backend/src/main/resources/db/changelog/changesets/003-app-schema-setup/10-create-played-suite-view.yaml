@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-app-schema-setup/10-create-played-suite-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: played_suite
+            selectQuery: |
+              SELECT
+                gen_random_uuid() AS id,
+                ps.player_id,
+                ps.suite_id,
+                s.game_id,
+                COALESCE(earned_trophies.bronze_count, 0) AS nb_earned_bronze,
+                COALESCE(earned_trophies.silver_count,0) AS nb_earned_silver,
+                COALESCE(earned_trophies.gold_count,0) AS nb_earned_gold,
+                COALESCE(earned_trophies.platinum_count,0) AS nb_earned_platinum,
+                ps.last_played_at
+              FROM psn.played_suite ps
+              LEFT JOIN app.suite s ON ps.suite_id = s.id
+              LEFT JOIN (
+                SELECT
+                  et.player_id,
+                  t.suite_id,
+                  COUNT(*) FILTER ( WHERE t.color = 'bronze') AS bronze_count,
+                  COUNT(*) FILTER ( WHERE t.color = 'silver') AS silver_count,
+                  COUNT(*) FILTER ( WHERE t.color = 'gold') AS gold_count,
+                  COUNT(*) FILTER ( WHERE t.color = 'platinum') AS platinum_count
+                FROM psn.earned_trophy et
+                LEFT JOIN app.trophy t ON et.trophy_id = t.id
+                GROUP BY et.player_id, t.suite_id
+              ) earned_trophies ON ps.player_id = earned_trophies.player_id AND ps.suite_id = earned_trophies.suite_id
+              ;

@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-igdb-schema-setup/03-create-game-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: igdb
+            tableName: game
+            columns:
+              - column: { name: id, type: bigint, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_game } }
+              - column: { name: name, type: text, constraints: { nullable: false } }
+              - column: { name: summary, type: text }
+              - column: { name: game_type, type: text }
+              - column: { name: release_date, type: date }
+              - column: { name: genres, type: "text[]" }
+              - column: { name: themes, type: "text[]" }
+              - column: { name: platforms, type: "text[]" }
+              - column: { name: igdb_cover_url, type: text }
+              - column: { name: aws_cover_url, type: text }
+              - column: { name: igdb_background_url, type: text }
+              - column: { name: aws_background_url, type: text }
+              - column: { name: youtube_ids, type: "text[]" }
+              - column: { name: publisher_id, type: int, constraints: { foreignKeyName: fk_publisher, references: igdb.company(id) } }
+              - column: { name: developer_id, type: int, constraints: { foreignKeyName: fk_developer, references: igdb.company(id) } }
+              - column: { name: collection_id, type: int, constraints: { foreignKeyName: fk_collection, references: igdb.collection(id) } }
+              - column: { name: official_website, type: text }
+              - column: { name: wikia_website, type: text }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_igdb_game_set_updated_at
+                            BEFORE UPDATE ON igdb.game
+                            FOR EACH ROW
+                            EXECUTE FUNCTION igdb.set_updated_at();

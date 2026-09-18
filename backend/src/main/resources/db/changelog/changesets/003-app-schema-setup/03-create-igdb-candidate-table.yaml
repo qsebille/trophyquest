@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-app-schema-setup/03-create-igdb-candidate-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: igdb_candidate
+            columns:
+              - column: { name: suite_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_psn_suite, references: psn.suite(id) } }
+              - column: { name: candidate_id, type: bigint, constraints: { nullable: false, foreignKeyName: fk_igdb_game, references: igdb.game(id) } }
+              - column: { name: score, type: float, constraints: { nullable: false } }
+              - column: { name: status, type: text, constraints: { nullable: false } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: app
+            tableName: igdb_candidate
+            columnNames: suite_id,candidate_id
+            constraintName: pk_igdb_candidate
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_igdb_candidate_set_updated_at
+                            BEFORE UPDATE ON app.igdb_candidate
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

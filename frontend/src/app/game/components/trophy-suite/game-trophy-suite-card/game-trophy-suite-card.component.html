@@ -1,11 +1,11 @@
 <div class="trophy-suite d-flex w-75">
   <div class="image-wrapper d-flex align-items-center w-15 align-items-center">
-    <img [src]="trophySuite().imageUrl" [alt]="trophySuite().title">
+    <img [src]="suite().imageUrl" [alt]="suite().title">
   </div>
 
   <div class="d-flex gap-2 w-50 align-items-center">
-    <span class="fs-5">{{ trophySuite().title }}</span>
-    @for (platform of trophySuite().platforms; track platform) {
+    <span class="fs-5">{{ suite().title }}</span>
+    @for (platform of suite().platforms; track platform) {
       <div class="badge bg-primary">{{ platform }}</div>
     }
   </div>

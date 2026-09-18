@@ -1,6 +1,6 @@
 package fr.trophyquest.backend.api.controller;
 
-import fr.trophyquest.backend.api.dto.auth.user.AuthUserDTO;
+import fr.trophyquest.backend.api.dto.user.UserDTO;
 import fr.trophyquest.backend.auth.CognitoUserInfo;
 import fr.trophyquest.backend.auth.CognitoUserInfoService;
 import fr.trophyquest.backend.service.AuthUserService;
@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public AuthUserDTO me(@AuthenticationPrincipal Jwt jwt) {
+    public UserDTO me(@AuthenticationPrincipal Jwt jwt) {
         CognitoUserInfo userInfo = cognitoUserInfoService.fetchUserInfo(jwt.getTokenValue());
         return this.authUserService.fetchCurrentUser(userInfo);
     }

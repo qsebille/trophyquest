@@ -1,9 +1,11 @@
 import {Component, computed, effect, input, output, untracked} from '@angular/core';
-import {TrophySuite} from '../../../../core/api/dtos/trophy-suite/trophy-suite';
-import {Trophy} from '../../../../core/api/dtos/trophy/trophy';
 import {GameTrophySuiteCardComponent} from '../game-trophy-suite-card/game-trophy-suite-card.component';
-import {GameTrophySuiteDisplayMode} from '../../../models/game-trophy-suite-display-mode.enum';
+import {
+  GameTrophySuiteDisplayMode
+} from '../../../../pages/game-details/models/constants/game-trophy-suite-display-mode.enum';
 import {GameTrophyListComponent} from '../../trophy/game-trophy-list/game-trophy-list.component';
+import {GameSuiteItem} from '../../../../pages/game-details/models/game-suite-item';
+import {GameTrophyItem} from '../../../../pages/game-details/models/game-trophy-item';
 
 @Component({
   selector: 'tq-game-trophy-suite-list',
@@ -15,40 +17,40 @@ import {GameTrophyListComponent} from '../../trophy/game-trophy-list/game-trophy
   styleUrl: './game-trophy-suite-list.component.scss',
 })
 export class GameTrophySuiteListComponent {
-  trophySuites = input.required<TrophySuite[]>();
-  trophies = input.required<Trophy[]>();
-  trophySuiteId = input<string | null>(null);
+  suites = input.required<GameSuiteItem[]>();
+  trophies = input.required<GameTrophyItem[]>();
+  suiteId = input<string | null>(null);
   selectedPlayerId = input<string | null>(null);
-  trophySuitesInError = input<boolean>(false);
+  suiteInError = input<boolean>(false);
   trophiesInError = input<boolean>(false);
-  trophySuiteChange = output<string | null>();
+  suiteChange = output<string | null>();
 
   constructor() {
     effect(() => {
-      const trophySuites = this.trophySuites();
-      const trophySuiteId = this.trophySuiteId();
+      const suites = this.suites();
+      const suiteId = this.suiteId();
 
-      if (trophySuites.length === 1 && trophySuiteId !== trophySuites[0].id) {
-        untracked(() => this.trophySuiteChange.emit(trophySuites[0].id));
+      if (suites.length === 1 && suiteId !== suites[0].suiteId) {
+        untracked(() => this.suiteChange.emit(suites[0].suiteId));
       }
     });
   }
 
   displayMode = computed(() => {
-    if (this.trophySuites().length === 1) return GameTrophySuiteDisplayMode.SINGLE;
+    if (this.suites().length === 1) return GameTrophySuiteDisplayMode.SINGLE;
 
-    return this.trophySuiteId() == null ? GameTrophySuiteDisplayMode.MULTIPLE : GameTrophySuiteDisplayMode.SINGLE;
+    return this.suiteId() == null ? GameTrophySuiteDisplayMode.MULTIPLE : GameTrophySuiteDisplayMode.SINGLE;
   });
 
-  displayedTrophySuites = computed(() => {
-    if (this.trophySuiteId() == null) {
-      return this.trophySuites();
+  displayedSuites = computed(() => {
+    if (this.suiteId() == null) {
+      return this.suites();
     } else {
-      return this.trophySuites().filter(ts => ts.id === this.trophySuiteId());
+      return this.suites().filter(ts => ts.suiteId === this.suiteId());
     }
   });
 
   displayReturnToSuiteListButton = computed(() =>
-    this.displayMode() === GameTrophySuiteDisplayMode.SINGLE && this.trophySuites().length > 1
+    this.displayMode() === GameTrophySuiteDisplayMode.SINGLE && this.suites().length > 1
   );
 }

@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-igdb-schema-setup/03-create-screenshot-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: igdb
+            tableName: screenshot
+            columns:
+              - column: { name: id, type: text, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_screenshot } }
+              - column: { name: game_id, type: int, constraints: { nullable: false, foreignKeyName: fk_game, references: igdb.game(id) } }
+              - column: { name: igdb_url, type: text }
+              - column: { name: aws_url, type: text }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_igdb_screenshot_set_updated_at
+                            BEFORE UPDATE ON igdb.screenshot
+                            FOR EACH ROW
+                            EXECUTE FUNCTION igdb.set_updated_at();

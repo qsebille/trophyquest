@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-psn-schema-setup/05-create-group-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: psn
+            tableName: group
+            columns:
+              - column: { name: id, type: uuid, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_group } }
+              - column: { name: suite_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_suite, references: psn.suite(id) } }
+              - column: { name: psn_id, type: text }
+              - column: { name: name, type: text }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_psn_group_set_updated_at
+                            BEFORE UPDATE ON psn.group
+                            FOR EACH ROW
+                            EXECUTE FUNCTION psn.set_updated_at();

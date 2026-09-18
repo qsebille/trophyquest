@@ -1,0 +1,39 @@
+<div class="mt-4 d-flex flex-column align-items-center container gap-3">
+
+  @if (details(); as details) {
+    <tq-profile-details class="w-50"
+                        [details]="details"
+                        [isLoading]="isLoadingDetails()"
+                        [isError]="hasErrorFetchingDetails()"
+                        [style.animation-delay.ms]="600"
+                        (deletePlayer)="deletePlayer()"
+                        animate.enter="block-enter"/>
+  } @else if (isLoadingDetails()) {
+    <tq-spinner-container animate.enter="block-enter" [style.animation-delay.ms]="600"/>
+  } @else if (hasErrorFetchingDetails()) {
+    <tq-error-message message="An error occurred while loading the profile."
+                      animate.enter="block-enter" [style.animation-delay.ms]="600"/>
+  }
+
+  <div class="d-flex w-100 gap-3">
+    <tq-profile-suite-list class="w-60"
+                           [style.animation-delay.ms]="800" animate.enter="block-enter"
+                           [suites]="trophySuites()"
+                           [total]="totalSuites()"
+                           [isLoading]="isLoadingSuites()"
+                           [hasError]="hasErrorSearchingSuites()"
+                           (onClickOnSuite)="navigateToPlayerSuitePage($event)"
+                           (onLoadMoreGames)="loadMoreTrophySuites()"/>
+
+    @if (trophies(); as trophies) {
+      <tq-profile-trophy-list class="w-40"
+                              [style.animation-delay.ms]="1000" animate.enter="block-enter"
+                              [trophies]="trophies"
+                              [total]="totalTrophies()"
+                              [isLoading]="isLoadingTrophies()"
+                              [hasError]="hasErrorSearchingTrophies()"
+                              (loadMoreTrophies)="loadMoreTrophies()"/>
+    }
+
+  </div>
+</div>

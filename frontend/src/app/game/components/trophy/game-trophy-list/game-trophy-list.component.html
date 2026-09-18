@@ -12,7 +12,7 @@
         <div ngbAccordionBody>
           <ng-template>
             <div class="d-flex flex-column gap-1">
-              @for (trophy of group.trophies; track trophy.id) {
+              @for (trophy of group.trophies; track trophy.trophyId) {
                 <tq-game-trophy-card [trophy]="trophy" [showHiddenTrophies]="showHiddenTrophies()"/>
               }
             </div>

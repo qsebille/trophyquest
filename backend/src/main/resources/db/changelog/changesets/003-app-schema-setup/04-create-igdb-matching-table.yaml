@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-app-schema-setup/04-create-igdb-matching-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: igdb_matching
+            columns:
+              - column: { name: suite_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_psn_suite, references: psn.suite(id), primaryKey: true, primaryKeyName: pk_matching } }
+              - column: { name: matched_game_id, type: bigint, constraints: { foreignKeyName: fk_igdb_game, references: igdb.game(id) } }
+              - column: { name: status, type: text, constraints: { nullable: false } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_igdb_matching_set_updated_at
+                            BEFORE UPDATE ON app.igdb_matching
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              ALTER TABLE app.igdb_matching
+              ADD CONSTRAINT ck_igdb_matching_status_consistency
+              CHECK ( 
+                (matched_game_id IS NULL AND status IN ('UNCERTAIN','NO_MATCH_FOUND'))
+                OR
+                (matched_game_id IS NOT NULL AND status IN ('AUTO_MATCH','MANUAL_MATCH'))
+              );

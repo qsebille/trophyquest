@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-app-schema-setup/07-create-trophy-view
+      author: Quentin Sebille
+      changes:
+        - createView:
+            schemaName: app
+            viewName: trophy
+            selectQuery: |
+              SELECT
+                t.id,
+                t.suite_id,
+                t.group_id,
+                g.name AS group_name,
+                t.rank,
+                t.title,
+                t.description,
+                t.color,
+                t.is_hidden,
+                COALESCE(t.aws_icon_url, t.psn_icon_url) AS icon_url
+              FROM psn.trophy t
+              LEFT JOIN psn.group g ON t.group_id = g.id
+              ;

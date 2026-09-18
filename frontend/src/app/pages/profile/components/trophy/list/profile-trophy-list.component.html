@@ -1,0 +1,23 @@
+<div class="card">
+
+  <div class="card-header">
+    <h5 class="card-title">Last earned trophies</h5>
+  </div>
+  <div class="card-body w-100 d-flex flex-column align-items-center">
+    @for (trophy of trophies(); track trophy.trophyId; let i = $index) {
+      <hr class="separator" [hidden]="i === 0"/>
+      <tq-profile-trophy-card [trophy]="trophy" class="w-100"/>
+    }
+    @if (showLoadMoreButton()) {
+      <div class="btn btn-primary mt-4" (click)="loadMoreTrophies.emit()">Load more trophies</div>
+    }
+
+    @if (hasError()) {
+      <tq-error-message
+        [message]="'An error occurred while searching for trophies.'"/>
+    }
+    @if (isLoading()) {
+      <tq-spinner-container/>
+    }
+  </div>
+</div>

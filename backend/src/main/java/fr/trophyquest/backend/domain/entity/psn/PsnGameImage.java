@@ -39,6 +39,6 @@ public class PsnGameImage {
     private String format;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "psn_game_id", nullable = false)
+    @JoinColumn(name = "game_id", nullable = false)
     private PsnGame psnGame;
 }
