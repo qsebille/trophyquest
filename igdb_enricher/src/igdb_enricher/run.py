@@ -3,7 +3,7 @@ import logging
 import dotenv
 
 from igdb_enricher.config.postgres import TrophyQuestPostgresConfig
-from igdb_enricher.search_candidates.fetcher import find_candidates
+from igdb_enricher.search_candidates.finder.candidate_finder import find_candidates
 from igdb_enricher.search_candidates.rating import rate_candidates
 from igdb_enricher.search_candidates.selection import select_candidates
 from igdb_enricher.trophyquest.igdb_candidate import IgdbCandidateRow, insert_candidates
@@ -32,15 +32,17 @@ def run_igdb_enricher(suite_limit: int):
     logger.info(f"Found {len(unlinked_trophy_suites_df)} unlinked trophy suites")
 
     # Fetch candidates for each game
-    for suite in unlinked_trophy_suites_df.itertuples():
-        logger.info(f"Starting candidate search for suite {suite.name} ({suite.id})")
-        search_result = find_candidates(title=suite.name, platforms=suite.platforms)
+    for suite in unlinked_trophy_suites_df:
+        suite_id = suite.id
+        suite_name = suite.name
+        logger.info(f"Starting candidate search for suite {suite_name} ({suite_id})")
+        search_result = find_candidates(title=suite_name, platforms=suite.platforms)
         rates = rate_candidates(search_result=search_result)
         selection = select_candidates(rates=rates)
 
         igdb_game_rows = [IgdbGameRow.build(candidate) for candidate in search_result.all_candidates]
-        igdb_candidate_rows = [IgdbCandidateRow.build(suite_id=suite.id, selection=s) for s in selection]
-        igdb_matching_row = IgdbMatchingRow.compute(suite.id, selection)
+        igdb_candidate_rows = [IgdbCandidateRow.build(suite_id=suite_id, selection=s) for s in selection]
+        igdb_matching_row = IgdbMatchingRow.compute(suite_id, selection)
 
         igdb_collection_rows = set()
         igdb_company_rows = set()

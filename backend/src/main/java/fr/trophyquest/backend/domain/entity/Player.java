@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "player")
+@Table(schema = "app", name = "player")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Immutable

@@ -1,4 +1,5 @@
 import logging
+from dataclasses import dataclass
 
 import pandas as pd
 from sqlalchemy import text, Engine
@@ -6,7 +7,14 @@ from sqlalchemy import text, Engine
 logger = logging.getLogger(__name__)
 
 
-def search_unlinked_suites(engine: Engine, limit: int) -> pd.DataFrame:
+@dataclass
+class UnlinkedSuite:
+    id: int
+    name: str
+    platforms: list[str]
+
+
+def search_unlinked_suites(engine: Engine, limit: int) -> list[UnlinkedSuite]:
     select_query = text(f"""
                  SELECT id, name, platforms
                  FROM psn.suite s
@@ -24,4 +32,4 @@ def search_unlinked_suites(engine: Engine, limit: int) -> pd.DataFrame:
         df = pd.read_sql(select_query, conn)
         logger.info(f"Fetched {len(df)} suites without game")
 
-    return df
+    return [UnlinkedSuite(**row) for row in df.to_dict(orient="records")]

@@ -2,7 +2,7 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
-from igdb_enricher.search_candidates.fetcher import CandidateSearchResult
+from igdb_enricher.search_candidates.finder.candidate_finder import CandidateSearchResult
 from igdb_enricher.search_candidates.models.candidate import IgdbCandidate
 
 
@@ -35,16 +35,26 @@ class _CandidateRater:
     search_result: CandidateSearchResult
 
     def _rate_candidate(self, query: str, candidate: IgdbCandidate) -> RatingResult:
+        # Base score : F1-score
         query_tokens = _build_tokens(query)
         candidate_tokens = _build_tokens(candidate.name)
-
         f1_score = _f1_score(query_tokens, candidate_tokens)
+
+        # Score is affected by parent version
         parent_version = candidate.version_parent
         parent_version_coefficient = 1.0
         if parent_version is not None:
             parent_version_coefficient = 0.0 if parent_version in self.search_result.all_ids else 0.7
 
-        final_score = f1_score * parent_version_coefficient
+        # Score is affected by game type
+        game_type = candidate.game_type
+        game_type_coefficient = 1.0
+        if game_type in ("Pack / Addon", "DLC"):
+            game_type_coefficient *= 0.6
+
+        final_score = (f1_score
+                       * parent_version_coefficient
+                       * game_type_coefficient)
         return RatingResult(igdb_game_id=candidate.id, score=final_score)
 
     def raw_rating(self):

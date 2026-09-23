@@ -61,7 +61,7 @@ def search_igdb_games(
             first_release_date,
             summary;
         where {platform_query};
-        limit 10;
+        limit 50;
         '''
 
     headers = {

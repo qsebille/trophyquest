@@ -10,14 +10,12 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.Immutable;
 
 
 @Entity
 @Table(name = "igdb_candidate", schema = "app")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Immutable
 public class IgdbCandidate {
     @EmbeddedId
     private IgdbCandidateId id;

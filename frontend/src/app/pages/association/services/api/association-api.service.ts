@@ -15,4 +15,12 @@ export class AssociationApiService {
     return this.http.get<Pagination<AssociationItem>>(`${this.apiUrl}?page=${page}`);
   }
 
+  validateAssociation(suiteId: string, gameId: number) {
+    return this.http.post<boolean>(`${this.apiUrl}/validate`, {suiteId, gameId});
+  }
+
+  rejectAllCandidates(suiteId: string) {
+    return this.http.post<boolean>(`${this.apiUrl}/reject`, {suiteId});
+  }
+
 }

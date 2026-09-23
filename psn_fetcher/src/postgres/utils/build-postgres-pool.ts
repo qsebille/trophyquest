@@ -1,5 +1,5 @@
 import {Pool} from "pg";
-import {getMandatoryParam} from "../.././config/get-mandatory-param.js";
+import {getMandatoryParam} from "../../config/get-mandatory-param";
 
 export function buildPostgresPool(): Pool {
     return new Pool({

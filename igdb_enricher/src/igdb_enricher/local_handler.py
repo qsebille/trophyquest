@@ -45,5 +45,5 @@ def run_igdb_query():
 
 
 if __name__ == "__main__":
-    run_enricher(1)
+    run_enricher(200)
     # run_igdb_query()
